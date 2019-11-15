@@ -33,7 +33,7 @@ Author:       Jasper Van der Jeugt <m@jaspervdj.be>
 Maintainer:   Jasper Van der Jeugt <m@jaspervdj.be>
 Homepage:     http://jaspervdj.be/hakyll
 Bug-Reports:  http://github.com/jaspervdj/Hakyll/issues
-License:      GPL-2
+License:      GPL-3-or-later
 License-File: LICENSE
 Category:     Web
 

@@ -4,7 +4,22 @@ hexirp-hakyll is a static web site generator library in Haskell **for Hexirp**.
 
 hexirp-hakyll は hakyll をフォークした静的ウェブサイト生成プログラムのライブラリである。このライブラリは Hexirp が自分で利用するために制作している。
 
-# License
+## License
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+## ライセンスの選択について
 
 hexirp-hakyll は [hakyll](https://github.com/jaspervdj/hakyll) を `f2778e12046eb5f5eb4d377669b94b13dffc24fb` でクローンしたものである。
 
