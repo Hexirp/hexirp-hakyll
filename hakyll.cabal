@@ -109,7 +109,7 @@ Flag usePandoc
 
 Library
   Ghc-Options:      -Wall
-  Hs-Source-Dirs:   lib
+  Hs-Source-Dirs:   src
   Default-language: Haskell2010
 
   Exposed-Modules:
