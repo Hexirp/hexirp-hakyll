@@ -1,0 +1,22 @@
+name: hexirp-hakyll
+version: 0.0.0.0
+github: "Hexirp/hexirp-hakyll"
+license: GPL-3-or-later
+author: "Hexirp"
+mainatiner: "https:github.com/Hexirp/hexirp-hakyll"
+copyright: "(C) Hexirp 2019"
+
+extra-source-files:
+- README.md
+- CHANGELOG.md
+
+synopsis: "A static website compiler library for Hexirp"
+category: Web
+
+description: Please see the README on GitHub at <https://github.com/Hexirp/hexirp-hakyll#readme>
+
+dependencies:
+- base >= 4.7.0.0 && < 4.14.0.0
+
+library:
+  source-dirs: src
