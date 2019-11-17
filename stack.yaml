@@ -3,8 +3,6 @@ save-hackage-creds: false
 
 flags:
   hakyll:
-    previewServer: true
-    watchServer:   true
     checkExternal: true
     usePandoc:     true
     buildWebsite:  true
