@@ -179,7 +179,10 @@ Test-suite hakyll-tests
     Hakyll.Core.UnixFilter.Tests
     Hakyll.Core.Util.String.Tests
     Hakyll.Web.Template
+    Hakyll.Web.Template.Context
     Hakyll.Web.Template.Internal
+    Hakyll.Web.Template.Internal.Element
+    Hakyll.Web.Template.Internal.Trim
     Hakyll
     TestSuite.Util
 
