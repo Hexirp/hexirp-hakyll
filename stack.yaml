@@ -2,7 +2,7 @@ resolver: lts-13.29
 save-hackage-creds: false
 
 flags:
-  hakyll:
+  hexirp-hakyll:
     checkExternal: true
     usePandoc:     true
     buildWebsite:  true
