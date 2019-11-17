@@ -201,7 +201,8 @@ Test-suite hakyll-tests
     unordered-containers >= 0.2      && < 0.3,
     yaml                 >= 0.8.11   && < 0.12,
     mtl,
-    binary
+    binary,
+    time
 
   If flag(checkExternal)
     Cpp-options:
