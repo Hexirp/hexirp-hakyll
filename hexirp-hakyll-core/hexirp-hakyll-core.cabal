@@ -204,7 +204,10 @@ Test-suite hakyll-tests
     mtl,
     binary,
     time,
-    time-locale-compat
+    time-locale-compat,
+    blaze-html,
+    tagsoup,
+    network-uri
 
   If flag(checkExternal)
     Cpp-options:
