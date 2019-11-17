@@ -16,7 +16,6 @@ import qualified Hakyll.Core.Provider.Metadata.Tests
 import qualified Hakyll.Core.Provider.Tests
 import qualified Hakyll.Core.Routes.Tests
 import qualified Hakyll.Core.Rules.Tests
-import qualified Hakyll.Core.Runtime.Tests
 import qualified Hakyll.Core.Store.Tests
 import qualified Hakyll.Core.UnixFilter.Tests
 import qualified Hakyll.Core.Util.String.Tests
@@ -31,7 +30,6 @@ main = defaultMain $ testGroup "Hakyll"
     , Hakyll.Core.Provider.Tests.tests
     , Hakyll.Core.Routes.Tests.tests
     , Hakyll.Core.Rules.Tests.tests
-    , Hakyll.Core.Runtime.Tests.tests
     , Hakyll.Core.Store.Tests.tests
     , Hakyll.Core.UnixFilter.Tests.tests
     , Hakyll.Core.Util.String.Tests.tests
