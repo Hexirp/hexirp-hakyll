@@ -25,7 +25,6 @@ import           Hakyll.Core.Configuration
 import           Hakyll.Core.Logger         (Logger)
 import qualified Hakyll.Core.Logger         as Logger
 import           Hakyll.Core.Rules
-import           Hakyll.Core.Rules.Internal
 import           Hakyll.Core.Runtime
 import           Hakyll.Core.Util.File
 
