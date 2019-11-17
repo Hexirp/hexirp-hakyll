@@ -195,14 +195,6 @@ Library
     vector               >= 0.11     && < 0.13,
     yaml                 >= 0.8.11   && < 0.12
 
-  If flag(watchServer)
-    Build-depends:
-      fsnotify        >= 0.2   && < 0.4
-    Cpp-options:
-      -DWATCH_SERVER
-    Other-modules:
-      Hakyll.Preview.Poll
-
   If flag(checkExternal)
     Build-depends:
       http-conduit >= 2.2    && < 2.4,
