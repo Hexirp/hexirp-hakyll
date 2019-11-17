@@ -173,19 +173,10 @@ Test-suite hakyll-tests
     Hakyll.Core.Provider.Tests
     Hakyll.Core.Routes.Tests
     Hakyll.Core.Rules.Tests
-    Hakyll.Core.Runtime.Tests
     Hakyll.Core.Store.Tests
     Hakyll.Core.UnixFilter.Tests
     Hakyll.Core.Util.String.Tests
     TestSuite.Util
-    -- Modules for unit tests
-    Hakyll.Web.Html
-    Hakyll.Web.Template
-    Hakyll.Web.Template.Context
-    Hakyll.Web.Template.Internal
-    Hakyll.Web.Template.Internal.Element
-    Hakyll.Web.Template.Internal.Trim
-    Hakyll
 
   Build-Depends:
     hexirp-hakyll-core,
