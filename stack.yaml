@@ -8,6 +8,7 @@ flags:
     buildWebsite:  true
 
 packages:
+- 'hexirp-hakyll-core'
 - 'hexirp-hakyll'
 
 nix:
