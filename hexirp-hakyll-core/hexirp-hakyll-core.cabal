@@ -101,8 +101,7 @@ Library
     Hakyll.Core.Util.File
     Hakyll.Core.Util.String
     Hakyll.Core.Writable
-
-  Other-Modules:
+    -- Internal modules
     Data.List.Extended
     Data.Yaml.Extended
     Hakyll.Core.Compiler.Require
@@ -178,6 +177,8 @@ Test-suite hakyll-tests
     Hakyll.Core.Store.Tests
     Hakyll.Core.UnixFilter.Tests
     Hakyll.Core.Util.String.Tests
+    TestSuite.Util
+    -- Modules for unit tests
     Hakyll.Web.Html
     Hakyll.Web.Template
     Hakyll.Web.Template.Context
@@ -185,7 +186,6 @@ Test-suite hakyll-tests
     Hakyll.Web.Template.Internal.Element
     Hakyll.Web.Template.Internal.Trim
     Hakyll
-    TestSuite.Util
 
   Build-Depends:
     hexirp-hakyll-core,
