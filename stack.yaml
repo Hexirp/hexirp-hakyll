@@ -8,7 +8,7 @@ flags:
     buildWebsite:  true
 
 packages:
-  - '.'
+- 'hexirp-hakyll'
 
 nix:
   enable: false
