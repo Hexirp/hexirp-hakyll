@@ -196,7 +196,9 @@ Test-suite hakyll-tests
     filepath             >= 1.0      && < 1.5,
     text                 >= 0.11     && < 1.3,
     unordered-containers >= 0.2      && < 0.3,
-    yaml                 >= 0.8.11   && < 0.12
+    yaml                 >= 0.8.11   && < 0.12,
+    mtl,
+    binary
 
   If flag(checkExternal)
     Cpp-options:
