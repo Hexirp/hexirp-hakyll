@@ -178,7 +178,7 @@ Test-suite hakyll-tests
     Hakyll.Core.Store.Tests
     Hakyll.Core.UnixFilter.Tests
     Hakyll.Core.Util.String.Tests
-    Hakyll.Web.HTML
+    Hakyll.Web.Html
     Hakyll.Web.Template
     Hakyll.Web.Template.Context
     Hakyll.Web.Template.Internal
