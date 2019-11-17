@@ -128,7 +128,7 @@ Library
     Hakyll.Core.Provider.Internal
     Hakyll.Core.Provider.MetadataCache
     Hakyll.Core.Util.Parser
-    Paths_hakyll
+    Paths_hexirp_hakyll
 
   Build-Depends:
     base                 >= 4.8      && < 5,

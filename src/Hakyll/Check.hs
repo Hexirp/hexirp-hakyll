@@ -39,7 +39,7 @@ import           Data.Version                 (versionBranch)
 import           GHC.Exts                     (fromString)
 import qualified Network.HTTP.Conduit         as Http
 import qualified Network.HTTP.Types           as Http
-import qualified Paths_hakyll                 as Paths_hakyll
+import qualified Paths_hexirp_hakyll          as Paths_hakyll
 #endif
 
 
