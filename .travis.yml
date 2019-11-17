@@ -8,11 +8,14 @@
 # Copy these contents into the root directory of your Github project in a file
 # named .travis.yml
 
+# Choose a OS
+os: linux
+
 # Choose a build environment
 dist: xenial
 
 # Do not choose a language; we provide our own build tools.
-language: generic
+language: shell
 
 # Caching so the next build will be fast too.
 cache:
