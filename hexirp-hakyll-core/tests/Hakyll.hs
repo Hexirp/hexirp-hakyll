@@ -13,6 +13,7 @@ module Hakyll
     , module Hakyll.Core.Util.String
     , module Hakyll.Core.Writable
     , module Hakyll.Web.Template
+    , module Hakyll.Web.Template.Context
     ) where
 
 import           Hakyll.Core.Compiler
@@ -29,3 +30,4 @@ import           Hakyll.Core.Util.File
 import           Hakyll.Core.Util.String
 import           Hakyll.Core.Writable
 import           Hakyll.Web.Template
+import           Hakyll.Web.Template.Context
