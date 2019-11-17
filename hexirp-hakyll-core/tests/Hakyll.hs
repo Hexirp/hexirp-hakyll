@@ -12,6 +12,7 @@ module Hakyll
     , module Hakyll.Core.Util.File
     , module Hakyll.Core.Util.String
     , module Hakyll.Core.Writable
+    , module Hakyll.Web.Template
     ) where
 
 import           Hakyll.Core.Compiler
@@ -27,3 +28,4 @@ import           Hakyll.Core.UnixFilter
 import           Hakyll.Core.Util.File
 import           Hakyll.Core.Util.String
 import           Hakyll.Core.Writable
+import           Hakyll.Web.Template
