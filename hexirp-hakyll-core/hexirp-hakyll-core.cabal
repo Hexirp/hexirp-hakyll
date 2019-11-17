@@ -178,6 +178,9 @@ Test-suite hakyll-tests
     Hakyll.Core.Store.Tests
     Hakyll.Core.UnixFilter.Tests
     Hakyll.Core.Util.String.Tests
+    Hakyll.Web.Template
+    Hakyll.Web.Template.Internal
+    Hakyll
     TestSuite.Util
 
   Build-Depends:
