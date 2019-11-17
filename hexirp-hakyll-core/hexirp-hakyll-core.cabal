@@ -105,6 +105,12 @@ Library
   Other-Modules:
     Data.List.Extended
     Data.Yaml.Extended
+    Hakyll.Core.Compiler.Require
+    Hakyll.Core.Identifier.Pattern.Internal
+    Hakyll.Core.Item.SomeItem
+    Hakyll.Core.Provider.Internal
+    Hakyll.Core.Provider.MetadataCache
+    Hakyll.Core.Util.Parser
 
   Build-Depends:
     base                 >= 4.8      && < 5,
