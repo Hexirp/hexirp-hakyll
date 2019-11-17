@@ -202,7 +202,8 @@ Test-suite hakyll-tests
     yaml                 >= 0.8.11   && < 0.12,
     mtl,
     binary,
-    time
+    time,
+    time-locale-compat
 
   If flag(checkExternal)
     Cpp-options:
