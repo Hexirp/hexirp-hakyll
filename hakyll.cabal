@@ -1,38 +1,13 @@
-Name:    hakyll
-Version: 4.13.0.1
+Name:    hexirp-hakyll
+Version: 0.0.0.0
 
-Synopsis: A static website compiler library
-Description:
-  Hakyll is a static website compiler library. It provides you with the tools to
-  create a simple or advanced static website using a Haskell DSL and formats
-  such as markdown or RST. You can find more information, including a tutorial,
-  on the website:
+Synopsis: A static website compiler library for Hexirp
+Description: Please see the README on GitHub at <https://github.com/Hexirp/hexirp-hakyll#readme>
 
-  .
-
-  * <http://jaspervdj.be/hakyll>
-
-  .
-
-  If you seek assistance, there's:
-
-  .
-
-  * A google group: <http://groups.google.com/group/hakyll>
-
-  .
-
-  * An IRC channel, @#hakyll@ on freenode
-
-  .
-
-  Additionally, there's the Haddock documentation in the different modules,
-  meant as a reference.
-
-Author:       Jasper Van der Jeugt <m@jaspervdj.be>
-Maintainer:   Jasper Van der Jeugt <m@jaspervdj.be>
-Homepage:     http://jaspervdj.be/hakyll
-Bug-Reports:  http://github.com/jaspervdj/Hakyll/issues
+Author:       Hexirp
+Maintainer:   https:github.com/Hexirp/hexirp-hakyll
+Homepage:     https:github.com/Hexirp/hexirp-hakyll#readme
+Bug-Reports:  https:github.com/Hexirp/hexirp-hakyll/issues
 License:      GPL-3-or-later
 License-File: LICENSE
 Category:     Web
