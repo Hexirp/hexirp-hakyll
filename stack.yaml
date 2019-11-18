@@ -2,14 +2,14 @@ resolver: lts-13.29
 save-hackage-creds: false
 
 flags:
-  hexirp-hakyll:
+  hexyll:
     checkExternal: true
     usePandoc:     true
     buildWebsite:  true
 
 packages:
-- 'hexirp-hakyll-core'
-- 'hexirp-hakyll'
+- 'hexyll-core'
+- 'hexyll'
 
 nix:
   enable: false
