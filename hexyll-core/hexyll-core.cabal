@@ -80,36 +80,36 @@ Library
   Default-language: Haskell2010
 
   Exposed-Modules:
-    Hakyll.Core.Compiler
-    Hakyll.Core.Compiler.Internal
-    Hakyll.Core.Configuration
-    Hakyll.Core.Dependencies
-    Hakyll.Core.File
-    Hakyll.Core.Identifier
-    Hakyll.Core.Identifier.Pattern
-    Hakyll.Core.Item
-    Hakyll.Core.Logger
-    Hakyll.Core.Metadata
-    Hakyll.Core.Provider
-    Hakyll.Core.Provider.Metadata
-    Hakyll.Core.Routes
-    Hakyll.Core.Rules
-    Hakyll.Core.Rules.Internal
-    Hakyll.Core.Runtime
-    Hakyll.Core.Store
-    Hakyll.Core.UnixFilter
-    Hakyll.Core.Util.File
-    Hakyll.Core.Util.String
-    Hakyll.Core.Writable
+    Hexyll.Core.Compiler
+    Hexyll.Core.Compiler.Internal
+    Hexyll.Core.Configuration
+    Hexyll.Core.Dependencies
+    Hexyll.Core.File
+    Hexyll.Core.Identifier
+    Hexyll.Core.Identifier.Pattern
+    Hexyll.Core.Item
+    Hexyll.Core.Logger
+    Hexyll.Core.Metadata
+    Hexyll.Core.Provider
+    Hexyll.Core.Provider.Metadata
+    Hexyll.Core.Routes
+    Hexyll.Core.Rules
+    Hexyll.Core.Rules.Internal
+    Hexyll.Core.Runtime
+    Hexyll.Core.Store
+    Hexyll.Core.UnixFilter
+    Hexyll.Core.Util.File
+    Hexyll.Core.Util.String
+    Hexyll.Core.Writable
     -- Internal modules
     Data.List.Extended
     Data.Yaml.Extended
-    Hakyll.Core.Compiler.Require
-    Hakyll.Core.Identifier.Pattern.Internal
-    Hakyll.Core.Item.SomeItem
-    Hakyll.Core.Provider.Internal
-    Hakyll.Core.Provider.MetadataCache
-    Hakyll.Core.Util.Parser
+    Hexyll.Core.Compiler.Require
+    Hexyll.Core.Identifier.Pattern.Internal
+    Hexyll.Core.Item.SomeItem
+    Hexyll.Core.Provider.Internal
+    Hexyll.Core.Provider.MetadataCache
+    Hexyll.Core.Util.Parser
 
   Build-Depends:
     base                 >= 4.8      && < 5,
@@ -167,15 +167,15 @@ Test-suite hakyll-tests
   Default-language: Haskell2010
 
   Other-modules:
-    Hakyll.Core.Dependencies.Tests
-    Hakyll.Core.Identifier.Tests
-    Hakyll.Core.Provider.Metadata.Tests
-    Hakyll.Core.Provider.Tests
-    Hakyll.Core.Routes.Tests
-    Hakyll.Core.Rules.Tests
-    Hakyll.Core.Store.Tests
-    Hakyll.Core.UnixFilter.Tests
-    Hakyll.Core.Util.String.Tests
+    Hexyll.Core.Dependencies.Tests
+    Hexyll.Core.Identifier.Tests
+    Hexyll.Core.Provider.Metadata.Tests
+    Hexyll.Core.Provider.Tests
+    Hexyll.Core.Routes.Tests
+    Hexyll.Core.Rules.Tests
+    Hexyll.Core.Store.Tests
+    Hexyll.Core.UnixFilter.Tests
+    Hexyll.Core.Util.String.Tests
     TestSuite.Util
 
   Build-Depends:
