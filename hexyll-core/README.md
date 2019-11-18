@@ -1,3 +1,3 @@
-# hexirp-hakyll-core
+# hexyll-core
 
-hexirp-hakyll-core is a core library of hexirp-hakyll.
+hexyll-core is a core library of hexirp-hakyll.
