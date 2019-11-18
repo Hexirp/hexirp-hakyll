@@ -160,7 +160,9 @@ Library
     time-locale-compat   >= 0.1      && < 0.2,
     unordered-containers >= 0.2      && < 0.3,
     vector               >= 0.11     && < 0.13,
-    yaml                 >= 0.8.11   && < 0.12
+    yaml                 >= 0.8.11   && < 0.12,
+    -- core
+    hexyll-core
 
   If flag(checkExternal)
     Build-depends:
