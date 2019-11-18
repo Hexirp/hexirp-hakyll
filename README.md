@@ -1,8 +1,20 @@
 # hexirp-hakyll
 
-hexirp-hakyll is a static web site generator library in Haskell **for Hexirp**.
+hexirp-hakyll is a static web site generator libraries in Haskell **for Hexirp**.
 
-hexirp-hakyll は hakyll をフォークした静的ウェブサイト生成プログラムのライブラリである。このライブラリは Hexirp が自分で利用するために制作している。
+hexirp-hakyll は hakyll をフォークした静的ウェブサイト生成プログラムのライブラリ群である。このライブラリは Hexirp が自分で利用するために制作している。
+
+## それぞれのライブラリについて
+
+ここで hexirp-hakyll は長いため hexyll と略している。ライブラリを分割するわけは、ビルド時のメモリを削減するためと、コピーレフトライセンスを適用する範囲をなるべく減らすためである。
+
+### hexyll-core
+
+hexyll の基盤部分を記述しているパッケージである。例えば Route や Rules や Compiler などの定義を含む。
+
+### hexyll
+
+hexyll の本体であり Compiler や Template などの具体的な実装や、ジェネレーターを作る中核的な関数を含む。
 
 ## ライセンスの選択について
 
@@ -10,9 +22,7 @@ hexirp-hakyll は [hakyll](https://github.com/jaspervdj/hakyll) を `f2778e12046
 
 元々の hakyll は The 3-Clause BSD License で公開されていた。
 
-しかし、 hakyll にはグレーな部分がある。それは GNU General Public License version 2 or later でライセンスされている pandoc に依存しているのに、本体を The 3-Clause BSD License でライセンスしていることだ。
-
-グレーな訳は、 pandoc に依存するかどうかがビルド時のフラグによって決定されるからだ。
+しかし、 hakyll にはグレーな部分がある。それは GNU General Public License version 2 or later でライセンスされている pandoc に依存しているのに、本体を The 3-Clause BSD License でライセンスしていることだ。完全な違反でもない訳は、 pandoc に依存するかどうかはビルド時のフラグによって決定されるからだ。
 
 そのため、 hexirp-hakyll は明瞭にするために、 pandoc に依存する部分を別のパッケージに分離し、 GNU General Public License version 3 or later でライセンスしている。
 

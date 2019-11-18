@@ -1,6 +1,6 @@
-# hexirp-hakyll
+# hexyll
 
-hexirp-hakyll is a static web site generator library in Haskell **for Hexirp**.
+hexyll is a static web site generator library in Haskell **for Hexirp**.
 
 ## License
 
