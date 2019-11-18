@@ -98,8 +98,6 @@ Library
     Hakyll.Web.Template.List
 
   Other-Modules:
-    Data.List.Extended
-    Data.Yaml.Extended
     Hakyll.Check
     Paths_hexyll
 
