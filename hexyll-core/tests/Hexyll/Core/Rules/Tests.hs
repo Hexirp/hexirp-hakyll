@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Core.Rules.Tests
+module Hexyll.Core.Rules.Tests
     ( tests
     ) where
 
@@ -9,14 +9,14 @@ module Hakyll.Core.Rules.Tests
 import           Data.IORef                     (IORef, newIORef, readIORef,
                                                  writeIORef)
 import qualified Data.Set                       as S
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.File
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Routes
-import           Hakyll.Core.Rules
-import           Hakyll.Core.Rules.Internal
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.File
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Routes
+import           Hexyll.Core.Rules
+import           Hexyll.Core.Rules.Internal
 import           System.FilePath                ((</>))
 import           Test.Tasty                     (TestTree, testGroup)
 import           Test.Tasty.HUnit               (Assertion, (@=?))
@@ -25,7 +25,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Core.Rules.Tests" $ fromAssertions "runRules"
+tests = testGroup "Hexyll.Core.Rules.Tests" $ fromAssertions "runRules"
     [case01]
 
 

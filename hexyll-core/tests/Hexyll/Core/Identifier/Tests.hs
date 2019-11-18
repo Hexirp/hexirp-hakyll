@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Core.Identifier.Tests
+module Hexyll.Core.Identifier.Tests
     ( tests
     ) where
 
@@ -11,14 +11,14 @@ import           Test.Tasty.HUnit               ((@=?))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Core.Identifier.Tests" $ concat
+tests = testGroup "Hexyll.Core.Identifier.Tests" $ concat
     [ captureTests
     , matchesTests
     ]

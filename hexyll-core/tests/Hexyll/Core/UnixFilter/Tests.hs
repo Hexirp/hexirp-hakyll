@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Core.UnixFilter.Tests
+module Hexyll.Core.UnixFilter.Tests
     ( tests
     ) where
 
@@ -12,16 +12,16 @@ import qualified Test.Tasty.HUnit       as H
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
-import           Hakyll.Core.UnixFilter
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Item
+import           Hexyll.Core.UnixFilter
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Core.UnixFilter.Tests"
+tests = testGroup "Hexyll.Core.UnixFilter.Tests"
     [ testCase "unixFilter rev"   unixFilterRev
     , testCase "unixFilter false" unixFilterFalse
     , testCase "unixFilter error" unixFilterError

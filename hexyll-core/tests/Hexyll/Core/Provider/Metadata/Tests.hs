@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hakyll.Core.Provider.Metadata.Tests
+module Hexyll.Core.Provider.Metadata.Tests
     ( tests
     ) where
 
@@ -8,8 +8,8 @@ module Hakyll.Core.Provider.Metadata.Tests
 import qualified Data.HashMap.Strict           as HMS
 import qualified Data.Text                     as T
 import qualified Data.Yaml                     as Yaml
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Provider.Metadata
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Provider.Metadata
 import           Test.Tasty                    (TestTree, testGroup)
 import           Test.Tasty.HUnit              (Assertion, assertFailure, (@=?))
 import           TestSuite.Util
@@ -17,7 +17,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Core.Provider.Metadata.Tests" $
+tests = testGroup "Hexyll.Core.Provider.Metadata.Tests" $
     fromAssertions "page" [testPage01, testPage02]
 
 

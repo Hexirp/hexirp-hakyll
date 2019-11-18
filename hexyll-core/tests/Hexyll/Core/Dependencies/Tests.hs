@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Core.Dependencies.Tests
+module Hexyll.Core.Dependencies.Tests
     ( tests
     ) where
 
@@ -14,14 +14,14 @@ import           Test.Tasty.HUnit         (Assertion, (@=?))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Dependencies
-import           Hakyll.Core.Identifier
+import           Hexyll.Core.Dependencies
+import           Hexyll.Core.Identifier
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Core.Dependencies.Tests" $
+tests = testGroup "Hexyll.Core.Dependencies.Tests" $
     fromAssertions "analyze" [case01, case02, case03]
 
 

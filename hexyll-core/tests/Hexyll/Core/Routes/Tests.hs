@@ -1,15 +1,15 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Core.Routes.Tests
+module Hexyll.Core.Routes.Tests
     ( tests
     ) where
 
 
 --------------------------------------------------------------------------------
 import           Data.Maybe             (fromMaybe)
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Routes
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Routes
 import           System.FilePath        ((</>))
 import           Test.Tasty             (TestTree, testGroup)
 import           Test.Tasty.HUnit       (Assertion, (@=?))
@@ -18,7 +18,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Core.Routes.Tests" $ fromAssertions "runRoutes"
+tests = testGroup "Hexyll.Core.Routes.Tests" $ fromAssertions "runRoutes"
     [ testRoutes "foo.html" (setExtension "html") "foo"
     , testRoutes "foo.html" (setExtension ".html") "foo"
     , testRoutes "foo.html" (setExtension "html") "foo.markdown"

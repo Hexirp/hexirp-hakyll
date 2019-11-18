@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Core.Store.Tests
+module Hexyll.Core.Store.Tests
     ( tests
     ) where
 
@@ -16,13 +16,13 @@ import           Test.Tasty.QuickCheck   (testProperty)
 
 
 --------------------------------------------------------------------------------
-import qualified Hakyll.Core.Store       as Store
+import qualified Hexyll.Core.Store       as Store
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Core.Store.Tests"
+tests = testGroup "Hexyll.Core.Store.Tests"
     [ testProperty "simple get . set"     simpleSetGet
     , testProperty "persistent get . set" persistentSetGet
     , testCase     "WrongType get . set"  wrongType

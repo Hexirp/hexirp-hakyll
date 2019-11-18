@@ -1,13 +1,13 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Core.Provider.Tests
+module Hexyll.Core.Provider.Tests
     ( tests
     ) where
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Provider
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Provider
 import           Test.Tasty           (TestTree, testGroup)
 import           Test.Tasty.HUnit     (Assertion, testCase, (@=?))
 import           TestSuite.Util
@@ -15,7 +15,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Core.Provider.Tests"
+tests = testGroup "Hexyll.Core.Provider.Tests"
     [ testCase "case01" case01
     ]
 
