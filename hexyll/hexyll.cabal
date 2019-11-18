@@ -82,27 +82,6 @@ Library
   Exposed-Modules:
     Hakyll
     Hakyll.Commands
-    Hakyll.Core.Compiler
-    Hakyll.Core.Compiler.Internal
-    Hakyll.Core.Configuration
-    Hakyll.Core.Dependencies
-    Hakyll.Core.File
-    Hakyll.Core.Identifier
-    Hakyll.Core.Identifier.Pattern
-    Hakyll.Core.Item
-    Hakyll.Core.Logger
-    Hakyll.Core.Metadata
-    Hakyll.Core.Provider
-    Hakyll.Core.Provider.Metadata
-    Hakyll.Core.Routes
-    Hakyll.Core.Rules
-    Hakyll.Core.Rules.Internal
-    Hakyll.Core.Runtime
-    Hakyll.Core.Store
-    Hakyll.Core.UnixFilter
-    Hakyll.Core.Util.File
-    Hakyll.Core.Util.String
-    Hakyll.Core.Writable
     Hakyll.Main
     Hakyll.Web.CompressCss
     Hakyll.Web.Feed
@@ -122,12 +101,6 @@ Library
     Data.List.Extended
     Data.Yaml.Extended
     Hakyll.Check
-    Hakyll.Core.Compiler.Require
-    Hakyll.Core.Identifier.Pattern.Internal
-    Hakyll.Core.Item.SomeItem
-    Hakyll.Core.Provider.Internal
-    Hakyll.Core.Provider.MetadataCache
-    Hakyll.Core.Util.Parser
     Paths_hexyll
 
   Build-Depends:
@@ -192,16 +165,7 @@ Test-suite hakyll-tests
   Default-language: Haskell2010
 
   Other-modules:
-    Hakyll.Core.Dependencies.Tests
-    Hakyll.Core.Identifier.Tests
-    Hakyll.Core.Provider.Metadata.Tests
-    Hakyll.Core.Provider.Tests
-    Hakyll.Core.Routes.Tests
-    Hakyll.Core.Rules.Tests
     Hakyll.Core.Runtime.Tests
-    Hakyll.Core.Store.Tests
-    Hakyll.Core.UnixFilter.Tests
-    Hakyll.Core.Util.String.Tests
     Hakyll.Web.CompressCss.Tests
     Hakyll.Web.Html.RelativizeUrls.Tests
     Hakyll.Web.Html.Tests
