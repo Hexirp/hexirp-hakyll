@@ -2,7 +2,7 @@
 -- | An item is a combination of some content and its 'Identifier'. This way, we
 -- can still use the 'Identifier' to access metadata.
 {-# LANGUAGE DeriveDataTypeable #-}
-module Hakyll.Core.Item
+module Hexyll.Core.Item
     ( Item (..)
     , itemSetBody
     , withItemBody
@@ -17,8 +17,8 @@ import           Prelude                       hiding (foldr)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Identifier
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Identifier
 
 
 --------------------------------------------------------------------------------

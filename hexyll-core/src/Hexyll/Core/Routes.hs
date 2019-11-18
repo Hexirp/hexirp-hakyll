@@ -27,7 +27,7 @@
 -- * If an item matches multiple routes, the first rule will be chosen.
 {-# LANGUAGE CPP        #-}
 {-# LANGUAGE Rank2Types #-}
-module Hakyll.Core.Routes
+module Hexyll.Core.Routes
     ( UsedMetadata
     , Routes
     , runRoutes
@@ -50,11 +50,11 @@ import           System.FilePath                (replaceExtension)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Util.String
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Util.String
 
 
 --------------------------------------------------------------------------------
@@ -198,7 +198,7 @@ metadataRoute f = Routes $ \r i -> do
 --
 -- > Just "tags/bar.xml"
 --
--- If the first route given fails, Hakyll will not apply the second route.
+-- If the first route given fails, Hexyll will not apply the second route.
 composeRoutes :: Routes  -- ^ First route to apply
               -> Routes  -- ^ Second route to apply
               -> Routes  -- ^ Resulting route

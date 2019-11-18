@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- | Exports a datastructure for the top-level hakyll configuration
-module Hakyll.Core.Configuration
+module Hexyll.Core.Configuration
     ( Configuration (..)
     , shouldIgnoreFile
     , defaultConfiguration

@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hakyll.Core.Runtime
+module Hexyll.Core.Runtime
     ( run
     ) where
 
@@ -21,22 +21,22 @@ import           System.FilePath               ((</>))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Compiler.Require
-import           Hakyll.Core.Configuration
-import           Hakyll.Core.Dependencies
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
-import           Hakyll.Core.Item.SomeItem
-import           Hakyll.Core.Logger            (Logger)
-import qualified Hakyll.Core.Logger            as Logger
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Routes
-import           Hakyll.Core.Rules.Internal
-import           Hakyll.Core.Store             (Store)
-import qualified Hakyll.Core.Store             as Store
-import           Hakyll.Core.Util.File
-import           Hakyll.Core.Writable
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Compiler.Require
+import           Hexyll.Core.Configuration
+import           Hexyll.Core.Dependencies
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Item
+import           Hexyll.Core.Item.SomeItem
+import           Hexyll.Core.Logger            (Logger)
+import qualified Hexyll.Core.Logger            as Logger
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Routes
+import           Hexyll.Core.Rules.Internal
+import           Hexyll.Core.Store             (Store)
+import qualified Hexyll.Core.Store             as Store
+import           Hexyll.Core.Util.File
+import           Hexyll.Core.Writable
 
 
 --------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ run config logger rules = do
             Logger.flush logger
             return (ExitSuccess, ruleSet)
   where
-    factsKey = ["Hakyll.Core.Runtime.run", "facts"]
+    factsKey = ["Hexyll.Core.Runtime.run", "facts"]
 
 
 --------------------------------------------------------------------------------
@@ -172,7 +172,7 @@ pickAndChase = do
 --------------------------------------------------------------------------------
 chase :: [Identifier] -> Identifier -> Runtime ()
 chase trail id'
-    | id' `elem` trail = throwError $ "Hakyll.Core.Runtime.chase: " ++
+    | id' `elem` trail = throwError $ "Hexyll.Core.Runtime.chase: " ++
         "Dependency cycle detected: " ++ intercalate " depends on "
             (map show $ dropWhile (/= id') (reverse trail) ++ [id'])
     | otherwise        = do

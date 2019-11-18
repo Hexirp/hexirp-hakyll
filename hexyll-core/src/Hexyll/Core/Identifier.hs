@@ -9,7 +9,7 @@
 -- * @error/404@
 {-# LANGUAGE DeriveDataTypeable         #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-module Hakyll.Core.Identifier
+module Hexyll.Core.Identifier
     ( Identifier
     , fromFilePath
     , toFilePath

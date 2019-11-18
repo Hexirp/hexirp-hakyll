@@ -2,7 +2,7 @@
 
 --------------------------------------------------------------------------------
 -- | A Compiler that supports unix filters.
-module Hakyll.Core.UnixFilter
+module Hexyll.Core.UnixFilter
     ( unixFilter
     , unixFilterLBS
     ) where
@@ -22,7 +22,7 @@ import           System.IO               (Handle, hClose, hFlush, hGetContents,
 import           System.Process
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
+import           Hexyll.Core.Compiler
 
 
 --------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ unixFilterWith writer reader programName args input = do
     case exitCode of
         ExitSuccess   -> return output
         ExitFailure e -> fail $
-            "Hakyll.Core.UnixFilter.unixFilterWith: " ++
+            "Hexyll.Core.UnixFilter.unixFilterWith: " ++
             unwords (programName : args) ++ " gave exit code " ++ show e ++
             ". (Error: " ++ err ++ ")"
 

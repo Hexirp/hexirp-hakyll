@@ -3,7 +3,7 @@
 {-# LANGUAGE CPP                        #-}
 {-# LANGUAGE DeriveDataTypeable         #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-module Hakyll.Core.File
+module Hexyll.Core.File
     ( CopyFile (..)
     , copyFileCompiler
     , TmpFile (..)
@@ -26,14 +26,14 @@ import           System.Random                 (randomIO)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Configuration
-import           Hakyll.Core.Item
-import           Hakyll.Core.Provider
-import qualified Hakyll.Core.Store             as Store
-import           Hakyll.Core.Util.File
-import           Hakyll.Core.Writable
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Configuration
+import           Hexyll.Core.Item
+import           Hexyll.Core.Provider
+import qualified Hexyll.Core.Store             as Store
+import           Hexyll.Core.Util.File
+import           Hexyll.Core.Writable
 
 
 --------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ newtype TmpFile = TmpFile FilePath
 instance Binary TmpFile where
     put _ = return ()
     get   = error $
-        "Hakyll.Core.File.TmpFile: You tried to load a TmpFile, however, " ++
+        "Hexyll.Core.File.TmpFile: You tried to load a TmpFile, however, " ++
         "this is not possible since these are deleted as soon as possible."
 
 

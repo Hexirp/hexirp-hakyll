@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- | Produce pretty, thread-safe logs
-module Hakyll.Core.Logger
+module Hexyll.Core.Logger
     ( Verbosity (..)
     , Logger
     , new

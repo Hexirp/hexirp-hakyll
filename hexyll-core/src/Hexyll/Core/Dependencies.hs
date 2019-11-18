@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE DeriveDataTypeable #-}
-module Hakyll.Core.Dependencies
+module Hexyll.Core.Dependencies
     ( Dependency (..)
     , DependencyFacts
     , outOfDate
@@ -25,8 +25,8 @@ import           Data.Typeable                  (Typeable)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
 
 
 --------------------------------------------------------------------------------

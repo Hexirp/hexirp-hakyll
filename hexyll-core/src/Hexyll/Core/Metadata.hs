@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hakyll.Core.Metadata
+module Hexyll.Core.Metadata
     ( Metadata
     , lookupString
     , lookupStringList
@@ -23,9 +23,9 @@ import qualified Data.Set                       as S
 import qualified Data.Text                      as T
 import qualified Data.Vector                    as V
 import qualified Data.Yaml.Extended                      as Yaml
-import           Hakyll.Core.Dependencies
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
+import           Hexyll.Core.Dependencies
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
 
 
 --------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ getMetadataField' identifier key = do
     field <- getMetadataField identifier key
     case field of
         Just v  -> return v
-        Nothing -> fail $ "Hakyll.Core.Metadata.getMetadataField': " ++
+        Nothing -> fail $ "Hexyll.Core.Metadata.getMetadataField': " ++
             "Item " ++ show identifier ++ " has no metadata field " ++ show key
 
 

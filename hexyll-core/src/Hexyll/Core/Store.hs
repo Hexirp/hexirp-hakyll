@@ -2,7 +2,7 @@
 -- | A store for storing and retreiving items
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE ScopedTypeVariables       #-}
-module Hakyll.Core.Store
+module Hexyll.Core.Store
     ( Store
     , Result (..)
     , toMaybe

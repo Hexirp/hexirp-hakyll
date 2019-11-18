@@ -16,7 +16,7 @@
 -- >         compile compressCssCompiler
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE OverloadedStrings          #-}
-module Hakyll.Core.Rules
+module Hexyll.Core.Rules
     ( Rules
     , match
     , matchMetadata
@@ -47,16 +47,16 @@ import           Data.Typeable                  (Typeable)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Dependencies
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import           Hakyll.Core.Item
-import           Hakyll.Core.Item.SomeItem
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Routes
-import           Hakyll.Core.Rules.Internal
-import           Hakyll.Core.Writable
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Dependencies
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Item
+import           Hexyll.Core.Item.SomeItem
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Routes
+import           Hexyll.Core.Rules.Internal
+import           Hexyll.Core.Writable
 
 
 --------------------------------------------------------------------------------

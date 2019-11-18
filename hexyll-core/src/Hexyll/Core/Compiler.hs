@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ScopedTypeVariables        #-}
-module Hakyll.Core.Compiler
+module Hexyll.Core.Compiler
     ( Compiler
     , getUnderlying
     , getUnderlyingExtension
@@ -40,15 +40,15 @@ import           System.FilePath               (takeExtension)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler.Internal
-import qualified Hakyll.Core.Compiler.Require  as Internal
-import           Hakyll.Core.Dependencies
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
-import           Hakyll.Core.Logger            as Logger
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Routes
-import qualified Hakyll.Core.Store             as Store
+import           Hexyll.Core.Compiler.Internal
+import qualified Hexyll.Core.Compiler.Require  as Internal
+import           Hexyll.Core.Dependencies
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Item
+import           Hexyll.Core.Logger            as Logger
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Routes
+import qualified Hexyll.Core.Store             as Store
 
 
 --------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ getResourceWith reader = do
         then compilerUnsafeIO $ Item id' <$> reader provider id'
         else fail $ error' filePath
   where
-    error' fp = "Hakyll.Core.Compiler.getResourceWith: resource " ++
+    error' fp = "Hexyll.Core.Compiler.getResourceWith: resource " ++
         show fp ++ " not found"
 
 
@@ -146,7 +146,7 @@ saveSnapshot snapshot item = do
 
 --------------------------------------------------------------------------------
 -- | Turn on caching for a compilation value to avoid recomputing it
--- on subsequent Hakyll runs.
+-- on subsequent Hexyll runs.
 -- The storage key consists of the underlying identifier of the compiled
 -- ressource and the given name.
 cached :: (Binary a, Typeable a)
@@ -175,11 +175,11 @@ cached name compiler = do
                       _              -> fail $ error' progName
   where
     error' progName =
-        "Hakyll.Core.Compiler.cached: Cache corrupt! " ++
+        "Hexyll.Core.Compiler.cached: Cache corrupt! " ++
          "Try running: " ++ progName ++ " clean"
 
     itDoesntEvenExist id' =
-        "Hakyll.Core.Compiler.cached: You are trying to (perhaps "    ++
+        "Hexyll.Core.Compiler.cached: You are trying to (perhaps "    ++
         "indirectly) use `cached` on a non-existing resource: there " ++
         "is no file backing " ++ show id'
 
@@ -192,8 +192,8 @@ unsafeCompiler = compilerUnsafeIO
 
 --------------------------------------------------------------------------------
 -- | Fail so that it is treated as non-defined in an @\$if()\$@ branching
--- "Hakyll.Web.Template" macro, and alternative
--- 'Hakyll.Web.Template.Context.Context's are tried
+-- "Hexyll.Web.Template" macro, and alternative
+-- 'Hexyll.Web.Template.Context.Context's are tried
 --
 -- @since 4.13.0
 noResult :: String -> Compiler a

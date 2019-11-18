@@ -2,7 +2,7 @@
 -- | Describes writable items; items that can be saved to the disk
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE TypeSynonymInstances #-}
-module Hakyll.Core.Writable
+module Hexyll.Core.Writable
     ( Writable (..)
     ) where
 
@@ -16,7 +16,7 @@ import           Text.Blaze.Html.Renderer.String (renderHtml)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Item
+import           Hexyll.Core.Item
 
 
 --------------------------------------------------------------------------------
