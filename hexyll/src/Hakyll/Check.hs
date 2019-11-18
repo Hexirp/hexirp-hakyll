@@ -39,7 +39,7 @@ import           Data.Version                 (versionBranch)
 import           GHC.Exts                     (fromString)
 import qualified Network.HTTP.Conduit         as Http
 import qualified Network.HTTP.Types           as Http
-import qualified Paths_hexirp_hakyll          as Paths_hakyll
+import qualified Paths_hexyll                 as Paths_hexyll
 #endif
 
 
@@ -279,7 +279,7 @@ requestExternalUrl url = liftIO $ try $ do
 
         -- Nice user agent info
         ua = fromString $ "hakyll-check/" ++
-             (intercalate "." $ map show $ versionBranch Paths_hakyll.version)
+             (intercalate "." $ map show $ versionBranch Paths_hexyll.version)
 #else
 checkExternalUrl url = skip url Nothing
 #endif

@@ -1,14 +1,14 @@
 resolver: lts-13.30
 
 flags:
-  hexirp-hakyll:
+  hexyll:
     checkExternal: true
     usePandoc:     true
     buildWebsite:  true
 
 packages:
-- 'hexirp-hakyll-core'
-- 'hexirp-hakyll'
+- 'hexyll-core'
+- 'hexyll'
 
 nix:
   enable: false
