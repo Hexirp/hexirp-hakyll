@@ -2,7 +2,7 @@
 -- | Internal module to parse metadata
 {-# LANGUAGE BangPatterns    #-}
 {-# LANGUAGE RecordWildCards #-}
-module Hakyll.Core.Provider.Metadata
+module Hexyll.Core.Provider.Metadata
     ( loadMetadata
     , parsePage
 
@@ -23,9 +23,9 @@ import           Data.Monoid                   ((<>))
 import qualified Data.Text                     as T
 import qualified Data.Text.Encoding            as T
 import qualified Data.Yaml                     as Yaml
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Provider.Internal
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Provider.Internal
 import           System.IO                     as IO
 import           System.IO.Error               (modifyIOError, ioeSetLocation)
 

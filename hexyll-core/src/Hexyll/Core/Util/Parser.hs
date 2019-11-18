@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- | Parser utilities
-module Hakyll.Core.Util.Parser
+module Hexyll.Core.Util.Parser
     ( metadataKey
     ) where
 

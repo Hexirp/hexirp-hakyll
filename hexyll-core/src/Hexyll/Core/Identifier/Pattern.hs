@@ -29,7 +29,7 @@
 -- The 'capture' function allows the user to get access to the elements captured
 -- by the capture elements in a glob or regex pattern.
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-module Hakyll.Core.Identifier.Pattern
+module Hexyll.Core.Identifier.Pattern
     ( -- * The pattern type
       Pattern
 
@@ -72,8 +72,8 @@ import           Text.Regex.TDFA                         ((=~))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern.Internal
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern.Internal
 
 
 --------------------------------------------------------------------------------
@@ -247,7 +247,7 @@ fromCapture pattern = fromCaptures pattern . repeat
 fromCaptures :: Pattern -> [String] -> Identifier
 fromCaptures (Glob p) = fromFilePath . fromCaptures' p
 fromCaptures _        = error $
-    "Hakyll.Core.Identifier.Pattern.fromCaptures: fromCaptures only works " ++
+    "Hexyll.Core.Identifier.Pattern.fromCaptures: fromCaptures only works " ++
     "on simple globs!"
 
 
@@ -257,7 +257,7 @@ fromCaptures' :: [GlobComponent] -> [String] -> String
 fromCaptures' []        _ = mempty
 fromCaptures' (m : ms) [] = case m of
     Literal l -> l `mappend` fromCaptures' ms []
-    _         -> error $  "Hakyll.Core.Identifier.Pattern.fromCaptures': "
+    _         -> error $  "Hexyll.Core.Identifier.Pattern.fromCaptures': "
                        ++ "identifier list exhausted"
 fromCaptures' (m : ms) ids@(i : is) = case m of
     Literal l -> l `mappend` fromCaptures' ms ids

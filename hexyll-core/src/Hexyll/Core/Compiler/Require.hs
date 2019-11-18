@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hakyll.Core.Compiler.Require
+module Hexyll.Core.Compiler.Require
     ( Snapshot
     , save
     , saveSnapshot
@@ -20,14 +20,14 @@ import           Data.Typeable
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Dependencies
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import           Hakyll.Core.Item
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Store              (Store)
-import qualified Hakyll.Core.Store              as Store
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Dependencies
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Item
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Store              (Store)
+import qualified Hexyll.Core.Store              as Store
 
 
 --------------------------------------------------------------------------------
@@ -71,12 +71,12 @@ loadSnapshot id' snapshot = do
             Store.Found x       -> return $ Item id' x
   where
     notFound =
-        "Hakyll.Core.Compiler.Require.load: " ++ show id' ++
+        "Hexyll.Core.Compiler.Require.load: " ++ show id' ++
         " (snapshot " ++ snapshot ++ ") was not found in the cache, " ++
         "the cache might be corrupted or " ++
         "the item you are referring to might not exist"
     wrongType e r =
-        "Hakyll.Core.Compiler.Require.load: " ++ show id' ++
+        "Hexyll.Core.Compiler.Require.load: " ++ show id' ++
         " (snapshot " ++ snapshot ++ ") was found in the cache, " ++
         "but does not have the right type: expected " ++ show e ++
         " but got " ++ show r
@@ -115,7 +115,7 @@ loadAllSnapshots pattern snapshot = do
 --------------------------------------------------------------------------------
 key :: Identifier -> String -> [String]
 key identifier snapshot =
-    ["Hakyll.Core.Compiler.Require", show identifier, snapshot]
+    ["Hexyll.Core.Compiler.Require", show identifier, snapshot]
 
 
 --------------------------------------------------------------------------------

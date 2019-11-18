@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE DeriveDataTypeable        #-}
 {-# LANGUAGE ExistentialQuantification #-}
-module Hakyll.Core.Item.SomeItem
+module Hexyll.Core.Item.SomeItem
     ( SomeItem (..)
     ) where
 
@@ -12,8 +12,8 @@ import           Data.Typeable        (Typeable)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Item
-import           Hakyll.Core.Writable
+import           Hexyll.Core.Item
+import           Hexyll.Core.Writable
 
 
 --------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hakyll.Core.Provider.MetadataCache
+module Hexyll.Core.Provider.MetadataCache
     ( resourceMetadata
     , resourceBody
     , resourceInvalidateMetadataCache
@@ -8,11 +8,11 @@ module Hakyll.Core.Provider.MetadataCache
 
 --------------------------------------------------------------------------------
 import           Control.Monad                 (unless)
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Provider.Internal
-import           Hakyll.Core.Provider.Metadata
-import qualified Hakyll.Core.Store             as Store
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Provider.Internal
+import           Hexyll.Core.Provider.Metadata
+import qualified Hexyll.Core.Store             as Store
 
 
 --------------------------------------------------------------------------------
@@ -59,4 +59,4 @@ load p r = do
 
 --------------------------------------------------------------------------------
 name :: String
-name = "Hakyll.Core.Resource.Provider.MetadataCache"
+name = "Hexyll.Core.Resource.Provider.MetadataCache"

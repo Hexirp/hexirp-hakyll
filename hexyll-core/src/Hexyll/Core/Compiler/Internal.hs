@@ -6,7 +6,7 @@
 {-# LANGUAGE GADTs                      #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MultiParamTypeClasses      #-}
-module Hakyll.Core.Compiler.Internal
+module Hexyll.Core.Compiler.Internal
     ( -- * Types
       Snapshot
     , CompilerRead (..)
@@ -51,15 +51,15 @@ import qualified Data.Set                       as S
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Configuration
-import           Hakyll.Core.Dependencies
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import qualified Hakyll.Core.Logger             as Logger
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Routes
-import           Hakyll.Core.Store
+import           Hexyll.Core.Configuration
+import           Hexyll.Core.Dependencies
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
+import qualified Hexyll.Core.Logger             as Logger
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Routes
+import           Hexyll.Core.Store
 
 
 --------------------------------------------------------------------------------
@@ -205,7 +205,7 @@ instance MonadMetadata Compiler where
 
 --------------------------------------------------------------------------------
 -- | Compilation may fail with multiple error messages.
--- 'catchError' handles errors from 'throwError', 'fail' and 'Hakyll.Core.Compiler.noResult'
+-- 'catchError' handles errors from 'throwError', 'fail' and 'Hexyll.Core.Compiler.noResult'
 instance MonadError [String] Compiler where
     throwError = compilerThrow
     catchError c = compilerCatch c . (. compilerErrorMessages)
@@ -222,7 +222,7 @@ runCompiler compiler read' = handle handler $ unCompiler compiler read'
 
 --------------------------------------------------------------------------------
 -- | Trying alternative compilers if the first fails, regardless whether through
--- 'fail', 'throwError' or 'Hakyll.Core.Compiler.noResult'.
+-- 'fail', 'throwError' or 'Hexyll.Core.Compiler.noResult'.
 -- Aggregates error messages if all fail.
 instance Alternative Compiler where
     empty   = compilerNoResult []
@@ -237,7 +237,7 @@ instance Alternative Compiler where
           (CompilationNoResult xs, CompilationNoResult ys) -> compilerNoResult $ xs ++ ys
         ))
       where
-        debug = compilerDebugEntries "Hakyll.Core.Compiler.Internal: Alternative fail suppressed"
+        debug = compilerDebugEntries "Hexyll.Core.Compiler.Internal: Alternative fail suppressed"
     {-# INLINE (<|>) #-}
 
 
@@ -335,7 +335,7 @@ compilerDebugEntries msg = compilerDebugLog . (msg:) . map indent
 compilerTellDependencies :: [Dependency] -> Compiler ()
 compilerTellDependencies ds = do
   compilerDebugLog $ map (\d ->
-      "Hakyll.Core.Compiler.Internal: Adding dependency: " ++ show d) ds
+      "Hexyll.Core.Compiler.Internal: Adding dependency: " ++ show d) ds
   compilerTell mempty {compilerDependencies = ds}
 {-# INLINE compilerTellDependencies #-}
 

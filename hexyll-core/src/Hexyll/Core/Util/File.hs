@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- | A module containing various file utility functions
-module Hakyll.Core.Util.File
+module Hexyll.Core.Util.File
     ( makeDirectories
     , getRecursiveContents
     , removeDirectory

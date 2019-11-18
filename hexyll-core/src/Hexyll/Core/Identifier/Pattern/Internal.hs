@@ -1,7 +1,7 @@
 -- | This internal module is mostly here to prevent CPP conflicting with Haskell
 -- comments.
 {-# LANGUAGE CPP #-}
-module Hakyll.Core.Identifier.Pattern.Internal
+module Hexyll.Core.Identifier.Pattern.Internal
     ( GlobComponent (..)
     , Pattern (..)
     ) where
@@ -19,7 +19,7 @@ import           Data.Semigroup         (Semigroup (..))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Identifier
+import           Hexyll.Core.Identifier
 
 
 --------------------------------------------------------------------------------

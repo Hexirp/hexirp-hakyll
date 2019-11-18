@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 --------------------------------------------------------------------------------
 -- | Miscellaneous string manipulation functions.
-module Hakyll.Core.Util.String
+module Hexyll.Core.Util.String
     ( trim
     , replaceAll
     , splitAll

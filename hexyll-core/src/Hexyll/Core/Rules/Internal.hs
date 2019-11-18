@@ -2,7 +2,7 @@
 {-# LANGUAGE CPP                        #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE Rank2Types                 #-}
-module Hakyll.Core.Rules.Internal
+module Hexyll.Core.Rules.Internal
     ( RulesRead (..)
     , RuleSet (..)
     , RulesState (..)
@@ -24,13 +24,13 @@ import           Data.Set                       (Set)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import           Hakyll.Core.Item.SomeItem
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Routes
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Item.SomeItem
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Routes
 
 
 --------------------------------------------------------------------------------

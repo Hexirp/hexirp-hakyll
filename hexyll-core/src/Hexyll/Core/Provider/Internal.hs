@@ -2,7 +2,7 @@
 {-# LANGUAGE CPP                        #-}
 {-# LANGUAGE DeriveDataTypeable         #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-module Hakyll.Core.Provider.Internal
+module Hexyll.Core.Provider.Internal
     ( ResourceInfo (..)
     , Provider (..)
     , newProvider
@@ -44,10 +44,10 @@ import           System.Time            (formatCalendarTime, toCalendarTime)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Store      (Store)
-import qualified Hakyll.Core.Store      as Store
-import           Hakyll.Core.Util.File
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Store      (Store)
+import qualified Hexyll.Core.Store      as Store
+import           Hexyll.Core.Util.File
 
 
 --------------------------------------------------------------------------------
@@ -118,7 +118,7 @@ newProvider store ignore directory = do
 
     return $ Provider directory files oldFiles store
   where
-    oldKey = ["Hakyll.Core.Provider.Internal.newProvider", "oldFiles"]
+    oldKey = ["Hexyll.Core.Provider.Internal.newProvider", "oldFiles"]
 
     -- Update modified if metadata is modified
     maxmtime files = flip M.map files $ \rInfo@(ResourceInfo mtime meta) ->
@@ -186,7 +186,7 @@ resourceModificationTime p i =
     case M.lookup (setVersion Nothing i) (providerFiles p) of
         Just ri -> unBinaryTime $ resourceInfoModified ri
         Nothing -> error $
-            "Hakyll.Core.Provider.Internal.resourceModificationTime: " ++
+            "Hexyll.Core.Provider.Internal.resourceModificationTime: " ++
             "resource " ++ show i ++ " does not exist"
 
 
