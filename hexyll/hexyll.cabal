@@ -146,8 +146,6 @@ Library
     Exposed-Modules:
     Other-Modules:
     Build-Depends:
-      pandoc          >= 2.0.5    && < 2.8,
-      pandoc-citeproc >= 0.14     && < 0.17
     Cpp-options:
       -DUSE_PANDOC
 
