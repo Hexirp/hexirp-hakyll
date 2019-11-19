@@ -10,6 +10,7 @@ flags:
 packages:
 - 'hexyll-core'
 - 'hexyll'
+- 'hexyll-pandoc'
 
 nix:
   enable: false
