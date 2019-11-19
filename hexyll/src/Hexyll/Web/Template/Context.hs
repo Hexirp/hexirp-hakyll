@@ -21,7 +21,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE CPP                       #-}
 {-# LANGUAGE ExistentialQuantification #-}
-module Hakyll.Web.Template.Context
+module Hexyll.Web.Template.Context
     ( ContextField (..)
     , Context (..)
     , field
@@ -62,14 +62,14 @@ import           Data.Time.Clock               (UTCTime (..))
 import           Data.Time.Format              (formatTime)
 import qualified Data.Time.Format              as TF
 import           Data.Time.Locale.Compat       (TimeLocale, defaultTimeLocale)
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Util.String       (needlePrefix, splitAll)
-import           Hakyll.Web.Html
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Item
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Util.String       (needlePrefix, splitAll)
+import           Hexyll.Web.Html
 import           Prelude                       hiding (id)
 import           System.FilePath               (dropExtension, splitDirectories,
                                                 takeBaseName)
@@ -215,7 +215,7 @@ mapContext f (Context c) = Context $ \k a i -> do
         StringField str -> return $ StringField (f str)
         _               -> wrongType "ListField"
   where
-    wrongType typ = fail $ "Hakyll.Web.Template.Context.mapContext: " ++
+    wrongType typ = fail $ "Hexyll.Web.Template.Context.mapContext: " ++
         "can't map over a " ++ typ ++ "!"
 
 --------------------------------------------------------------------------------
@@ -380,7 +380,7 @@ getItemUTC locale id' = do
         [parseTime' "%Y-%m-%d" $ intercalate "-" $ take 3 $ splitAll "-" fnCand | fnCand <- reverse paths] ++
         [parseTime' "%Y-%m-%d" $ intercalate "-" $ fnCand | fnCand <- map (take 3) $ reverse . tails $ paths]
   where
-    empty'     = fail $ "Hakyll.Web.Template.Context.getItemUTC: " ++
+    empty'     = fail $ "Hexyll.Web.Template.Context.getItemUTC: " ++
         "could not parse time for " ++ show id'
     parseTime' = parseTimeM True locale
     formats    =
@@ -448,7 +448,7 @@ teaserFieldWithSeparator separator key snapshot = field key $ \item -> do
     body <- itemBody <$> loadSnapshot (itemIdentifier item) snapshot
     case needlePrefix separator body of
         Nothing -> fail $
-            "Hakyll.Web.Template.Context: no teaser defined for " ++
+            "Hexyll.Web.Template.Context: no teaser defined for " ++
             show (itemIdentifier item)
         Just t -> return t
 

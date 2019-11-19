@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- | Module used for CSS compression. The compression is currently in a simple
 -- state, but would typically reduce the number of bytes by about 25%.
-module Hakyll.Web.CompressCss
+module Hexyll.Web.CompressCss
     ( compressCssCompiler
     , compressCss
     ) where
@@ -13,9 +13,9 @@ import           Data.List               (dropWhileEnd, isPrefixOf)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Item
-import           Hakyll.Core.Util.String
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Item
+import           Hexyll.Core.Util.String
 
 
 --------------------------------------------------------------------------------

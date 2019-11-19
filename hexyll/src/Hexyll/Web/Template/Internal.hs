@@ -3,7 +3,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ScopedTypeVariables        #-}
 
-module Hakyll.Web.Template.Internal
+module Hexyll.Web.Template.Internal
     ( Template (..)
     , template
     , templateBodyCompiler
@@ -15,8 +15,8 @@ module Hakyll.Web.Template.Internal
     , compileTemplateItem
     , unsafeReadTemplateFile
 
-    , module Hakyll.Web.Template.Internal.Element
-    , module Hakyll.Web.Template.Internal.Trim
+    , module Hexyll.Web.Template.Internal.Element
+    , module Hexyll.Web.Template.Internal.Trim
     ) where
 
 
@@ -31,14 +31,14 @@ import           GHC.Generics                         (Generic)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
-import           Hakyll.Core.Writable
-import           Hakyll.Web.Template.Context
-import           Hakyll.Web.Template.Internal.Element
-import           Hakyll.Web.Template.Internal.Trim
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Item
+import           Hexyll.Core.Writable
+import           Hexyll.Web.Template.Context
+import           Hexyll.Web.Template.Internal.Element
+import           Hexyll.Web.Template.Internal.Trim
 
 
 --------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ compileTemplateFile file = either fail (return . template origin)
 --------------------------------------------------------------------------------
 -- | Read a template, without metadata header
 templateBodyCompiler :: Compiler (Item Template)
-templateBodyCompiler = cached "Hakyll.Web.Template.templateBodyCompiler" $ do
+templateBodyCompiler = cached "Hexyll.Web.Template.templateBodyCompiler" $ do
     item <- getResourceBody
     file <- getUnderlying
     withItemBody (compileTemplateFile file) item
@@ -100,7 +100,7 @@ templateBodyCompiler = cached "Hakyll.Web.Template.templateBodyCompiler" $ do
 --------------------------------------------------------------------------------
 -- | Read complete file contents as a template
 templateCompiler :: Compiler (Item Template)
-templateCompiler = cached "Hakyll.Web.Template.templateCompiler" $ do
+templateCompiler = cached "Hexyll.Web.Template.templateCompiler" $ do
     item <- getResourceString
     file <- getUnderlying
     withItemBody (compileTemplateFile file) item
@@ -118,7 +118,7 @@ applyTemplate tpl context item = do
   where
     tplName = tplOrigin tpl
     itemName = show $ itemIdentifier item
-    handler es = fail $ "Hakyll.Web.Template.applyTemplate: Failed to " ++
+    handler es = fail $ "Hexyll.Web.Template.applyTemplate: Failed to " ++
         (if tplName == itemName
           then "interpolate template in item " ++ itemName
           else "apply template " ++ tplName ++ " to item " ++ itemName) ++
@@ -163,7 +163,7 @@ applyTemplate' tes context x = go tes
         handle (Right _)                      = go t
         handle (Left (CompilationNoResult _)) = f
         handle (Left (CompilationFailure es)) = debug (NonEmpty.toList es) >> f
-        debug = compilerDebugEntries ("Hakyll.Web.Template.applyTemplate: " ++
+        debug = compilerDebugEntries ("Hexyll.Web.Template.applyTemplate: " ++
             "[ERROR] in 'if' condition on expr '" ++ show e ++ "':")
 
     applyElem (For e b s) = withErrorMessage headMsg (applyExpr e) >>= \cf -> case cf of
@@ -212,12 +212,12 @@ applyTemplate' tes context x = go tes
         getString (StringField s) = return s
         getString (ListField _ _) = expected "string" "list" msg
 
-    expected typ act expr = fail $ unwords ["Hakyll.Web.Template.applyTemplate:",
+    expected typ act expr = fail $ unwords ["Hexyll.Web.Template.applyTemplate:",
         "expected", typ, "but got", act, "for", expr]
 
     -- expected to never happen with all templates constructed by 'template'
     trimError = fail $
-        "Hakyll.Web.Template.applyTemplate: template not fully trimmed."
+        "Hexyll.Web.Template.applyTemplate: template not fully trimmed."
 
 
 --------------------------------------------------------------------------------

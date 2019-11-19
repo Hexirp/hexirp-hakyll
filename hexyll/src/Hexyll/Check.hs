@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE CPP               #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Check
+module Hexyll.Check
     ( Check (..)
     , check
     ) where
@@ -44,11 +44,11 @@ import qualified Paths_hexyll                 as Paths_hexyll
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Configuration
-import           Hakyll.Core.Logger           (Logger)
-import qualified Hakyll.Core.Logger           as Logger
-import           Hakyll.Core.Util.File
-import           Hakyll.Web.Html
+import           Hexyll.Core.Configuration
+import           Hexyll.Core.Logger           (Logger)
+import qualified Hexyll.Core.Logger           as Logger
+import           Hexyll.Core.Util.File
+import           Hexyll.Web.Html
 
 
 --------------------------------------------------------------------------------

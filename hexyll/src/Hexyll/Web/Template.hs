@@ -25,7 +25,7 @@
 -- As you can see, the format is very simple -- @$key$@ is used to render the
 -- @$key$@ field from the page, everything else is literally copied. If you want
 -- to literally insert @\"$key$\"@ into your page (for example, when you're
--- writing a Hakyll tutorial) you can use
+-- writing a Hexyll tutorial) you can use
 --
 -- > <p>
 -- >     A literal $$key$$.
@@ -139,7 +139,7 @@
 -- > </p>
 --
 {-# LANGUAGE TemplateHaskell #-}
-module Hakyll.Web.Template
+module Hexyll.Web.Template
     ( Template
     , templateBodyCompiler
     , templateCompiler
@@ -154,7 +154,7 @@ module Hakyll.Web.Template
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Web.Template.Internal
+import           Hexyll.Web.Template.Internal
 
 
 --------------------------------------------------------------------------------

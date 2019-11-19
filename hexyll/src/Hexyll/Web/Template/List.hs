@@ -8,7 +8,7 @@
 --
 -- * A sitemap
 {-# LANGUAGE TupleSections #-}
-module Hakyll.Web.Template.List
+module Hexyll.Web.Template.List
     ( applyTemplateList
     , applyJoinTemplateList
     , chronological
@@ -26,12 +26,12 @@ import           Data.Time.Locale.Compat     (defaultTimeLocale)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
-import           Hakyll.Core.Metadata
-import           Hakyll.Web.Template
-import           Hakyll.Web.Template.Context
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Item
+import           Hexyll.Core.Metadata
+import           Hexyll.Web.Template
+import           Hexyll.Web.Template.Context
 
 
 --------------------------------------------------------------------------------

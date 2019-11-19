@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- | A module dealing with pandoc file extensions and associated file types
-module Hakyll.Web.Pandoc.FileType
+module Hexyll.Web.Pandoc.FileType
     ( FileType (..)
     , fileType
     , itemFileType
@@ -12,12 +12,12 @@ import           System.FilePath        (splitExtension)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Item
 
 
 --------------------------------------------------------------------------------
--- | Datatype to represent the different file types Hakyll can deal with by
+-- | Datatype to represent the different file types Hexyll can deal with by
 -- default
 data FileType
     = Binary

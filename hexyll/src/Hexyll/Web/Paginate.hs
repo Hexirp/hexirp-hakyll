@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Web.Paginate
+module Hexyll.Web.Paginate
     ( PageNumber
     , Paginate (..)
     , buildPaginateWith
@@ -18,14 +18,14 @@ import qualified Data.Set                       as S
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import           Hakyll.Core.Item
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Rules
-import           Hakyll.Web.Html
-import           Hakyll.Web.Template.Context
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Item
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Rules
+import           Hexyll.Web.Html
+import           Hexyll.Web.Template.Context
 
 
 --------------------------------------------------------------------------------

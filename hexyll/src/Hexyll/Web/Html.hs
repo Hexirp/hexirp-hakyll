@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- | Provides utilities to manipulate HTML pages
-module Hakyll.Web.Html
+module Hexyll.Web.Html
     ( -- * Generic
       withTags
     , withTagList

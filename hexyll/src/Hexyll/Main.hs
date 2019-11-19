@@ -2,7 +2,7 @@
 -- | Module providing the main hakyll function and command-line argument parsing
 {-# LANGUAGE CPP #-}
 
-module Hakyll.Main
+module Hexyll.Main
     ( hakyll
     , hakyllWith
     , hakyllWithArgs
@@ -25,11 +25,11 @@ import qualified Options.Applicative       as OA
 
 
 --------------------------------------------------------------------------------
-import qualified Hakyll.Check              as Check
-import qualified Hakyll.Commands           as Commands
-import qualified Hakyll.Core.Configuration as Config
-import qualified Hakyll.Core.Logger        as Logger
-import           Hakyll.Core.Rules
+import qualified Hexyll.Check              as Check
+import qualified Hexyll.Commands           as Commands
+import qualified Hexyll.Core.Configuration as Config
+import qualified Hexyll.Core.Logger        as Logger
+import           Hexyll.Core.Rules
 
 
 --------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ defaultParser conf =
     OA.customExecParser (OA.prefs OA.showHelpOnError)
         (OA.info (OA.helper <*> optionParser conf)
         (OA.fullDesc <> OA.progDesc
-        (progName ++ " - Static site compiler created with Hakyll")))
+        (progName ++ " - Static site compiler created with Hexyll")))
 
 
 --------------------------------------------------------------------------------

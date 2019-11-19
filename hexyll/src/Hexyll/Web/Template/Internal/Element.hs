@@ -2,7 +2,7 @@
 -- | Module containing the elements used in a template.  A template is generally
 -- just a list of these elements.
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-module Hakyll.Web.Template.Internal.Element
+module Hexyll.Web.Template.Internal.Element
     ( TemplateKey (..)
     , TemplateExpr (..)
     , TemplateElement (..)
@@ -25,7 +25,7 @@ import qualified Text.Parsec.String      as P
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Util.Parser
+import           Hexyll.Core.Util.Parser
 
 
 --------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ instance Binary TemplateElement where
         5 -> Partial <$> get
         6 -> pure TrimL
         7 -> pure TrimR
-        _ -> error "Hakyll.Web.Template.Internal: Error reading cached template"
+        _ -> error "Hexyll.Web.Template.Internal: Error reading cached template"
 
 
 --------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ instance Binary TemplateExpr where
         0 -> Ident         <$> get
         1 -> Call          <$> get <*> get
         2 -> StringLiteral <$> get
-        _ -> error "Hakyll.Web.Template.Internal: Error reading cached template"
+        _ -> error "Hexyll.Web.Template.Internal: Error reading cached template"
 
 --------------------------------------------------------------------------------
 parseTemplateElemsFile :: FilePath -> String -> Either String [TemplateElement]

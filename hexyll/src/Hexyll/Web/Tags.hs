@@ -40,7 +40,7 @@
 {-# LANGUAGE DeriveDataTypeable         #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE OverloadedStrings          #-}
-module Hakyll.Web.Tags
+module Hexyll.Web.Tags
     ( Tags (..)
     , getTags
     , getCategory
@@ -80,16 +80,16 @@ import qualified Text.Blaze.Html5.Attributes     as A
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Dependencies
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import           Hakyll.Core.Item
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Rules
-import           Hakyll.Core.Util.String
-import           Hakyll.Web.Html
-import           Hakyll.Web.Template.Context
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Dependencies
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Item
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Rules
+import           Hexyll.Core.Util.String
+import           Hexyll.Web.Html
+import           Hexyll.Web.Template.Context
 
 
 --------------------------------------------------------------------------------

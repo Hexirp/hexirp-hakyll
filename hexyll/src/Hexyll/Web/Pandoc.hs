@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- | Module exporting convenient pandoc bindings
-module Hakyll.Web.Pandoc
+module Hexyll.Web.Pandoc
     ( -- * The basic building blocks
       readPandoc
     , readPandocWith
@@ -16,8 +16,8 @@ module Hakyll.Web.Pandoc
     , pandocCompilerWithTransformM
 
       -- * Default options
-    , defaultHakyllReaderOptions
-    , defaultHakyllWriterOptions
+    , defaultHexyllReaderOptions
+    , defaultHexyllWriterOptions
     ) where
 
 
@@ -28,9 +28,9 @@ import           Text.Pandoc.Highlighting   (pygments)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Item
-import           Hakyll.Web.Pandoc.FileType
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Item
+import           Hexyll.Web.Pandoc.FileType
 
 
 --------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ import           Hakyll.Web.Pandoc.FileType
 readPandoc
     :: Item String             -- ^ String to read
     -> Compiler (Item Pandoc)  -- ^ Resulting document
-readPandoc = readPandocWith defaultHakyllReaderOptions
+readPandoc = readPandocWith defaultHexyllReaderOptions
 
 
 --------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ readPandocWith
 readPandocWith ropt item =
     case runPure $ traverse (reader ropt (itemFileType item)) (fmap T.pack item) of
         Left err    -> fail $
-            "Hakyll.Web.Pandoc.readPandocWith: parse failed: " ++ show err
+            "Hexyll.Web.Pandoc.readPandocWith: parse failed: " ++ show err
         Right item' -> return item'
   where
     reader ro t = case t of
@@ -64,7 +64,7 @@ readPandocWith ropt item =
         Rst                -> readRST ro
         Textile            -> readTextile ro
         _                  -> error $
-            "Hakyll.Web.readPandocWith: I don't know how to read a file of " ++
+            "Hexyll.Web.readPandocWith: I don't know how to read a file of " ++
             "the type " ++ show t ++ " for: " ++ show (itemIdentifier item)
 
     addExt ro e = ro {readerExtensions = enableExtension e $ readerExtensions ro}
@@ -74,7 +74,7 @@ readPandocWith ropt item =
 -- | Write a document (as HTML) using pandoc, with the default options
 writePandoc :: Item Pandoc  -- ^ Document to write
             -> Item String  -- ^ Resulting HTML
-writePandoc = writePandocWith defaultHakyllWriterOptions
+writePandoc = writePandocWith defaultHexyllWriterOptions
 
 
 --------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ writePandocWith :: WriterOptions  -- ^ Writer options for pandoc
                 -> Item String    -- ^ Resulting HTML
 writePandocWith wopt (Item itemi doc) =
     case runPure $ writeHtml5String wopt doc of
-        Left err    -> error $ "Hakyll.Web.Pandoc.writePandocWith: " ++ show err
+        Left err    -> error $ "Hexyll.Web.Pandoc.writePandocWith: " ++ show err
         Right item' -> Item itemi $ T.unpack item'
 
 
@@ -92,7 +92,7 @@ writePandocWith wopt (Item itemi doc) =
 -- | Render the resource using pandoc
 renderPandoc :: Item String -> Compiler (Item String)
 renderPandoc =
-    renderPandocWith defaultHakyllReaderOptions defaultHakyllWriterOptions
+    renderPandocWith defaultHexyllReaderOptions defaultHakyllWriterOptions
 
 
 --------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ renderPandocWith ropt wopt item =
 -- | Read a page render using pandoc
 pandocCompiler :: Compiler (Item String)
 pandocCompiler =
-    pandocCompilerWith defaultHakyllReaderOptions defaultHakyllWriterOptions
+    pandocCompilerWith defaultHexyllReaderOptions defaultHakyllWriterOptions
 
 
 --------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ pandocCompiler =
 -- options
 pandocCompilerWith :: ReaderOptions -> WriterOptions -> Compiler (Item String)
 pandocCompilerWith ropt wopt =
-    cached "Hakyll.Web.Pandoc.pandocCompilerWith" $
+    cached "Hexyll.Web.Pandoc.pandocCompilerWith" $
         pandocCompilerWithTransform ropt wopt id
 
 
@@ -144,8 +144,8 @@ pandocCompilerWithTransformM ropt wopt f =
 
 --------------------------------------------------------------------------------
 -- | The default reader options for pandoc parsing in hakyll
-defaultHakyllReaderOptions :: ReaderOptions
-defaultHakyllReaderOptions = def
+defaultHexyllReaderOptions :: ReaderOptions
+defaultHexyllReaderOptions = def
     { -- The following option causes pandoc to read smart typography, a nice
       -- and free bonus.
       readerExtensions = enableExtension Ext_smart pandocExtensions
@@ -154,12 +154,12 @@ defaultHakyllReaderOptions = def
 
 --------------------------------------------------------------------------------
 -- | The default writer options for pandoc rendering in hakyll
-defaultHakyllWriterOptions :: WriterOptions
-defaultHakyllWriterOptions = def
+defaultHexyllWriterOptions :: WriterOptions
+defaultHexyllWriterOptions = def
     { -- This option causes literate haskell to be written using '>' marks in
       -- html, which I think is a good default.
       writerExtensions = enableExtension Ext_smart pandocExtensions
     , -- We want to have hightlighting by default, to be compatible with earlier
-      -- Hakyll releases
+      -- Hexyll releases
       writerHighlightStyle = Just pygments
     }

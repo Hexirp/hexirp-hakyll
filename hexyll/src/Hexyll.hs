@@ -1,66 +1,66 @@
 --------------------------------------------------------------------------------
 -- | Top-level module exporting all modules that are interesting for the user
 {-# LANGUAGE CPP #-}
-module Hakyll
-    ( module Hakyll.Core.Compiler
-    , module Hakyll.Core.Configuration
-    , module Hakyll.Core.File
-    , module Hakyll.Core.Identifier
-    , module Hakyll.Core.Identifier.Pattern
-    , module Hakyll.Core.Item
-    , module Hakyll.Core.Metadata
-    , module Hakyll.Core.Routes
-    , module Hakyll.Core.Rules
-    , module Hakyll.Core.UnixFilter
-    , module Hakyll.Core.Util.File
-    , module Hakyll.Core.Util.String
-    , module Hakyll.Core.Writable
-    , module Hakyll.Main
-    , module Hakyll.Web.CompressCss
-    , module Hakyll.Web.Feed
-    , module Hakyll.Web.Html
-    , module Hakyll.Web.Html.RelativizeUrls
-    , module Hakyll.Web.Paginate
+module Hexyll
+    ( module Hexyll.Core.Compiler
+    , module Hexyll.Core.Configuration
+    , module Hexyll.Core.File
+    , module Hexyll.Core.Identifier
+    , module Hexyll.Core.Identifier.Pattern
+    , module Hexyll.Core.Item
+    , module Hexyll.Core.Metadata
+    , module Hexyll.Core.Routes
+    , module Hexyll.Core.Rules
+    , module Hexyll.Core.UnixFilter
+    , module Hexyll.Core.Util.File
+    , module Hexyll.Core.Util.String
+    , module Hexyll.Core.Writable
+    , module Hexyll.Main
+    , module Hexyll.Web.CompressCss
+    , module Hexyll.Web.Feed
+    , module Hexyll.Web.Html
+    , module Hexyll.Web.Html.RelativizeUrls
+    , module Hexyll.Web.Paginate
 #ifdef USE_PANDOC
-    , module Hakyll.Web.Pandoc
-    , module Hakyll.Web.Pandoc.Biblio
-    , module Hakyll.Web.Pandoc.FileType
+    , module Hexyll.Web.Pandoc
+    , module Hexyll.Web.Pandoc.Biblio
+    , module Hexyll.Web.Pandoc.FileType
 #endif
-    , module Hakyll.Web.Redirect
-    , module Hakyll.Web.Tags
-    , module Hakyll.Web.Template
-    , module Hakyll.Web.Template.Context
-    , module Hakyll.Web.Template.List
+    , module Hexyll.Web.Redirect
+    , module Hexyll.Web.Tags
+    , module Hexyll.Web.Template
+    , module Hexyll.Web.Template.Context
+    , module Hexyll.Web.Template.List
     ) where
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Configuration
-import           Hakyll.Core.File
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Identifier.Pattern
-import           Hakyll.Core.Item
-import           Hakyll.Core.Metadata
-import           Hakyll.Core.Routes
-import           Hakyll.Core.Rules
-import           Hakyll.Core.UnixFilter
-import           Hakyll.Core.Util.File
-import           Hakyll.Core.Util.String
-import           Hakyll.Core.Writable
-import           Hakyll.Main
-import           Hakyll.Web.CompressCss
-import           Hakyll.Web.Feed
-import           Hakyll.Web.Html
-import           Hakyll.Web.Html.RelativizeUrls
-import           Hakyll.Web.Paginate
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Configuration
+import           Hexyll.Core.File
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Item
+import           Hexyll.Core.Metadata
+import           Hexyll.Core.Routes
+import           Hexyll.Core.Rules
+import           Hexyll.Core.UnixFilter
+import           Hexyll.Core.Util.File
+import           Hexyll.Core.Util.String
+import           Hexyll.Core.Writable
+import           Hexyll.Main
+import           Hexyll.Web.CompressCss
+import           Hexyll.Web.Feed
+import           Hexyll.Web.Html
+import           Hexyll.Web.Html.RelativizeUrls
+import           Hexyll.Web.Paginate
 #ifdef USE_PANDOC
-import           Hakyll.Web.Pandoc
-import           Hakyll.Web.Pandoc.Biblio
-import           Hakyll.Web.Pandoc.FileType
+import           Hexyll.Web.Pandoc
+import           Hexyll.Web.Pandoc.Biblio
+import           Hexyll.Web.Pandoc.FileType
 #endif
-import           Hakyll.Web.Redirect
-import           Hakyll.Web.Tags
-import           Hakyll.Web.Template
-import           Hakyll.Web.Template.Context
-import           Hakyll.Web.Template.List
+import           Hexyll.Web.Redirect
+import           Hexyll.Web.Tags
+import           Hexyll.Web.Template
+import           Hexyll.Web.Template.Context
+import           Hexyll.Web.Template.List

@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE DeriveGeneric #-}
-module Hakyll.Web.Pandoc.Binary where
+module Hexyll.Web.Pandoc.Binary where
 
 import           Data.Binary        (Binary (..))
 

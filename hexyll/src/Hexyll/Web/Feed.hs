@@ -18,8 +18,8 @@
 -- - @$url$@: URL to the item - this is usually set automatically.
 --
 -- In addition, the posts should be named according to the rules for
--- 'Hakyll.Web.Template.Context.dateField'
-module Hakyll.Web.Feed
+-- 'Hexyll.Web.Template.Context.dateField'
+module Hexyll.Web.Feed
     ( FeedConfiguration (..)
     , renderRss
     , renderAtom
@@ -29,12 +29,12 @@ module Hakyll.Web.Feed
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Item
-import           Hakyll.Core.Util.String     (replaceAll)
-import           Hakyll.Web.Template
-import           Hakyll.Web.Template.Context
-import           Hakyll.Web.Template.List
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Item
+import           Hexyll.Core.Util.String     (replaceAll)
+import           Hexyll.Web.Template
+import           Hexyll.Web.Template.Context
+import           Hexyll.Web.Template.List
 
 
 --------------------------------------------------------------------------------
@@ -118,7 +118,7 @@ renderFeed feedTpl itemTpl config itemContext items = do
         []      -> return "Unknown"
         (x : _) -> unContext itemContext' "updated" [] x >>= \cf -> case cf of
             StringField s -> return s
-            _             -> fail "Hakyll.Web.Feed.renderFeed: Internal error"
+            _             -> fail "Hexyll.Web.Feed.renderFeed: Internal error"
 
 --------------------------------------------------------------------------------
 -- | Render an RSS feed using given templates with a number of items.

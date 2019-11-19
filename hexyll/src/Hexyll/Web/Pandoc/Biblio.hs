@@ -6,13 +6,13 @@
 -- respective compilers ('biblioCompiler' and 'cslCompiler'). Then, you can
 -- refer to these files when you use 'readPandocBiblio'. This function also
 -- takes the reader options for completeness -- you can use
--- 'defaultHakyllReaderOptions' if you're unsure.
+-- 'defaultHexyllReaderOptions' if you're unsure.
 -- 'pandocBiblioCompiler' is a convenience wrapper which works like 'pandocCompiler',
 -- but also takes paths to compiled bibliography and csl files.
 {-# LANGUAGE Arrows                     #-}
 {-# LANGUAGE DeriveDataTypeable         #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-module Hakyll.Web.Pandoc.Biblio
+module Hexyll.Web.Pandoc.Biblio
     ( CSL
     , cslCompiler
     , Biblio (..)
@@ -26,14 +26,14 @@ module Hakyll.Web.Pandoc.Biblio
 import           Control.Monad            (liftM, replicateM)
 import           Data.Binary              (Binary (..))
 import           Data.Typeable            (Typeable)
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Writable
-import           Hakyll.Web.Pandoc
-import           Hakyll.Web.Pandoc.Binary ()
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Item
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Writable
+import           Hexyll.Web.Pandoc
+import           Hexyll.Web.Pandoc.Binary ()
 import qualified Text.CSL                 as CSL
 import           Text.CSL.Pandoc          (processCites)
 import           Text.Pandoc              (Pandoc, ReaderOptions (..),
@@ -120,7 +120,7 @@ pandocBiblioCompiler cslFileName bibFileName = do
     bib <- load $ fromFilePath bibFileName
     liftM writePandoc
         (getResourceBody >>= readPandocBiblio ropt csl bib)
-    where ropt = defaultHakyllReaderOptions
+    where ropt = defaultHexyllReaderOptions
             { -- The following option enables citation rendering
-              readerExtensions = enableExtension Ext_citations $ readerExtensions defaultHakyllReaderOptions
+              readerExtensions = enableExtension Ext_citations $ readerExtensions defaultHexyllReaderOptions
             }

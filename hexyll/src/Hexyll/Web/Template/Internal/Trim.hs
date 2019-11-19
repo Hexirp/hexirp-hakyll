@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- | Module for trimming whitespace from tempaltes.
-module Hakyll.Web.Template.Internal.Trim
+module Hexyll.Web.Template.Internal.Trim
     ( trim
     ) where
 
@@ -11,7 +11,7 @@ import           Data.List                            (dropWhileEnd)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Web.Template.Internal.Element
+import           Hexyll.Web.Template.Internal.Element
 
 
 --------------------------------------------------------------------------------

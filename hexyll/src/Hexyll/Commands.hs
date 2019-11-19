@@ -1,7 +1,7 @@
  --------------------------------------------------------------------------------
--- | Implementation of Hakyll commands: build, preview...
+-- | Implementation of Hexyll commands: build, preview...
 {-# LANGUAGE CPP #-}
-module Hakyll.Commands
+module Hexyll.Commands
     ( Check(..)
     , build
     , check
@@ -19,14 +19,14 @@ import           System.Exit                (ExitCode)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Check               (Check(..))
-import qualified Hakyll.Check               as Check
-import           Hakyll.Core.Configuration
-import           Hakyll.Core.Logger         (Logger)
-import qualified Hakyll.Core.Logger         as Logger
-import           Hakyll.Core.Rules
-import           Hakyll.Core.Runtime
-import           Hakyll.Core.Util.File
+import           Hexyll.Check               (Check(..))
+import qualified Hexyll.Check               as Check
+import           Hexyll.Core.Configuration
+import           Hexyll.Core.Logger         (Logger)
+import qualified Hexyll.Core.Logger         as Logger
+import           Hexyll.Core.Rules
+import           Hexyll.Core.Runtime
+import           Hexyll.Core.Util.File
 
 
 --------------------------------------------------------------------------------
@@ -91,8 +91,8 @@ previewServerDisabled =
     mapM_ putStrLn
         [ "PREVIEW SERVER"
         , ""
-        , "The preview server is not enabled in the version of Hakyll. To"
-        , "enable it, set the flag to True and recompile Hakyll."
+        , "The preview server is not enabled in the version of Hexyll. To"
+        , "enable it, set the flag to True and recompile Hexyll."
         , "Alternatively, use an external tool to serve your site directory."
         ]
 
@@ -101,7 +101,7 @@ watchServerDisabled =
     mapM_ putStrLn
       [ "WATCH SERVER"
       , ""
-      , "The watch server is not enabled in the version of Hakyll. To"
-      , "enable it, set the flag to True and recompile Hakyll."
+      , "The watch server is not enabled in the version of Hexyll. To"
+      , "enable it, set the flag to True and recompile Hexyll."
       , "Alternatively, use an external tool to serve your site directory."
       ]

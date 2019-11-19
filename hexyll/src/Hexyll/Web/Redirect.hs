@@ -1,7 +1,7 @@
 -- | Module used for generating HTML redirect pages. This allows renaming pages
 -- to avoid breaking existing links without requiring server-side support for
 -- formal 301 Redirect error codes
-module Hakyll.Web.Redirect
+module Hexyll.Web.Redirect
     ( Redirect (..)
     , createRedirects
     ) where
@@ -10,11 +10,11 @@ import           Control.Applicative    ((<$>))
 import           Control.Monad          (forM_, when)
 import           Data.Binary            (Binary (..))
 import           Data.List              (sort, group)
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Routes
-import           Hakyll.Core.Rules
-import           Hakyll.Core.Writable   (Writable (..))
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Routes
+import           Hexyll.Core.Rules
+import           Hexyll.Core.Writable   (Writable (..))
 
 -- | This function exposes a higher-level interface compared to using the
 -- 'Redirect' type manually.
