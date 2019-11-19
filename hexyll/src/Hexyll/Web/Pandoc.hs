@@ -92,7 +92,7 @@ writePandocWith wopt (Item itemi doc) =
 -- | Render the resource using pandoc
 renderPandoc :: Item String -> Compiler (Item String)
 renderPandoc =
-    renderPandocWith defaultHexyllReaderOptions defaultHakyllWriterOptions
+    renderPandocWith defaultHexyllReaderOptions defaultHexyllWriterOptions
 
 
 --------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ renderPandocWith ropt wopt item =
 -- | Read a page render using pandoc
 pandocCompiler :: Compiler (Item String)
 pandocCompiler =
-    pandocCompilerWith defaultHexyllReaderOptions defaultHakyllWriterOptions
+    pandocCompilerWith defaultHexyllReaderOptions defaultHexyllWriterOptions
 
 
 --------------------------------------------------------------------------------
