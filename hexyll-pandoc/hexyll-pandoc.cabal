@@ -1,4 +1,4 @@
-Name:    hexyll
+Name:    hexyll-pandoc
 Version: 0.1.0.0
 
 Synopsis: A static website compiler library for Hexirp
