@@ -80,22 +80,22 @@ Library
   Default-language: Haskell2010
 
   Exposed-Modules:
-    Hakyll
-    Hakyll.Commands
-    Hakyll.Main
-    Hakyll.Web.CompressCss
-    Hakyll.Web.Feed
-    Hakyll.Web.Html
-    Hakyll.Web.Html.RelativizeUrls
-    Hakyll.Web.Paginate
-    Hakyll.Web.Redirect
-    Hakyll.Web.Tags
-    Hakyll.Web.Template
-    Hakyll.Web.Template.Context
-    Hakyll.Web.Template.Internal
-    Hakyll.Web.Template.Internal.Element
-    Hakyll.Web.Template.Internal.Trim
-    Hakyll.Web.Template.List
+    Hexyll
+    Hexyll.Commands
+    Hexyll.Main
+    Hexyll.Web.CompressCss
+    Hexyll.Web.Feed
+    Hexyll.Web.Html
+    Hexyll.Web.Html.RelativizeUrls
+    Hexyll.Web.Paginate
+    Hexyll.Web.Redirect
+    Hexyll.Web.Tags
+    Hexyll.Web.Template
+    Hexyll.Web.Template.Context
+    Hexyll.Web.Template.Internal
+    Hexyll.Web.Template.Internal.Element
+    Hexyll.Web.Template.Internal.Trim
+    Hexyll.Web.Template.List
 
   Other-Modules:
     Hakyll.Check
@@ -163,13 +163,13 @@ Test-suite hakyll-tests
   Default-language: Haskell2010
 
   Other-modules:
-    Hakyll.Core.Runtime.Tests
-    Hakyll.Web.CompressCss.Tests
-    Hakyll.Web.Html.RelativizeUrls.Tests
-    Hakyll.Web.Html.Tests
-    Hakyll.Web.Tags.Tests
-    Hakyll.Web.Template.Context.Tests
-    Hakyll.Web.Template.Tests
+    Hexyll.Core.Runtime.Tests
+    Hexyll.Web.CompressCss.Tests
+    Hexyll.Web.Html.RelativizeUrls.Tests
+    Hexyll.Web.Html.Tests
+    Hexyll.Web.Tags.Tests
+    Hexyll.Web.Template.Context.Tests
+    Hexyll.Web.Template.Tests
     TestSuite.Util
 
   Build-Depends:
