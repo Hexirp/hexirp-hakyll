@@ -10,27 +10,27 @@ import           Test.Tasty                           (defaultMain, testGroup)
 
 
 --------------------------------------------------------------------------------
-import qualified Hakyll.Core.Dependencies.Tests
-import qualified Hakyll.Core.Identifier.Tests
-import qualified Hakyll.Core.Provider.Metadata.Tests
-import qualified Hakyll.Core.Provider.Tests
-import qualified Hakyll.Core.Routes.Tests
-import qualified Hakyll.Core.Rules.Tests
-import qualified Hakyll.Core.Store.Tests
-import qualified Hakyll.Core.UnixFilter.Tests
-import qualified Hakyll.Core.Util.String.Tests
+import qualified Hexyll.Core.Dependencies.Tests
+import qualified Hexyll.Core.Identifier.Tests
+import qualified Hexyll.Core.Provider.Metadata.Tests
+import qualified Hexyll.Core.Provider.Tests
+import qualified Hexyll.Core.Routes.Tests
+import qualified Hexyll.Core.Rules.Tests
+import qualified Hexyll.Core.Store.Tests
+import qualified Hexyll.Core.UnixFilter.Tests
+import qualified Hexyll.Core.Util.String.Tests
 
 
 --------------------------------------------------------------------------------
 main :: IO ()
-main = defaultMain $ testGroup "Hakyll"
-    [ Hakyll.Core.Dependencies.Tests.tests
-    , Hakyll.Core.Identifier.Tests.tests
-    , Hakyll.Core.Provider.Metadata.Tests.tests
-    , Hakyll.Core.Provider.Tests.tests
-    , Hakyll.Core.Routes.Tests.tests
-    , Hakyll.Core.Rules.Tests.tests
-    , Hakyll.Core.Store.Tests.tests
-    , Hakyll.Core.UnixFilter.Tests.tests
-    , Hakyll.Core.Util.String.Tests.tests
+main = defaultMain $ testGroup "Hexyll"
+    [ Hexyll.Core.Dependencies.Tests.tests
+    , Hexyll.Core.Identifier.Tests.tests
+    , Hexyll.Core.Provider.Metadata.Tests.tests
+    , Hexyll.Core.Provider.Tests.tests
+    , Hexyll.Core.Routes.Tests.tests
+    , Hexyll.Core.Rules.Tests.tests
+    , Hexyll.Core.Store.Tests.tests
+    , Hexyll.Core.UnixFilter.Tests.tests
+    , Hexyll.Core.Util.String.Tests.tests
     ]
