@@ -23,15 +23,15 @@ import           Text.Printf                   (printf)
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler.Internal
-import           Hakyll.Core.Configuration
-import           Hakyll.Core.Identifier
-import qualified Hakyll.Core.Logger            as Logger
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Store             (Store)
-import qualified Hakyll.Core.Store             as Store
-import           Hakyll.Core.Util.File
-import           Hakyll.Core.Item
+import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Configuration
+import           Hexyll.Core.Identifier
+import qualified Hexyll.Core.Logger            as Logger
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Store             (Store)
+import qualified Hexyll.Core.Store             as Store
+import           Hexyll.Core.Util.File
+import           Hexyll.Core.Item
 
 
 --------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ cleanTestEnv = do
 
 
 --------------------------------------------------------------------------------
--- | like 'Hakyll.Web.Pandoc.renderPandoc'
+-- | like 'Hexyll.Web.Pandoc.renderPandoc'
 -- | but allowing to test without the @usePandoc@ flag
 renderParagraphs :: Item String -> Compiler (Item String)
 renderParagraphs = withItemBody (return
