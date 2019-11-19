@@ -20,6 +20,8 @@ hexyll の本体であり Compiler や Template などの具体的な実装や�
 
 全体には Apache-2.0 を適用しているが、個々のパッケージでは違うライセンスが適用されていることがあるので注意するようにしてほしい。もちろん、個々のパッケージのライセンスの方が優先される。
 
+特に pandoc 関連はコピーレフトライセンス、つまり GPL になっているので注意してほしい。
+
 ## ライセンスの選択について
 
 hexirp-hakyll は [hakyll](https://github.com/jaspervdj/hakyll) を `f2778e12046eb5f5eb4d377669b94b13dffc24fb` でクローンしたものである。
