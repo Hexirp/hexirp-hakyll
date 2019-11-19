@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hakyll.Web.Html.Tests
+module Hexyll.Web.Html.Tests
     ( tests
     ) where
 
@@ -11,13 +11,13 @@ import           Test.Tasty.HUnit ((@=?))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Web.Html
+import           Hexyll.Web.Html
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Web.Html.Tests" $ concat
+tests = testGroup "Hexyll.Web.Html.Tests" $ concat
     [ fromAssertions "demoteHeaders"
         [ "<h2>A h1 title</h2>" @=?
             demoteHeaders "<h1>A h1 title</h1>"

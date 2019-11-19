@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Web.Pandoc.FileType.Tests
+module Hexyll.Web.Pandoc.FileType.Tests
     ( tests
     ) where
 
@@ -11,13 +11,13 @@ import           Test.Tasty.HUnit           ((@=?))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Web.Pandoc.FileType
+import           Hexyll.Web.Pandoc.FileType
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Web.Pandoc.FileType.Tests" $
+tests = testGroup "Hexyll.Web.Pandoc.FileType.Tests" $
     fromAssertions "fileType"
         [ Markdown                 @=? fileType "index.md"
         , Rst                      @=? fileType "about/foo.rst"

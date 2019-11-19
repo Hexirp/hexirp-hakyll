@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Core.Runtime.Tests
+module Hexyll.Core.Runtime.Tests
     ( tests
     ) where
 
@@ -13,15 +13,15 @@ import           Test.Tasty.HUnit    (Assertion, (@?=))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll
-import qualified Hakyll.Core.Logger  as Logger
-import           Hakyll.Core.Runtime
+import           Hexyll
+import qualified Hexyll.Core.Logger  as Logger
+import           Hexyll.Core.Runtime
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Core.Runtime.Tests" $
+tests = testGroup "Hexyll.Core.Runtime.Tests" $
     fromAssertions "run" [case01, case02]
 
 

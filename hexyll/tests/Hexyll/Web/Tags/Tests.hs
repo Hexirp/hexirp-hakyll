@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Web.Tags.Tests
+module Hexyll.Web.Tags.Tests
     ( tests
     ) where
 
@@ -9,14 +9,14 @@ import           Test.Tasty                  (TestTree, testGroup)
 import           Test.Tasty.HUnit            (Assertion, testCase, (@?=))
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Store           (Store)
-import           Hakyll.Web.Tags
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Store           (Store)
+import           Hexyll.Web.Tags
 import           TestSuite.Util
 
 tests :: TestTree
-tests = testGroup "Hakyll.Web.Tags"
+tests = testGroup "Hexyll.Web.Tags"
     [ testCase "testGetCategory" testGetCategory
     ]
 

@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Web.Html.RelativizeUrls.Tests
+module Hexyll.Web.Html.RelativizeUrls.Tests
     ( tests
     ) where
 
@@ -11,13 +11,13 @@ import           Test.Tasty.HUnit               ((@=?))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Web.Html.RelativizeUrls
+import           Hexyll.Web.Html.RelativizeUrls
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Web.Html.RelativizeUrls.Tests" $
+tests = testGroup "Hexyll.Web.Html.RelativizeUrls.Tests" $
     fromAssertions "relativizeUrls"
         [ "<a href=\"../foo\">bar</a>" @=?
             relativizeUrlsWith ".." "<a href=\"/foo\">bar</a>"

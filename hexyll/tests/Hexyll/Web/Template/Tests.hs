@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell   #-}
-module Hakyll.Web.Template.Tests
+module Hexyll.Web.Template.Tests
     ( tests
     ) where
 
@@ -14,20 +14,20 @@ import           Test.Tasty.HUnit             (Assertion, assertBool, testCase,
 import           Data.Either                  (isLeft)
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Item
-import           Hakyll.Core.Provider
-import           Hakyll.Web.Template
-import           Hakyll.Web.Template.Context
-import           Hakyll.Web.Template.Internal
-import           Hakyll.Web.Template.List
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Item
+import           Hexyll.Core.Provider
+import           Hexyll.Web.Template
+import           Hexyll.Web.Template.Context
+import           Hexyll.Web.Template.Internal
+import           Hexyll.Web.Template.List
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Web.Template.Tests" $ concat
+tests = testGroup "Hexyll.Web.Template.Tests" $ concat
     [ [ testCase "case01" $ test ("template.html.out", "template.html", "example.md")
       , testCase "case02" $ test ("strip.html.out", "strip.html", "example.md")
       , testCase "case03" $ test ("just-meta.html.out", "just-meta.html", "example.md")

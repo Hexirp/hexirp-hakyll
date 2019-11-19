@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hakyll.Web.Template.Context.Tests
+module Hexyll.Web.Template.Context.Tests
     ( tests
     ) where
 
@@ -11,17 +11,17 @@ import           Test.Tasty.HUnit            (Assertion, testCase, (@=?))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Core.Compiler
-import           Hakyll.Core.Identifier
-import           Hakyll.Core.Provider
-import           Hakyll.Core.Store           (Store)
-import           Hakyll.Web.Template.Context
+import           Hexyll.Core.Compiler
+import           Hexyll.Core.Identifier
+import           Hexyll.Core.Provider
+import           Hexyll.Core.Store           (Store)
+import           Hexyll.Web.Template.Context
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Web.Template.Context.Tests"
+tests = testGroup "Hexyll.Web.Template.Context.Tests"
     [ testCase "testDateField" testDateField
     ]
 
@@ -63,5 +63,5 @@ testContextDone store provider identifier key context =
         case cf of
             StringField str -> return str
             _               -> error $
-                "Hakyll.Web.Template.Context.Tests.testContextDone: " ++
+                "Hexyll.Web.Template.Context.Tests.testContextDone: " ++
                 "expected StringField"

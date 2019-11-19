@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hakyll.Web.CompressCss.Tests
+module Hexyll.Web.CompressCss.Tests
     ( tests
     ) where
 
@@ -10,13 +10,13 @@ import           Test.Tasty.HUnit       ((@=?))
 
 
 --------------------------------------------------------------------------------
-import           Hakyll.Web.CompressCss
+import           Hexyll.Web.CompressCss
 import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
 tests :: TestTree
-tests = testGroup "Hakyll.Web.CompressCss.Tests" $ concat
+tests = testGroup "Hexyll.Web.CompressCss.Tests" $ concat
     [ fromAssertions "compressCss"
         [
           -- compress whitespace
