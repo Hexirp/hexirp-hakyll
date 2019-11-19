@@ -1,6 +1,6 @@
-# hexyll
+# hexyll-pandoc
 
-hexyll is a static web site generator library in Haskell **for Hexirp**.
+hexyll is a implementation of hexyll's compiler by pandoc.
 
 ## License
 
