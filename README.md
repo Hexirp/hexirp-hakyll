@@ -1,23 +1,26 @@
 # hexirp-hakyll
 
-hexirp-hakyll is a static web site generator library in Haskell **for Hexirp**.
+hexirp-hakyll is a static web site generator libraries in Haskell **for Hexirp**.
 
-hexirp-hakyll は hakyll をフォークした静的ウェブサイト生成プログラムのライブラリである。このライブラリは Hexirp が自分で利用するために制作している。
+hexirp-hakyll は hakyll をフォークした静的ウェブサイト生成プログラムのライブラリ群である。このライブラリは Hexirp が自分で利用するために制作している。
 
-## License
+## それぞれのライブラリについて
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+ここで hexirp-hakyll は長いため hexyll と略している。ライブラリを分割するわけは、ビルド時のメモリを削減するためと、コピーレフトライセンスを適用する範囲をなるべく減らすためである。
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+### hexyll-core
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+hexyll の基盤部分を記述しているパッケージである。例えば Route や Rules や Compiler などの定義を含む。
+
+### hexyll
+
+hexyll の本体であり Compiler や Template などの具体的な実装や、ルールなどのDSLから最終的なプログラムを構成する関数を含む。
+
+## ライセンスについて
+
+全体には Apache-2.0 を適用しているが、個々のパッケージでは違うライセンスが適用されていることがあるので注意するようにしてほしい。もちろん、個々のパッケージのライセンスの方が優先される。
+
+特に pandoc 関連はコピーレフトライセンス、つまり GPL になっているので注意してほしい。
 
 ## ライセンスの選択について
 
@@ -25,12 +28,14 @@ hexirp-hakyll は [hakyll](https://github.com/jaspervdj/hakyll) を `f2778e12046
 
 元々の hakyll は The 3-Clause BSD License で公開されていた。
 
-しかし、 hakyll にはライセンス違反がある。それは GNU General Public License version 2 or later でライセンスされている pandoc に依存しているのに、本体を The 3-Clause BSD License でライセンスしていることだ。
+しかし、 hakyll にはグレーな部分がある。それは GNU General Public License version 2 or later でライセンスされている pandoc に依存しているのに、本体を The 3-Clause BSD License でライセンスしていることだ。完全な違反でもない訳は、 pandoc に依存するかどうかはビルド時のフラグによって決定されるからだ。
 
-そのため、 hexirp-hakyll は問題を解決するために GNU General Public License version 3 or later でライセンスしている。
+そのため、 hexirp-hakyll は明瞭にするために、 pandoc に依存する部分を別のパッケージに分離し、 GNU General Public License version 3 or later でライセンスしている。
 
-もちろん事はそう単純ではなく、 pandoc は GitHub に上げられているリポジトリでは COPYRIGHT で GNU General Public License version 2 or later としてライセンスされている。その一方で Hackage では COPYING.md を参照して GNU General Public License version 2 としてライセンスされている、と表示されている。
+### pandoc のライセンスについて
+
+事はそう単純ではなく、 pandoc は GitHub に上げられているリポジトリでは COPYRIGHT で GNU General Public License version 2 or later としてライセンスされている。その一方で Hackage では COPYING.md を参照して GNU General Public License version 2 としてライセンスされている、と表示されている。
 
 私は Hackage を通して使う以上、それでの記述に従うべきと考える。しかし、問題なのは Hackage で配布される package のソースコードで COPYRIGHT が含まれるかどうかだ。どういうライセンスが適用されるかは、最終的にソースコードに同梱されている説明によって決められるべきであるからだ。そして、 Hackage で配布される package には COPYRIGHT が含まれていた。
 
-以上の理由から、私は GNU General Public License version 3 or later で、このライブラリをライセンスしている。
+そのため、私は pandoc のライセンスを GNU General Public License version 2 or later として解釈している。
