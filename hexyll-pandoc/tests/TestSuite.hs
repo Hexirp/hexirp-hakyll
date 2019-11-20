@@ -18,8 +18,5 @@ import qualified Hexyll.Web.Pandoc.FileType.Tests
 --------------------------------------------------------------------------------
 main :: IO ()
 main = defaultMain $ testGroup "Hexyll"
-    [
-#ifdef USE_PANDOC
-      Hexyll.Web.Pandoc.FileType.Tests.tests
-#endif
+    [ Hexyll.Web.Pandoc.FileType.Tests.tests
     ]
