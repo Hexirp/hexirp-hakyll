@@ -3,12 +3,11 @@ resolver: lts-13.30
 flags:
   hexyll:
     checkExternal: true
-    usePandoc:     true
-    buildWebsite:  true
 
 packages:
 - 'hexyll-core'
 - 'hexyll'
+- 'hexyll-pandoc'
 
 nix:
   enable: false
