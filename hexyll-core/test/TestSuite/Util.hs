@@ -103,7 +103,7 @@ testConfiguration = defaultConfiguration
     { destinationDirectory = "_testsite"
     , storeDirectory       = "_teststore"
     , tmpDirectory         = "_testtmp"
-    , providerDirectory    = "tests/data"
+    , providerDirectory    = "test/data"
     }
 
 

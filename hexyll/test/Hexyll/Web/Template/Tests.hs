@@ -139,7 +139,7 @@ testApplyJoinTemplateList = do
 
 --------------------------------------------------------------------------------
 embeddedTemplate :: Template
-embeddedTemplate = $(embedTemplate "tests/data/embed.html")
+embeddedTemplate = $(embedTemplate "test/data/embed.html")
 
 --------------------------------------------------------------------------------
 testEmbeddedTemplate :: Assertion
