@@ -60,20 +60,6 @@ Source-Repository head
   Type:     git
   Location: git://github.com/jaspervdj/hakyll.git
 
-Flag checkExternal
-  Description: Include external link checking
-  Default:     True
-
-Flag buildWebsite
-  Description: Build the hakyll website
-  Default:     False
-  Manual:      True
-
-Flag usePandoc
-  Description: Include Pandoc support
-  Default:     True
-  Manual:      True
-
 Library
   Ghc-Options:      -Wall
   Hs-Source-Dirs:   src
@@ -143,22 +129,6 @@ Library
     vector               >= 0.11     && < 0.13,
     yaml                 >= 0.8.11   && < 0.12
 
-  If flag(checkExternal)
-    Build-depends:
-      http-conduit >= 2.2    && < 2.4,
-      http-types   >= 0.7    && < 0.13
-    Cpp-options:
-      -DCHECK_EXTERNAL
-
-  If flag(usePandoc)
-    Exposed-Modules:
-    Other-Modules:
-    Build-Depends:
-      pandoc          >= 2.0.5    && < 2.8,
-      pandoc-citeproc >= 0.14     && < 0.17
-    Cpp-options:
-      -DUSE_PANDOC
-
 Test-suite hakyll-tests
   Type:             exitcode-stdio-1.0
   Hs-source-dirs:   tests
@@ -215,11 +185,3 @@ Test-suite hakyll-tests
     unordered-containers >= 0.2      && < 0.3,
     vector               >= 0.11     && < 0.13,
     yaml                 >= 0.8.11   && < 0.12
-
-  If flag(checkExternal)
-    Cpp-options:
-      -DCHECK_EXTERNAL
-
-  If flag(usePandoc)
-    Cpp-options:
-      -DUSE_PANDOC

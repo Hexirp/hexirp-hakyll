@@ -4,10 +4,6 @@ save-hackage-creds: false
 flags:
   hexyll:
     checkExternal: true
-    usePandoc:     true
-    buildWebsite:  true
-  hexyll-pandoc:
-    usePandoc: true
 
 packages:
 - 'hexyll-core'

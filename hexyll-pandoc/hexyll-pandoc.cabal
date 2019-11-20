@@ -60,28 +60,18 @@ Source-Repository head
   Type:     git
   Location: git://github.com/jaspervdj/hakyll.git
 
-Flag checkExternal
-  Description: Include external link checking
-  Default:     True
-
-Flag buildWebsite
-  Description: Build the hakyll website
-  Default:     False
-  Manual:      True
-
-Flag usePandoc
-  Description: Include Pandoc support
-  Default:     True
-  Manual:      True
-
 Library
   Ghc-Options:      -Wall
   Hs-Source-Dirs:   src
   Default-language: Haskell2010
 
   Exposed-Modules:
+    Hexyll.Web.Pandoc
+    Hexyll.Web.Pandoc.Biblio
+    Hexyll.Web.Pandoc.FileType
 
   Other-Modules:
+    Hexyll.Web.Pandoc.Binary
 
   Build-Depends:
     base                 >= 4.8      && < 5,
@@ -114,29 +104,11 @@ Library
     unordered-containers >= 0.2      && < 0.3,
     vector               >= 0.11     && < 0.13,
     yaml                 >= 0.8.11   && < 0.12,
+    pandoc               >= 2.0.5    && < 2.8,
+    pandoc-citeproc      >= 0.14     && < 0.17,
     -- family
     hexyll-core,
     hexyll
-
-  If flag(checkExternal)
-    Build-depends:
-      http-conduit >= 2.2    && < 2.4,
-      http-types   >= 0.7    && < 0.13
-    Cpp-options:
-      -DCHECK_EXTERNAL
-
-  If flag(usePandoc)
-    Exposed-Modules:
-      Hexyll.Web.Pandoc
-      Hexyll.Web.Pandoc.Biblio
-      Hexyll.Web.Pandoc.FileType
-    Other-Modules:
-      Hexyll.Web.Pandoc.Binary
-    Build-Depends:
-      pandoc          >= 2.0.5    && < 2.8,
-      pandoc-citeproc >= 0.14     && < 0.17
-    Cpp-options:
-      -DUSE_PANDOC
 
 Test-suite hakyll-tests
   Type:             exitcode-stdio-1.0
@@ -146,6 +118,7 @@ Test-suite hakyll-tests
   Default-language: Haskell2010
 
   Other-modules:
+    Hexyll.Web.Pandoc.FileType.Tests
     TestSuite.Util
 
   Build-Depends:
@@ -165,13 +138,3 @@ Test-suite hakyll-tests
     -- family
     hexyll-core,
     hexyll
-
-  If flag(checkExternal)
-    Cpp-options:
-      -DCHECK_EXTERNAL
-
-  If flag(usePandoc)
-    Other-modules:
-      Hexyll.Web.Pandoc.FileType.Tests
-    Cpp-options:
-      -DUSE_PANDOC
