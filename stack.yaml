@@ -6,10 +6,13 @@ flags:
     checkExternal: true
     usePandoc:     true
     buildWebsite:  true
+  hexyll-pandoc:
+    usePandoc: true
 
 packages:
 - 'hexyll-core'
 - 'hexyll'
+- 'hexyll-pandoc'
 
 nix:
   enable: false

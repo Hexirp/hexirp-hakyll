@@ -21,11 +21,6 @@ module Hexyll
     , module Hexyll.Web.Html
     , module Hexyll.Web.Html.RelativizeUrls
     , module Hexyll.Web.Paginate
-#ifdef USE_PANDOC
-    , module Hexyll.Web.Pandoc
-    , module Hexyll.Web.Pandoc.Biblio
-    , module Hexyll.Web.Pandoc.FileType
-#endif
     , module Hexyll.Web.Redirect
     , module Hexyll.Web.Tags
     , module Hexyll.Web.Template
@@ -54,11 +49,6 @@ import           Hexyll.Web.Feed
 import           Hexyll.Web.Html
 import           Hexyll.Web.Html.RelativizeUrls
 import           Hexyll.Web.Paginate
-#ifdef USE_PANDOC
-import           Hexyll.Web.Pandoc
-import           Hexyll.Web.Pandoc.Biblio
-import           Hexyll.Web.Pandoc.FileType
-#endif
 import           Hexyll.Web.Redirect
 import           Hexyll.Web.Tags
 import           Hexyll.Web.Template
