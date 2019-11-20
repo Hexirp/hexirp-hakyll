@@ -103,11 +103,14 @@ library:
   - -Wincomplete-uni-patterns
   - -Wpartial-fields
   - -Wredundant-constraints
+  other-modules:
+  - Hexyll.Check
+  - Paths_hexyll
   when:
   - condition: flag(checkExternal)
-    other-modules:
-    - Hexyll.Check
-    - Paths_hexyll
+    dependencies:
+    - http-conduit >= 2.2    && < 2.4
+    - http-types   >= 0.7    && < 0.13
     cpp-options:
     - -DCHECK_EXTERNAL
 
