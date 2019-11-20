@@ -1,7 +1,7 @@
 Name:    hexyll-pandoc
 Version: 0.1.0.0
 
-Synopsis: A static website compiler library for Hexirp
+Synopsis: A implementation of hexyll's compiler by pandoc
 Description: Please see the README on GitHub at <https://github.com/Hexirp/hexirp-hakyll#readme>
 
 Author:       Hexirp

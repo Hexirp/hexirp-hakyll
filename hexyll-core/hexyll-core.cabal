@@ -1,7 +1,7 @@
 Name:    hexyll-core
 Version: 0.1.0.0
 
-Synopsis: A static website compiler library for Hexirp
+Synopsis: A core library of hexyll
 Description: Please see the README on GitHub at <https://github.com/Hexirp/hexirp-hakyll#readme>
 
 Author:       Hexirp
