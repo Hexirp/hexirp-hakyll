@@ -64,16 +64,6 @@ Flag checkExternal
   Description: Include external link checking
   Default:     True
 
-Flag buildWebsite
-  Description: Build the hakyll website
-  Default:     False
-  Manual:      True
-
-Flag usePandoc
-  Description: Include Pandoc support
-  Default:     True
-  Manual:      True
-
 Library
   Ghc-Options:      -Wall
   Hs-Source-Dirs:   src
@@ -142,13 +132,6 @@ Library
     Cpp-options:
       -DCHECK_EXTERNAL
 
-  If flag(usePandoc)
-    Exposed-Modules:
-    Other-Modules:
-    Build-Depends:
-    Cpp-options:
-      -DUSE_PANDOC
-
 Test-suite hakyll-tests
   Type:             exitcode-stdio-1.0
   Hs-source-dirs:   tests
@@ -186,8 +169,3 @@ Test-suite hakyll-tests
   If flag(checkExternal)
     Cpp-options:
       -DCHECK_EXTERNAL
-
-  If flag(usePandoc)
-    Other-modules:
-    Cpp-options:
-      -DUSE_PANDOC
