@@ -10,9 +10,7 @@ import           Test.Tasty                           (defaultMain, testGroup)
 
 
 --------------------------------------------------------------------------------
-#ifdef USE_PANDOC
 import qualified Hexyll.Web.Pandoc.FileType.Tests
-#endif
 
 
 --------------------------------------------------------------------------------
