@@ -33,7 +33,7 @@ Data-files:
   example/contact.markdown
 
 Extra-source-files:
-  CHANGELOG.md
+  ChangeLog.md
   tests/data/embed.html
   tests/data/example.md
   tests/data/example.md.metadata
