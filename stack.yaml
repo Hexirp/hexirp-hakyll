@@ -13,3 +13,6 @@ nix:
   enable: false
   packages:
   - zlib
+
+extra-deps:
+- 'lrucache-1.2.0.1'
