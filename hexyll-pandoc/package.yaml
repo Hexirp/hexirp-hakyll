@@ -11,7 +11,7 @@ category: Web
 
 description: Please see the README on GitHub at <https://github.com/Hexirp/hexirp-hakyll#readme>
 
-extra-source-files: 
+extra-source-files:
 - README.md
 - ChangeLog.md
 - test/data/embed.html
