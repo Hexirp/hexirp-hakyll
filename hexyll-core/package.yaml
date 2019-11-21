@@ -110,7 +110,7 @@ tests:
     - -Wpartial-fields
     - -Wredundant-constraints
     - -threaded
-    #- -rtsopts
+    - -rtsopts
     #- -with-rtsopts=-N
     dependencies:
     - hexyll-core
