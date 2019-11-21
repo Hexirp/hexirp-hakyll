@@ -127,8 +127,8 @@ tests:
     - -Wpartial-fields
     - -Wredundant-constraints
     - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+    #- -rtsopts
+    #- -with-rtsopts=-N
     dependencies:
     - hexyll
     - QuickCheck                 >= 2.8  && < 2.14
