@@ -1,0 +1,126 @@
+name: hexyll-pandoc
+version: 0.1.0.0
+github: "Hexirp/hexirp-hakyll"
+license: GPL-3.0-or-later
+author: "Hexirp"
+maintainer: "https://github.com/Hexirp/yhseq"
+copyright: "(c) 2019 Hexirp"
+
+synopsis: A implementation of hexyll's compiler by pandoc
+category: Web
+
+description: Please see the README on GitHub at <https://github.com/Hexirp/hexirp-hakyll#readme>
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+- test/data/embed.html
+- test/data/example.md
+- test/data/example.md.metadata
+- test/data/images/favicon.ico
+- test/data/just-meta.html
+- test/data/just-meta.html.out
+- test/data/partial-helper.html
+- test/data/partial.html
+- test/data/partial.html.out
+- test/data/posts/2010-08-26-birthday.md
+- test/data/posts/2018-09-26.md
+- test/data/posts/2019/05/10/tomorrow.md
+- test/data/russian.md
+- test/data/strip.html
+- test/data/strip.html.out
+- test/data/template.html
+- test/data/template.html.out
+- data/templates/atom-item.xml
+- data/templates/atom.xml
+- data/templates/rss-item.xml
+- data/templates/rss.xml
+
+data-dir: data
+
+data-files:
+- example/posts/2015-11-28-carpe-diem.markdown
+- example/posts/2015-10-07-rosa-rosa-rosam.markdown
+- example/posts/2015-12-07-tu-quoque.markdown
+- example/posts/2015-08-12-spqr.markdown
+- example/site.hs
+- example/images/haskell-logo.png
+- example/templates/post-list.html
+- example/templates/default.html
+- example/templates/archive.html
+- example/templates/post.html
+- example/css/default.css
+- example/index.html
+- example/about.rst
+- example/contact.markdown
+
+dependencies:
+- base                 >= 4.8      && < 5
+- binary               >= 0.5      && < 0.10
+- blaze-html           >= 0.5      && < 0.10
+- blaze-markup         >= 0.5.1    && < 0.9
+- bytestring           >= 0.9      && < 0.11
+- containers           >= 0.3      && < 0.7
+- cryptohash           >= 0.7      && < 0.12
+- data-default         >= 0.4      && < 0.8
+- deepseq              >= 1.3      && < 1.5
+- directory            >= 1.0      && < 1.4
+- file-embed           >= 0.0.10.1 && < 0.0.12
+- filepath             >= 1.0      && < 1.5
+- lrucache             >= 1.1.1    && < 1.3
+- mtl                  >= 1        && < 2.3
+- network-uri          >= 2.6      && < 2.7
+- optparse-applicative >= 0.12     && < 0.15
+- parsec               >= 3.0      && < 3.2
+- process              >= 1.6      && < 1.7
+- random               >= 1.0      && < 1.2
+- regex-tdfa           >= 1.1      && < 1.3
+- resourcet            >= 1.1      && < 1.3
+- scientific           >= 0.3.4    && < 0.4
+- tagsoup              >= 0.13.1   && < 0.15
+- template-haskell     >= 2.14     && < 2.15
+- text                 >= 0.11     && < 1.3
+- time                 >= 1.8      && < 1.10
+- time-locale-compat   >= 0.1      && < 0.2
+- unordered-containers >= 0.2      && < 0.3
+- vector               >= 0.11     && < 0.13
+- yaml                 >= 0.8.11   && < 0.12
+- pandoc               >= 2.0.5    && < 2.8
+- pandoc-citeproc      >= 0.14     && < 0.17
+- hexyll-core
+- hexyll
+
+library:
+  source-dirs: src
+  ghc-options:
+  - -Wall
+  - -Wcompat
+  - -Widentities
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wpartial-fields
+  - -Wredundant-constraints
+  other-modules:
+  - Hexyll.Web.Pandoc.Binary
+
+tests:
+  hexyll-core-test:
+    main: TestSuite.hs
+    source-dirs: test
+    ghc-options:
+    - -Wall
+    - -Wcompat
+    - -Widentities
+    - -Wincomplete-record-updates
+    - -Wincomplete-uni-patterns
+    - -Wpartial-fields
+    - -Wredundant-constraints
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hexyll-pandoc
+    - QuickCheck                 >= 2.8  && < 2.14
+    - tasty                      >= 0.11 && < 1.3
+    - tasty-hunit                >= 0.9  && < 0.11
+    - tasty-quickcheck           >= 0.8  && < 0.11
