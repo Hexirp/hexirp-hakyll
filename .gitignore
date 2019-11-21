@@ -1,28 +1,28 @@
-# Ignore swap files and stack/cabal output.
-*.hi
-*.o
-*.swo
-*.swp
-*~
-.DS_Store
-TAGS
 dist
-tags
-cabal.sandbox.config
+dist-*
+cabal-dev
+*.o
+*.hi
+*.chi
+*.chs.h
+*.dyn_o
+*.dyn_hi
+.hpc
+.hsenv
 .cabal-sandbox/
-.stack-work
+cabal.sandbox.config
+*.prof
+*.aux
+*.hp
+*.eventlog
+.stack-work/
+cabal.project.local
+cabal.project.local~
+.HTF/
+.ghc.environment.*
 
-# Ignore test builds.
-tests/Main
-_cache
-_store
-_site
-
-# Rest of the file: ignore examples
-web/_cache
-web/_site
-web/site
-web/reference
-
-# This is generated from the CHANGELOG
-web/releases.markdown
+# by Stack
+hexyll.cabal
+hexyll-core.cabal
+hexyll-pandoc.cabal
+*~
