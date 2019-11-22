@@ -85,10 +85,10 @@ dependencies:
 - unordered-containers >= 0.2.9.0  && < 0.3
 - vector               >= 0.12.0.2 && < 0.13
 - yaml                 >= 0.8.32   && < 0.12
-- pandoc               >= 2.0.5    && < 2.8
-- pandoc-citeproc      >= 0.14     && < 0.17
+- pandoc               >= 2.2.1    && < 2.6
+- pandoc-citeproc      >= 0.14.8.1 && < 0.16
 - hexyll-core          == 0.1.0.*
-- hexyll
+- hexyll               == 0.1.0.*
 
 library:
   source-dirs: src
