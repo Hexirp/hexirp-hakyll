@@ -16,7 +16,8 @@ module Hexyll.Core.Store
 
 
 --------------------------------------------------------------------------------
-import qualified Crypto.Hash.MD5      as MD5
+import qualified Data.ByteArray       as BA
+import qualified Crypto.Hash          as CH
 import           Data.Binary          (Binary, decode, encodeFile)
 import qualified Data.ByteString      as B
 import qualified Data.ByteString.Lazy as BL
@@ -203,4 +204,11 @@ hash = toHex . B.unpack . hashMD5 . T.encodeUtf8 . T.pack . intercalate "/"
 --------------------------------------------------------------------------------
 -- | Hash by MD5
 hashMD5 :: B.ByteString -> B.ByteString
-hashMD5 = MD5.hash
+hashMD5 x =
+  let
+    digest :: CH.Digest CH.MD5
+    digest = CH.hash x
+    bytes :: B.ByteString
+    bytes = BA.convert digest
+  in
+    bytes
