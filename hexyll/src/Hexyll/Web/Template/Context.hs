@@ -451,8 +451,4 @@ missingField = Context $ \k _ _ -> noResult $
     "Missing field '" ++ k ++ "' in context"
 
 parseTimeM :: Bool -> TimeLocale -> String -> String -> Maybe UTCTime
-#if MIN_VERSION_time(1,5,0)
 parseTimeM = TF.parseTimeM
-#else
-parseTimeM _ = TF.parseTime
-#endif
