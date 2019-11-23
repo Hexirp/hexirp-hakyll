@@ -36,9 +36,11 @@ import           System.FilePath        (addExtension, (</>))
 
 
 --------------------------------------------------------------------------------
+#if !MIN_VERSION_directory(1,2,0)
 import           Data.Time              (readTime)
 import           System.Locale          (defaultTimeLocale)
 import           System.Time            (formatCalendarTime, toCalendarTime)
+#endif
 
 
 --------------------------------------------------------------------------------
@@ -191,6 +193,10 @@ resourceModificationTime p i =
 --------------------------------------------------------------------------------
 fileModificationTime :: FilePath -> IO UTCTime
 fileModificationTime fp = do
+#if MIN_VERSION_directory(1,2,0)
+    getModificationTime fp
+#else
     ct <- toCalendarTime =<< getModificationTime fp
     let str = formatCalendarTime defaultTimeLocale "%s" ct
     return $ readTime defaultTimeLocale "%s" str
+#endif
