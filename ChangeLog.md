@@ -1,4 +1,4 @@
-# Changelog for yhseq
+# Changelog for hexirp-hakyll
 
 ## Unreleased changes
 
