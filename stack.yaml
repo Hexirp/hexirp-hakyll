@@ -16,3 +16,6 @@ nix:
 
 extra-deps:
 - 'lrucache-1.2.0.1'
+
+drop-packages:
+- 'cryptohash'
