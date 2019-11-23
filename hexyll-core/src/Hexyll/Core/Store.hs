@@ -193,8 +193,14 @@ deleteFile = (`catchIOError` \_ -> return ()) . removeFile
 --------------------------------------------------------------------------------
 -- | Mostly meant for internal usage
 hash :: [String] -> String
-hash = toHex . B.unpack . MD5.hash . T.encodeUtf8 . T.pack . intercalate "/"
+hash = toHex . B.unpack . hashMD5 . T.encodeUtf8 . T.pack . intercalate "/"
   where
     toHex [] = ""
     toHex (x : xs) | x < 16 = '0' : showHex x (toHex xs)
                    | otherwise = showHex x (toHex xs)
+
+
+--------------------------------------------------------------------------------
+-- | Hash by MD5
+hashMD5 :: B.ByteString -> B.ByteString
+hashMD5 = MD5.hash
