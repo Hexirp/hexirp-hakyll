@@ -13,12 +13,6 @@ import           Data.Set               (Set)
 
 
 --------------------------------------------------------------------------------
-#if MIN_VERSION_base(4,9,0)
-import           Data.Semigroup         (Semigroup (..))
-#endif
-
-
---------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
 
 
@@ -78,15 +72,9 @@ instance Binary Pattern where
 
 
 --------------------------------------------------------------------------------
-#if MIN_VERSION_base(4,9,0)
 instance Semigroup Pattern where
     (<>) = And
 
 instance Monoid Pattern where
     mempty  = Everything
     mappend = (<>)
-#else
-instance Monoid Pattern where
-    mempty  = Everything
-    mappend = And
-#endif
