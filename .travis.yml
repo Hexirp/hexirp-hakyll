@@ -22,6 +22,12 @@ cache:
   directories:
   - $HOME/.stack
 
+# Use Build Matrix to build multiple stack resolvers.
+env:
+- STACK_RESOLVER=''
+- STACK_RESOLVER='--resolver lts-12.26'
+- STACK_RESOLVER='--resolver lts-13.30'
+
 # Ensure necessary system libraries are present
 addons:
   apt:
@@ -36,8 +42,8 @@ before_install:
 
 install:
 # Build dependencies
-- stack --no-terminal --install-ghc test --only-dependencies
+- stack --no-terminal --install-ghc test --only-dependencies $STACK_RESOLVER
 
 script:
 # Build the package, its tests, and its docs and run the tests
-- stack --no-terminal test --haddock --no-haddock-deps
+- stack --no-terminal test --haddock --no-haddock-deps $STACK_RESOLVER
