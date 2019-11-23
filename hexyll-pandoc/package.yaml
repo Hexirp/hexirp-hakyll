@@ -36,24 +36,6 @@ extra-source-files:
 - data/templates/rss-item.xml
 - data/templates/rss.xml
 
-data-dir: data
-
-data-files:
-- example/posts/2015-11-28-carpe-diem.markdown
-- example/posts/2015-10-07-rosa-rosa-rosam.markdown
-- example/posts/2015-12-07-tu-quoque.markdown
-- example/posts/2015-08-12-spqr.markdown
-- example/site.hs
-- example/images/haskell-logo.png
-- example/templates/post-list.html
-- example/templates/default.html
-- example/templates/archive.html
-- example/templates/post.html
-- example/css/default.css
-- example/index.html
-- example/about.rst
-- example/contact.markdown
-
 dependencies:
 - base                 >= 4.11.1.0 && < 4.13
 - binary               >= 0.8.5.1  && < 0.9
