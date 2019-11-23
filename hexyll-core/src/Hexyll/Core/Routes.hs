@@ -43,9 +43,6 @@ module Hexyll.Core.Routes
 
 
 --------------------------------------------------------------------------------
-#if MIN_VERSION_base(4,9,0)
-import           Data.Semigroup                 (Semigroup (..))
-#endif
 import           System.FilePath                (replaceExtension)
 
 
@@ -78,7 +75,6 @@ newtype Routes = Routes
 
 
 --------------------------------------------------------------------------------
-#if MIN_VERSION_base(4,9,0)
 instance Semigroup Routes where
     (<>) (Routes f) (Routes g) = Routes $ \p id' -> do
         (mfp, um) <- f p id'
@@ -89,15 +85,6 @@ instance Semigroup Routes where
 instance Monoid Routes where
     mempty  = Routes $ \_ _ -> return (Nothing, False)
     mappend = (<>)
-#else
-instance Monoid Routes where
-    mempty = Routes $ \_ _ -> return (Nothing, False)
-    mappend (Routes f) (Routes g) = Routes $ \p id' -> do
-        (mfp, um) <- f p id'
-        case mfp of
-            Nothing -> g p id'
-            Just _  -> return (mfp, um)
-#endif
 
 
 --------------------------------------------------------------------------------
