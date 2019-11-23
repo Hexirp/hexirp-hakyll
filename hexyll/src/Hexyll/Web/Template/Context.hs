@@ -55,6 +55,9 @@ module Hexyll.Web.Template.Context
 import           Control.Applicative           (Alternative (..))
 import           Control.Monad                 (msum)
 import           Data.List                     (intercalate, tails)
+#if MIN_VERSION_base(4,9,0)
+import           Data.Semigroup                (Semigroup (..))
+#endif
 import           Data.Time.Clock               (UTCTime (..))
 import           Data.Time.Format              (formatTime)
 import qualified Data.Time.Format              as TF
@@ -103,12 +106,18 @@ newtype Context a = Context
 --------------------------------------------------------------------------------
 -- | Tries to find a key in the left context,
 -- or when that fails in the right context.
+#if MIN_VERSION_base(4,9,0)
 instance Semigroup (Context a) where
     (<>) (Context f) (Context g) = Context $ \k a i -> f k a i <|> g k a i
 
 instance Monoid (Context a) where
     mempty  = missingField
     mappend = (<>)
+#else
+instance Monoid (Context a) where
+    mempty                          = missingField
+    mappend (Context f) (Context g) = Context $ \k a i -> f k a i <|> g k a i
+#endif
 
 
 --------------------------------------------------------------------------------
@@ -452,4 +461,8 @@ missingField = Context $ \k _ _ -> noResult $
     "Missing field '" ++ k ++ "' in context"
 
 parseTimeM :: Bool -> TimeLocale -> String -> String -> Maybe UTCTime
-parseTimeM _ = TF.parseTimeM
+#if MIN_VERSION_time(1,5,0)
+parseTimeM = TF.parseTimeM
+#else
+parseTimeM _ = TF.parseTime
+#endif
