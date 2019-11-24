@@ -31,6 +31,6 @@ main = defaultMain $ testGroup "Hexyll"
     , Hexyll.Core.Routes.Tests.tests
     , Hexyll.Core.Rules.Tests.tests
     , Hexyll.Core.Store.Tests.tests
---    , Hexyll.Core.UnixFilter.Tests.tests
+    , Hexyll.Core.UnixFilter.Tests.tests
     , Hexyll.Core.Util.String.Tests.tests
     ]

@@ -30,7 +30,7 @@ import           Data.Typeable        (TypeRep, Typeable, cast, typeOf)
 import           Numeric              (showHex)
 import           System.Directory     (createDirectoryIfMissing)
 import           System.Directory     (doesFileExist, removeFile)
-import           System.FilePath      (pathSeparator, (</>))
+import           System.FilePath      ((</>))
 import           System.IO            (IOMode (..), hClose, openFile)
 import           System.IO.Error      (catchIOError, ioeSetFileName,
                                        ioeSetLocation, modifyIOError)
@@ -92,10 +92,8 @@ withStore store loc run identifier = modifyIOError handle $ run key path
   where
     key = hash identifier
     path = storeDirectory store </> key
-    handle e = e
-      `ioeSetFileName` (path ++ " for "
-                             ++ intercalate [pathSeparator] identifier)
-      `ioeSetLocation` ("Store." ++ loc)
+    handle e = e `ioeSetFileName` (path ++ " for " ++ intercalate "/" identifier)
+                 `ioeSetLocation` ("Store." ++ loc)
 
 --------------------------------------------------------------------------------
 -- | Auxiliary: add an item to the in-memory cache
@@ -196,13 +194,7 @@ deleteFile = (`catchIOError` \_ -> return ()) . removeFile
 --------------------------------------------------------------------------------
 -- | Mostly meant for internal usage
 hash :: [String] -> String
-hash = id
-    . toHex
-    . B.unpack
-    . hashMD5
-    . T.encodeUtf8
-    . T.pack
-    . intercalate [pathSeparator]
+hash = toHex . B.unpack . hashMD5 . T.encodeUtf8 . T.pack . intercalate "/"
   where
     toHex [] = ""
     toHex (x : xs) | x < 16 = '0' : showHex x (toHex xs)
