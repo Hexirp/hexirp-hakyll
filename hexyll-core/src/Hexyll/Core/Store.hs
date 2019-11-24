@@ -30,7 +30,7 @@ import           Data.Typeable        (TypeRep, Typeable, cast, typeOf)
 import           Numeric              (showHex)
 import           System.Directory     (createDirectoryIfMissing)
 import           System.Directory     (doesFileExist, removeFile)
-import           System.FilePath      ((</>))
+import           System.FilePath      (pathSeparator, (</>))
 import           System.IO            (IOMode (..), hClose, openFile)
 import           System.IO.Error      (catchIOError, ioeSetFileName,
                                        ioeSetLocation, modifyIOError)
