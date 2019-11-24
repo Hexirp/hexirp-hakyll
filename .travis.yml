@@ -24,9 +24,9 @@ cache:
 
 # Use Build Matrix to build multiple stack resolvers.
 env:
-#- STACK_RESOLVER='--stack-yaml stack.yaml'
-- STACK_RESOLVER='--stack-yaml lts-12.26.yaml'
-- STACK_RESOLVER='--stack-yaml lts-13.30.yaml'
+#- STACK_YAML='stack.yaml'
+- STACK_YAML='lts-12.26.yaml'
+- STACK_YAML='lts-13.30.yaml'
 
 # Ensure necessary system libraries are present
 addons:
@@ -42,8 +42,8 @@ before_install:
 
 install:
 # Build dependencies
-- stack --no-terminal --install-ghc test --only-dependencies $STACK_RESOLVER
+- stack --no-terminal --install-ghc test --only-dependencies
 
 script:
 # Build the package, its tests, and its docs and run the tests
-- stack --no-terminal test --haddock --no-haddock-deps $STACK_RESOLVER
+- stack --no-terminal test --haddock --no-haddock-deps
