@@ -24,7 +24,7 @@ cache:
 
 # Use Build Matrix to build multiple stack resolvers.
 env:
-- STACK_RESOLVER='--stack-yaml stack.yaml'
+#- STACK_RESOLVER='--stack-yaml stack.yaml'
 - STACK_RESOLVER='--stack-yaml stack/lts-12.26.yaml'
 - STACK_RESOLVER='--stack-yaml stack/lts-13.30.yaml'
 
