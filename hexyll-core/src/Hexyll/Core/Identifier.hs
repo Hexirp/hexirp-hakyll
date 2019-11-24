@@ -75,7 +75,7 @@ fromFilePath = Identifier Nothing .
 --------------------------------------------------------------------------------
 -- | Convert an identifier to a relative 'FilePath'
 toFilePath :: Identifier -> FilePath
-toFilePath = intercalate [pathSepalator] . split' . identifierPath
+toFilePath = intercalate [pathSeparator] . split' . identifierPath
   where
     split' = map dropTrailingPathSeparator . splitPath
 
