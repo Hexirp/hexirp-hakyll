@@ -77,7 +77,7 @@ fromFilePath = Identifier Nothing .
 toFilePath :: Identifier -> FilePath
 toFilePath = intercalate [pathSepalator] . split' . identifierPath
   where
-    split' = map dropTrainingPathSeparator . splitPath
+    split' = map dropTrailingPathSeparator . splitPath
 
 
 --------------------------------------------------------------------------------
