@@ -2,8 +2,7 @@ resolver: lts-12.26
 
 flags:
   hexyll:
-    #checkExternal: true
-    checkExternal: false
+    checkExternal: true
 
 packages:
 - 'hexyll-core'
