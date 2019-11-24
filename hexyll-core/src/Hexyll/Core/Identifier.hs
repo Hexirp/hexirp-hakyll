@@ -21,7 +21,10 @@ module Hexyll.Core.Identifier
 --------------------------------------------------------------------------------
 import           Control.DeepSeq     (NFData (..))
 import           Data.List           (intercalate)
-import           System.FilePath     (dropTrailingPathSeparator, splitPath)
+import           System.FilePath     ( pathSeparator
+                                     , dropTrailingPathSeparator
+                                     , splitPath
+                                     )
 
 
 --------------------------------------------------------------------------------
