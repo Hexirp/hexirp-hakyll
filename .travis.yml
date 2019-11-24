@@ -9,7 +9,9 @@
 # named .travis.yml
 
 # Choose a OS
-os: linux
+os:
+- linux
+- windows
 
 # Choose a build environment
 dist: xenial
