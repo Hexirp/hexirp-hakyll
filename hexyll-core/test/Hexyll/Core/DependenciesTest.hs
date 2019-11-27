@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 module Hexyll.Core.DependenciesTest
-    ( tests
+    ( test_tests
     ) where
 
 
@@ -20,8 +20,8 @@ import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "Hexyll.Core.Dependencies.Tests" $
+test_tests :: TestTree
+test_tests = testGroup "Hexyll.Core.DependenciesTest" $
     fromAssertions "analyze" [case01, case02, case03]
 
 
