@@ -12,27 +12,27 @@ import           Test.Tasty                           ( TestTree
 
 
 --------------------------------------------------------------------------------
-import qualified Hexyll.Core.Dependencies.Tests
-import qualified Hexyll.Core.Identifier.Tests
-import qualified Hexyll.Core.Provider.Metadata.Tests
-import qualified Hexyll.Core.Provider.Tests
-import qualified Hexyll.Core.Routes.Tests
-import qualified Hexyll.Core.Rules.Tests
-import qualified Hexyll.Core.Store.Tests
-import qualified Hexyll.Core.UnixFilter.Tests
-import qualified Hexyll.Core.Util.String.Tests
+import qualified Hexyll.Core.DependenciesTest
+import qualified Hexyll.Core.IdentifierTest
+import qualified Hexyll.Core.Provider.MetadataTest
+import qualified Hexyll.Core.ProviderTest
+import qualified Hexyll.Core.RoutesTest
+import qualified Hexyll.Core.RulesTest
+import qualified Hexyll.Core.StoreTest
+import qualified Hexyll.Core.UnixFilterTest
+import qualified Hexyll.Core.Util.StringTest
 
 
 --------------------------------------------------------------------------------
 test_main :: TestTree
 test_main = testGroup "Hexyll"
-    [ Hexyll.Core.Dependencies.Tests.tests
-    , Hexyll.Core.Identifier.Tests.tests
-    , Hexyll.Core.Provider.Metadata.Tests.tests
-    , Hexyll.Core.Provider.Tests.tests
-    , Hexyll.Core.Routes.Tests.tests
-    , Hexyll.Core.Rules.Tests.tests
-    , Hexyll.Core.Store.Tests.tests
-    , Hexyll.Core.UnixFilter.Tests.tests
-    , Hexyll.Core.Util.String.Tests.tests
+    [ Hexyll.Core.DependenciesTest.tests
+    , Hexyll.Core.IdentifierTest.tests
+    , Hexyll.Core.Provider.MetadataTest.tests
+    , Hexyll.Core.ProviderTest.tests
+    , Hexyll.Core.RoutesTest.tests
+    , Hexyll.Core.RulesTest.tests
+    , Hexyll.Core.StoreTest.tests
+    , Hexyll.Core.UnixFilterTest.tests
+    , Hexyll.Core.Util.StringTest.tests
     ]
