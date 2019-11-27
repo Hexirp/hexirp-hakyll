@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hexyll.Core.Provider.Metadata.Tests
+module Hexyll.Core.Provider.MetadataTest
     ( tests
     ) where
 

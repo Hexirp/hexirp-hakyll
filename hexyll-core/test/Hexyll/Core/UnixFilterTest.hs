@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hexyll.Core.UnixFilter.Tests
+module Hexyll.Core.UnixFilterTest
     ( tests
     ) where
 

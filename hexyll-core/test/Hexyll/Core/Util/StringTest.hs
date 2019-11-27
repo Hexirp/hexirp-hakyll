@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hexyll.Core.Util.String.Tests
+module Hexyll.Core.Util.StringTest
     ( tests
     ) where
 

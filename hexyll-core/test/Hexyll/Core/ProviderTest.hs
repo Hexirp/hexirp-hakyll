@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hexyll.Core.Provider.Tests
+module Hexyll.Core.ProviderTest
     ( tests
     ) where
 

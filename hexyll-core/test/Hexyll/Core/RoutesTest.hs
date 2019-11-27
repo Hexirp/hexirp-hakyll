@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hexyll.Core.Routes.Tests
+module Hexyll.Core.RoutesTest
     ( tests
     ) where
 

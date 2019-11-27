@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hexyll.Core.Identifier.Tests
+module Hexyll.Core.IdentifierTest
     ( tests
     ) where
 
