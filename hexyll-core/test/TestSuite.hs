@@ -1,12 +1,14 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE CPP #-}
 module TestSuite
-    ( main
+    ( test_main
     ) where
 
 
 --------------------------------------------------------------------------------
-import           Test.Tasty                           (defaultMain, testGroup)
+import           Test.Tasty                           ( defaultMain
+                                                      , testGroup
+                                                      , TestTree)
 
 
 --------------------------------------------------------------------------------
@@ -22,8 +24,8 @@ import qualified Hexyll.Core.Util.String.Tests
 
 
 --------------------------------------------------------------------------------
-main :: IO ()
-main = defaultMain $ testGroup "Hexyll"
+test_main :: TestTree
+test_main = testGroup "Hexyll"
     [ Hexyll.Core.Dependencies.Tests.tests
     , Hexyll.Core.Identifier.Tests.tests
     , Hexyll.Core.Provider.Metadata.Tests.tests
