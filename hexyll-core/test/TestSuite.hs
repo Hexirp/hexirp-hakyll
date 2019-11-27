@@ -6,9 +6,9 @@ module TestSuite
 
 
 --------------------------------------------------------------------------------
-import           Test.Tasty                           ( defaultMain
+import           Test.Tasty                           ( TestTree
                                                       , testGroup
-                                                      , TestTree)
+                                                      )
 
 
 --------------------------------------------------------------------------------
