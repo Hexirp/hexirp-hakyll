@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE CPP #-}
-module Main
+module TestSuite
     ( main
     ) where
 
