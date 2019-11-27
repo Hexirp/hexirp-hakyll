@@ -85,7 +85,7 @@ library:
   - Hexyll.Web.Pandoc.Binary
 
 tests:
-  hexyll-core-test:
+  hexyll-pandoc-test:
     main: TestSuite.hs
     source-dirs: test
     ghc-options:
