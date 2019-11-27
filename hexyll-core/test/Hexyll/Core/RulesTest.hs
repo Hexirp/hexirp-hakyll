@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 module Hexyll.Core.RulesTest
-    ( tests
+    ( test_tests
     ) where
 
 
@@ -24,8 +24,8 @@ import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "Hexyll.Core.Rules.Tests" $ fromAssertions "runRules"
+test_tests :: TestTree
+test_tests = testGroup "Hexyll.Core.Rules.Tests" $ fromAssertions "runRules"
     [case01]
 
 

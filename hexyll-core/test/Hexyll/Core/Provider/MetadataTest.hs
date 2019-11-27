@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 module Hexyll.Core.Provider.MetadataTest
-    ( tests
+    ( test_tests
     ) where
 
 
@@ -16,8 +16,8 @@ import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "Hexyll.Core.Provider.Metadata.Tests" $
+test_tests :: TestTree
+test_tests = testGroup "Hexyll.Core.Provider.Metadata.Tests" $
     fromAssertions "page" [testPage01, testPage02]
 
 
