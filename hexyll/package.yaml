@@ -96,7 +96,7 @@ library:
     - -DCHECK_EXTERNAL
 
 tests:
-  hexyll-core-test:
+  hexyll-test:
     main: TestSuite.hs
     source-dirs: test
     ghc-options:
