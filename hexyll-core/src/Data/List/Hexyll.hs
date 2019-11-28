@@ -1,9 +1,9 @@
 module Data.List.Hexyll
-    ( module Data.List
-    , breakWhen
+    ( breakWhen
     ) where
 
-import           Data.List
+import Prelude
+import Data.List
 
 -- | Like 'break', but can act on the entire tail of the list.
 breakWhen :: ([a] -> Bool) -> [a] -> ([a], [a])
