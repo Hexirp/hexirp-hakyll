@@ -81,9 +81,9 @@ library:
   - -Wredundant-constraints
 
 tests:
-  hexyll-core-test:
+  hexyll-core-unit-test:
     main: Spec.hs
-    source-dirs: test
+    source-dirs: unit-test
     ghc-options:
     - -Wall
     - -Wcompat
