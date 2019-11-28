@@ -22,5 +22,5 @@ module Data.List.HexyllSpec (spec) where
       it "may return empty list on second element" $ do
         breakWhen (const False) [1,2,3,4] `shouldBe` ([1,2,3,4], [])
       it "does not apply @p@ to an empty list" $ do
-        breakWhen (\xs -> if null xs then undefined else False)
+        breakWhen (\xs -> if null xs then undefined else False) [1,2,3,4]
             `shouldBe` ([1,2,3,4], [])
