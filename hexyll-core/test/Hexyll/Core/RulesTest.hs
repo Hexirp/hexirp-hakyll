@@ -25,7 +25,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 test_tests :: TestTree
-test_tests = testGroup "Hexyll.Core.Rules.Tests" $ fromAssertions "runRules"
+test_tests = testGroup "Hexyll.Core.RulesTest" $ fromAssertions "runRules"
     [case01]
 
 

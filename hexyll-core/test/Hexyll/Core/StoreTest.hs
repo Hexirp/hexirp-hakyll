@@ -22,7 +22,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 test_tests :: TestTree
-test_tests = testGroup "Hexyll.Core.Store.Tests"
+test_tests = testGroup "Hexyll.Core.StoreTest"
     [ testProperty "simple get . set"     simpleSetGet
     , testProperty "persistent get . set" persistentSetGet
     , testCase     "WrongType get . set"  wrongType

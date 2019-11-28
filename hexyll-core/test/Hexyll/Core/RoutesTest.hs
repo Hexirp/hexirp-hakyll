@@ -18,7 +18,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 test_tests :: TestTree
-test_tests = testGroup "Hexyll.Core.Routes.Tests" $ fromAssertions "runRoutes"
+test_tests = testGroup "Hexyll.Core.RoutesTest" $ fromAssertions "runRoutes"
     [ testRoutes "foo.html" (setExtension "html") "foo"
     , testRoutes "foo.html" (setExtension ".html") "foo"
     , testRoutes "foo.html" (setExtension "html") "foo.markdown"

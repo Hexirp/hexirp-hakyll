@@ -15,7 +15,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 test_tests :: TestTree
-test_tests = testGroup "Hexyll.Core.Provider.Tests"
+test_tests = testGroup "Hexyll.Core.ProviderTest"
     [ testCase "case01" case01
     ]
 

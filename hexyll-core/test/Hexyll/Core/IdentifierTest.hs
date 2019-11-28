@@ -18,7 +18,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 test_tests :: TestTree
-test_tests = testGroup "Hexyll.Core.Identifier.Tests" $ concat
+test_tests = testGroup "Hexyll.Core.IdentifierTest" $ concat
     [ captureTests
     , matchesTests
     ]

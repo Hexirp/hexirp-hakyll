@@ -16,7 +16,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 test_tests :: TestTree
-test_tests = testGroup "Hexyll.Core.Util.String.Tests" $ concat
+test_tests = testGroup "Hexyll.Core.Util.StringTest" $ concat
     [ fromAssertions "trim"
         [ "foo" @=? trim " foo\n\t "
         ]

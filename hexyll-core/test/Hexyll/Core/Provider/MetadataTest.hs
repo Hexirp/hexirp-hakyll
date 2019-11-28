@@ -17,7 +17,7 @@ import           TestSuite.Util
 
 --------------------------------------------------------------------------------
 test_tests :: TestTree
-test_tests = testGroup "Hexyll.Core.Provider.Metadata.Tests" $
+test_tests = testGroup "Hexyll.Core.Provider.MetadataTest" $
     fromAssertions "page" [testPage01, testPage02]
 
 
