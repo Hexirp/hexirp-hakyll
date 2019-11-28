@@ -82,7 +82,7 @@ library:
 
 tests:
   hexyll-core-test:
-    main: TestSuite.hs
+    main: Spec.hs
     source-dirs: test
     ghc-options:
     - -Wall
@@ -99,5 +99,6 @@ tests:
     - hexyll-core
     - QuickCheck       >= 2.11.3   && < 2.13
     - tasty            >= 1.1.0.4  && < 1.3
+    - tasty-discover   >= 4.2.1    && < 4.3
     - tasty-hunit      >= 0.10.0.1 && < 0.11
     - tasty-quickcheck >= 0.10     && < 0.11

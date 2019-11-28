@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hexyll.Core.UnixFilter.Tests
-    ( tests
+module Hexyll.Core.UnixFilterTest
+    ( test_tests
     ) where
 
 
@@ -20,8 +20,8 @@ import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "Hexyll.Core.UnixFilter.Tests"
+test_tests :: TestTree
+test_tests = testGroup "Hexyll.Core.UnixFilterTest"
     [ testCase "unixFilter rev"   unixFilterRev
     , testCase "unixFilter false" unixFilterFalse
     , testCase "unixFilter error" unixFilterError

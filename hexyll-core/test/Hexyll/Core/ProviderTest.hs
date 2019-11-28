@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hexyll.Core.Provider.Tests
-    ( tests
+module Hexyll.Core.ProviderTest
+    ( test_tests
     ) where
 
 
@@ -14,8 +14,8 @@ import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "Hexyll.Core.Provider.Tests"
+test_tests :: TestTree
+test_tests = testGroup "Hexyll.Core.ProviderTest"
     [ testCase "case01" case01
     ]
 

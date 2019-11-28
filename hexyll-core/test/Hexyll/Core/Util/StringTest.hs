@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
-module Hexyll.Core.Util.String.Tests
-    ( tests
+module Hexyll.Core.Util.StringTest
+    ( test_tests
     ) where
 
 
@@ -15,8 +15,8 @@ import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "Hexyll.Core.Util.String.Tests" $ concat
+test_tests :: TestTree
+test_tests = testGroup "Hexyll.Core.Util.StringTest" $ concat
     [ fromAssertions "trim"
         [ "foo" @=? trim " foo\n\t "
         ]

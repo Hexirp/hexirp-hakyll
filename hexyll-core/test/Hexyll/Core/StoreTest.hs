@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hexyll.Core.Store.Tests
-    ( tests
+module Hexyll.Core.StoreTest
+    ( test_tests
     ) where
 
 
@@ -21,8 +21,8 @@ import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "Hexyll.Core.Store.Tests"
+test_tests :: TestTree
+test_tests = testGroup "Hexyll.Core.StoreTest"
     [ testProperty "simple get . set"     simpleSetGet
     , testProperty "persistent get . set" persistentSetGet
     , testCase     "WrongType get . set"  wrongType

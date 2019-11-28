@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hexyll.Core.Routes.Tests
-    ( tests
+module Hexyll.Core.RoutesTest
+    ( test_tests
     ) where
 
 
@@ -17,8 +17,8 @@ import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "Hexyll.Core.Routes.Tests" $ fromAssertions "runRoutes"
+test_tests :: TestTree
+test_tests = testGroup "Hexyll.Core.RoutesTest" $ fromAssertions "runRoutes"
     [ testRoutes "foo.html" (setExtension "html") "foo"
     , testRoutes "foo.html" (setExtension ".html") "foo"
     , testRoutes "foo.html" (setExtension "html") "foo.markdown"

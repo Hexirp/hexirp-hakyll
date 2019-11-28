@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-module Hexyll.Core.Identifier.Tests
-    ( tests
+module Hexyll.Core.IdentifierTest
+    ( test_tests
     ) where
 
 
@@ -17,8 +17,8 @@ import           TestSuite.Util
 
 
 --------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "Hexyll.Core.Identifier.Tests" $ concat
+test_tests :: TestTree
+test_tests = testGroup "Hexyll.Core.IdentifierTest" $ concat
     [ captureTests
     , matchesTests
     ]
