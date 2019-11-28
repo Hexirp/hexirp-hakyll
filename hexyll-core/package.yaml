@@ -102,3 +102,22 @@ tests:
     - tasty-discover   >= 4.2.1    && < 4.3
     - tasty-hunit      >= 0.10.0.1 && < 0.11
     - tasty-quickcheck >= 0.10     && < 0.11
+  hexyll-core-doctest:
+    main: Spec.hs
+    source-dirs: doctest
+    ghc-options:
+    - -Wall
+    - -Wcompat
+    - -Widentities
+    - -Wincomplete-record-updates
+    - -Wincomplete-uni-patterns
+    - -Wpartial-fields
+    - -Wredundant-constraints
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    build-tools:
+    - doctest-driver-gen >= 0.2.0.4 && < 0.4
+    dependencies:
+    - hexyll-core
+    - doctest     >= 0.16.0.1 && < 0.17
