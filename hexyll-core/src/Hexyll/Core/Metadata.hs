@@ -22,7 +22,7 @@ import qualified Data.HashMap.Strict            as HMS
 import qualified Data.Set                       as S
 import qualified Data.Text                      as T
 import qualified Data.Vector                    as V
-import qualified Data.Yaml.Extended                      as Yaml
+import qualified Data.Yaml.Hexyll                      as Yaml
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern

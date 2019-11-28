@@ -1,4 +1,4 @@
-module Data.Yaml.Extended
+module Data.Yaml.Hexyll
     ( module Data.Yaml
     , toString
     , toList

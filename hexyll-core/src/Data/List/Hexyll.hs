@@ -1,4 +1,4 @@
-module Data.List.Extended
+module Data.List.Hexyll
     ( module Data.List
     , breakWhen
     ) where
