@@ -14,27 +14,27 @@ description: Please see the README on GitHub at <https://github.com/Hexirp/hexir
 extra-source-files:
 - README.md
 - ChangeLog.md
-- test/data/embed.html
-- test/data/example.md
-- test/data/example.md.metadata
-- test/data/images/favicon.ico
-- test/data/just-meta.html
-- test/data/just-meta.html.out
-- test/data/partial-helper.html
-- test/data/partial.html
-- test/data/partial.html.out
-- test/data/posts/2010-08-26-birthday.md
-- test/data/posts/2018-09-26.md
-- test/data/posts/2019/05/10/tomorrow.md
-- test/data/russian.md
-- test/data/strip.html
-- test/data/strip.html.out
-- test/data/template.html
-- test/data/template.html.out
 - data/templates/atom-item.xml
 - data/templates/atom.xml
 - data/templates/rss-item.xml
 - data/templates/rss.xml
+- unit-test/data/embed.html
+- unit-test/data/example.md
+- unit-test/data/example.md.metadata
+- unit-test/data/images/favicon.ico
+- unit-test/data/just-meta.html
+- unit-test/data/just-meta.html.out
+- unit-test/data/partial-helper.html
+- unit-test/data/partial.html
+- unit-test/data/partial.html.out
+- unit-test/data/posts/2010-08-26-birthday.md
+- unit-test/data/posts/2018-09-26.md
+- unit-test/data/posts/2019/05/10/tomorrow.md
+- unit-test/data/russian.md
+- unit-test/data/strip.html
+- unit-test/data/strip.html.out
+- unit-test/data/template.html
+- unit-test/data/template.html.out
 
 dependencies:
 - base                 >= 4.11.1.0 && < 4.13
