@@ -116,8 +116,6 @@ tests:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    build-tools:
-    - doctest-driver-gen >= 0.2.0.4 && < 0.4
     dependencies:
     - hexyll-core
     - doctest     >= 0.16.0.1 && < 0.17

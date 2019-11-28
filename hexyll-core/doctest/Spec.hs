@@ -1,1 +1,10 @@
-{-# OPTIONS_GHC -F -pgmF doctest-driver-gen -optF src #-}
+module Main where
+
+  import Prelude
+  import Test.DocTest (doctest)
+
+  main :: IO ()
+  main = doctest
+    [ "-isrc"
+    , "src/Data/List/Hexyll.hs"
+    ]
