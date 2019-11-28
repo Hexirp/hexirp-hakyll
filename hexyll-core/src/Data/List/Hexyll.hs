@@ -37,6 +37,8 @@ module Data.List.Hexyll
   --
   -- >>> breakWhen null [1,2,3,4]
   -- ([1,2,3,4],[])
+  --
+  -- @since 0.1.0.0
   breakWhen :: ([a] -> Bool) -> [a] -> ([a], [a])
   breakWhen _ xs@[]      = ([], xs)
   breakWhen p xs@(x:xs')
