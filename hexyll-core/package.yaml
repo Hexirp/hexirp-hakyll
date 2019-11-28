@@ -81,6 +81,23 @@ library:
   - -Wredundant-constraints
 
 tests:
+  hexyll-core-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+    - -Wall
+    - -Wcompat
+    - -Widentities
+    - -Wincomplete-record-updates
+    - -Wincomplete-uni-patterns
+    - -Wpartial-fields
+    - -Wredundant-constraints
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hexyll-core
+    - hspec       >= 2.5.5 && < 2.7
   hexyll-core-unit-test:
     main: Spec.hs
     source-dirs: unit-test
