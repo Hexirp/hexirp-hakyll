@@ -119,9 +119,7 @@ tests:
     - tasty-discover   >= 4.2.1    && < 4.3
     - tasty-hunit      >= 0.10.0.1 && < 0.11
     - tasty-quickcheck >= 0.10     && < 0.11
-    when:
-    - condition: os(windows)
-      buildable: false
+    buildable: false
   hexyll-core-doctest:
     main: Spec.hs
     source-dirs: doctest
