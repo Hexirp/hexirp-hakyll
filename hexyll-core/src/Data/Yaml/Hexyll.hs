@@ -35,7 +35,7 @@ module Data.Yaml.Hexyll
   -- >>> toString (Number (scientific 12 1))
   -- Just "120"
   --
-  -- >>> toString (Number (scientific 12 -1))
+  -- >>> toString (Number (scientific 12 (-1)))
   -- Just "1.2"
   --
   -- >>> toString Null
