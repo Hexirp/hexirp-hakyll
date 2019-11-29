@@ -1,6 +1,5 @@
 module Data.Yaml.Hexyll
-    ( module Data.Yaml
-    , toString
+    ( toString
     , toList
     ) where
 
