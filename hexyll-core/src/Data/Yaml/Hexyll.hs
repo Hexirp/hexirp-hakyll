@@ -3,6 +3,8 @@ module Data.Yaml.Hexyll
     , toList
     ) where
 
+import Prelude
+
 import qualified Data.Text   as T
 import qualified Data.Vector as V
 import           Data.Yaml
