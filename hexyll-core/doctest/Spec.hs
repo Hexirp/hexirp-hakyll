@@ -7,4 +7,5 @@ module Main where
   main = doctest
     [ "-isrc"
     , "src/Data/List/Hexyll.hs"
+    , "src/Data/Yaml/Hexyll.hs"
     ]
