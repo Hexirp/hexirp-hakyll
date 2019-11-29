@@ -20,7 +20,7 @@ toString (Bool True)  = Just "true"
 toString (Bool False) = Just "false"
 toString (Number d)
   | isInteger d       = Just (formatScientific Fixed (Just 0) d)
-  | otherwise         = Just (formatScientific Fixed Nothing d)
+  | otherwise         = Just (formatScientific Generic Nothing d)
 toString _            = Nothing
 
 toList :: Value -> Maybe [Value]
