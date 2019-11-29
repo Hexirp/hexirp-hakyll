@@ -11,8 +11,8 @@ module Data.Yaml.Hexyll
   import           Data.Scientific
 
   -- | Convert 'Data.Yaml.Value' to 'String' for hexyll. If 'toString' apply to
-  -- a value which is not a scalar (is 'Object', 'Array', or 'Null'), will return
-  -- @Nothing@.
+  -- a value which is not a scalar (is 'Object', 'Array', or 'Null'), will
+  -- return @Nothing@.
   --
   -- 'toString' make sure that numeric fields containing integer numbers are
   -- shown as integers (i.e., "42" instead of "42.0").
