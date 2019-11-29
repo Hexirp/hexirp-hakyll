@@ -27,6 +27,10 @@ module Data.Yaml.Hexyll
     | otherwise         = Just (formatScientific Generic Nothing d)
   toString _            = Nothing
 
+  -- | Convert 'Data.Yaml.Value' to @['Value']@ list for hexyll. If 'toString'
+  -- apply to a value which is not 'Array', will return @Nothing@.
+  --
+  -- @since 0.1.0.0
   toList :: Value -> Maybe [Value]
   toList (Array a) = Just (V.toList a)
   toList _         = Nothing
