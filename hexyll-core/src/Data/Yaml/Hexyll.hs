@@ -1,3 +1,12 @@
+-- |
+-- Module: Data.Yaml.Hexyll
+-- Copyright: (c) 2019 Hexirp
+-- License: Apache-2.0
+-- Maintainer: https://github.com/Hexirp/hexirp-hakyll
+-- Stability: stable
+-- Portability: portable
+--
+-- This module includes functions about "Data.Yaml".
 module Data.Yaml.Hexyll
   ( toString
   , toList
