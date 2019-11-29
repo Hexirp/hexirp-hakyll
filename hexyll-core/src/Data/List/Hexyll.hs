@@ -1,6 +1,5 @@
 -- |
 -- Module: Data.List.Hexyll
--- Description: Additional functions of Data.List
 -- Copyright: (c) 2019 Hexirp
 -- License: Apache-2.0
 -- Maintainer: https://github.com/Hexirp/hexirp-hakyll
@@ -33,9 +32,6 @@ module Data.List.Hexyll
   -- ([],[1,2,3,4])
   --
   -- >>> breakWhen (const False) [1,2,3,4]
-  -- ([1,2,3,4],[])
-  --
-  -- >>> breakWhen null [1,2,3,4]
   -- ([1,2,3,4],[])
   --
   -- @since 0.1.0.0
