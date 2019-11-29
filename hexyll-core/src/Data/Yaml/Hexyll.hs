@@ -19,9 +19,9 @@ module Data.Yaml.Hexyll
   import           Data.Yaml
   import           Data.Scientific
 
-  -- | Convert 'Data.Yaml.Value' to 'String' for hexyll. If 'toString' apply to
-  -- a value which is not a scalar (is 'Object', 'Array', or 'Null'), will
-  -- return @Nothing@.
+  -- | Convert 'Value' to 'String' for hexyll. If 'toString' apply to a value
+  -- which is not a scalar (is 'Object', 'Array', or 'Null'), will return
+  -- @Nothing@.
   --
   -- 'toString' make sure that numeric fields containing integer numbers are
   -- shown as integers (i.e., "42" instead of "42.0").
@@ -36,8 +36,8 @@ module Data.Yaml.Hexyll
     | otherwise         = Just (formatScientific Generic Nothing d)
   toString _            = Nothing
 
-  -- | Convert 'Data.Yaml.Value' to @['Value']@ list for hexyll. If 'toString'
-  -- apply to a value which is not 'Array', will return @Nothing@.
+  -- | Convert 'Value' to @['Value']@ list for hexyll. If 'toString' apply to a
+  -- value which is not 'Array', will return @Nothing@.
   --
   -- @since 0.1.0.0
   toList :: Value -> Maybe [Value]
