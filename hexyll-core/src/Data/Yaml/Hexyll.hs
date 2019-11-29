@@ -26,6 +26,21 @@ module Data.Yaml.Hexyll
   -- 'toString' make sure that numeric fields containing integer numbers are
   -- shown as integers (i.e., "42" instead of "42.0").
   --
+  -- >>> toString (String (T.pack "foo"))
+  -- Just "foo"
+  --
+  -- >>> toString (Bool True)
+  -- Just "true"
+  --
+  -- >>> toString (Number (scientific 12 1))
+  -- Just "120"
+  --
+  -- >>> toString (Number (scientific 12 -1))
+  -- Just "1.2"
+  --
+  -- >>> toString Null
+  -- Nothing
+  --
   -- @since 0.1.0.0
   toString :: Value -> Maybe String
   toString (String t)   = Just (T.unpack t)
