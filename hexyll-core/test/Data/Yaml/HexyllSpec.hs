@@ -17,7 +17,7 @@ module Data.Yaml.HexyllSpec (spec) where
     describe "toString" $ do
 
       it "works at String" $ do
-        toString (T.pack "foo") `shouldBe` Just "foo"
+        toString (String (T.pack "foo")) `shouldBe` Just "foo"
 
       it "works at Bool" $ do
         toString (Bool True) `shouldBe` Just "true"
@@ -47,5 +47,5 @@ module Data.Yaml.HexyllSpec (spec) where
     describe "toList" $
 
       it "works at Array" $ do
-        toString (Array (V.fromList [Bool True, Bool False]))
+        toList (Array (V.fromList [Bool True, Bool False]))
             `shouldBe` Just [Bool True, Bool False]
