@@ -32,6 +32,9 @@ module Data.Yaml.HexyllSpec (spec) where
       it "works at Number (too big integer)" $ do
         toString (Number (scientific 12 7)) `shouldBe` Just "120000000"
 
+      it "works at Number (too small fraction)" $ do
+        toString (Number (scientific 12 (-7))) `shouldBe` Just "1.2e-6"
+
       it "does not work at Array" $ do
         toString (Array V.empty) `shouldBe` Nothing
 
