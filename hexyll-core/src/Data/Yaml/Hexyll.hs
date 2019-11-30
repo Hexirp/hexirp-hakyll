@@ -54,6 +54,12 @@ module Data.Yaml.Hexyll
   -- | Convert 'Value' to @['Value']@ list for hexyll. If 'toString' apply to a
   -- value which is not 'Array', will return @Nothing@.
   --
+  -- >>> toList (Array (V.fromList [Bool True, Bool False]))
+  -- Just [Bool True,Bool False]
+  --
+  -- >>> toList (String (T.pack "foo"))
+  -- Nothing
+  --
   -- @since 0.1.0.0
   toList :: Value -> Maybe [Value]
   toList (Array a) = Just (V.toList a)
