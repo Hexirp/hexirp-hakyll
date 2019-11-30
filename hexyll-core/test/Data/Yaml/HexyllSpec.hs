@@ -3,9 +3,9 @@ module Data.Yaml.HexyllSpec (spec) where
   import Prelude
   import Test.Hspec
 
-  import qualified Data.Text    as T
-  import qualified Data.Vector  as V
-  import qualified Data.HashMap as H
+  import qualified Data.Text as T
+  import qualified Data.Vector as V
+  import qualified Data.HashMap.Strict as H
   import           Data.Yaml
   import           Data.Scientific
 
