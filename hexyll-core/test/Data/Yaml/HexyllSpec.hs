@@ -49,3 +49,10 @@ module Data.Yaml.HexyllSpec (spec) where
       it "works at Array" $ do
         toList (Array (V.fromList [Bool True, Bool False]))
             `shouldBe` Just [Bool True, Bool False]
+
+      it "does not work at something that is not Array" $ do
+        toList (String (T.pack "")) `shouldBe` Nothing
+        toList (Bool True) `shouldBe` Nothing
+        toList (Number (scientific 1 0)) `shouldBe` Nothing
+        toList (Object H.empty) `shouldBe` Nothing
+        toList Null `shouldBe` Nothing
