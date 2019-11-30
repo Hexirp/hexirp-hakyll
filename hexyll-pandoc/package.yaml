@@ -68,7 +68,6 @@ dependencies:
 - pandoc               >= 2.2.1    && < 2.6
 - pandoc-citeproc      >= 0.14.8.1 && < 0.16
 - hexyll-core          == 0.1.0.*
-- hexyll               == 0.1.0.*
 
 library:
   source-dirs: src
