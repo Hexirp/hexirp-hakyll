@@ -14,10 +14,6 @@ description: Please see the README on GitHub at <https://github.com/Hexirp/hexir
 extra-source-files:
 - README.md
 - ChangeLog.md
-- data/templates/atom-item.xml
-- data/templates/atom.xml
-- data/templates/rss-item.xml
-- data/templates/rss.xml
 - unit-test/data/embed.html
 - unit-test/data/example.md
 - unit-test/data/example.md.metadata

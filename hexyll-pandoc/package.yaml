@@ -31,10 +31,6 @@ extra-source-files:
 - test/data/strip.html.out
 - test/data/template.html
 - test/data/template.html.out
-- data/templates/atom-item.xml
-- data/templates/atom.xml
-- data/templates/rss-item.xml
-- data/templates/rss.xml
 
 dependencies:
 - base                 >= 4.11.1.0 && < 4.13
