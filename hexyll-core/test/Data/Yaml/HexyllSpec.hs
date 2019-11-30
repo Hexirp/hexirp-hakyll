@@ -27,10 +27,10 @@ module Data.Yaml.HexyllSpec (spec) where
         toString (Number (scientific 12 1)) `shouldBe` Just "120"
 
       it "works at Number (fraction)" $ do
-        toString (Number (scientific 12 (-1)) `shouldBe` Just "1.2"
+        toString (Number (scientific 12 (-1))) `shouldBe` Just "1.2"
 
       it "works at Number (too big integer)" $ do
-        toString (Number (scientific 12 7) `shouldBe` Just "120000000"
+        toString (Number (scientific 12 7)) `shouldBe` Just "120000000"
 
       it "does not work at Array" $ do
         toString (Array V.empty) `shouldBe` Nothing
