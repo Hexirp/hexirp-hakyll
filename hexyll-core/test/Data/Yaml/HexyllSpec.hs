@@ -44,7 +44,7 @@ module Data.Yaml.HexyllSpec (spec) where
       it "does not work at Null" $ do
         toString Null `shouldBe` Nothing
 
-    describe "toList" $
+    describe "toList" $ do
 
       it "works at Array" $ do
         toList (Array (V.fromList [Bool True, Bool False]))
