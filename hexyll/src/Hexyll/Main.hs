@@ -152,21 +152,9 @@ commandParser conf = OA.subparser $ foldr ((<>) . produceCommand) mempty command
           , pure Deploy
           , OA.fullDesc <> OA.progDesc "Upload/deploy your site"
            )
-        , ( "preview"
-          , pure Preview <*> portParser
-          , OA.fullDesc <> OA.progDesc "[DEPRECATED] Please use the watch command"
-          )
         , ( "rebuild"
           , pure Rebuild
           , OA.fullDesc <> OA.progDesc "Clean and build again"
-          )
-        , ( "server"
-          , pure Server <*> hostParser <*> portParser
-          , OA.fullDesc <> OA.progDesc "Start a preview server"
-          )
-        , ( "watch"
-          , pure Watch <*> hostParser <*> portParser <*> OA.switch (OA.long "no-server" <> OA.help "Disable the built-in web server")
-          , OA.fullDesc <> OA.progDesc "Autocompile on changes and start a preview server.  You can watch and recompile without running a server with --no-server."
           )
         ]
 
