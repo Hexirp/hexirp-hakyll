@@ -11,8 +11,10 @@ module Hexyll.Core.Configuration
 import           Data.Default     (Default (..))
 import           Data.List        (isPrefixOf, isSuffixOf)
 import           System.Directory (canonicalizePath)
+import           System.Exit      (ExitCode)
 import           System.FilePath  (isAbsolute, normalise, takeFileName)
 import           System.IO.Error  (catchIOError)
+import           System.Process   (system)
 
 
 --------------------------------------------------------------------------------
@@ -43,6 +45,27 @@ data Configuration = Configuration
       -- want to use the test, you should use 'shouldIgnoreFile'.
       --
       ignoreFile           :: FilePath -> Bool
+    , -- | Here, you can plug in a system command to upload/deploy your site.
+      --
+      -- Example:
+      --
+      -- > rsync -ave 'ssh -p 2217' _site jaspervdj@jaspervdj.be:hakyll
+      --
+      -- You can execute this by using
+      --
+      -- > ./site deploy
+      --
+      deployCommand        :: String
+    , -- | Function to deploy the site from Haskell.
+      --
+      -- By default, this command executes the shell command stored in
+      -- 'deployCommand'. If you override it, 'deployCommand' will not
+      -- be used implicitely.
+      --
+      -- The 'Configuration' object is passed as a parameter to this
+      -- function.
+      --
+      deploySite           :: Configuration -> IO ExitCode
     , -- | Use an in-memory cache for items. This is faster but uses more
       -- memory.
       inMemoryCache        :: Bool
@@ -61,6 +84,8 @@ defaultConfiguration = Configuration
     , tmpDirectory         = "_cache/tmp"
     , providerDirectory    = "."
     , ignoreFile           = ignoreFile'
+    , deployCommand        = "echo 'No deploy command specified' && exit 1"
+    , deploySite           = system . deployCommand
     , inMemoryCache        = True
     }
   where
