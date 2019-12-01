@@ -24,55 +24,21 @@ import           System.Process   (system)
 
 
 data Configuration = Configuration
-    { -- | Directory in which the output written
+    { -- | Directory in which the output written.
       destinationDirectory :: FilePath
-    , -- | Directory where hakyll's internal store is kept
+    , -- | Directory where hexyll's internal store is kept.
       storeDirectory       :: FilePath
-    , -- | Directory in which some temporary files will be kept
+    , -- | Directory in which some temporary files will be kept.
       tmpDirectory         :: FilePath
-    , -- | Directory where hakyll finds the files to compile. This is @.@ by
-      -- default.
+    , -- | Directory where hexyll finds the files to compile.
       providerDirectory    :: FilePath
-    , -- | Function to determine ignored files
-      --
-      -- In 'defaultConfiguration', the following files are ignored:
-      --
-      -- * files starting with a @.@
-      --
-      -- * files starting with a @#@
-      --
-      -- * files ending with a @~@
-      --
-      -- * files ending with @.swp@
-      --
-      -- Note that the files in 'destinationDirectory' and 'storeDirectory' will
-      -- also be ignored. Note that this is the configuration parameter, if you
-      -- want to use the test, you should use 'shouldIgnoreFile'.
-      --
+    , -- | Function to determine ignored files.
       ignoreFile           :: FilePath -> Bool
-    , -- | Here, you can plug in a system command to upload/deploy your site.
-      --
-      -- Example:
-      --
-      -- > rsync -ave 'ssh -p 2217' _site jaspervdj@jaspervdj.be:hakyll
-      --
-      -- You can execute this by using
-      --
-      -- > ./site deploy
-      --
+    , -- | System command to upload/deploy your site.
       deployCommand        :: String
     , -- | Function to deploy the site from Haskell.
-      --
-      -- By default, this command executes the shell command stored in
-      -- 'deployCommand'. If you override it, 'deployCommand' will not
-      -- be used implicitely.
-      --
-      -- The 'Configuration' object is passed as a parameter to this
-      -- function.
-      --
       deploySite           :: Configuration -> IO ExitCode
-    , -- | Use an in-memory cache for items. This is faster but uses more
-      -- memory.
+    , -- | Flag to use an in-memory cache for items.
       inMemoryCache        :: Bool
     }
 
