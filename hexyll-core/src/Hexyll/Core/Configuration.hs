@@ -22,7 +22,13 @@ import           System.FilePath  (isAbsolute, normalise, takeFileName)
 import           System.IO.Error  (catchIOError)
 import           System.Process   (system)
 
-
+-- | Top-level hexyll configration.
+--
+-- @provideDirectory@ is the current directory @.@ by default.
+-- See 'defaultCofiguration' if you want more information about the default
+-- values.
+--
+-- @since 0.1.0.0
 data Configuration = Configuration
     { -- | Directory in which the output written.
       destinationDirectory :: FilePath
