@@ -45,39 +45,9 @@ data Configuration = Configuration
       -- want to use the test, you should use 'shouldIgnoreFile'.
       --
       ignoreFile           :: FilePath -> Bool
-    , -- | Here, you can plug in a system command to upload/deploy your site.
-      --
-      -- Example:
-      --
-      -- > rsync -ave 'ssh -p 2217' _site jaspervdj@jaspervdj.be:hakyll
-      --
-      -- You can execute this by using
-      --
-      -- > ./site deploy
-      --
-      deployCommand        :: String
-    , -- | Function to deploy the site from Haskell.
-      --
-      -- By default, this command executes the shell command stored in
-      -- 'deployCommand'. If you override it, 'deployCommand' will not
-      -- be used implicitely.
-      --
-      -- The 'Configuration' object is passed as a parameter to this
-      -- function.
-      --
-      deploySite           :: Configuration -> IO ExitCode
     , -- | Use an in-memory cache for items. This is faster but uses more
       -- memory.
       inMemoryCache        :: Bool
-    , -- | Override default host for preview server. Default is "127.0.0.1",
-      -- which binds only on the loopback address.
-      -- One can also override the host as a command line argument:
-      -- ./site preview -h "0.0.0.0"
-      previewHost          :: String
-    , -- | Override default port for preview server. Default is 8000.
-      -- One can also override the port as a command line argument:
-      -- ./site preview -p 1234
-      previewPort          :: Int
     }
 
 --------------------------------------------------------------------------------
