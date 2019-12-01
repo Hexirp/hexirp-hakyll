@@ -6,11 +6,8 @@ module Hexyll.Commands
     , build
     , check
     , clean
-    , preview
     , rebuild
-    , server
     , deploy
-    , watch
     ) where
 
 
