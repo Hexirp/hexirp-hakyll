@@ -14,7 +14,6 @@ module Hexyll.Core.Configuration
     ) where
 
 
---------------------------------------------------------------------------------
 import           Data.Default     (Default (..))
 import           Data.List        (isPrefixOf, isSuffixOf)
 import           System.Directory (canonicalizePath)
@@ -24,7 +23,6 @@ import           System.IO.Error  (catchIOError)
 import           System.Process   (system)
 
 
---------------------------------------------------------------------------------
 data Configuration = Configuration
     { -- | Directory in which the output written
       destinationDirectory :: FilePath
@@ -78,11 +76,9 @@ data Configuration = Configuration
       inMemoryCache        :: Bool
     }
 
---------------------------------------------------------------------------------
 instance Default Configuration where
     def = defaultConfiguration
 
---------------------------------------------------------------------------------
 -- | Default configuration for a hakyll application
 defaultConfiguration :: Configuration
 defaultConfiguration = Configuration
@@ -106,7 +102,6 @@ defaultConfiguration = Configuration
         fileName = takeFileName path
 
 
---------------------------------------------------------------------------------
 -- | Check if a file should be ignored
 shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
 shouldIgnoreFile conf path = orM
