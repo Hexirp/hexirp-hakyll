@@ -132,8 +132,6 @@ optionParser conf = Options <$> verboseParser <*> commandParser conf
 commandParser :: Config.Configuration -> OA.Parser Command
 commandParser conf = OA.subparser $ foldr ((<>) . produceCommand) mempty commands
     where
-    portParser = OA.option OA.auto (OA.long "port" <> OA.help "Port to listen on" <> OA.value (Config.previewPort conf))
-    hostParser = OA.strOption (OA.long "host" <> OA.help "Host to bind on" <> OA.value (Config.previewHost conf))
 
     produceCommand (c,a,b) = OA.command c (OA.info (OA.helper <*> a) (b))
 
