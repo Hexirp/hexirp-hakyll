@@ -87,10 +87,7 @@ invokeCommands args conf check logger rules =
         Check   _      -> Commands.check conf logger check
         Clean          -> Commands.clean conf logger >> ok
         Deploy         -> Commands.deploy conf
-        Preview p      -> Commands.preview conf logger rules p >> ok
         Rebuild        -> Commands.rebuild conf logger rules
-        Server  _ _    -> Commands.server conf logger (host args) (port args) >> ok
-        Watch   _ p s  -> Commands.watch conf logger (host args) p (not s) rules >> ok
     where
         ok = return ExitSuccess
 
