@@ -1,5 +1,12 @@
---------------------------------------------------------------------------------
--- | Exports a datastructure for the top-level hakyll configuration
+-- |
+-- Module:      Hexyll.Core.COnfiguration
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: portable
+--
+-- This module defines a datastructure for the top-level hexyll configuration.
 module Hexyll.Core.Configuration
     ( Configuration (..)
     , shouldIgnoreFile
