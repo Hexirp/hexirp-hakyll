@@ -63,11 +63,7 @@ defaultConfiguration = Configuration
     , tmpDirectory         = "_cache/tmp"
     , providerDirectory    = "."
     , ignoreFile           = ignoreFile'
-    , deployCommand        = "echo 'No deploy command specified' && exit 1"
-    , deploySite           = system . deployCommand
     , inMemoryCache        = True
-    , previewHost          = "127.0.0.1"
-    , previewPort          = 8000
     }
   where
     ignoreFile' path
