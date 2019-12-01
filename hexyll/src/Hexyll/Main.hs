@@ -111,17 +111,9 @@ data Command
     -- ^ Clean up and remove cache.
     | Deploy
     -- ^ Upload/deploy your site.
-    | Preview {port :: Int}
-    -- ^ [DEPRECATED] Please use the watch command.
     | Rebuild
     -- ^ Clean and build again.
-    | Server  {host :: String, port :: Int}
-    -- ^ Start a preview server.
-    | Watch   {host :: String, port :: Int, no_server :: Bool }
-    -- ^ Autocompile on changes and start a preview server.
     deriving (Show)
-
-{-# DEPRECATED Preview "Use Watch instead." #-}
 
 optionParser :: Config.Configuration -> OA.Parser Options
 optionParser conf = Options <$> verboseParser <*> commandParser conf
