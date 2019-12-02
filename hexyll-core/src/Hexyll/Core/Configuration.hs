@@ -79,6 +79,26 @@ instance Default Configuration where
 -- 'deploySite', then 'deploySite' executes the shell command stored in
 -- 'deployCommand'. If you override it, 'deployCommand' will not be used
 -- implicitely.
+--
+-- Default values:
+--
+-- >>> destinationDirectory defaultConfiguration
+-- "_site"
+--
+-- >>> storeDirectory defaultConfiguration
+-- "_cache"
+--
+-- >>> tmpDirectory defaultConfiguration
+-- "_cache/tmp"
+--
+-- >>> prividerDirectory defaultConfiguration
+-- "."
+--
+-- >>> deployCommand defaultConfiguration
+-- "echo 'No deploy command specified' && exit 1"
+--
+-- >>> inMemoryCache defaultConfiguration
+-- True
 defaultConfiguration :: Configuration
 defaultConfiguration = Configuration
     { destinationDirectory = "_site"
