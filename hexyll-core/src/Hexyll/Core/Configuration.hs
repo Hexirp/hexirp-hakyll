@@ -35,14 +35,10 @@ import           System.Process   (system)
 -- 'shouldIgnoreFile'.
 --
 -- By using 'deployCommand', you can plug in a system command to upload/deploy
--- your site. You can execute this by using:
+-- your site unless you change 'deploySite' from the default. You can execute
+-- this by using:
 --
 -- > ./site deploy
---
--- By default, the 'Configuration' object is passed as a parameter to
--- 'deploySite', then 'deploySite' executes the shell command stored in
--- 'deployCommand'. If you override it, 'deployCommand' will not be used
--- implicitely.
 --
 -- If you turn on 'inMemoryCache', this will be faster but uses more memory.
 --
@@ -78,6 +74,11 @@ instance Default Configuration where
 -- * Files starting with a @#@.
 -- * Files ending with a @~@.
 -- * Files ending with @.swp@.
+--
+-- By default, the 'Configuration' object is passed as a parameter to
+-- 'deploySite', then 'deploySite' executes the shell command stored in
+-- 'deployCommand'. If you override it, 'deployCommand' will not be used
+-- implicitely.
 defaultConfiguration :: Configuration
 defaultConfiguration = Configuration
     { destinationDirectory = "_site"
