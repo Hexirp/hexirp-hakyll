@@ -105,20 +105,28 @@ defaultConfiguration = Configuration
     , storeDirectory       = "_cache"
     , tmpDirectory         = "_cache/tmp"
     , providerDirectory    = "."
-    , ignoreFile           = ignoreFile'
+    , ignoreFile           = defaultIgnoreFile
     , deployCommand        = "echo 'No deploy command specified' && exit 1"
     , deploySite           = system . deployCommand
     , inMemoryCache        = True
     }
+
+-- | Default 'ignoreFile'.
+--
+-- In 'defaultIgnoreFile', the following files are ignored:
+--
+-- * Files starting with a @.@.
+-- * Files starting with a @#@.
+-- * Files ending with a @~@.
+-- * Files ending with @.swp@.
+defaultIgnoreFile path
+    | "."    `isPrefixOf` fileName = True
+    | "#"    `isPrefixOf` fileName = True
+    | "~"    `isSuffixOf` fileName = True
+    | ".swp" `isSuffixOf` fileName = True
+    | otherwise                    = False
   where
-    ignoreFile' path
-        | "."    `isPrefixOf` fileName = True
-        | "#"    `isPrefixOf` fileName = True
-        | "~"    `isSuffixOf` fileName = True
-        | ".swp" `isSuffixOf` fileName = True
-        | otherwise                    = False
-      where
-        fileName = takeFileName path
+    fileName = takeFileName path
 
 
 -- | Check if a file should be ignored.
