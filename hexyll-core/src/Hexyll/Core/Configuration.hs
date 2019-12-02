@@ -27,8 +27,8 @@ import           System.Process   (system)
 -- 'provideDirectory' is the current directory @.@ by default. See
 -- 'defaultCofiguration' if you want more information about the default values.
 --
--- Note that in addition to 'ignoreFile', the files in 'destinationDirectory'
--- and 'storeDirectory' will also be ignored.
+-- Note that in addition to 'ignoreFile', the files in 'destinationDirectory',
+-- 'storeDirectory', and 'tmpDirectory' will also be ignored.
 --
 -- Note that 'ignoreFile' is only a configuration parameter and is not
 -- complete. If you want to test whether a file is ignored, you should use
