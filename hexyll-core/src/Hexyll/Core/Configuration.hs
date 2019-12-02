@@ -48,6 +48,7 @@ data Configuration = Configuration
       inMemoryCache        :: Bool
     }
 
+-- | @since 0.1.0.0
 instance Default Configuration where
     def = defaultConfiguration
 
