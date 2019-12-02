@@ -124,4 +124,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - hexyll-core
+    - QuickCheck  >= 2.11.3   && < 2.13
     - doctest     >= 0.16.0.1 && < 0.17
