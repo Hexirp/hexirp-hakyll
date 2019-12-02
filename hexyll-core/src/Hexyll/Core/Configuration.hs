@@ -24,9 +24,27 @@ import           System.Process   (system)
 
 -- | Top-level hexyll configration.
 --
--- @provideDirectory@ is the current directory @.@ by default.
--- See 'defaultCofiguration' if you want more information about the default
--- values.
+-- 'provideDirectory' is the current directory @.@ by default. See
+-- 'defaultCofiguration' if you want more information about the default values.
+--
+-- Note that in addition to 'ignoreFile', the files in 'destinationDirectory'
+-- and 'storeDirectory' will also be ignored.
+--
+-- Note that 'ignoreFile' is only a configuration parameter and is not
+-- complete. If you want to test whether a file is ignored, you should use
+-- 'shouldIgnoreFile'.
+--
+-- By using 'deployCommand', you can plug in a system command to upload/deploy
+-- your site. You can execute this by using:
+--
+-- > ./site deploy
+--
+-- By default, the 'Configuration' object is passed as a parameter to
+-- 'deploySite', then 'deploySite' executes the shell command stored in
+-- 'deployCommand'. If you override it, 'deployCommand' will not be used
+-- implicitely.
+--
+-- If you turn on 'inMemoryCache', this will be faster but uses more memory.
 --
 -- @since 0.1.0.0
 data Configuration = Configuration
@@ -52,7 +70,14 @@ data Configuration = Configuration
 instance Default Configuration where
     def = defaultConfiguration
 
--- | Default configuration for a hakyll application
+-- | Default configuration for a hexyll application.
+--
+-- In 'defaultConfiguration', the following files are ignored:
+--
+-- * Files starting with a @.@.
+-- * Files starting with a @#@.
+-- * Files ending with a @~@.
+-- * Files ending with @.swp@.
 defaultConfiguration :: Configuration
 defaultConfiguration = Configuration
     { destinationDirectory = "_site"
