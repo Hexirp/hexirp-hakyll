@@ -22,6 +22,8 @@ import           System.FilePath  (isAbsolute, normalise, takeFileName)
 import           System.IO.Error  (catchIOError)
 import           System.Process   (system)
 
+import Control.Monad.Hexyll (orM)
+
 -- | Top-level hexyll configration.
 --
 -- 'provideDirectory' is the current directory @.@ by default. See
@@ -145,7 +147,3 @@ shouldIgnoreFile conf path = orM
             dir' <- catchIOError (canonicalizePath dir) (const $ return dir)
             return $ dir' `isPrefixOf` path'
         | otherwise = return $ dir `isPrefixOf` path'
-
-    orM :: [IO Bool] -> IO Bool
-    orM []       = return False
-    orM (x : xs) = x >>= \b -> if b then return True else orM xs
