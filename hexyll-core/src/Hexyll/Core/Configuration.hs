@@ -121,7 +121,10 @@ defaultConfiguration = Configuration
         fileName = takeFileName path
 
 
--- | Check if a file should be ignored
+-- | Check if a file should be ignored.
+--
+-- In addition to 'ignoreFile', the files in 'destinationDirectory',
+-- 'storeDirectory', and 'tmpDirectory' will also be ignored.
 shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
 shouldIgnoreFile conf path = orM
     [ inDir (destinationDirectory conf)
