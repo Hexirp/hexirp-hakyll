@@ -33,6 +33,6 @@ module Data.List.HexyllSpec (spec) where
         breakWhen @Int (const False) [1,2,3,4]
             `shouldBe` ([1,2,3,4], [])
 
-      it "does not apply @p@ to an empty list" $ do
+      it "does not apply the predicate to an empty list" $ do
         breakWhen @Int (\xs -> if null xs then undefined else False) [1,2,3,4]
             `shouldBe` ([1,2,3,4], [])
