@@ -27,6 +27,6 @@ module Control.Monad.Hexyll
   -- 'orM' comes from @orM@ in @Control.Monad.Extra@ in @extra-1.6.18@.
   --
   -- @since 0.1.0.0
-  orM :: [IO Bool] -> IO Bool
+  orM :: Monad m => [m Bool] -> m Bool
   orM []       = return False
   orM (x : xs) = x >>= \b -> if b then return True else orM xs
