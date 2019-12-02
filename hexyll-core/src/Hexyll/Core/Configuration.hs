@@ -9,8 +9,9 @@
 -- This module defines a datastructure for the top-level hexyll configuration.
 module Hexyll.Core.Configuration
     ( Configuration (..)
-    , shouldIgnoreFile
     , defaultConfiguration
+    , defaultIgnoreFile
+    , shouldIgnoreFile
     ) where
 
 
