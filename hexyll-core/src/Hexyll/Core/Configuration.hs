@@ -26,15 +26,14 @@ import Control.Monad.Hexyll (orM)
 
 -- | Top-level hexyll configration.
 --
--- 'provideDirectory' is the current directory @.@ by default. See
--- 'defaultCofiguration' if you want more information about the default values.
+-- 'providerDirectory' is the current directory @.@ by default. See
+-- 'defaultConfiguration' if you want more information about the default
+-- values.
 --
 -- Note that in addition to 'ignoreFile', the files in 'destinationDirectory',
--- 'storeDirectory', and 'tmpDirectory' will also be ignored.
---
--- Note that 'ignoreFile' is only a configuration parameter and is not
--- complete. If you want to test whether a file is ignored, you should use
--- 'shouldIgnoreFile'.
+-- 'storeDirectory', and 'tmpDirectory' will also be ignored. If you want to
+-- test whether a file is ignored, you should use 'shouldIgnoreFile' instead of
+-- 'ignoreFile'.
 --
 -- By using 'deployCommand', you can plug in a system command to upload/deploy
 -- your site unless you change 'deploySite' from the default. You can execute
@@ -42,7 +41,7 @@ import Control.Monad.Hexyll (orM)
 --
 -- > ./site deploy
 --
--- If you turn on 'inMemoryCache', this will be faster but uses more memory.
+-- If 'inMemoryCache' is true, hexyll will be faster but uses more memory.
 --
 -- @since 0.1.0.0
 data Configuration = Configuration
@@ -70,12 +69,11 @@ instance Default Configuration where
 
 -- | Default configuration for a hexyll application.
 --
--- By default, 'ignoreFile' is set with 'defaultIgnoreFile'.
+-- 'ignoreFile' is set with 'defaultIgnoreFile'.
 --
--- By default, the 'Configuration' object is passed as a parameter to
--- 'deploySite', then 'deploySite' executes the shell command stored in
--- 'deployCommand'. If you override it, 'deployCommand' will not be used
--- implicitely.
+-- The 'Configuration' object is passed as a parameter to 'deploySite', then
+-- 'deploySite' executes the shell command stored in 'deployCommand'. If you
+-- override it, 'deployCommand' will not be used implicitely.
 --
 -- Default values:
 --
