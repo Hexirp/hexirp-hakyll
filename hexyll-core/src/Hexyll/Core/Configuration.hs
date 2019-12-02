@@ -87,7 +87,7 @@ instance Default Configuration where
 -- >>> tmpDirectory defaultConfiguration
 -- "_cache/tmp"
 --
--- >>> prividerDirectory defaultConfiguration
+-- >>> providerDirectory defaultConfiguration
 -- "."
 --
 -- >>> deployCommand defaultConfiguration
