@@ -116,6 +116,7 @@ defaultConfiguration = Configuration
 -- * Files starting with a @#@.
 -- * Files ending with a @~@.
 -- * Files ending with @.swp@.
+defaultIgnoreFile :: FilePath -> Bool
 defaultIgnoreFile path
     | "."    `isPrefixOf` fileName = True
     | "#"    `isPrefixOf` fileName = True

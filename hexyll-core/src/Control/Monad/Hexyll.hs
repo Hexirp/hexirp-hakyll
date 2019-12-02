@@ -12,7 +12,6 @@ module Control.Monad.Hexyll
   ) where
 
   import Prelude
-  import Control.Monad
 
   -- | A version of 'or' lifted to a monad. Retains the short-circuiting
   -- behaviour.
