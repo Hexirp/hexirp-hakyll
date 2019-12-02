@@ -133,17 +133,18 @@ defaultIgnoreFile path
 -- 'shouldIgnoreFile' will consider the condition.
 shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
 shouldIgnoreFile conf path = orM
-    [ inDir (destinationDirectory conf)
-    , inDir (storeDirectory conf)
-    , inDir (tmpDirectory conf)
+    [ inDir (destinationDirectory conf) path'
+    , inDir (storeDirectory conf) path'
+    , inDir (tmpDirectory conf) path'
     , return (ignoreFile conf path')
     ]
   where
     path'    = normalise path
     absolute = isAbsolute path
 
-    inDir dir
-        | absolute  = do
+inDir :: FilePath -> FilePath -> IO Bool
+inDir dir path
+  | isAbsolute path = do
             dir' <- catchIOError (canonicalizePath dir) (const $ return dir)
-            return $ dir' `isPrefixOf` path'
-        | otherwise = return $ dir `isPrefixOf` path'
+            return $ dir' `isPrefixOf` path
+  | otherwise = return $ dir `isPrefixOf` path
