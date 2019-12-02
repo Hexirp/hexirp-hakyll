@@ -68,12 +68,7 @@ instance Default Configuration where
 
 -- | Default configuration for a hexyll application.
 --
--- In 'defaultConfiguration', the following files are ignored:
---
--- * Files starting with a @.@.
--- * Files starting with a @#@.
--- * Files ending with a @~@.
--- * Files ending with @.swp@.
+-- By default, 'ignoreFile' is set with 'defaultIgnoreFile'.
 --
 -- By default, the 'Configuration' object is passed as a parameter to
 -- 'deploySite', then 'deploySite' executes the shell command stored in
@@ -133,6 +128,7 @@ defaultIgnoreFile path
 --
 -- In addition to 'ignoreFile', the files in 'destinationDirectory',
 -- 'storeDirectory', and 'tmpDirectory' will also be ignored.
+-- 'shouldIgnoreFile' will consider the condition.
 shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
 shouldIgnoreFile conf path = orM
     [ inDir (destinationDirectory conf)
