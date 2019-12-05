@@ -18,6 +18,7 @@ module Hexyll.Core.Configuration
 import           Data.Default     (Default (..))
 import           Data.List        (isPrefixOf, isSuffixOf)
 import           System.Directory (canonicalizePath, makeAbsolute)
+import System.Directory (inDir)
 import           System.Exit      (ExitCode)
 import           System.FilePath  (isAbsolute, normalise, takeFileName)
 import           System.IO.Error  (catchIOError)
@@ -138,13 +139,3 @@ shouldIgnoreFile conf path = orM
     , inDir path $ tmpDirectory conf
     , return $ ignoreFile conf $ normalise path
     ]
-
-inDir :: FilePath -> FilePath -> IO Bool
-inDir path dir = if isAbsolute path
-  then do
-    dir' <- canonicalizePath dir `catchIOError` \_ ->
-      makeAbsolute dir `catchIOError` \_ ->
-        return $ normalise dir
-    return $ dir' `isPrefixOf` normalise path
-  else
-    return $ normalise dir `isPrefixOf` normalise path
