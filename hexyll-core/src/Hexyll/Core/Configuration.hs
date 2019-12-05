@@ -147,4 +147,4 @@ inDir path dir = if isAbsolute path
         return $ normalise dir
     return $ dir' `isPrefixOf` normalise path
   else
-    return $ dir `isPrefixOf` normalise path
+    return $ normalise dir `isPrefixOf` normalise path
