@@ -35,8 +35,8 @@ module Hexyll.Core.Configuration
   --
   -- Note that in addition to 'ignoreFile', the files in 'destinationDirectory',
   -- 'storeDirectory', and 'tmpDirectory' will also be ignored. If you want to
-  -- test whether a file is ignored, you should use 'shouldIgnoreFile' instead of
-  -- 'ignoreFile'.
+  -- test whether a file is ignored, you should use 'shouldIgnoreFile' instead
+  -- of 'ignoreFile'.
   --
   -- By using 'deployCommand', you can plug in a system command to upload/deploy
   -- your site unless you change 'deploySite' from the default. You can execute
