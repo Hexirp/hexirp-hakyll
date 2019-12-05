@@ -1,6 +1,6 @@
 # hexirp-hakyll
 
-hexirp-hakyll is a static web site generator libraries in Haskell **for Hexirp**.
+hexirp-hakyll is static web site generator libraries in Haskell **for Hexirp**.
 
 hexirp-hakyll は hakyll をフォークした静的ウェブサイト生成プログラムのライブラリ群である。このライブラリは Hexirp が自分で利用するために制作している。
 
