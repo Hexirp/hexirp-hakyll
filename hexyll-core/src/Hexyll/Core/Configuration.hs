@@ -8,45 +8,49 @@
 --
 -- This module defines a datastructure for the top-level hexyll configuration.
 module Hexyll.Core.Configuration
-    ( Configuration (..)
-    , defaultConfiguration
-    , defaultIgnoreFile
-    , shouldIgnoreFile
-    ) where
+  ( Configuration (..)
+  , defaultConfiguration
+  , defaultIgnoreFile
+  , shouldIgnoreFile
+  ) where
 
+  import Prelude
 
-import           Data.Default     (Default (..))
-import           Data.List        (isPrefixOf, isSuffixOf)
-import           System.Directory (canonicalizePath, makeAbsolute)
-import System.Directory.Hexyll (inDir)
-import           System.Exit      (ExitCode)
-import           System.FilePath  (isAbsolute, normalise, takeFileName)
-import           System.IO.Error  (catchIOError)
-import           System.Process   (system)
+  import Control.Monad.Hexyll (orM)
 
-import Control.Monad.Hexyll (orM)
+  import Data.List    (isPrefixOf, isSuffixOf)
+  import Data.Default (Default (..))
 
--- | Top-level hexyll configration.
---
--- 'providerDirectory' is the current directory @.@ by default. See
--- 'defaultConfiguration' if you want more information about the default
--- values.
---
--- Note that in addition to 'ignoreFile', the files in 'destinationDirectory',
--- 'storeDirectory', and 'tmpDirectory' will also be ignored. If you want to
--- test whether a file is ignored, you should use 'shouldIgnoreFile' instead of
--- 'ignoreFile'.
---
--- By using 'deployCommand', you can plug in a system command to upload/deploy
--- your site unless you change 'deploySite' from the default. You can execute
--- this by using:
---
--- > ./site deploy
---
--- If 'inMemoryCache' is true, hexyll will be faster but uses more memory.
---
--- @since 0.1.0.0
-data Configuration = Configuration
+  import System.IO.Error  (catchIOError)
+
+  import System.FilePath         (isAbsolute, normalise, takeFileName)
+  import System.Directory        (canonicalizePath, makeAbsolute)
+  import System.Directory.Hexyll (inDir)
+
+  import System.Exit    (ExitCode)
+  import System.Process (system)
+
+  -- | Top-level hexyll configration.
+  --
+  -- 'providerDirectory' is the current directory @.@ by default. See
+  -- 'defaultConfiguration' if you want more information about the default
+  -- values.
+  --
+  -- Note that in addition to 'ignoreFile', the files in 'destinationDirectory',
+  -- 'storeDirectory', and 'tmpDirectory' will also be ignored. If you want to
+  -- test whether a file is ignored, you should use 'shouldIgnoreFile' instead of
+  -- 'ignoreFile'.
+  --
+  -- By using 'deployCommand', you can plug in a system command to upload/deploy
+  -- your site unless you change 'deploySite' from the default. You can execute
+  -- this by using:
+  --
+  -- > ./site deploy
+  --
+  -- If 'inMemoryCache' is true, hexyll will be faster but uses more memory.
+  --
+  -- @since 0.1.0.0
+  data Configuration = Configuration
     { -- | Directory in which the output written.
       destinationDirectory :: FilePath
     , -- | Directory where hexyll's internal store is kept.
@@ -65,39 +69,39 @@ data Configuration = Configuration
       inMemoryCache        :: Bool
     }
 
--- | @since 0.1.0.0
-instance Default Configuration where
+  -- | @since 0.1.0.0
+  instance Default Configuration where
     def = defaultConfiguration
 
--- | Default configuration for a hexyll application.
---
--- 'ignoreFile' is set with 'defaultIgnoreFile'.
---
--- The 'Configuration' object is passed as a parameter to 'deploySite', then
--- 'deploySite' executes the shell command stored in 'deployCommand'. If you
--- override it, 'deployCommand' will not be used implicitely.
---
--- Default values:
---
--- >>> destinationDirectory defaultConfiguration
--- "_site"
---
--- >>> storeDirectory defaultConfiguration
--- "_cache"
---
--- >>> tmpDirectory defaultConfiguration
--- "_cache/tmp"
---
--- >>> providerDirectory defaultConfiguration
--- "."
---
--- >>> deployCommand defaultConfiguration
--- "echo 'No deploy command specified' && exit 1"
---
--- >>> inMemoryCache defaultConfiguration
--- True
-defaultConfiguration :: Configuration
-defaultConfiguration = Configuration
+  -- | Default configuration for a hexyll application.
+  --
+  -- 'ignoreFile' is set with 'defaultIgnoreFile'.
+  --
+  -- The 'Configuration' object is passed as a parameter to 'deploySite', then
+  -- 'deploySite' executes the shell command stored in 'deployCommand'. If you
+  -- override it, 'deployCommand' will not be used implicitely.
+  --
+  -- Default values:
+  --
+  -- >>> destinationDirectory defaultConfiguration
+  -- "_site"
+  --
+  -- >>> storeDirectory defaultConfiguration
+  -- "_cache"
+  --
+  -- >>> tmpDirectory defaultConfiguration
+  -- "_cache/tmp"
+  --
+  -- >>> providerDirectory defaultConfiguration
+  -- "."
+  --
+  -- >>> deployCommand defaultConfiguration
+  -- "echo 'No deploy command specified' && exit 1"
+  --
+  -- >>> inMemoryCache defaultConfiguration
+  -- True
+  defaultConfiguration :: Configuration
+  defaultConfiguration = Configuration
     { destinationDirectory = "_site"
     , storeDirectory       = "_cache"
     , tmpDirectory         = "_cache/tmp"
@@ -108,32 +112,31 @@ defaultConfiguration = Configuration
     , inMemoryCache        = True
     }
 
--- | Default 'ignoreFile'.
---
--- In 'defaultIgnoreFile', the following files are ignored:
---
--- * Files starting with a @.@.
--- * Files starting with a @#@.
--- * Files ending with a @~@.
--- * Files ending with @.swp@.
-defaultIgnoreFile :: FilePath -> Bool
-defaultIgnoreFile path
-    | "."    `isPrefixOf` fileName = True
-    | "#"    `isPrefixOf` fileName = True
-    | "~"    `isSuffixOf` fileName = True
-    | ".swp" `isSuffixOf` fileName = True
-    | otherwise                    = False
-  where
-    fileName = takeFileName path
+  -- | Default 'ignoreFile'.
+  --
+  -- In 'defaultIgnoreFile', the following files are ignored:
+  --
+  -- * Files starting with a @.@.
+  -- * Files starting with a @#@.
+  -- * Files ending with a @~@.
+  -- * Files ending with @.swp@.
+  defaultIgnoreFile :: FilePath -> Bool
+  defaultIgnoreFile path
+      | "."    `isPrefixOf` fileName = True
+      | "#"    `isPrefixOf` fileName = True
+      | "~"    `isSuffixOf` fileName = True
+      | ".swp" `isSuffixOf` fileName = True
+      | otherwise                    = False
+    where
+      fileName = takeFileName path
 
-
--- | Check if a file should be ignored.
---
--- In addition to 'ignoreFile', the files in 'destinationDirectory',
--- 'storeDirectory', and 'tmpDirectory' will also be ignored.
--- 'shouldIgnoreFile' will consider the condition.
-shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
-shouldIgnoreFile conf path = orM
+  -- | Check if a file should be ignored.
+  --
+  -- In addition to 'ignoreFile', the files in 'destinationDirectory',
+  -- 'storeDirectory', and 'tmpDirectory' will also be ignored.
+  -- 'shouldIgnoreFile' will consider the condition.
+  shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
+  shouldIgnoreFile conf path = orM
     [ inDir path $ destinationDirectory conf
     , inDir path $ storeDirectory conf
     , inDir path $ tmpDirectory conf
