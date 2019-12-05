@@ -142,9 +142,9 @@ shouldIgnoreFile conf path = orM
 inDir :: FilePath -> FilePath -> IO Bool
 inDir path dir = if isAbsolute path
   then do
-    dir' <- canonicalizePath dir `catchIOError` \_ -> do
-      makeAbsolute dir `catchIOError` \_ -> do
+    dir' <- canonicalizePath dir `catchIOError` \_ ->
+      makeAbsolute dir `catchIOError` \_ ->
         return $ normalise dir
     return $ dir' `isPrefixOf` normalise path
-  else do
+  else
     return $ dir `isPrefixOf` normalise path
