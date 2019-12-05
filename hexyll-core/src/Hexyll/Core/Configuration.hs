@@ -133,14 +133,11 @@ defaultIgnoreFile path
 -- 'shouldIgnoreFile' will consider the condition.
 shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
 shouldIgnoreFile conf path = orM
-    [ inDir path (destinationDirectory conf)
-    , inDir path (storeDirectory conf)
-    , inDir path (tmpDirectory conf)
-    , return (ignoreFile conf path')
+    [ inDir path $ destinationDirectory conf
+    , inDir path $ storeDirectory conf
+    , inDir path $ tmpDirectory conf
+    , return $ ignoreFile conf $ normalise path
     ]
-  where
-    path'    = normalise path
-    absolute = isAbsolute path
 
 inDir :: FilePath -> FilePath -> IO Bool
 inDir path dir
