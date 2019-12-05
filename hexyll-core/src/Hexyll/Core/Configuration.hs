@@ -21,10 +21,7 @@ module Hexyll.Core.Configuration
   import Data.List    (isPrefixOf, isSuffixOf)
   import Data.Default (Default (..))
 
-  import System.IO.Error  (catchIOError)
-
-  import System.FilePath         (isAbsolute, normalise, takeFileName)
-  import System.Directory        (canonicalizePath, makeAbsolute)
+  import System.FilePath         (normalise, takeFileName)
   import System.Directory.Hexyll (inDir)
 
   import System.Exit    (ExitCode)
