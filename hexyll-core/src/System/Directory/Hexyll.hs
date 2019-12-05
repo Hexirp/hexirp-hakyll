@@ -3,6 +3,8 @@ module System.Directory.Hexyll
   ) where
 
   import Prelude
+  import Data.List        (isPrefixOf)
+  import System.IO.Error  (catchIOError)
 
   import System.FilePath
   import System.Directory
