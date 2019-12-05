@@ -3,6 +3,8 @@ module System.Directory.Hexyll
   ) where
 
   import Prelude
+
+  import System.FilePath
   import System.Directory
 
   inDir :: FilePath -> FilePath -> IO Bool
