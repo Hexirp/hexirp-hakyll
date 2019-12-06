@@ -10,4 +10,5 @@ module Main where
     , "src/Data/List/Hexyll.hs"
     , "src/Data/Yaml/Hexyll.hs"
     , "src/Hexyll/Core/Configuration.hs"
+    , "src/System/Directory/Hexyll.hs"
     ]
