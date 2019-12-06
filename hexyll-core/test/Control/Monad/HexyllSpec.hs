@@ -21,4 +21,4 @@ module Control.Monad.HexyllSpec (spec) where
       it "retains the short-circuiting behaveiour" $ do
         orM [Just False, Just True, undefined] `shouldBe` Just True
         (evaluate $ orM [Just False, Just False, undefined])
-            `shouldThrow` errorCall "*** Exception: Prelude.undefined"
+            `shouldThrow` anyErrorCall
