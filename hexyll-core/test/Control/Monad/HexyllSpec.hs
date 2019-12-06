@@ -1,4 +1,4 @@
-module Control.Monad.Hexyll (spec) where
+module Control.Monad.HexyllSpec (spec) where
 
   import Prelude
   import Test.Hspec
