@@ -117,6 +117,21 @@ module Hexyll.Core.Configuration
   -- * Files starting with a @#@.
   -- * Files ending with a @~@.
   -- * Files ending with @.swp@.
+  --
+  -- >>> defaultIgnoreFile ".gitignore"
+  -- True
+  --
+  -- >>> defaultIgnoreFile "Configuration.hs.swp"
+  -- True
+  --
+  -- >>> defaultIgnoreFile "~foo"
+  -- True
+  --
+  -- >>> defaultIgnoreFile "#Main.hs#"
+  -- True
+  --
+  -- >>> defaultIgnoreFile "a.txt"
+  -- False
   defaultIgnoreFile :: FilePath -> Bool
   defaultIgnoreFile path
       | "."    `isPrefixOf` fileName = True
