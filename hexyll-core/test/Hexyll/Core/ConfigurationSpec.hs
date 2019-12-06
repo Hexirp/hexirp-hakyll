@@ -14,7 +14,6 @@ module Hexyll.Core.ConfigurationSpec (spec) where
         defaultIgnoreFile "." `shouldBe` True
         defaultIgnoreFile ".." `shouldBe` True
         defaultIgnoreFile ".gitignore" `shouldBe` True
-        defaultIgnoreFile ".stack-work/" `shouldBe` True
 
       it "ignore files is prefix of '#'" $ do
         defaultIgnoreFile "#Main.hs#" `shouldBe` True
@@ -23,8 +22,8 @@ module Hexyll.Core.ConfigurationSpec (spec) where
 
       it "ignore files is suffix of '~'" $ do
         defaultIgnoreFile "foo~" `shouldBe` True
-        defaultIgnoreFile "~/" `shouldBe` True
-        defaultIgnoreFile "herobrine~/" `shouldBe` True
+        defaultIgnoreFile "pya/~" `shouldBe` True
+        defaultIgnoreFile "mu/herobrine~" `shouldBe` True
 
       it "ignore files is suffix of '.swp'" $ do
         defaultIgnoreFile "a.txt.swp" `shouldBe` True
@@ -34,3 +33,8 @@ module Hexyll.Core.ConfigurationSpec (spec) where
         defaultIgnoreFile "hash#" `shouldBe` False
         defaultIgnoreFile "~foo" `shouldBe` False
         defaultIgnoreFile "a.yxy.swp.log" `shouldBe` False
+
+      it "applied to a directory, returns False" $ do
+        defaultIgnoreFile "eee/" `shouldBe` False
+        defaultIgnoreFile "too/eee/" `shouldBe` False
+        defaultIgnoreFile "foo~/" `shouldBe` False
