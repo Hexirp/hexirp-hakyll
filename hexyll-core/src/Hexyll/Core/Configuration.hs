@@ -124,7 +124,7 @@ module Hexyll.Core.Configuration
   -- >>> defaultIgnoreFile "Configuration.hs.swp"
   -- True
   --
-  -- >>> defaultIgnoreFile "~foo"
+  -- >>> defaultIgnoreFile "foo~/"
   -- True
   --
   -- >>> defaultIgnoreFile "#Main.hs#"
