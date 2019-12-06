@@ -22,6 +22,9 @@ module Control.Monad.Hexyll
   -- >>> orM [ Just False, Just True, undefined ]
   -- Just True
   --
+  -- > orM [Just False, Just False, undefined]
+  -- *** Exception: Prelude.undefined
+  --
   -- prop> Just (or xs) == orM (map Just xs)
   --
   -- 'orM' comes from @orM@ in @Control.Monad.Extra@ in @extra-1.6.18@.
