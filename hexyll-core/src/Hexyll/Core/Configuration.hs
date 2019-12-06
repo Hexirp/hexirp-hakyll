@@ -132,6 +132,8 @@ module Hexyll.Core.Configuration
   --
   -- >>> defaultIgnoreFile "a.txt"
   -- False
+  --
+  -- @since 0.1.0.0
   defaultIgnoreFile :: FilePath -> Bool
   defaultIgnoreFile path
       | "."    `isPrefixOf` fileName = True
@@ -147,6 +149,8 @@ module Hexyll.Core.Configuration
   -- In addition to 'ignoreFile', the files in 'destinationDirectory',
   -- 'storeDirectory', and 'tmpDirectory' will also be ignored.
   -- 'shouldIgnoreFile' will consider the condition.
+  --
+  -- @since 0.1.0.0
   shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
   shouldIgnoreFile conf path = orM
     [ inDir path $ destinationDirectory conf
