@@ -138,7 +138,7 @@ module Hexyll.Core.Configuration
   --
   -- Note that 'defaultIgnoreFile' applied a directory path, returns @False@.
   --
-  -- >>> defaultIgnoreFile "foo/
+  -- >>> defaultIgnoreFile "foo"
   -- False
   --
   -- >>> defaultIgnoreFile "foo~/"
