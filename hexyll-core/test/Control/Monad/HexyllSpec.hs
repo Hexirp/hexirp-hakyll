@@ -1,6 +1,8 @@
 module Control.Monad.HexyllSpec (spec) where
 
   import Prelude
+  import Control.Exception (evaluate)
+
   import Test.Hspec
 
   import Control.Monad.Hexyll
@@ -18,5 +20,5 @@ module Control.Monad.HexyllSpec (spec) where
 
       it "retains the short-circuiting behaveiour" $ do
         orM [Just False, Just True, undefined] `shouldBe` Just True
-        orM [Just False, Just False, undefined]
+        (evaluate $ orM [Just False, Just False, undefined])
             `shouldThrow` errorCall "*** Exception: Prelude.undefined"
