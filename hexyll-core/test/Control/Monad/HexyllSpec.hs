@@ -19,6 +19,6 @@ module Control.Monad.HexyllSpec (spec) where
         orM [] `shouldBe` Just False
 
       it "retains the short-circuiting behaveiour" $ do
-        orM [Just False, Just True, undefined] `shouldBe` Just True
-        (evaluate $ orM [Just False, Just False, undefined])
-            `shouldThrow` anyErrorCall
+        orM [Just False, Just True, error "evaluated"] `shouldBe` Just True
+        evaluate (orM [Just False, Just False, error "evaluated"])
+            `shouldThrow` errorCall "evaluated"
