@@ -47,6 +47,8 @@ module System.Directory.HexyllSpec (spec) where
       it "works with difference path separators (windows v.s. windows)" $ do
         inDir "foo\\a.txt" "foo\\" `shouldReturn` True
 
-      it "works with the two special directories @.@ and @..@" $ do
+      it "works with the two special directories @.@ and @..@ (@.@)" $ do
         inDir "foo/./bar/a.txt" "foo/bar/" `shouldReturn` True
+
+      it "works with the two special directories @.@ and @..@ (@..@)" $ do
         inDir "foo/bar/../baz/a.txt" "foo/baz" `shouldReturn` False
