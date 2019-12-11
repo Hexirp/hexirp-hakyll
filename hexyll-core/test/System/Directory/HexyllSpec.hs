@@ -21,7 +21,7 @@ module System.Directory.HexyllSpec (spec) where
   spec :: Spec
   spec = do
 
-    describe "inDir"
+    describe "inDir" $ do
 
       it "works in normally files" $ do
         inDir "foo/a.txt" "foo/" `shouldReturn` True
