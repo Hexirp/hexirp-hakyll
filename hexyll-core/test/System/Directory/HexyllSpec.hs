@@ -7,6 +7,8 @@ module System.Directory.HexyllSpec (spec) where
   import System.Directory
   import System.IO.Temp
 
+  import System.Directory.Hexyll
+
   -- tmpDir/
   -- - foo/
   --   - bar/
@@ -19,7 +21,7 @@ module System.Directory.HexyllSpec (spec) where
   spec :: Spec
   spec = do
 
-    description "inDir"
+    describe "inDir"
 
       it "works on normally files" $ do
         inDir "foo/a.txt" "foo/" `shouldReturn` True
