@@ -33,7 +33,7 @@ module System.Directory.HexyllSpec (spec) where
         inDir "foo/baz/a.txt" "foo/bar/" `shouldReturn` False
 
       it "works in normally files \"foo/baz/a.txt\" and \"foo\"" $ do
-        inDir "foo/baz/a.txt" "foo" `shouldReturn` False
+        inDir "foo/baz/a.txt" "foo" `shouldReturn` True
 
       it "works in normally files \"foo/bar\" and \"foo\"" $ do
         inDir "foo/bar" "foo" `shouldReturn` True
