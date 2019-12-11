@@ -54,13 +54,19 @@ module System.Directory.HexyllSpec (spec) where
         inDir "foo/bar/../baz/a.txt" "foo/baz" `shouldReturn` False
 
       it "works on absolute paths (absolute v.s. relative)" $ do
-        (inDir <$> canonicalizePath "foo/a.txt" <*> return "foo/")
-            `shouldReturn` True
+        flip shouldReturn True $ do
+          path <- canonicalizePath "foo/a.txt"
+          dir  <- return "foo/"
+          inDir path dir
 
       it "works on absolute paths (relative v.s. absolute)" $ do
-        (inDir <$> return "foo/a.txt" <*> canonicalizePath "foo/")
-            `shouldReturn` True
+        flip shouldReturn True $ do
+          path <- return "foo/a.txt"
+          dir  <- canonicalizePath "foo/"
+          inDir path dir
 
       it "works on absolute paths (absolute v.s. absolute)" $ do
-        (inDir <$> canonicalizePath "foo/a.txt" <*> canonicalizePath "foo/")
-            `shouldReturn` True
+        flip shouldReturn True $ do
+          path <- canonicalizePath "foo/a.txt"
+          dir  <- canonicalizePath "foo/"
+          inDir path dir
