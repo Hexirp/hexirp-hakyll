@@ -52,3 +52,15 @@ module System.Directory.HexyllSpec (spec) where
 
       it "works with the two special directories @.@ and @..@ (@..@)" $ do
         inDir "foo/bar/../baz/a.txt" "foo/baz" `shouldReturn` False
+
+      it "works on absolute paths (absolute v.s. relative)" $ do
+        inDir <$> canonicalizePath "foo/a.txt" <*> return "foo/"
+            `shouldReturn` True
+
+      it "works on absolute paths (relative v.s. absolute)" $ do
+        inDir <$> return "foo/a.txt" <*> canonicalizePath "foo/"
+            `shouldReturn` True
+
+      it "works on absolute paths (absolute v.s. absolute)" $ do
+        inDir <$> canonicalizePath "foo/a.txt" <*> canonicalizePath "foo/"
+            `shouldReturn` True
