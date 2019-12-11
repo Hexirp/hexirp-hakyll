@@ -33,3 +33,4 @@ module System.Directory.HexyllSpec (spec) where
       it "works with difference path separators" $ do
         inDir "foo\\a.txt" "foo/" `shouldReturn` True
         inDir "foo/bar/a.txt" "foo\\bar\\" `shouldReturn` True
+        inDir "foo\\a.txt" "foo\\" `shouldReturn` True
