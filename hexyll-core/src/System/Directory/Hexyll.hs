@@ -32,11 +32,10 @@ module System.Directory.Hexyll
   --
   -- @since 0.1.0.0
   inDir :: FilePath -> FilePath -> IO Bool
-  inDir path dir = if isAbsolute path
-    then do
-      dir' <- canonicalizePath dir `catchIOError` \_ ->
-        makeAbsolute dir `catchIOError` \_ ->
-          return $ normalise dir
-      return $ dir' `isPrefixOf` normalise path
-    else
-      return $ normalise dir `isPrefixOf` normalise path
+  inDir path dir = isPrefixOf <$> canonicalize dir <*> canonicalize path
+    where
+      canonicalize :: FilePath -> IO FilePath
+      canonicalize s =
+        canonicalizePath s `catchIOError` \_ ->
+          makeAbsolute s `catchIOError` \_ ->
+            return $ normalise s
