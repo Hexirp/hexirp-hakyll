@@ -34,3 +34,7 @@ module System.Directory.HexyllSpec (spec) where
         inDir "foo\\a.txt" "foo/" `shouldReturn` True
         inDir "foo/bar/a.txt" "foo\\bar\\" `shouldReturn` True
         inDir "foo\\a.txt" "foo\\" `shouldReturn` True
+
+      it "works with the two special directories @.@ and @..@" $ do
+        inDir "foo/./bar/a.txt" "foo/bar/" `shouldReturn` True
+        inDir "foo/bar/../baz/a.txt" "foo/baz" `shouldReturn` False
