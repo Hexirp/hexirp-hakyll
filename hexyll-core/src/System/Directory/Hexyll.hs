@@ -32,10 +32,14 @@ module System.Directory.Hexyll
   --
   -- @since 0.1.0.0
   inDir :: FilePath -> FilePath -> IO Bool
-  inDir path dir = isPrefixOf <$> canonicalize dir <*> canonicalize path
+  inDir path dir = isPrefixOf <$> splitCano dir <*> splitCano path
     where
       canonicalize :: FilePath -> IO FilePath
       canonicalize s =
         canonicalizePath s `catchIOError` \_ ->
           makeAbsolute s `catchIOError` \_ ->
             return $ normalise s
+      splitDrop :: FilePath -> [FilePath]
+      splitDrop = map dropTrailingPathSeparator . splitPath
+      splitCano :: FilePath -> IO [FilePath]
+      splitCano = fmap splitDrop . canonicalize
