@@ -86,7 +86,6 @@ tests:
     dependencies:
     - hexyll-core
     - hspec       >= 2.5.5 && < 2.7
-    - temporary   >= 1.3   && < 1.4
   hexyll-core-unit-test:
     main: Spec.hs
     source-dirs: unit-test
