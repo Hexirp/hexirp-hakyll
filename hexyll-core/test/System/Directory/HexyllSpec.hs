@@ -70,3 +70,6 @@ module System.Directory.HexyllSpec (spec) where
           path <- canonicalizePath "foo/a.txt"
           dir  <- canonicalizePath "foo/"
           inDir path dir
+
+      it "correctly works on prefix ('foobar/a.txt' and 'foo')" $ do
+        inDir "foobar/a.txt" "foo" `shouldReturn` False
