@@ -51,7 +51,7 @@ module System.Directory.HexyllSpec (spec) where
         inDir "foo/./bar/a.txt" "foo/bar/" `shouldReturn` True
 
       it "works with the two special directories @.@ and @..@ (@..@)" $ do
-        inDir "foo/bar/../baz/a.txt" "foo/baz" `shouldReturn` False
+        inDir "foo/bar/../baz/a.txt" "foo/baz" `shouldReturn` True
 
       it "works on absolute paths (absolute v.s. relative)" $ do
         flip shouldReturn True $ do
