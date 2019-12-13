@@ -1,3 +1,5 @@
+{-# LANGUAGE CPP #-}
+
 module System.Directory.HexyllSpec (spec) where
 
   import Prelude
@@ -27,6 +29,17 @@ module System.Directory.HexyllSpec (spec) where
 
       it "works in normally files 'foo/bar' and 'foo'" $ do
         inDir "foo/bar" "foo" `shouldReturn` True
+#if defined(mingw32_HOST_OS) || defined(__MINGW32__)
+
+      it "works with difference path separators (windows v.s. posix)" $ do
+        inDir "foo\\a.txt" "foo/" `shouldReturn` True
+
+      it "works with difference path separators (posix v.s. windows)" $ do
+        inDir "foo/bar/a.txt" "foo\\bar\\" `shouldReturn` True
+
+      it "works with difference path separators (windows v.s. windows)" $ do
+        inDir "foo\\a.txt" "foo\\" `shouldReturn` True
+#endif
 
       it "works with the special directory @.@" $ do
         inDir "foo/./bar/a.txt" "foo/bar/" `shouldReturn` True
