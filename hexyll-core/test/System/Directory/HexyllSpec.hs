@@ -37,29 +37,8 @@ module System.Directory.HexyllSpec (spec) where
       it "works with difference path separators (windows v.s. windows)" $ do
         inDir "foo\\a.txt" "foo\\" `shouldReturn` True
 
-      it "works with the two special directories @.@ and @..@ (@.@)" $ do
+      it "works with the special directory @.@" $ do
         inDir "foo/./bar/a.txt" "foo/bar/" `shouldReturn` True
-
-      it "works with the two special directories @.@ and @..@ (@..@)" $ do
-        inDir "foo/bar/../baz/a.txt" "foo/baz" `shouldReturn` True
-
-      it "works on absolute paths (absolute v.s. relative)" $ do
-        flip shouldReturn True $ do
-          path <- canonicalizePath "foo/a.txt"
-          dir  <- return "foo/"
-          inDir path dir
-
-      it "works on absolute paths (relative v.s. absolute)" $ do
-        flip shouldReturn True $ do
-          path <- return "foo/a.txt"
-          dir  <- canonicalizePath "foo/"
-          inDir path dir
-
-      it "works on absolute paths (absolute v.s. absolute)" $ do
-        flip shouldReturn True $ do
-          path <- canonicalizePath "foo/a.txt"
-          dir  <- canonicalizePath "foo/"
-          inDir path dir
 
       it "correctly works on prefix ('foobar/a.txt' and 'foo')" $ do
         inDir "foobar/a.txt" "foo" `shouldReturn` False
