@@ -35,4 +35,4 @@ module System.Directory.Hexyll
   inDir path dir = do
     pa <- parseRelFile path
     di <- parseRelDir dir
-    isProperPrefixOf di pa
+    return $ di `isProperPrefixOf` pa
