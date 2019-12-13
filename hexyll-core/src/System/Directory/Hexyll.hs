@@ -42,4 +42,7 @@ module System.Directory.Hexyll
       splitDrop :: FilePath -> [FilePath]
       splitDrop = map dropTrailingPathSeparator . splitPath
       splitCano :: FilePath -> IO [FilePath]
-      splitCano = fmap splitDrop . canonicalize
+      splitCano = tee . fmap splitDrop . tee . canonicalize
+
+  tee :: Show a => IO a -> IO a
+  tee m = m >>= \s -> print s >> return s
