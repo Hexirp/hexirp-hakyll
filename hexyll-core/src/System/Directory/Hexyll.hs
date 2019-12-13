@@ -12,11 +12,11 @@ module System.Directory.Hexyll
   ) where
 
   import Prelude
-  import Data.List        (isPrefixOf)
-  import System.IO.Error  (catchIOError)
 
   import System.FilePath
   import System.Directory
+
+  import Path
 
   -- | @inDir path dir@ checks that @path@ is under @dir@. For example, @inDir
   -- "foo/bar/a.txt" "foo/"@ may be equal to @return True@.
@@ -32,14 +32,7 @@ module System.Directory.Hexyll
   --
   -- @since 0.1.0.0
   inDir :: FilePath -> FilePath -> IO Bool
-  inDir path dir = isPrefixOf <$> splitCano dir <*> splitCano path
-    where
-      canonicalize :: FilePath -> IO FilePath
-      canonicalize s =
-        canonicalizePath s `catchIOError` \_ ->
-          makeAbsolute s `catchIOError` \_ ->
-            return $ normalise s
-      splitDrop :: FilePath -> [FilePath]
-      splitDrop = map dropTrailingPathSeparator . splitPath
-      splitCano :: FilePath -> IO [FilePath]
-      splitCano = fmap splitDrop . canonicalize
+  inDir path dir = do
+    pa <- parseRelFile path
+    di <- parseRelDir dir
+    stripProperPrefix di pa
