@@ -5,9 +5,6 @@ module System.Directory.HexyllSpec (spec) where
   import Prelude
   import Test.Hspec
 
-  import System.FilePath
-  import System.Directory
-
   import System.Directory.Hexyll
 
   spec :: Spec
