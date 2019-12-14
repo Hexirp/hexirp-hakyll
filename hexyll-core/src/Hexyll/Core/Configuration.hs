@@ -171,10 +171,10 @@ module Hexyll.Core.Configuration
   -- 'shouldIgnoreFile' will consider the condition.
   --
   -- @since 0.1.0.0
-  shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
-  shouldIgnoreFile conf path = orM
-    [ inDir path $ destinationDirectory conf
-    , inDir path $ storeDirectory conf
-    , inDir path $ tmpDirectory conf
-    , return $ ignoreFile conf $ normalise path
+  shouldIgnoreFile :: Configuration -> Path Rel File -> IO Bool
+  shouldIgnoreFile conf path = return $ or
+    [ destinationDirectory conf `isProperPrefixOf` path
+    , storeDirectory conf `isProperPrefixOf` path
+    , tmpDirectory conf `isProperPrefixOf` path
+    , ignoreFile conf path
     ]
