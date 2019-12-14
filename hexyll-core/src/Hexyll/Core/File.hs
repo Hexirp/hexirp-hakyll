@@ -19,7 +19,6 @@ import           Data.Typeable                 (Typeable)
 import           System.Directory              (copyFileWithMetadata)
 import           System.Directory              (doesFileExist,
                                                 renameFile)
-import           System.FilePath               ((</>))
 import           System.Random                 (randomIO)
 
 
