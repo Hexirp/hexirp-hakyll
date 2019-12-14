@@ -80,16 +80,16 @@ module Hexyll.Core.Configuration
   -- Default values:
   --
   -- >>> destinationDirectory defaultConfiguration
-  -- "_site"
+  -- "_site/"
   --
   -- >>> storeDirectory defaultConfiguration
-  -- "_cache"
+  -- "_cache/"
   --
   -- >>> tmpDirectory defaultConfiguration
-  -- "_cache/tmp"
+  -- "_cache/tmp/"
   --
   -- >>> providerDirectory defaultConfiguration
-  -- "."
+  -- "./"
   --
   -- >>> deployCommand defaultConfiguration
   -- "echo 'No deploy command specified' && exit 1"
@@ -119,33 +119,25 @@ module Hexyll.Core.Configuration
   -- * Files ending with a @~@.
   -- * Files ending with @.swp@.
   --
-  -- >>> defaultIgnoreFile ".gitignore"
+  -- >>> defaultIgnoreFile <$> parseRelFile ".gitignore"
   -- True
   --
-  -- >>> defaultIgnoreFile "Configuration.hs.swp"
+  -- >>> defaultIgnoreFile <$> parseRelFile "Configuration.hs.swp"
   -- True
   --
-  -- >>> defaultIgnoreFile "foo~"
+  -- >>> defaultIgnoreFile <$> parseRelFile "foo~"
   -- True
   --
-  -- >>> defaultIgnoreFile "#Main.hs#"
+  -- >>> defaultIgnoreFile <$> parseRelFile "#Main.hs#"
   -- True
   --
-  -- >>> defaultIgnoreFile "a.txt"
+  -- >>> defaultIgnoreFile <$> parseRelFile "a.txt"
   -- False
   --
-  -- >>> defaultIgnoreFile ".dot/ma.x"
+  -- >>> defaultIgnoreFile <$> parseRelFile ".dot/ma.x"
   -- False
   --
-  -- >>> defaultIgnoreFile "foo"
-  -- False
-  --
-  -- Note that 'defaultIgnoreFile' applied a directory path, returns @False@.
-  --
-  -- >>> defaultIgnoreFile "foo~/"
-  -- False
-  --
-  -- >>> defaultIgnoreFile ".p/"
+  -- >>> defaultIgnoreFile <$> parseRelFile "foo"
   -- False
   --
   -- @since 0.1.0.0
