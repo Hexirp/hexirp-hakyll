@@ -4,16 +4,17 @@ module Hexyll.Core.Runtime.Tests
     ( tests
     ) where
 
+import Prelude
+import Path
 
 --------------------------------------------------------------------------------
 import qualified Data.ByteString     as B
-import           System.FilePath     ((</>))
 import           Test.Tasty          (TestTree, testGroup)
 import           Test.Tasty.HUnit    (Assertion, (@?=))
 
 
 --------------------------------------------------------------------------------
-import           Hexyll
+import           Hexyll hiding (toFilePath)
 import qualified Hexyll.Core.Logger  as Logger
 import           Hexyll.Core.Runtime
 import           TestSuite.Util
@@ -57,20 +58,20 @@ case01 = do
                 makeItem $ concat $ map itemBody (items :: [Item String])
 
     favicon <- B.readFile $
-        providerDirectory testConfiguration </> "images/favicon.ico"
+        (toFilePath . providerDirectory) testConfiguration ++ "images/favicon.ico"
     favicon' <- B.readFile $
-        destinationDirectory testConfiguration </> "images/favicon.ico"
+        (toFilePath . destinationDirectory) testConfiguration ++ "images/favicon.ico"
     favicon @?= favicon'
 
     example <- readFile $
-        destinationDirectory testConfiguration </> "example.html"
+        (toFilePath . destinationDirectory) testConfiguration ++ "example.html"
     lines example @?=  ["<p>This is an example.</p>"]
 
-    bodies <- readFile $ destinationDirectory testConfiguration </> "bodies.txt"
+    bodies <- readFile $ (toFilePath . destinationDirectory) testConfiguration ++ "bodies.txt"
     head (lines bodies) @?=  "This is an example."
 
-    partial  <- readFile $ providerDirectory    testConfiguration </> "partial.html.out"
-    partial' <- readFile $ destinationDirectory testConfiguration </> "partial.html.out"
+    partial  <- readFile $ (toFilePath . providerDirectory)    testConfiguration ++ "partial.html.out"
+    partial' <- readFile $ (toFilePath . destinationDirectory) testConfiguration ++ "partial.html.out"
     partial @?= partial'
 
     cleanTestEnv
@@ -90,7 +91,7 @@ case02 = do
             compile copyFileCompiler
 
     favicon <- readFile $
-        destinationDirectory testConfiguration </> "favicon.ico"
+        (toFilePath . destinationDirectory) testConfiguration ++ "favicon.ico"
     favicon @?= "Test"
 
     cleanTestEnv

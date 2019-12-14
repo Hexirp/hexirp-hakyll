@@ -6,6 +6,8 @@ module Hexyll.Check
     , check
     ) where
 
+import Prelude
+import Path hiding ((</>))
 
 --------------------------------------------------------------------------------
 import           Control.Concurrent.MVar      (MVar, newEmptyMVar, putMVar,
@@ -124,10 +126,10 @@ checkDestination :: Checker ()
 checkDestination = do
     config <- checkerConfig <$> ask
     files  <- liftIO $ getRecursiveContents
-        (const $ return False) (destinationDirectory config)
+        (const $ return False) (toFilePath $ destinationDirectory config)
 
     let htmls =
-            [ destinationDirectory config </> file
+            [ (toFilePath . destinationDirectory) config ++ file
             | file <- files
             , takeExtension file == ".html"
             ]
@@ -222,7 +224,7 @@ checkInternalUrl base url = case url' of
     "" -> ok url
     _  -> do
         config <- checkerConfig <$> ask
-        let dest = destinationDirectory config
+        let dest = toFilePath $ destinationDirectory config
             dir  = takeDirectory base
             filePath
                 | "/" `isPrefixOf` url' = dest ++ url'

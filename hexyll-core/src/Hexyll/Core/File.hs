@@ -10,6 +10,8 @@ module Hexyll.Core.File
     , newTmpFile
     ) where
 
+import Prelude
+import Path
 
 --------------------------------------------------------------------------------
 import           Data.Binary                   (Binary (..))
@@ -17,7 +19,6 @@ import           Data.Typeable                 (Typeable)
 import           System.Directory              (copyFileWithMetadata)
 import           System.Directory              (doesFileExist,
                                                 renameFile)
-import           System.FilePath               ((</>))
 import           System.Random                 (randomIO)
 
 
@@ -81,7 +82,7 @@ newTmpFile suffix = do
   where
     mkPath = do
         rand <- compilerUnsafeIO $ randomIO :: Compiler Int
-        tmp  <- tmpDirectory . compilerConfig <$> compilerAsk
-        let path = tmp </> Store.hash [show rand] ++ "-" ++ suffix
+        tmp  <- toFilePath . tmpDirectory . compilerConfig <$> compilerAsk
+        let path = tmp ++ Store.hash [show rand] ++ "-" ++ suffix
         exists <- compilerUnsafeIO $ doesFileExist path
         if exists then mkPath else return path

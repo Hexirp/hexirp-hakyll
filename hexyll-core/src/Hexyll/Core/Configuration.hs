@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 -- |
 -- Module:      Hexyll.Core.Configuration
 -- Copyright:   (c) 2019 Hexirp
@@ -16,13 +18,10 @@ module Hexyll.Core.Configuration
 
   import Prelude
 
-  import Control.Monad.Hexyll (orM)
-
   import Data.List    (isPrefixOf, isSuffixOf)
   import Data.Default (Default (..))
 
-  import System.FilePath         (normalise, takeFileName)
-  import System.Directory.Hexyll (inDir)
+  import Path
 
   import System.Exit    (ExitCode)
   import System.Process (system)
@@ -49,15 +48,15 @@ module Hexyll.Core.Configuration
   -- @since 0.1.0.0
   data Configuration = Configuration
     { -- | Directory in which the output written.
-      destinationDirectory :: FilePath
+      destinationDirectory :: Path Rel Dir
     , -- | Directory where hexyll's internal store is kept.
-      storeDirectory       :: FilePath
+      storeDirectory       :: Path Rel Dir
     , -- | Directory in which some temporary files will be kept.
-      tmpDirectory         :: FilePath
+      tmpDirectory         :: Path Rel Dir
     , -- | Directory where hexyll finds the files to compile.
-      providerDirectory    :: FilePath
+      providerDirectory    :: Path Rel Dir
     , -- | Function to determine ignored files.
-      ignoreFile           :: FilePath -> Bool
+      ignoreFile           :: Path Rel File -> Bool
     , -- | System command to upload/deploy your site.
       deployCommand        :: String
     , -- | Function to deploy the site from Haskell.
@@ -81,16 +80,16 @@ module Hexyll.Core.Configuration
   -- Default values:
   --
   -- >>> destinationDirectory defaultConfiguration
-  -- "_site"
+  -- "_site/"
   --
   -- >>> storeDirectory defaultConfiguration
-  -- "_cache"
+  -- "_cache/"
   --
   -- >>> tmpDirectory defaultConfiguration
-  -- "_cache/tmp"
+  -- "_cache/tmp/"
   --
   -- >>> providerDirectory defaultConfiguration
-  -- "."
+  -- "./"
   --
   -- >>> deployCommand defaultConfiguration
   -- "echo 'No deploy command specified' && exit 1"
@@ -101,10 +100,10 @@ module Hexyll.Core.Configuration
   -- @since 0.1.0.0
   defaultConfiguration :: Configuration
   defaultConfiguration = Configuration
-    { destinationDirectory = "_site"
-    , storeDirectory       = "_cache"
-    , tmpDirectory         = "_cache/tmp"
-    , providerDirectory    = "."
+    { destinationDirectory = $(mkRelDir "_site")
+    , storeDirectory       = $(mkRelDir "_cache")
+    , tmpDirectory         = $(mkRelDir "_cache/tmp")
+    , providerDirectory    = $(mkRelDir ".")
     , ignoreFile           = defaultIgnoreFile
     , deployCommand        = "echo 'No deploy command specified' && exit 1"
     , deploySite           = system . deployCommand
@@ -120,37 +119,29 @@ module Hexyll.Core.Configuration
   -- * Files ending with a @~@.
   -- * Files ending with @.swp@.
   --
-  -- >>> defaultIgnoreFile ".gitignore"
+  -- >>> defaultIgnoreFile <$> parseRelFile ".gitignore"
   -- True
   --
-  -- >>> defaultIgnoreFile "Configuration.hs.swp"
+  -- >>> defaultIgnoreFile <$> parseRelFile "Configuration.hs.swp"
   -- True
   --
-  -- >>> defaultIgnoreFile "foo~"
+  -- >>> defaultIgnoreFile <$> parseRelFile "foo~"
   -- True
   --
-  -- >>> defaultIgnoreFile "#Main.hs#"
+  -- >>> defaultIgnoreFile <$> parseRelFile "#Main.hs#"
   -- True
   --
-  -- >>> defaultIgnoreFile "a.txt"
+  -- >>> defaultIgnoreFile <$> parseRelFile "a.txt"
   -- False
   --
-  -- >>> defaultIgnoreFile ".dot/ma.x"
+  -- >>> defaultIgnoreFile <$> parseRelFile ".dot/ma.x"
   -- False
   --
-  -- >>> defaultIgnoreFile "foo"
-  -- False
-  --
-  -- Note that 'defaultIgnoreFile' applied a directory path, returns @False@.
-  --
-  -- >>> defaultIgnoreFile "foo~/"
-  -- False
-  --
-  -- >>> defaultIgnoreFile ".p/"
+  -- >>> defaultIgnoreFile <$> parseRelFile "foo"
   -- False
   --
   -- @since 0.1.0.0
-  defaultIgnoreFile :: FilePath -> Bool
+  defaultIgnoreFile :: Path Rel File -> Bool
   defaultIgnoreFile path
       | "."    `isPrefixOf` fileName = True
       | "#"    `isPrefixOf` fileName = True
@@ -158,7 +149,7 @@ module Hexyll.Core.Configuration
       | ".swp" `isSuffixOf` fileName = True
       | otherwise                    = False
     where
-      fileName = takeFileName path
+      fileName = toFilePath $ filename path
 
   -- | Check if a file should be ignored.
   --
@@ -167,10 +158,10 @@ module Hexyll.Core.Configuration
   -- 'shouldIgnoreFile' will consider the condition.
   --
   -- @since 0.1.0.0
-  shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
-  shouldIgnoreFile conf path = orM
-    [ inDir path $ destinationDirectory conf
-    , inDir path $ storeDirectory conf
-    , inDir path $ tmpDirectory conf
-    , return $ ignoreFile conf $ normalise path
+  shouldIgnoreFile :: Configuration -> Path Rel File -> IO Bool
+  shouldIgnoreFile conf path = return $ or
+    [ destinationDirectory conf `isProperPrefixOf` path
+    , storeDirectory conf `isProperPrefixOf` path
+    , tmpDirectory conf `isProperPrefixOf` path
+    , ignoreFile conf path
     ]

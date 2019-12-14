@@ -3,9 +3,11 @@ module Hexyll.Core.Runtime
     ( run
     ) where
 
+import Prelude
+import Path
 
 --------------------------------------------------------------------------------
-import           Control.Monad                 (unless)
+import           Control.Monad                 (unless, (>=>))
 import           Control.Monad.Except          (ExceptT, runExceptT, throwError)
 import           Control.Monad.Reader          (ask)
 import           Control.Monad.RWS             (RWST, runRWST)
@@ -17,7 +19,6 @@ import qualified Data.Map                      as M
 import           Data.Set                      (Set)
 import qualified Data.Set                      as S
 import           System.Exit                   (ExitCode (..))
-import           System.FilePath               ((</>))
 
 
 --------------------------------------------------------------------------------
@@ -25,7 +26,7 @@ import           Hexyll.Core.Compiler.Internal
 import           Hexyll.Core.Compiler.Require
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Dependencies
-import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier hiding (toFilePath)
 import           Hexyll.Core.Item
 import           Hexyll.Core.Item.SomeItem
 import           Hexyll.Core.Logger            (Logger)
@@ -45,10 +46,10 @@ run config logger rules = do
     -- Initialization
     Logger.header logger "Initialising..."
     Logger.message logger "Creating store..."
-    store <- Store.new (inMemoryCache config) $ storeDirectory config
+    store <- Store.new (inMemoryCache config) $ toFilePath $ storeDirectory config
     Logger.message logger "Creating provider..."
-    provider <- newProvider store (shouldIgnoreFile config) $
-        providerDirectory config
+    provider <- newProvider store (parseRelFile >=> shouldIgnoreFile config) $
+        toFilePath $ providerDirectory config
     Logger.message logger "Running rules..."
     ruleSet  <- runRules rules provider
 
@@ -86,7 +87,7 @@ run config logger rules = do
             Store.set store factsKey $ runtimeFacts s
 
             Logger.debug logger "Removing tmp directory..."
-            removeDirectory $ tmpDirectory config
+            removeDirectory $ toFilePath $ tmpDirectory config
 
             Logger.flush logger
             return (ExitSuccess, ruleSet)
@@ -234,7 +235,7 @@ chase trail id'
                 case mroute of
                     Nothing    -> return ()
                     Just route -> do
-                        let path = destinationDirectory config </> route
+                        let path = (toFilePath . destinationDirectory) config ++ route
                         liftIO $ makeDirectories path
                         liftIO $ write path item
                         Logger.debug logger $ "Routed to " ++ path
