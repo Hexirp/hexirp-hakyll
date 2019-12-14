@@ -97,6 +97,8 @@ module Hexyll.Core.Configuration
   --
   -- >>> inMemoryCache defaultConfiguration
   -- True
+  --
+  -- @since 0.1.0.0
   defaultConfiguration :: Configuration
   defaultConfiguration = Configuration
     { destinationDirectory = "_site"
