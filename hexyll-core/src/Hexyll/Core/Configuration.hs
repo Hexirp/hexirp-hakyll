@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 -- |
@@ -78,6 +79,20 @@ module Hexyll.Core.Configuration
   -- override it, 'deployCommand' will not be used implicitely.
   --
   -- Default values:
+#if defined(mingw32_HOST_OS) || defined(__MINGW32__)
+  --
+  -- >>> destinationDirectory defaultConfiguration
+  -- "_site\\"
+  --
+  -- >>> storeDirectory defaultConfiguration
+  -- "_cache\\"
+  --
+  -- >>> tmpDirectory defaultConfiguration
+  -- "_cache/tmp\\"
+  --
+  -- >>> providerDirectory defaultConfiguration
+  -- ".\\"
+#else
   --
   -- >>> destinationDirectory defaultConfiguration
   -- "_site/"
@@ -90,6 +105,7 @@ module Hexyll.Core.Configuration
   --
   -- >>> providerDirectory defaultConfiguration
   -- "./"
+#endif
   --
   -- >>> deployCommand defaultConfiguration
   -- "echo 'No deploy command specified' && exit 1"
