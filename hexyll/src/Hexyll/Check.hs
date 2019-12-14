@@ -7,7 +7,7 @@ module Hexyll.Check
     ) where
 
 import Prelude
-import Path
+import Path hiding ((</>))
 
 --------------------------------------------------------------------------------
 import           Control.Concurrent.MVar      (MVar, newEmptyMVar, putMVar,
