@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 -- |
 -- Module:      Hexyll.Core.Configuration
 -- Copyright:   (c) 2019 Hexirp
@@ -103,10 +105,10 @@ module Hexyll.Core.Configuration
   -- @since 0.1.0.0
   defaultConfiguration :: Configuration
   defaultConfiguration = Configuration
-    { destinationDirectory = "_site"
-    , storeDirectory       = "_cache"
-    , tmpDirectory         = "_cache/tmp"
-    , providerDirectory    = "."
+    { destinationDirectory = $(parseRelDir "_site")
+    , storeDirectory       = $(parseRelDir "_cache")
+    , tmpDirectory         = $(parseRelDir "_cache/tmp")
+    , providerDirectory    = $(parseRelDir ".")
     , ignoreFile           = defaultIgnoreFile
     , deployCommand        = "echo 'No deploy command specified' && exit 1"
     , deploySite           = system . deployCommand
