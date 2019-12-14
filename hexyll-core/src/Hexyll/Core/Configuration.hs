@@ -1,134 +1,174 @@
---------------------------------------------------------------------------------
--- | Exports a datastructure for the top-level hakyll configuration
+-- |
+-- Module:      Hexyll.Core.Configuration
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: portable
+--
+-- This module defines a datastructure for the top-level hexyll configuration.
 module Hexyll.Core.Configuration
-    ( Configuration (..)
-    , shouldIgnoreFile
-    , defaultConfiguration
-    ) where
+  ( Configuration (..)
+  , defaultConfiguration
+  , defaultIgnoreFile
+  , shouldIgnoreFile
+  ) where
 
+  import Prelude
 
---------------------------------------------------------------------------------
-import           Data.Default     (Default (..))
-import           Data.List        (isPrefixOf, isSuffixOf)
-import           System.Directory (canonicalizePath)
-import           System.Exit      (ExitCode)
-import           System.FilePath  (isAbsolute, normalise, takeFileName)
-import           System.IO.Error  (catchIOError)
-import           System.Process   (system)
+  import Control.Monad.Hexyll (orM)
 
+  import Data.List    (isPrefixOf, isSuffixOf)
+  import Data.Default (Default (..))
 
---------------------------------------------------------------------------------
-data Configuration = Configuration
-    { -- | Directory in which the output written
+  import System.FilePath         (normalise, takeFileName)
+  import System.Directory.Hexyll (inDir)
+
+  import System.Exit    (ExitCode)
+  import System.Process (system)
+
+  -- | Top-level hexyll configration.
+  --
+  -- 'providerDirectory' is the current directory @.@ by default. See
+  -- 'defaultConfiguration' if you want more information about the default
+  -- values.
+  --
+  -- Note that in addition to 'ignoreFile', the files in 'destinationDirectory',
+  -- 'storeDirectory', and 'tmpDirectory' will also be ignored. If you want to
+  -- test whether a file is ignored, you should use 'shouldIgnoreFile' instead
+  -- of 'ignoreFile'.
+  --
+  -- By using 'deployCommand', you can plug in a system command to upload/deploy
+  -- your site unless you change 'deploySite' from the default. You can execute
+  -- this by using:
+  --
+  -- > ./site deploy
+  --
+  -- If 'inMemoryCache' is true, hexyll will be faster but uses more memory.
+  --
+  -- @since 0.1.0.0
+  data Configuration = Configuration
+    { -- | Directory in which the output written.
       destinationDirectory :: FilePath
-    , -- | Directory where hakyll's internal store is kept
+    , -- | Directory where hexyll's internal store is kept.
       storeDirectory       :: FilePath
-    , -- | Directory in which some temporary files will be kept
+    , -- | Directory in which some temporary files will be kept.
       tmpDirectory         :: FilePath
-    , -- | Directory where hakyll finds the files to compile. This is @.@ by
-      -- default.
+    , -- | Directory where hexyll finds the files to compile.
       providerDirectory    :: FilePath
-    , -- | Function to determine ignored files
-      --
-      -- In 'defaultConfiguration', the following files are ignored:
-      --
-      -- * files starting with a @.@
-      --
-      -- * files starting with a @#@
-      --
-      -- * files ending with a @~@
-      --
-      -- * files ending with @.swp@
-      --
-      -- Note that the files in 'destinationDirectory' and 'storeDirectory' will
-      -- also be ignored. Note that this is the configuration parameter, if you
-      -- want to use the test, you should use 'shouldIgnoreFile'.
-      --
+    , -- | Function to determine ignored files.
       ignoreFile           :: FilePath -> Bool
-    , -- | Here, you can plug in a system command to upload/deploy your site.
-      --
-      -- Example:
-      --
-      -- > rsync -ave 'ssh -p 2217' _site jaspervdj@jaspervdj.be:hakyll
-      --
-      -- You can execute this by using
-      --
-      -- > ./site deploy
-      --
+    , -- | System command to upload/deploy your site.
       deployCommand        :: String
     , -- | Function to deploy the site from Haskell.
-      --
-      -- By default, this command executes the shell command stored in
-      -- 'deployCommand'. If you override it, 'deployCommand' will not
-      -- be used implicitely.
-      --
-      -- The 'Configuration' object is passed as a parameter to this
-      -- function.
-      --
       deploySite           :: Configuration -> IO ExitCode
-    , -- | Use an in-memory cache for items. This is faster but uses more
-      -- memory.
+    , -- | Flag to use an in-memory cache for items.
       inMemoryCache        :: Bool
-    , -- | Override default host for preview server. Default is "127.0.0.1",
-      -- which binds only on the loopback address.
-      -- One can also override the host as a command line argument:
-      -- ./site preview -h "0.0.0.0"
-      previewHost          :: String
-    , -- | Override default port for preview server. Default is 8000.
-      -- One can also override the port as a command line argument:
-      -- ./site preview -p 1234
-      previewPort          :: Int
     }
 
---------------------------------------------------------------------------------
-instance Default Configuration where
+  -- | @since 0.1.0.0
+  instance Default Configuration where
     def = defaultConfiguration
 
---------------------------------------------------------------------------------
--- | Default configuration for a hakyll application
-defaultConfiguration :: Configuration
-defaultConfiguration = Configuration
+  -- | Default configuration for a hexyll application.
+  --
+  -- 'ignoreFile' is set with 'defaultIgnoreFile'.
+  --
+  -- The 'Configuration' object is passed as a parameter to 'deploySite', then
+  -- 'deploySite' executes the shell command stored in 'deployCommand'. If you
+  -- override it, 'deployCommand' will not be used implicitely.
+  --
+  -- Default values:
+  --
+  -- >>> destinationDirectory defaultConfiguration
+  -- "_site"
+  --
+  -- >>> storeDirectory defaultConfiguration
+  -- "_cache"
+  --
+  -- >>> tmpDirectory defaultConfiguration
+  -- "_cache/tmp"
+  --
+  -- >>> providerDirectory defaultConfiguration
+  -- "."
+  --
+  -- >>> deployCommand defaultConfiguration
+  -- "echo 'No deploy command specified' && exit 1"
+  --
+  -- >>> inMemoryCache defaultConfiguration
+  -- True
+  defaultConfiguration :: Configuration
+  defaultConfiguration = Configuration
     { destinationDirectory = "_site"
     , storeDirectory       = "_cache"
     , tmpDirectory         = "_cache/tmp"
     , providerDirectory    = "."
-    , ignoreFile           = ignoreFile'
+    , ignoreFile           = defaultIgnoreFile
     , deployCommand        = "echo 'No deploy command specified' && exit 1"
     , deploySite           = system . deployCommand
     , inMemoryCache        = True
-    , previewHost          = "127.0.0.1"
-    , previewPort          = 8000
     }
-  where
-    ignoreFile' path
-        | "."    `isPrefixOf` fileName = True
-        | "#"    `isPrefixOf` fileName = True
-        | "~"    `isSuffixOf` fileName = True
-        | ".swp" `isSuffixOf` fileName = True
-        | otherwise                    = False
-      where
-        fileName = takeFileName path
 
+  -- | Default 'ignoreFile'.
+  --
+  -- In 'defaultIgnoreFile', the following files are ignored:
+  --
+  -- * Files starting with a @.@.
+  -- * Files starting with a @#@.
+  -- * Files ending with a @~@.
+  -- * Files ending with @.swp@.
+  --
+  -- >>> defaultIgnoreFile ".gitignore"
+  -- True
+  --
+  -- >>> defaultIgnoreFile "Configuration.hs.swp"
+  -- True
+  --
+  -- >>> defaultIgnoreFile "foo~"
+  -- True
+  --
+  -- >>> defaultIgnoreFile "#Main.hs#"
+  -- True
+  --
+  -- >>> defaultIgnoreFile "a.txt"
+  -- False
+  --
+  -- >>> defaultIgnoreFile ".dot/ma.x"
+  -- False
+  --
+  -- >>> defaultIgnoreFile "foo"
+  -- False
+  --
+  -- Note that 'defaultIgnoreFile' applied a directory path, returns @False@.
+  --
+  -- >>> defaultIgnoreFile "foo~/"
+  -- False
+  --
+  -- >>> defaultIgnoreFile ".p/"
+  -- False
+  --
+  -- @since 0.1.0.0
+  defaultIgnoreFile :: FilePath -> Bool
+  defaultIgnoreFile path
+      | "."    `isPrefixOf` fileName = True
+      | "#"    `isPrefixOf` fileName = True
+      | "~"    `isSuffixOf` fileName = True
+      | ".swp" `isSuffixOf` fileName = True
+      | otherwise                    = False
+    where
+      fileName = takeFileName path
 
---------------------------------------------------------------------------------
--- | Check if a file should be ignored
-shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
-shouldIgnoreFile conf path = orM
-    [ inDir (destinationDirectory conf)
-    , inDir (storeDirectory conf)
-    , inDir (tmpDirectory conf)
-    , return (ignoreFile conf path')
+  -- | Check if a file should be ignored.
+  --
+  -- In addition to 'ignoreFile', the files in 'destinationDirectory',
+  -- 'storeDirectory', and 'tmpDirectory' will also be ignored.
+  -- 'shouldIgnoreFile' will consider the condition.
+  --
+  -- @since 0.1.0.0
+  shouldIgnoreFile :: Configuration -> FilePath -> IO Bool
+  shouldIgnoreFile conf path = orM
+    [ inDir path $ destinationDirectory conf
+    , inDir path $ storeDirectory conf
+    , inDir path $ tmpDirectory conf
+    , return $ ignoreFile conf $ normalise path
     ]
-  where
-    path'    = normalise path
-    absolute = isAbsolute path
-
-    inDir dir
-        | absolute  = do
-            dir' <- catchIOError (canonicalizePath dir) (const $ return dir)
-            return $ dir' `isPrefixOf` path'
-        | otherwise = return $ dir `isPrefixOf` path'
-
-    orM :: [IO Bool] -> IO Bool
-    orM []       = return False
-    orM (x : xs) = x >>= \b -> if b then return True else orM xs

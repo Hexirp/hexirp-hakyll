@@ -6,6 +6,9 @@ module Main where
   main :: IO ()
   main = doctest
     [ "-isrc"
+    , "src/Control/Monad/Hexyll.hs"
     , "src/Data/List/Hexyll.hs"
     , "src/Data/Yaml/Hexyll.hs"
+    , "src/Hexyll/Core/Configuration.hs"
+    , "src/System/Directory/Hexyll.hs"
     ]
