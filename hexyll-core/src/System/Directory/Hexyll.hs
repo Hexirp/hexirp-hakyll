@@ -18,6 +18,9 @@ module System.Directory.Hexyll
   -- | @inDir path dir@ checks that @path@ is under @dir@. For example, @inDir
   -- "foo/bar/a.txt" "foo/"@ may be equal to @return True@.
   --
+  -- @path@ should be a path to a file. @dir@ should be a path to a directory.
+  -- 'parseRelDir' and `parseRelFile' check whether the condition is met.
+  --
   -- >>> inDir "foo/a.txt" "foo/"
   -- True
   --
