@@ -10,6 +10,8 @@ module Hexyll.Core.File
     , newTmpFile
     ) where
 
+import Prelude
+import Path
 
 --------------------------------------------------------------------------------
 import           Data.Binary                   (Binary (..))
@@ -81,7 +83,7 @@ newTmpFile suffix = do
   where
     mkPath = do
         rand <- compilerUnsafeIO $ randomIO :: Compiler Int
-        tmp  <- tmpDirectory . compilerConfig <$> compilerAsk
+        tmp  <- toFilePath . tmpDirectory . compilerConfig <$> compilerAsk
         let path = tmp </> Store.hash [show rand] ++ "-" ++ suffix
         exists <- compilerUnsafeIO $ doesFileExist path
         if exists then mkPath else return path
