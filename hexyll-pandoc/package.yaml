@@ -1,7 +1,7 @@
 name: hexyll-pandoc
 version: 0.1.0.0
 github: "Hexirp/hexirp-hakyll"
-license: GPL-3.0-or-later
+license: GPL-2.0-or-later
 author: "Hexirp"
 maintainer: "https://github.com/Hexirp/yhseq"
 copyright: "(c) 2019 Hexirp"
