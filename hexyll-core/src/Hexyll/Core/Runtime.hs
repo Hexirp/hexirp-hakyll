@@ -3,9 +3,11 @@ module Hexyll.Core.Runtime
     ( run
     ) where
 
+import Prelude
+import Path
 
 --------------------------------------------------------------------------------
-import           Control.Monad                 (unless)
+import           Control.Monad                 (unless, (>=>))
 import           Control.Monad.Except          (ExceptT, runExceptT, throwError)
 import           Control.Monad.Reader          (ask)
 import           Control.Monad.RWS             (RWST, runRWST)
