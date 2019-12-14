@@ -88,7 +88,7 @@ module Hexyll.Core.Configuration
   -- "_cache\\"
   --
   -- >>> tmpDirectory defaultConfiguration
-  -- "_cache/tmp\\"
+  -- "_cache\\tmp\\"
   --
   -- >>> providerDirectory defaultConfiguration
   -- ".\\"
