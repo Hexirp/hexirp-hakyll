@@ -10,6 +10,8 @@ module Hexyll.Commands
     , deploy
     ) where
 
+import Prelude
+import Path
 
 --------------------------------------------------------------------------------
 import           System.Exit                (ExitCode)
@@ -42,9 +44,9 @@ check = Check.check
 -- | Remove the output directories
 clean :: Configuration -> Logger -> IO ()
 clean conf logger = do
-    remove $ destinationDirectory conf
-    remove $ storeDirectory conf
-    remove $ tmpDirectory conf
+    remove $ toFilePath $ destinationDirectory conf
+    remove $ toFilePath $ storeDirectory conf
+    remove $ toFilePath $ tmpDirectory conf
   where
     remove dir = do
         Logger.header logger $ "Removing " ++ dir ++ "..."
