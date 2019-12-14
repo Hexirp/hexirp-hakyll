@@ -105,10 +105,10 @@ module Hexyll.Core.Configuration
   -- @since 0.1.0.0
   defaultConfiguration :: Configuration
   defaultConfiguration = Configuration
-    { destinationDirectory = $(parseRelDir "_site")
-    , storeDirectory       = $(parseRelDir "_cache")
-    , tmpDirectory         = $(parseRelDir "_cache/tmp")
-    , providerDirectory    = $(parseRelDir ".")
+    { destinationDirectory = $(mkRelDir "_site")
+    , storeDirectory       = $(mkRelDir "_cache")
+    , tmpDirectory         = $(mkRelDir "_cache/tmp")
+    , providerDirectory    = $(mkRelDir ".")
     , ignoreFile           = defaultIgnoreFile
     , deployCommand        = "echo 'No deploy command specified' && exit 1"
     , deploySite           = system . deployCommand
