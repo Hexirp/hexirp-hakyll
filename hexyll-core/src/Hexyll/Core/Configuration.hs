@@ -136,10 +136,10 @@ module Hexyll.Core.Configuration
   -- >>> defaultIgnoreFile ".dot/ma.x"
   -- False
   --
-  -- Note that 'defaultIgnoreFile' applied a directory path, returns @False@.
-  --
   -- >>> defaultIgnoreFile "foo"
   -- False
+  --
+  -- Note that 'defaultIgnoreFile' applied a directory path, returns @False@.
   --
   -- >>> defaultIgnoreFile "foo~/"
   -- False
