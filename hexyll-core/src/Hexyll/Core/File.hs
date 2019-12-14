@@ -84,6 +84,6 @@ newTmpFile suffix = do
     mkPath = do
         rand <- compilerUnsafeIO $ randomIO :: Compiler Int
         tmp  <- toFilePath . tmpDirectory . compilerConfig <$> compilerAsk
-        let path = tmp </> Store.hash [show rand] ++ "-" ++ suffix
+        let path = tmp ++ Store.hash [show rand] ++ "-" ++ suffix
         exists <- compilerUnsafeIO $ doesFileExist path
         if exists then mkPath else return path
