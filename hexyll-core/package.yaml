@@ -14,57 +14,46 @@ description: Please see the README on GitHub at <https://github.com/Hexirp/hexir
 extra-source-files:
 - README.md
 - ChangeLog.md
-- test/data/embed.html
-- test/data/example.md
-- test/data/example.md.metadata
-- test/data/images/favicon.ico
-- test/data/just-meta.html
-- test/data/just-meta.html.out
-- test/data/partial-helper.html
-- test/data/partial.html
-- test/data/partial.html.out
-- test/data/posts/2010-08-26-birthday.md
-- test/data/posts/2018-09-26.md
-- test/data/posts/2019/05/10/tomorrow.md
-- test/data/russian.md
-- test/data/strip.html
-- test/data/strip.html.out
-- test/data/template.html
-- test/data/template.html.out
-- data/templates/atom-item.xml
-- data/templates/atom.xml
-- data/templates/rss-item.xml
-- data/templates/rss.xml
+- unit-test/data/embed.html
+- unit-test/data/example.md
+- unit-test/data/example.md.metadata
+- unit-test/data/images/favicon.ico
+- unit-test/data/just-meta.html
+- unit-test/data/just-meta.html.out
+- unit-test/data/partial-helper.html
+- unit-test/data/partial.html
+- unit-test/data/partial.html.out
+- unit-test/data/posts/2010-08-26-birthday.md
+- unit-test/data/posts/2018-09-26.md
+- unit-test/data/posts/2019/05/10/tomorrow.md
+- unit-test/data/russian.md
+- unit-test/data/strip.html
+- unit-test/data/strip.html.out
+- unit-test/data/template.html
+- unit-test/data/template.html.out
 
 dependencies:
 - base                 >= 4.11.1.0 && < 4.13
 - binary               >= 0.8.5.1  && < 0.9
 - blaze-html           >= 0.9.1.1  && < 0.10
-- blaze-markup         >= 0.8.2.2  && < 0.9
 - bytestring           >= 0.10.8.2 && < 0.11
 - containers           >= 0.5.11.0 && < 0.7
 - cryptonite           >= 0.25     && < 0.26
 - data-default         >= 0.7.1.1  && < 0.8
 - deepseq              >= 1.4.3.0  && < 1.5
 - directory            >= 1.3.1.5  && < 1.4
-- file-embed           >= 0.0.10.1 && < 0.1
 - filepath             >= 1.4.2    && < 1.5
 - lrucache             >= 1.2.0.1  && < 1.3
 - memory               >= 0.14.18  && < 0.15
 - mtl                  >= 2.2.2    && < 2.3
-- network-uri          >= 2.6.1.0  && < 2.7
-- optparse-applicative >= 0.14.3.0 && < 0.15
 - parsec               >= 3.1.13.0 && < 3.2
+- path                 >= 0.6.1    && < 0.7
 - process              >= 1.6.3.0  && < 1.7
 - random               >= 1.1      && < 1.2
 - regex-tdfa           >= 1.2.3.1  && < 1.3
-- resourcet            >= 1.2.2    && < 1.3
 - scientific           >= 0.3.6.2  && < 0.4
-- tagsoup              >= 0.14.7   && < 0.15
-- template-haskell     >= 2.13.0.0 && < 2.15
 - text                 >= 1.2.3.1  && < 1.3
 - time                 >= 1.8.0.2  && < 1.9
-- time-locale-compat   >= 0.1.1.5  && < 0.2
 - unordered-containers >= 0.2.9.0  && < 0.3
 - vector               >= 0.12.0.2 && < 0.13
 - yaml                 >= 0.8.32   && < 0.12
@@ -94,6 +83,23 @@ tests:
     - -Wredundant-constraints
     - -threaded
     - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hexyll-core
+    - hspec       >= 2.5.5 && < 2.7
+  hexyll-core-unit-test:
+    main: Spec.hs
+    source-dirs: unit-test
+    ghc-options:
+    - -Wall
+    - -Wcompat
+    - -Widentities
+    - -Wincomplete-record-updates
+    - -Wincomplete-uni-patterns
+    - -Wpartial-fields
+    - -Wredundant-constraints
+    - -threaded
+    - -rtsopts
     #- -with-rtsopts=-N
     dependencies:
     - hexyll-core
@@ -102,3 +108,22 @@ tests:
     - tasty-discover   >= 4.2.1    && < 4.3
     - tasty-hunit      >= 0.10.0.1 && < 0.11
     - tasty-quickcheck >= 0.10     && < 0.11
+    buildable: false
+  hexyll-core-doctest:
+    main: Spec.hs
+    source-dirs: doctest
+    ghc-options:
+    - -Wall
+    - -Wcompat
+    - -Widentities
+    - -Wincomplete-record-updates
+    - -Wincomplete-uni-patterns
+    - -Wpartial-fields
+    - -Wredundant-constraints
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - hexyll-core
+    - QuickCheck  >= 2.11.3   && < 2.13
+    - doctest     >= 0.16.0.1 && < 0.17

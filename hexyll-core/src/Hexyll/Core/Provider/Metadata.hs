@@ -16,7 +16,7 @@ import           Control.Exception             (Exception, throwIO)
 import           Control.Monad                 (guard)
 import qualified Data.ByteString               as B
 import qualified Data.ByteString.Char8         as BC
-import           Data.List.Extended            (breakWhen)
+import           Data.List.Hexyll              (breakWhen)
 import qualified Data.Map                      as M
 import           Data.Maybe                    (fromMaybe)
 import           Data.Monoid                   ((<>))

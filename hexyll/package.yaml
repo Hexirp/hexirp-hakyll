@@ -40,32 +40,18 @@ dependencies:
 - base                 >= 4.11.1.0 && < 4.13
 - binary               >= 0.8.5.1  && < 0.9
 - blaze-html           >= 0.9.1.1  && < 0.10
-- blaze-markup         >= 0.8.2.2  && < 0.9
-- bytestring           >= 0.10.8.2 && < 0.11
 - containers           >= 0.5.11.0 && < 0.7
-- data-default         >= 0.7.1.1  && < 0.8
-- deepseq              >= 1.4.3.0  && < 1.5
-- directory            >= 1.3.1.5  && < 1.4
 - file-embed           >= 0.0.10.1 && < 0.1
 - filepath             >= 1.4.2    && < 1.5
-- lrucache             >= 1.2.0.1  && < 1.3
 - mtl                  >= 2.2.2    && < 2.3
 - network-uri          >= 2.6.1.0  && < 2.7
 - optparse-applicative >= 0.14.3.0 && < 0.15
 - parsec               >= 3.1.13.0 && < 3.2
-- process              >= 1.6.3.0  && < 1.7
-- random               >= 1.1      && < 1.2
-- regex-tdfa           >= 1.2.3.1  && < 1.3
-- resourcet            >= 1.2.2    && < 1.3
-- scientific           >= 0.3.6.2  && < 0.4
 - tagsoup              >= 0.14.7   && < 0.15
 - template-haskell     >= 2.13.0.0 && < 2.15
 - text                 >= 1.2.3.1  && < 1.3
 - time                 >= 1.8.0.2  && < 1.9
 - time-locale-compat   >= 0.1.1.5  && < 0.2
-- unordered-containers >= 0.2.9.0  && < 0.3
-- vector               >= 0.12.0.2 && < 0.13
-- yaml                 >= 0.8.32   && < 0.12
 - hexyll-core          == 0.1.0.*
 
 flags:
@@ -90,8 +76,10 @@ library:
   when:
   - condition: flag(checkExternal)
     dependencies:
-    - http-conduit >= 2.3.1  && < 2.4
-    - http-types   >= 0.12.2 && < 0.13
+    - directory    >= 1.3.1.5 && < 1.4
+    - http-conduit >= 2.3.1   && < 2.4
+    - http-types   >= 0.12.2  && < 0.13
+    - resourcet    >= 1.2.2   && < 1.3
     cpp-options:
     - -DCHECK_EXTERNAL
 
@@ -112,6 +100,7 @@ tests:
     #- -with-rtsopts=-N
     dependencies:
     - hexyll
+    - bytestring       >= 0.10.8.2 && < 0.11
     - QuickCheck       >= 2.11.3   && < 2.13
     - tasty            >= 1.1.0.4  && < 1.3
     - tasty-hunit      >= 0.10.0.1 && < 0.11

@@ -6,11 +6,8 @@ module Hexyll.Commands
     , build
     , check
     , clean
-    , preview
     , rebuild
-    , server
     , deploy
-    , watch
     ) where
 
 
@@ -55,53 +52,12 @@ clean conf logger = do
 
 
 --------------------------------------------------------------------------------
--- | Preview the site
-preview :: Configuration -> Logger -> Rules a -> Int -> IO ()
-preview _ _ _ _ = previewServerDisabled
-
-
---------------------------------------------------------------------------------
--- | Watch and recompile for changes
-
-watch :: Configuration -> Logger -> String -> Int -> Bool -> Rules a -> IO ()
-watch _ _ _ _ _ _ = watchServerDisabled
-
---------------------------------------------------------------------------------
 -- | Rebuild the site
 rebuild :: Configuration -> Logger -> Rules a -> IO ExitCode
 rebuild conf logger rules =
     clean conf logger >> build conf logger rules
 
 --------------------------------------------------------------------------------
--- | Start a server
-server :: Configuration -> Logger -> String -> Int -> IO ()
-server _ _ _ _ = previewServerDisabled
-
-
---------------------------------------------------------------------------------
 -- | Upload the site
 deploy :: Configuration -> IO ExitCode
 deploy conf = deploySite conf conf
-
-
---------------------------------------------------------------------------------
--- | Print a warning message about the preview serving not being enabled
-previewServerDisabled :: IO ()
-previewServerDisabled =
-    mapM_ putStrLn
-        [ "PREVIEW SERVER"
-        , ""
-        , "The preview server is not enabled in the version of Hexyll. To"
-        , "enable it, set the flag to True and recompile Hexyll."
-        , "Alternatively, use an external tool to serve your site directory."
-        ]
-
-watchServerDisabled :: IO ()
-watchServerDisabled =
-    mapM_ putStrLn
-      [ "WATCH SERVER"
-      , ""
-      , "The watch server is not enabled in the version of Hexyll. To"
-      , "enable it, set the flag to True and recompile Hexyll."
-      , "Alternatively, use an external tool to serve your site directory."
-      ]

@@ -87,10 +87,7 @@ invokeCommands args conf check logger rules =
         Check   _      -> Commands.check conf logger check
         Clean          -> Commands.clean conf logger >> ok
         Deploy         -> Commands.deploy conf
-        Preview p      -> Commands.preview conf logger rules p >> ok
         Rebuild        -> Commands.rebuild conf logger rules
-        Server  _ _    -> Commands.server conf logger (host args) (port args) >> ok
-        Watch   _ p s  -> Commands.watch conf logger (host args) p (not s) rules >> ok
     where
         ok = return ExitSuccess
 
@@ -111,17 +108,9 @@ data Command
     -- ^ Clean up and remove cache.
     | Deploy
     -- ^ Upload/deploy your site.
-    | Preview {port :: Int}
-    -- ^ [DEPRECATED] Please use the watch command.
     | Rebuild
     -- ^ Clean and build again.
-    | Server  {host :: String, port :: Int}
-    -- ^ Start a preview server.
-    | Watch   {host :: String, port :: Int, no_server :: Bool }
-    -- ^ Autocompile on changes and start a preview server.
     deriving (Show)
-
-{-# DEPRECATED Preview "Use Watch instead." #-}
 
 optionParser :: Config.Configuration -> OA.Parser Options
 optionParser conf = Options <$> verboseParser <*> commandParser conf
@@ -132,8 +121,6 @@ optionParser conf = Options <$> verboseParser <*> commandParser conf
 commandParser :: Config.Configuration -> OA.Parser Command
 commandParser conf = OA.subparser $ foldr ((<>) . produceCommand) mempty commands
     where
-    portParser = OA.option OA.auto (OA.long "port" <> OA.help "Port to listen on" <> OA.value (Config.previewPort conf))
-    hostParser = OA.strOption (OA.long "host" <> OA.help "Host to bind on" <> OA.value (Config.previewHost conf))
 
     produceCommand (c,a,b) = OA.command c (OA.info (OA.helper <*> a) (b))
 
@@ -154,21 +141,9 @@ commandParser conf = OA.subparser $ foldr ((<>) . produceCommand) mempty command
           , pure Deploy
           , OA.fullDesc <> OA.progDesc "Upload/deploy your site"
            )
-        , ( "preview"
-          , pure Preview <*> portParser
-          , OA.fullDesc <> OA.progDesc "[DEPRECATED] Please use the watch command"
-          )
         , ( "rebuild"
           , pure Rebuild
           , OA.fullDesc <> OA.progDesc "Clean and build again"
-          )
-        , ( "server"
-          , pure Server <*> hostParser <*> portParser
-          , OA.fullDesc <> OA.progDesc "Start a preview server"
-          )
-        , ( "watch"
-          , pure Watch <*> hostParser <*> portParser <*> OA.switch (OA.long "no-server" <> OA.help "Disable the built-in web server")
-          , OA.fullDesc <> OA.progDesc "Autocompile on changes and start a preview server.  You can watch and recompile without running a server with --no-server."
           )
         ]
 
