@@ -13,9 +13,6 @@ module System.Directory.Hexyll
 
   import Prelude
 
-  import System.FilePath
-  import System.Directory
-
   import Path
 
   -- | @inDir path dir@ checks that @path@ is under @dir@. For example, @inDir
