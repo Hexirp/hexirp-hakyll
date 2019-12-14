@@ -154,7 +154,7 @@ module Hexyll.Core.Configuration
   -- False
   --
   -- @since 0.1.0.0
-  defaultIgnoreFile :: FilePath -> Bool
+  defaultIgnoreFile :: Path Rel File -> Bool
   defaultIgnoreFile path
       | "."    `isPrefixOf` fileName = True
       | "#"    `isPrefixOf` fileName = True
@@ -162,7 +162,7 @@ module Hexyll.Core.Configuration
       | ".swp" `isSuffixOf` fileName = True
       | otherwise                    = False
     where
-      fileName = takeFileName path
+      fileName = toFilePath $ filename path
 
   -- | Check if a file should be ignored.
   --
