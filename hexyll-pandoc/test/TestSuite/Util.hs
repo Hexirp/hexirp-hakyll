@@ -12,6 +12,8 @@ module TestSuite.Util
     , renderParagraphs
     ) where
 
+import Prelude
+import Path
 
 --------------------------------------------------------------------------------
 import           Data.List                     (intercalate, isInfixOf)
@@ -25,7 +27,7 @@ import           Text.Printf                   (printf)
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Compiler.Internal
 import           Hexyll.Core.Configuration
-import           Hexyll.Core.Identifier
+import           Hexyll.Core.Identifier hiding (toFilePath)
 import qualified Hexyll.Core.Logger            as Logger
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Store             (Store)
@@ -44,13 +46,13 @@ fromAssertions name =
 
 --------------------------------------------------------------------------------
 newTestStore :: IO Store
-newTestStore = Store.new True $ storeDirectory testConfiguration
+newTestStore = Store.new True $ toFilePath $ storeDirectory testConfiguration
 
 
 --------------------------------------------------------------------------------
 newTestProvider :: Store -> IO Provider
 newTestProvider store = newProvider store (const $ return False) $
-    providerDirectory testConfiguration
+    toFilePath $ providerDirectory testConfiguration
 
 
 --------------------------------------------------------------------------------
@@ -100,19 +102,19 @@ testCompilerError store provider underlying compiler expectedMessage = do
 --------------------------------------------------------------------------------
 testConfiguration :: Configuration
 testConfiguration = defaultConfiguration
-    { destinationDirectory = "_testsite"
-    , storeDirectory       = "_teststore"
-    , tmpDirectory         = "_testtmp"
-    , providerDirectory    = "test/data"
+    { destinationDirectory = $(mkRelDir "_testsite")
+    , storeDirectory       = $(mkRelDir "_teststore")
+    , tmpDirectory         = $(mkRelDir "_testtmp")
+    , providerDirectory    = $(mkRelDir "test/data")
     }
 
 
 --------------------------------------------------------------------------------
 cleanTestEnv :: IO ()
 cleanTestEnv = do
-    removeDirectory $ destinationDirectory testConfiguration
-    removeDirectory $ storeDirectory testConfiguration
-    removeDirectory $ tmpDirectory testConfiguration
+    removeDirectory $ toFilePath $ destinationDirectory testConfiguration
+    removeDirectory $ toFilePath $ storeDirectory testConfiguration
+    removeDirectory $ toFilePath $ tmpDirectory testConfiguration
 
 
 --------------------------------------------------------------------------------
