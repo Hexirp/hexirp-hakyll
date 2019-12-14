@@ -21,15 +21,15 @@ checked:
 
 ### hexyll-core
 
-hexyll の基盤部分を記述しているパッケージである。例えば Route や Rules や Compiler などの定義を含む。
+hexyll の基盤部分を記述しているパッケージである。例えば Route や Rules や Compiler などの定義を含む。ライセンスは **Apache-2.0** である。
 
 ### hexyll
 
-hexyll の本体であり Compiler や Template などの具体的な実装や、ルールなどのDSLから最終的なプログラムを構成する関数を含む。
+hexyll の本体であり Compiler や Template などの具体的な実装や、ルールなどのDSLから最終的なプログラムを構成する関数を含む。ライセンスは **Apache-2.0** である。
 
 ### hexyll-pandoc
 
-hexyll の pandoc に依存する部分を切り出したパッケージである。もっとも重要なのは pandoc による Compiler の実装を含むことであろう。
+hexyll の pandoc に依存する部分を切り出したパッケージである。もっとも重要なのは pandoc による Compiler の実装を含むことであろう。ライセンスは **GPL-2.0-or-later** である。
 
 ## 依存ライブラリのバージョン指定について
 
