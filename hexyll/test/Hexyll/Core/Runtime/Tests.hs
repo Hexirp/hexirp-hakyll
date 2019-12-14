@@ -65,7 +65,7 @@ case01 = do
     favicon @?= favicon'
 
     example <- readFile $
-        (toFilePath . destinationDirectory) testConfiguration ** "example.html"
+        (toFilePath . destinationDirectory) testConfiguration ++ "example.html"
     lines example @?=  ["<p>This is an example.</p>"]
 
     bodies <- readFile $ (toFilePath . destinationDirectory) testConfiguration ++ "bodies.txt"
