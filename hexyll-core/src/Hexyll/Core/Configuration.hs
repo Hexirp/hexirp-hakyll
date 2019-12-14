@@ -24,6 +24,8 @@ module Hexyll.Core.Configuration
   import System.FilePath         (normalise, takeFileName)
   import System.Directory.Hexyll (inDir)
 
+  import Path
+
   import System.Exit    (ExitCode)
   import System.Process (system)
 
@@ -49,15 +51,15 @@ module Hexyll.Core.Configuration
   -- @since 0.1.0.0
   data Configuration = Configuration
     { -- | Directory in which the output written.
-      destinationDirectory :: FilePath
+      destinationDirectory :: Path Rel Dir
     , -- | Directory where hexyll's internal store is kept.
-      storeDirectory       :: FilePath
+      storeDirectory       :: Path Rel Dir
     , -- | Directory in which some temporary files will be kept.
-      tmpDirectory         :: FilePath
+      tmpDirectory         :: Path Rel Dir
     , -- | Directory where hexyll finds the files to compile.
-      providerDirectory    :: FilePath
+      providerDirectory    :: Path Rel Dir
     , -- | Function to determine ignored files.
-      ignoreFile           :: FilePath -> Bool
+      ignoreFile           :: Path Rel File -> Bool
     , -- | System command to upload/deploy your site.
       deployCommand        :: String
     , -- | Function to deploy the site from Haskell.
