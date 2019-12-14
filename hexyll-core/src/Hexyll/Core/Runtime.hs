@@ -45,10 +45,10 @@ run config logger rules = do
     -- Initialization
     Logger.header logger "Initialising..."
     Logger.message logger "Creating store..."
-    store <- Store.new (inMemoryCache config) $ storeDirectory config
+    store <- Store.new (inMemoryCache config) $ toFilePath $ storeDirectory config
     Logger.message logger "Creating provider..."
-    provider <- newProvider store (shouldIgnoreFile config) $
-        providerDirectory config
+    provider <- newProvider store (parseRelFile >=> shouldIgnoreFile config) $
+        toFilePath $ providerDirectory config
     Logger.message logger "Running rules..."
     ruleSet  <- runRules rules provider
 
@@ -86,7 +86,7 @@ run config logger rules = do
             Store.set store factsKey $ runtimeFacts s
 
             Logger.debug logger "Removing tmp directory..."
-            removeDirectory $ tmpDirectory config
+            removeDirectory $ toFilePath $ tmpDirectory config
 
             Logger.flush logger
             return (ExitSuccess, ruleSet)
@@ -234,7 +234,7 @@ chase trail id'
                 case mroute of
                     Nothing    -> return ()
                     Just route -> do
-                        let path = destinationDirectory config </> route
+                        let path = (toFilePath . destinationDirectory) config ++ route
                         liftIO $ makeDirectories path
                         liftIO $ write path item
                         Logger.debug logger $ "Routed to " ++ path
