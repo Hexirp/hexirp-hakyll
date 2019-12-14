@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 -- |
@@ -69,6 +70,37 @@ module Hexyll.Core.Configuration
   instance Default Configuration where
     def = defaultConfiguration
 
+#if defined(mingw32_HOST_OS) || defined(__MINGW32__)
+  -- | Default configuration for a hexyll application.
+  --
+  -- 'ignoreFile' is set with 'defaultIgnoreFile'.
+  --
+  -- The 'Configuration' object is passed as a parameter to 'deploySite', then
+  -- 'deploySite' executes the shell command stored in 'deployCommand'. If you
+  -- override it, 'deployCommand' will not be used implicitely.
+  --
+  -- Default values:
+  --
+  -- >>> destinationDirectory defaultConfiguration
+  -- "_site\\"
+  --
+  -- >>> storeDirectory defaultConfiguration
+  -- "_cache\\"
+  --
+  -- >>> tmpDirectory defaultConfiguration
+  -- "_cache/tmp\\"
+  --
+  -- >>> providerDirectory defaultConfiguration
+  -- ".\\"
+  --
+  -- >>> deployCommand defaultConfiguration
+  -- "echo 'No deploy command specified' && exit 1"
+  --
+  -- >>> inMemoryCache defaultConfiguration
+  -- True
+  --
+  -- @since 0.1.0.0
+#else
   -- | Default configuration for a hexyll application.
   --
   -- 'ignoreFile' is set with 'defaultIgnoreFile'.
@@ -98,6 +130,7 @@ module Hexyll.Core.Configuration
   -- True
   --
   -- @since 0.1.0.0
+#endif
   defaultConfiguration :: Configuration
   defaultConfiguration = Configuration
     { destinationDirectory = $(mkRelDir "_site")
