@@ -18,13 +18,8 @@ module Hexyll.Core.Configuration
 
   import Prelude
 
-  import Control.Monad.Hexyll (orM)
-
   import Data.List    (isPrefixOf, isSuffixOf)
   import Data.Default (Default (..))
-
-  import System.FilePath         (normalise, takeFileName)
-  import System.Directory.Hexyll (inDir)
 
   import Path
 
