@@ -9,7 +9,6 @@ import Path
 
 --------------------------------------------------------------------------------
 import qualified Data.ByteString     as B
-import           System.FilePath     ((</>))
 import           Test.Tasty          (TestTree, testGroup)
 import           Test.Tasty.HUnit    (Assertion, (@?=))
 
