@@ -15,7 +15,7 @@ import           Test.Tasty.HUnit    (Assertion, (@?=))
 
 
 --------------------------------------------------------------------------------
-import           Hexyll
+import           Hexyll hiding (toFilePath)
 import qualified Hexyll.Core.Logger  as Logger
 import           Hexyll.Core.Runtime
 import           TestSuite.Util
