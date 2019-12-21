@@ -46,12 +46,17 @@ data Identifier = Identifier
 
 --------------------------------------------------------------------------------
 instance Binary Identifier where
-    put (Identifier v p) = put v >> put (Path.toFilePath p)
-    get = Identifier <$> get <*> do
-      s <- get
-      case parseRelFile s of
-        Nothing -> mzero
-        Just p -> return p
+    put (Identifier v p) = do
+      put v
+      put $ Path.toFilePath p
+    get = do
+      v <- get
+      p <- do
+        s <- get
+        case parseRelFile s of
+          Nothing -> mzero
+          Just p -> return p
+      return $ Identifier v p
 
 
 --------------------------------------------------------------------------------
