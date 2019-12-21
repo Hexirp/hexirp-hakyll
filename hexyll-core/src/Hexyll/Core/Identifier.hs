@@ -44,11 +44,14 @@ module Hexyll.Core.Identifier
   --
   -- It is similar to 'FilePath'. But, a 'Identifier' value can have its
   -- version. The information about version is used inside the library.
+  --
+  -- @since 0.1.0.0
   data Identifier = Identifier
     { identifierVersion :: Maybe String
     , identifierPath    :: Path Rel File
     } deriving (Eq, Ord, Typeable)
 
+  -- @since 0.1.0.0
   instance Binary Identifier where
     put (Identifier v p) = do
       put v
@@ -62,29 +65,45 @@ module Hexyll.Core.Identifier
           Just p -> return p
       return $ Identifier v p
 
+  -- @since 0.1.0.0
   instance IsString Identifier where
     fromString = fromFilePath
 
+  -- @since 0.1.0.0
   instance NFData Identifier where
     rnf (Identifier v p) = rnf v `seq` rnf p `seq` ()
 
+  -- @since 0.1.0.0
   instance Show Identifier where
     show i = case identifierVersion i of
         Nothing -> toFilePath i
         Just v  -> toFilePath i ++ " (" ++ v ++ ")"
 
-  -- | Parse an identifier from a string
+  -- | Parse an identifier from a string. The string should be a relative path
+  -- to file.
+  --
+  -- @since 0.1.0.0
   fromFilePath :: FilePath -> Identifier
   fromFilePath s = case parseRelFile s of
     Nothing -> error "Identifier.fromFilePath: It's not a relative path to file."
     Just p -> Identifier Nothing p
 
-  -- | Convert an identifier to a relative 'FilePath'
+  -- | Convert an identifier to a relative 'FilePath'.
+  --
+  -- @since 0.1.0.0
   toFilePath :: Identifier -> FilePath
   toFilePath = Path.toFilePath . identifierPath
 
+  -- | Get the version of an identifier. I recommend that you do not use this
+  -- function.
+  --
+  -- @since 0.1.0.0
   getIdentVersion :: Identifier -> Maybe String
   getIdentVersion = identifierVersion
 
+  -- | Set the version of an identifier. I recommend that you do not use this
+  -- function.
+  --
+  -- @since 0.1.0.0
   setIdentVersion :: Maybe String -> Identifier -> Identifier
   setIdentVersion v i = i { identifierVersion = v }
