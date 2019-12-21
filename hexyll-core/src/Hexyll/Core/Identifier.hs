@@ -40,6 +40,10 @@ module Hexyll.Core.Identifier
   import qualified Path
   import           Path hiding (toFilePath)
 
+  -- | A type used to uniquely identify an item.
+  --
+  -- It is similar to 'FilePath'. But, a 'Identifier' value can have its
+  -- version. The information about version is used inside the library.
   data Identifier = Identifier
     { identifierVersion :: Maybe String
     , identifierPath    :: Path Rel File
