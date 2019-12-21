@@ -52,7 +52,7 @@ case01 = do
     readIORef ioref >>= (True @=?)
     cleanTestEnv
   where
-    sv g     = setVersion (Just g)
+    sv g     = setIdentVersion (Just g)
     expected =
         [                    "example.md"
         , sv "raw"           "example.md"
