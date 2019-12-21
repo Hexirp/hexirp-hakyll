@@ -7,7 +7,7 @@
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
 -- Stability:   stable
--- Portability: portable
+-- Portability: non-portable (GHC Extensions: CPP + TemplateHaskell)
 --
 -- This module defines a datastructure for the top-level hexyll configuration.
 module Hexyll.Core.Configuration
