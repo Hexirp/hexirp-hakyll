@@ -17,6 +17,9 @@ module Hexyll.Core.Identifier
     , setVersion
     ) where
 
+import Prelude
+import Path hiding (toFilePath)
+import qualified Path
 
 --------------------------------------------------------------------------------
 import           Control.DeepSeq     (NFData (..))
@@ -36,7 +39,7 @@ import           GHC.Exts            (IsString, fromString)
 --------------------------------------------------------------------------------
 data Identifier = Identifier
     { identifierVersion :: Maybe String
-    , identifierPath    :: String
+    , identifierPath    :: Path Rel File
     } deriving (Eq, Ord, Typeable)
 
 
@@ -66,18 +69,15 @@ instance Show Identifier where
 --------------------------------------------------------------------------------
 -- | Parse an identifier from a string
 fromFilePath :: FilePath -> Identifier
-fromFilePath = Identifier Nothing .
-    intercalate "/" . filter (not . null) . split'
-  where
-    split' = map dropTrailingPathSeparator . splitPath
+fromFilePath s = case parseRelFile s of
+  Nothing -> error "Identifier.fromFilePath: It is not a relative path to file."
+  Just p -> Identifier Nothing p
 
 
 --------------------------------------------------------------------------------
 -- | Convert an identifier to a relative 'FilePath'
 toFilePath :: Identifier -> FilePath
-toFilePath = intercalate [pathSeparator] . split' . identifierPath
-  where
-    split' = map dropTrailingPathSeparator . splitPath
+toFilePath = Path.toFilePath . identifierPath
 
 
 --------------------------------------------------------------------------------
