@@ -74,7 +74,7 @@ instance Show Identifier where
 -- | Parse an identifier from a string
 fromFilePath :: FilePath -> Identifier
 fromFilePath s = case parseRelFile s of
-  Nothing -> error "Identifier.fromFilePath: It is not a relative path to file."
+  Nothing -> error "Identifier.fromFilePath: It's not a relative path to file."
   Just p -> Identifier Nothing p
 
 
