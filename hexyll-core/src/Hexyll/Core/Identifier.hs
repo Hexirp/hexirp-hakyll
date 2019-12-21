@@ -24,11 +24,6 @@ import qualified Path
 
 --------------------------------------------------------------------------------
 import           Control.DeepSeq     (NFData (..))
-import           Data.List           (intercalate)
-import           System.FilePath     ( pathSeparator
-                                     , dropTrailingPathSeparator
-                                     , splitPath
-                                     )
 
 
 --------------------------------------------------------------------------------
