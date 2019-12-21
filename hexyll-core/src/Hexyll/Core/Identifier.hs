@@ -87,4 +87,4 @@ toFilePath = Path.toFilePath . identifierPath
 
 --------------------------------------------------------------------------------
 setVersion :: Maybe String -> Identifier -> Identifier
-setVersion v i = i {identifierVersion = v}
+setVersion v i = i { identifierVersion = i }
