@@ -27,7 +27,7 @@ module Hexyll.Core.Configuration
   import System.Exit    (ExitCode)
   import System.Process (system)
 
-  -- | Top-level hexyll configration.
+  -- | The top-level hexyll configration.
   --
   -- 'providerDirectory' is the current directory @.@ by default. See
   -- 'defaultConfiguration' if you want more information about the default
