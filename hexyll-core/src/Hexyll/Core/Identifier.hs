@@ -18,6 +18,7 @@ module Hexyll.Core.Identifier
     ) where
 
 import Prelude
+import Control.Monad (mzero)
 import Path hiding (toFilePath)
 import qualified Path
 
