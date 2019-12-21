@@ -183,7 +183,7 @@ matches (And x y)      i = matches x i && matches y i
 matches (Glob p)       i = isJust $ capture (Glob p) i
 matches (List l)       i = i `S.member` l
 matches (Regex r)      i = toFilePath i =~ r
-matches (Version v)    i = identifierVersion i == v
+matches (Version v)    i = getIdentVersion i == v
 
 
 --------------------------------------------------------------------------------
