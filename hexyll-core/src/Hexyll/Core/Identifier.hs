@@ -1,6 +1,3 @@
-{-# LANGUAGE DeriveDataTypeable         #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-
 -- |
 -- Module:      Hexyll.Core.Identifier
 -- Copyright:   (c) 2019 Hexirp
