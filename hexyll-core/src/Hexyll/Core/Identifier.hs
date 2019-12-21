@@ -51,7 +51,7 @@ module Hexyll.Core.Identifier
     , identifierPath    :: Path Rel File
     } deriving (Eq, Ord, Typeable)
 
-  -- @since 0.1.0.0
+  -- | @since 0.1.0.0
   instance Binary Identifier where
     put (Identifier v p) = do
       put v
@@ -65,15 +65,15 @@ module Hexyll.Core.Identifier
           Just p -> return p
       return $ Identifier v p
 
-  -- @since 0.1.0.0
+  -- | @since 0.1.0.0
   instance IsString Identifier where
     fromString = fromFilePath
 
-  -- @since 0.1.0.0
+  -- | @since 0.1.0.0
   instance NFData Identifier where
     rnf (Identifier v p) = rnf v `seq` rnf p `seq` ()
 
-  -- @since 0.1.0.0
+  -- | @since 0.1.0.0
   instance Show Identifier where
     show i = case identifierVersion i of
         Nothing -> toFilePath i
