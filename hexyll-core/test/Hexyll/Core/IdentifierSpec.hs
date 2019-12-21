@@ -1,7 +1,7 @@
 module Hexyll.Core.IdentifierSpec (spec) where
 
   import Prelude
-  import Test.HSpec
+  import Test.Hspec
 
   spec :: Spec
   spec = return ()
