@@ -13,8 +13,8 @@ module Hexyll.Core.Identifier
     ( Identifier
     , fromFilePath
     , toFilePath
-    , identifierVersion
-    , setVersion
+    , getIdentVersion
+    , setIdentVersion
     ) where
 
 import Prelude
@@ -85,6 +85,9 @@ toFilePath :: Identifier -> FilePath
 toFilePath = Path.toFilePath . identifierPath
 
 
+getIdentVersion :: Identifier -> Maybe String
+getIdentVersion = identifierVersion
+
 --------------------------------------------------------------------------------
-setVersion :: Maybe String -> Identifier -> Identifier
-setVersion v i = i { identifierVersion = i }
+setIdentVersion :: Maybe String -> Identifier -> Identifier
+setIdentVersion v i = i { identifierVersion = v }
