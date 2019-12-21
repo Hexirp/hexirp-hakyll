@@ -5,6 +5,8 @@ module Hexyll.Core.IdentifierSpec (spec) where
   import Prelude
   import Test.Hspec
 
+  import Control.DeepSeq
+
   spec :: Spec
   spec = do
 
