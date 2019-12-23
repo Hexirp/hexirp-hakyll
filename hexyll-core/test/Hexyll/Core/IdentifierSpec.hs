@@ -7,6 +7,8 @@ module Hexyll.Core.IdentifierSpec (spec) where
 
   import Control.DeepSeq
 
+  import Hexyll.Core.Identifier
+
   spec :: Spec
   spec = do
 
