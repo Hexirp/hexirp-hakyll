@@ -22,17 +22,23 @@ module Hexyll.Core.IdentifierSpec (spec) where
 
       it "can not parse 'foo/'" $ do
         (evaluate $ fromFilePath "foo/") `shouldThrow` anyErrorCall
+#if defined(mingw32_HOST_OS) || defined(__MINGW32__)
+
+      it "can not parse 'C:\\foo.md'" $ do
+        (evaluate $ fromFilePath "C:\\foo.md") `shouldThrow` anyErrorCall
+#else
 
       it "can not parse '/foo.md'" $ do
         (evaluate $ fromFilePath "/foo.md") `shouldThrow` anyErrorCall
+#endif
 
     describe "toFilePath" $ do
 #if defined(mingw32_HOST_OS) || defined(__MINGW32__)
 
-      it "returns a path with '/' separated" $ do
+      it "returns a path with '\\' separated" $ do
         (toFilePath $ fromFilePath "foo\\bar.md") `shouldBe` "foo\\bar.md"
 
-      it "returns a path with '/' separated (form posix)" $ do
+      it "returns a path with '\\' separated (posix style)" $ do
         (toFilePath $ fromFilePath "foo/bar.md") `shouldBe` "foo\\bar.md"
 #else
 
