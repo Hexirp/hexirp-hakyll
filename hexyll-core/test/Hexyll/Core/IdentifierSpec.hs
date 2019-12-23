@@ -67,20 +67,20 @@ module Hexyll.Core.IdentifierSpec (spec) where
   prop_get_set_IdentVersion :: Maybe String -> Bool
   prop_get_set_IdentVersion s =
     let
-      i = make_Identifier_0
+      i = mock_Identifier_0
     in
       getIdentVersion (setIdentVersion s i) == s
 
   prop_set_get_IdentVersion :: Maybe String -> Bool
   prop_set_get_IdentVersion s =
     let
-      i = make_Identifier_1 s
+      i = mock_Identifier_1 s
     in
       setIdentVersion (getIdentVersion i) i == i
 
   prop_set_set_IdentVersion :: Maybe String -> Maybe String -> Bool
   prop_set_set_IdentVersion s0 s1 =
     let
-      i = make_Identifier_0
+      i = mock_Identifier_0
     in
       setIdentVersion s0 (setIdentVersion s1 i) == setIdentVersion s0 i
