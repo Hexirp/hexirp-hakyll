@@ -77,4 +77,4 @@ module Hexyll.Core.IdentifierSpec (spec) where
 
   prop_set_set_IdentVersion :: Maybe String -> Maybe String -> Bool
   prop_set_set_IdentVersion s0 s1 =
-    setIdentVersion s0 (setIdentVersion s1 i) = setIdentVersion s0 i
+    setIdentVersion s0 (setIdentVersion s1 i) == setIdentVersion s0 i
