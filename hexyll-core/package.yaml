@@ -86,7 +86,8 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - hexyll-core
-    - hspec       >= 2.5.5 && < 2.7
+    - QuickCheck  >= 2.11.3  && < 2.13
+    - hspec       >= 2.5.5   && < 2.7
   hexyll-core-unit-test:
     main: Spec.hs
     source-dirs: unit-test

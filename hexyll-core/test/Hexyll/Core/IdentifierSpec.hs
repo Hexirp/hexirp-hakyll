@@ -3,7 +3,9 @@
 module Hexyll.Core.IdentifierSpec (spec) where
 
   import Prelude
+
   import Test.Hspec
+  import Test.QuickCheck
 
   import Control.Exception (evaluate)
   import Control.DeepSeq
