@@ -15,6 +15,15 @@ module Hexyll.Core.IdentifierSpec (spec) where
   spec :: Spec
   spec = do
 
+    describe "show @Identifier" $ do
+
+      it "normally works" $ do
+        show (fromFilePath "a.txt") `shouldBe` "a.txt"
+
+      it "normally works with the version" $ do
+        show (setIdentVersion (Just "pdf") $ fromFilePath "a.txt")
+            `shouldBe` "a.txt (pdf)"
+
     describe "fromFilePath" $ do
 
       it "can parse 'foo.txt'" $ do
