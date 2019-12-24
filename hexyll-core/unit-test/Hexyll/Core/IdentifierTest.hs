@@ -50,12 +50,12 @@ captureTests = fromAssertions "capture"
 matchesTests :: [TestTree]
 matchesTests = fromAssertions "matches"
     [ True  @=? matches (fromList ["foo.markdown"]) "foo.markdown"
-    , False @=? matches (fromList ["foo"]) (setVersion (Just "x") "foo")
-    , True  @=? matches (fromVersion (Just "xz")) (setVersion (Just "xz") "bar")
+    , False @=? matches (fromList ["foo"]) (setIdentVersion (Just "x") "foo")
+    , True  @=? matches (fromVersion (Just "xz")) (setIdentVersion (Just "xz") "bar")
     , True  @=? matches (fromRegex "^foo/[^x]*$") "foo/bar"
     , False @=? matches (fromRegex "^foo/[^x]*$") "foo/barx"
     , True  @=? matches (complement "foo.markdown") "bar.markdown"
     , False @=? matches (complement "foo.markdown") "foo.markdown"
     , True  @=? matches ("foo" .||. "bar") "bar"
-    , False @=? matches ("bar" .&&. hasNoVersion) (setVersion (Just "xz") "bar")
+    , False @=? matches ("bar" .&&. hasNoVersion) (setIdentVersion (Just "xz") "bar")
     ]

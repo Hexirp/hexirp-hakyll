@@ -113,7 +113,7 @@ fromGlob = Glob . parse'
 --
 -- The correct way to use this is:
 --
--- > fromList $ map (setVersion $ Just "pdf") ["foo.markdown"]
+-- > fromList $ map (setIdentVersion $ Just "pdf") ["foo.markdown"]
 fromList :: [Identifier] -> Pattern
 fromList = List . S.fromList
 
@@ -183,7 +183,7 @@ matches (And x y)      i = matches x i && matches y i
 matches (Glob p)       i = isJust $ capture (Glob p) i
 matches (List l)       i = i `S.member` l
 matches (Regex r)      i = toFilePath i =~ r
-matches (Version v)    i = identifierVersion i == v
+matches (Version v)    i = getIdentVersion i == v
 
 
 --------------------------------------------------------------------------------

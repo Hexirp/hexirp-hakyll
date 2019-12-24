@@ -96,15 +96,15 @@ flush = Rules $ do
             route'   <- fromMaybe mempty . rulesRoute <$> get
 
             -- The version is possibly not set correctly at this point (yet)
-            let ids = map (setVersion version') matches'
+            let ids = map (setIdentVersion version') matches'
 
             {-
             ids      <- case fromLiteral pattern of
-                Just id' -> return [setVersion version' id']
+                Just id' -> return [setIdentVersion version' id']
                 Nothing  -> do
                     ids <- unRules $ getMatches pattern
                     unRules $ tellResources ids
-                    return $ map (setVersion version') ids
+                    return $ map (setIdentVersion version') ids
             -}
 
             -- Create a fast pattern for routing that matches exactly the
@@ -154,9 +154,9 @@ create ids rules = do
 version :: String -> Rules () -> Rules ()
 version v rules = do
     flush
-    Rules $ local setVersion' $ unRules $ rules >> flush
+    Rules $ local setIdentVersion' $ unRules $ rules >> flush
   where
-    setVersion' env = env {rulesVersion = Just v}
+    setIdentVersion' env = env {rulesVersion = Just v}
 
 
 --------------------------------------------------------------------------------
