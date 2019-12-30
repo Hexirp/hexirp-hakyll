@@ -17,9 +17,9 @@ module Hexyll.Core.Identifier.Pattern where
   newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
 
   compile :: PrimPattern -> Pattern
-  compile (Glob p) = \i -> Glob.match p (toFilePath i)
-  compile (Regex r) = \i -> toFilePath i =~ r
-  compile (Version v) = \i -> getIdentVersion i == v
+  compile (Glob p)    = Pattern $ \i -> Glob.match p (toFilePath i)
+  compile (Regex r)   = Pattern $ \i -> toFilePath i =~ r
+  compile (Version v) = Pattern $ \i -> getIdentVersion i == v
 
   everything :: Pattern
   everything = Pattern $ \_ -> True
@@ -31,7 +31,7 @@ module Hexyll.Core.Identifier.Pattern where
   fromGlob = compile . Glob . Glob.compile
 
   fromList :: [Identifier] -> Pattern
-  fromList = foldr (.||.) nothing
+  fromList = Pattern $ foldr (.||.) nothing
 
   fromRegex :: String -> Pattern
   fromRegex = compile . Regex
