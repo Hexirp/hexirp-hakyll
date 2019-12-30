@@ -36,6 +36,7 @@ data Dependency
     deriving (Show, Typeable)
 
 
+{-
 --------------------------------------------------------------------------------
 instance Binary Dependency where
     put (PatternDependency p is) = putWord8 0 >> put p >> put is
@@ -46,6 +47,7 @@ instance Binary Dependency where
         _ -> error "Data.Binary.get: Invalid Dependency"
 
 
+-}
 --------------------------------------------------------------------------------
 type DependencyFacts = Map Identifier [Dependency]
 
