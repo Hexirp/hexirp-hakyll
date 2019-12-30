@@ -6,7 +6,7 @@ module Hexyll
     , module Hexyll.Core.Configuration
     , module Hexyll.Core.File
     , module Hexyll.Core.Identifier
-    , module Hexyll.Core.Identifier.Pattern
+    , module Hexyll.Core.Identifier.OldPattern
     , module Hexyll.Core.Item
     , module Hexyll.Core.Metadata
     , module Hexyll.Core.Routes
@@ -34,7 +34,7 @@ import           Hexyll.Core.Compiler
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.File
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier.OldPattern
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata
 import           Hexyll.Core.Routes

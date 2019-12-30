@@ -48,7 +48,7 @@ import           System.FilePath                (replaceExtension)
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier.OldPattern
 import           Hexyll.Core.Metadata
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Util.String

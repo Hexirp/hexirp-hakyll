@@ -12,7 +12,7 @@ import qualified Data.Set                       as S
 import           Hexyll.Core.Compiler
 import           Hexyll.Core.File
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier.OldPattern
 import           Hexyll.Core.Metadata
 import           Hexyll.Core.Routes
 import           Hexyll.Core.Rules

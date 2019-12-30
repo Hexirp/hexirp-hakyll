@@ -20,7 +20,7 @@ import qualified Data.Set                       as S
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Compiler
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier.OldPattern
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata
 import           Hexyll.Core.Rules
