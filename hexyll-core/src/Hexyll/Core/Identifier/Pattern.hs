@@ -330,6 +330,7 @@ fromCaptures' (m : ms) ids@(i : is) = case m of
     Literal l -> l `mappend` fromCaptures' ms ids
     _         -> i `mappend` fromCaptures' ms is
 
+{-
 
 data PrimPattern
   = Glob Glob.Pattern
@@ -370,3 +371,5 @@ Pattern f .||. Pattern g = Pattern $ \i -> f i || g i
 
 complement :: Pattern -> Pattern
 complement (Pattern f) = Pattern $ \i -> not $ f i
+
+-}
