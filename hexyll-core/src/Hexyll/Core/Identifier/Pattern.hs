@@ -73,8 +73,6 @@ import           Text.Regex.TDFA                         ((=~))
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
--- | This internal module is mostly here to prevent CPP conflicting with Haskell
--- comments.
 
 
 --------------------------------------------------------------------------------
