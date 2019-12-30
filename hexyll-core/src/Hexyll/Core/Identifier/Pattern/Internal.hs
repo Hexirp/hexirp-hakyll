@@ -1,6 +1,5 @@
 -- | This internal module is mostly here to prevent CPP conflicting with Haskell
 -- comments.
-{-# LANGUAGE CPP #-}
 module Hexyll.Core.Identifier.Pattern.Internal
     ( GlobComponent (..)
     , Pattern (..)
