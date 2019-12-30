@@ -31,7 +31,7 @@ module Hexyll.Core.Identifier.Pattern where
   fromGlob = compile . Glob . Glob.compile
 
   fromList :: [Identifier] -> Pattern
-  fromList x = Pattern $ foldr (.||.) nothing x
+  fromList = foldr (\x p -> Pattern (\i -> toFilePath i == x) .||. p) nothing
 
   fromRegex :: String -> Pattern
   fromRegex = compile . Regex
