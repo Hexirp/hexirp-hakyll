@@ -329,3 +329,17 @@ fromCaptures' (m : ms) [] = case m of
 fromCaptures' (m : ms) ids@(i : is) = case m of
     Literal l -> l `mappend` fromCaptures' ms ids
     _         -> i `mappend` fromCaptures' ms is
+
+
+data PrimPattern
+  = Glob Glob.Pattern
+  | Regex String
+  | Version (Maybe String)
+  deriving (Eq, Show)
+
+newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
+
+compile :: PrimPattern -> Pattern
+compile (Glob p) = \i -> match p (toFilePath i)
+compile (Regex r) = \i -> toFilePath i =~ r
+compile (Version v) = \i -> getIdentVersion i == v
