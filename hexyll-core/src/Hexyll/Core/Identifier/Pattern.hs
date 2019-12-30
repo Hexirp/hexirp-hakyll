@@ -21,6 +21,12 @@ module Hexyll.Core.Identifier.Pattern where
   compile (Regex r) = \i -> toFilePath i =~ r
   compile (Version v) = \i -> getIdentVersion i == v
 
+  everything :: Pattern
+  everything = Pattern $ \_ -> True
+
+  nothing :: Pattern
+  nothing = Pattern $ \_ -> False
+
   fromGlob :: String -> Pattern
   fromGlob = compile . Glob . Glob.compile
 
