@@ -17,7 +17,7 @@ data PrimPattern
 newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
 
 compile :: PrimPattern -> Pattern
-compile (Glob p) = \i -> match p (toFilePath i)
+compile (Glob p) = \i -> Glob.match p (toFilePath i)
 compile (Regex r) = \i -> toFilePath i =~ r
 compile (Version v) = \i -> getIdentVersion i == v
 
