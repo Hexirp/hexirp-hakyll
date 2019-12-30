@@ -72,12 +72,12 @@ import           Text.Regex.TDFA                         ((=~))
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Identifier
+import           Data.Binary            (Binary (..), getWord8, putWord8)
+import           Data.Set               (Set)
 
 
 --------------------------------------------------------------------------------
-import           Data.Binary            (Binary (..), getWord8, putWord8)
-import           Data.Set               (Set)
+import           Hexyll.Core.Identifier
 
 
 --------------------------------------------------------------------------------
