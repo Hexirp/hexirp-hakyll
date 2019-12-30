@@ -115,7 +115,6 @@ data Pattern
     deriving (Show)
 
 
-{-
 --------------------------------------------------------------------------------
 instance Binary Pattern where
     put Everything     = putWord8 0
@@ -136,7 +135,6 @@ instance Binary Pattern where
         _ -> Version <$> get
 
 
--}
 --------------------------------------------------------------------------------
 instance Semigroup Pattern where
     (<>) = And
