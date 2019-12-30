@@ -2,7 +2,7 @@ module Hexyll.Core.Identifier.Pattern where
 
   import Prelude
 
-  import System.FilePath.Glob as Glob
+  import qualified System.FilePath.Glob as Glob
 
   import Text.Regex.TDFA ((=~))
 
