@@ -32,7 +32,7 @@ import qualified Hexyll.Core.Identifier.Pattern as New
 
 --------------------------------------------------------------------------------
 data Dependency
-    = PatternDependency New.PatternData (Set Identifier)
+    = PatternDependency New.Pattern (Set Identifier)
     | IdentifierDependency Identifier
     deriving (Show, Typeable)
 
