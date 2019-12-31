@@ -160,18 +160,6 @@ module Hexyll.Core.Identifier.Pattern
   compile (PatternData x) = foldr (\p s -> compilePrim p .&&. s) everything x
   -- It's fused from @foldr (.&&.) everything . map compilePrim@.
 
-  -- | A pattern that matches everything.
-  --
-  -- @since 0.1.0.0
-  everything :: Pattern
-  everything = Pattern $ \_ -> True
-
-  -- | A pattern that matches nothing.
-  --
-  -- @since 0.1.0.0
-  nothing :: Pattern
-  nothing = Pattern $ \_ -> False
-
   -- | Match a pattern to an identifier.
   --
   -- @since 0.1.0.0
@@ -231,6 +219,18 @@ module Hexyll.Core.Identifier.Pattern
   -- @since 0.1.0.0
   hasNoVersion :: Pattern
   hasNoVersion = fromVersion Nothing
+
+  -- | A pattern that matches everything.
+  --
+  -- @since 0.1.0.0
+  everything :: Pattern
+  everything = Pattern $ \_ -> True
+
+  -- | A pattern that matches nothing.
+  --
+  -- @since 0.1.0.0
+  nothing :: Pattern
+  nothing = Pattern $ \_ -> False
 
   -- | Make an "and" pattern.
   --
