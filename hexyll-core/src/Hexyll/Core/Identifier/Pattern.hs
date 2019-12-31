@@ -9,8 +9,7 @@ module Hexyll.Core.Identifier.Pattern where
 
   import Text.Regex.TDFA ((=~))
 
-  import Hexyll.Core.Identifier
-
+  import           Hexyll.Core.Identifier
   import qualified Hexyll.Core.Identifier.OldPattern as Old
 
   data PrimPattern
