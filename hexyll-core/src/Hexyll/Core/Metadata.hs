@@ -26,7 +26,7 @@ import qualified Data.Yaml                             as Yaml
 import qualified Data.Yaml.Hexyll                      as Yaml
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier.OldPattern
 
 
 --------------------------------------------------------------------------------

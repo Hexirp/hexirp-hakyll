@@ -12,7 +12,7 @@ import           Test.Tasty.HUnit               ((@=?))
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier.OldPattern
 import           TestSuite.Util
 
 

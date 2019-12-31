@@ -1,331 +1,251 @@
---------------------------------------------------------------------------------
--- | As 'Identifier' is used to specify a single item, a 'Pattern' is used to
--- specify a list of items.
+-- |
+-- Module:      Hexyll.Core.Identifier
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: portable
 --
--- In most cases, globs are used for patterns.
---
--- A very simple pattern of such a pattern is @\"foo\/bar\"@. This pattern will
--- only match the exact @foo\/bar@ identifier.
---
--- To match more than one identifier, there are different captures that one can
--- use:
---
--- * @\"*\"@: matches at most one element of an identifier;
---
--- * @\"**\"@: matches one or more elements of an identifier.
---
--- Some examples:
---
--- * @\"foo\/*\"@ will match @\"foo\/bar\"@ and @\"foo\/foo\"@, but not
---   @\"foo\/bar\/qux\"@;
---
--- * @\"**\"@ will match any identifier;
---
--- * @\"foo\/**\"@ will match @\"foo\/bar\"@ and @\"foo\/bar\/qux\"@, but not
---   @\"bar\/foo\"@;
---
--- * @\"foo\/*.html\"@ will match all HTML files in the @\"foo\/\"@ directory.
---
--- The 'capture' function allows the user to get access to the elements captured
--- by the capture elements in a glob or regex pattern.
-{-# OPTIONS_GHC -fno-warn-orphans #-}
+-- This module defines 'Pattern', a type of pattern matching to 'Identifier'.
 module Hexyll.Core.Identifier.Pattern
-    ( -- * The pattern type
-      Pattern
+  ( -- * Types
+    PrimPattern (..)
+  , PatternData (..)
+  , Pattern (..)
+    -- * Compiling
+  , fromPrim
+  , compileOld
+  , compilePrim
+  , compile
+    -- * Matching
+  , match
+    -- * Creating Patterns
+  , fromPredicate
+  , fromIdentifier
+  , fromGlob
+  , fromList
+  , fromRegex
+  , fromVersion
+  , hasVersion
+  , hasNoVersion
+    -- * Composing patterns
+  , everything
+  , nothing
+  , (.&&.)
+  , (.||.)
+  , complement
+  ) where
 
-      -- * Creating patterns
-    , fromGlob
-    , fromList
-    , fromRegex
-    , fromVersion
-    , hasVersion
-    , hasNoVersion
+  import Prelude
 
-      -- * Composing patterns
-    , (.&&.)
-    , (.||.)
-    , complement
+  import Data.String (IsString (..))
+  import Data.Binary (Binary (..), putWord8, getWord8)
 
-      -- * Applying patterns
-    , matches
-    , filterMatches
+  import qualified System.FilePath.Glob as Glob
 
-      -- * Capturing strings
-    , capture
-    , fromCapture
-    , fromCaptures
-    ) where
+  import Text.Regex.TDFA ((=~))
 
+  import           Hexyll.Core.Identifier
+  import qualified Hexyll.Core.Identifier.OldPattern as Old
 
---------------------------------------------------------------------------------
-import           Control.Arrow                           ((&&&), (>>>))
-import           Control.Monad                           (msum)
-import           Data.List                               (inits, isPrefixOf,
-                                                          tails)
-import           Data.Maybe                              (isJust)
-import qualified Data.Set                                as S
-
-
---------------------------------------------------------------------------------
-import           GHC.Exts                                (IsString, fromString)
-import           Text.Regex.TDFA                         ((=~))
-
-
---------------------------------------------------------------------------------
-import           Data.Binary            (Binary (..), getWord8, putWord8)
-import           Data.Set               (Set)
-
-
---------------------------------------------------------------------------------
-import           Hexyll.Core.Identifier
-
-
---------------------------------------------------------------------------------
--- | Elements of a glob pattern
-data GlobComponent
-    = Capture
-    | CaptureMany
-    | Literal String
-    deriving (Eq, Show)
-
-
---------------------------------------------------------------------------------
-instance Binary GlobComponent where
-    put Capture     = putWord8 0
-    put CaptureMany = putWord8 1
-    put (Literal s) = putWord8 2 >> put s
-
-    get = getWord8 >>= \t -> case t of
-        0 -> pure Capture
-        1 -> pure CaptureMany
-        2 -> Literal <$> get
-        _ -> error "Data.Binary.get: Invalid GlobComponent"
-
-
---------------------------------------------------------------------------------
--- | Type that allows matching on identifiers
-data Pattern
-    = Everything
-    | Complement Pattern
-    | And Pattern Pattern
-    | Glob [GlobComponent]
-    | List (Set Identifier)
+  -- | A primitive token of 'PatternData'.
+  --
+  -- 'PrimPattern' has the instance of 'IsString' interpreting the string as
+  -- a glob pattern.
+  --
+  -- @since 0.1.0.0
+  data PrimPattern
+    = Glob Glob.Pattern
     | Regex String
     | Version (Maybe String)
-    deriving (Show)
+    deriving (Eq, Show)
 
+  -- | @since 0.1.0.0
+  instance IsString PrimPattern where
+    fromString = Glob . fromString
 
---------------------------------------------------------------------------------
-instance Binary Pattern where
-    put Everything     = putWord8 0
-    put (Complement p) = putWord8 1 >> put p
-    put (And x y)      = putWord8 2 >> put x >> put y
-    put (Glob g)       = putWord8 3 >> put g
-    put (List is)      = putWord8 4 >> put is
-    put (Regex r)      = putWord8 5 >> put r
-    put (Version v)    = putWord8 6 >> put v
+  -- | @since 0.1.0.0
+  instance Binary PrimPattern where
+    put x = case x of
+      Glob p -> do
+        putWord8 0
+        put $ Glob.decompile p
+      Regex r -> do
+        putWord8 1
+        put r
+      Version v -> do
+        putWord8 2
+        put v
+    get = do
+      t <- getWord8
+      case t of
+        0 -> do
+          s <- get
+          return $ Glob $ Glob.compile s
+        1 -> do
+          r <- get
+          return $ Regex r
+        2 -> do
+          v <- get
+          return $ Version v
+        _ -> error "Data.Binary.get: Invalid PrimPattern"
 
-    get = getWord8 >>= \t -> case t of
-        0 -> pure Everything
-        1 -> Complement <$> get
-        2 -> And <$> get <*> get
-        3 -> Glob <$> get
-        4 -> List <$> get
-        5 -> Regex <$> get
-        _ -> Version <$> get
+  -- | A serializable 'Pattern'.
+  --
+  -- 'PatternData' is based on logical conjuction, and is not contain "or"
+  -- pattern.
+  newtype PatternData = PatternData { patternData :: [PrimPattern] }
+    deriving (Eq, Show)
 
+  -- | @since 0.1.0.0
+  instance IsString PatternData where
+    fromString = fromPrim . fromString
 
---------------------------------------------------------------------------------
-instance Semigroup Pattern where
-    (<>) = And
+  -- | @since 0.1.0.0
+  instance Binary PatternData where
+    put x = put $ patternData x
+    get = do
+      x <- get
+      return $ PatternData x
 
-instance Monoid Pattern where
-    mempty  = Everything
-    mappend = (<>)
+  -- | @since 0.1.0.0
+  instance Semigroup PatternData where
+    PatternData x <> PatternData y = PatternData (x ++ y)
 
---------------------------------------------------------------------------------
-instance IsString Pattern where
-    fromString = fromGlob
+  -- | @since 0.1.0.0
+  instance Monoid PatternData where
+    mempty = PatternData []
 
+  -- | A type of pattern matching to 'Identifier'.
+  --
+  -- The 'Monoid' instance is based on logical conjuction.
+  --
+  -- @since 0.1.0.0
+  newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
 
---------------------------------------------------------------------------------
--- | Parse a pattern from a string
-fromGlob :: String -> Pattern
-fromGlob = Glob . parse'
-  where
-    parse' str =
-        let (chunk, rest) = break (`elem` "\\*") str
-        in case rest of
-            ('\\' : x   : xs) -> Literal (chunk ++ [x]) : parse' xs
-            ('*'  : '*' : xs) -> Literal chunk : CaptureMany : parse' xs
-            ('*'  : xs)       -> Literal chunk : Capture : parse' xs
-            xs                -> Literal chunk : Literal xs : []
+  -- | @since 0.1.0.0
+  instance IsString Pattern where
+    fromString = compile . fromString
 
+  -- | @since 0.1.0.0
+  instance Semigroup Pattern where
+    (<>) = (.&&.)
 
---------------------------------------------------------------------------------
--- | Create a 'Pattern' from a list of 'Identifier's it should match.
---
--- /Warning/: use this carefully with 'hasNoVersion' and 'hasVersion'. The
--- 'Identifier's in the list /already/ have versions assigned, and the pattern
--- will then only match the intersection of both versions.
---
--- A more concrete example,
---
--- > fromList ["foo.markdown"] .&&. hasVersion "pdf"
---
--- will not match anything! The @"foo.markdown"@ 'Identifier' has no version
--- assigned, so the LHS of '.&&.' will only match this 'Identifier' with no
--- version. The RHS only matches 'Identifier's with version set to @"pdf"@ --
--- hence, this pattern matches nothing.
---
--- The correct way to use this is:
---
--- > fromList $ map (setIdentVersion $ Just "pdf") ["foo.markdown"]
-fromList :: [Identifier] -> Pattern
-fromList = List . S.fromList
+  -- | @since 0.1.0.0
+  instance Monoid Pattern where
+    mempty = everything
 
+  -- | Convert a 'PrimPattern' to a 'PatternData'.
+  --
+  -- @since 0.1.0.0
+  fromPrim :: PrimPattern -> PatternData
+  fromPrim p = PatternData [p]
 
---------------------------------------------------------------------------------
--- | Create a 'Pattern' from a regex
---
--- Example:
---
--- > regex "^foo/[^x]*$
-fromRegex :: String -> Pattern
-fromRegex = Regex
+  -- | Compile a 'Old.Pattern' to a 'Pattern'.
+  --
+  -- @since 0.1.0.0
+  compileOld :: Old.Pattern -> Pattern
+  compileOld p = Pattern $ Old.matches p
 
+  -- | Compile a 'PrimPattern' to a 'Pattern'.
+  --
+  -- @since 0.1.0.0
+  compilePrim :: PrimPattern -> Pattern
+  compilePrim (Glob p)    = Pattern $ \i -> Glob.match p (toFilePath i)
+  compilePrim (Regex r)   = Pattern $ \i -> toFilePath i =~ r
+  compilePrim (Version v) = Pattern $ \i -> getIdentVersion i == v
 
---------------------------------------------------------------------------------
--- | Create a pattern which matches all items with the given version.
-fromVersion :: Maybe String -> Pattern
-fromVersion = Version
+  -- | Compile a 'PatternData' to a 'Pattern'.
+  compile :: PatternData -> Pattern
+  compile (PatternData x) = foldr (\p s -> compilePrim p .&&. s) everything x
+  -- It's fused from @foldr (.&&.) everything . map compilePrim@.
 
+  -- | Match a pattern to an identifier.
+  --
+  -- @since 0.1.0.0
+  match :: Pattern -> Identifier -> Bool
+  match = runPattern
 
---------------------------------------------------------------------------------
--- | Specify a version, e.g.
---
--- > "foo/*.markdown" .&&. hasVersion "pdf"
-hasVersion :: String -> Pattern
-hasVersion = fromVersion . Just
+  -- | Make a pattern from a predicate.
+  --
+  -- @since 0.1.0.0
+  fromPredicate :: (Identifier -> Bool) -> Pattern
+  fromPredicate = Pattern
 
+  -- | Make a pattern from a identifier. @fromIdentifier i@ is equal to
+  -- @fromPredicate (i ==)@.
+  --
+  -- @since 0.1.0.0
+  fromIdentifier :: Identifier -> Pattern
+  fromIdentifier i = Pattern (i ==)
 
---------------------------------------------------------------------------------
--- | Match only if the identifier has no version set, e.g.
---
--- > "foo/*.markdown" .&&. hasNoVersion
-hasNoVersion :: Pattern
-hasNoVersion = fromVersion Nothing
+  -- | Make a pattern from a glob pattern. See "System.FilePath.Glob".
+  --
+  -- @since 0.1.0.0
+  fromGlob :: String -> Pattern
+  fromGlob = compilePrim . Glob . Glob.compile
 
+  -- | Make a pattern from a identifier list. @fromList@ is equal to @foldr
+  -- (.||.) nothing . map fromIdentifier@.
+  --
+  -- @since 0.1.0.0
+  fromList :: [Identifier] -> Pattern
+  fromList = foldr (\i p -> fromIdentifier i .||. p) nothing
+  -- It's fused from @foldr (.||.) nothing . map fromIdentifier@.
 
---------------------------------------------------------------------------------
--- | '&&' for patterns: the given identifier must match both subterms
-(.&&.) :: Pattern -> Pattern -> Pattern
-x .&&. y = And x y
-infixr 3 .&&.
+  -- | Make a pattern from a regex pattern. See "Text.Regex.TDFA".
+  --
+  -- @since 0.1.0.0
+  fromRegex :: String -> Pattern
+  fromRegex = compilePrim . Regex
 
+  -- | Make a pattern from a version. It is a pattern matching by strict
+  -- equality.
+  --
+  -- @since 0.1.0.0
+  fromVersion :: Maybe String -> Pattern
+  fromVersion = compilePrim . Version
 
---------------------------------------------------------------------------------
--- | '||' for patterns: the given identifier must match any subterm
-(.||.) :: Pattern -> Pattern -> Pattern
-x .||. y = complement (complement x `And` complement y)  -- De Morgan's law
-infixr 2 .||.
+  -- | Make a pattern from a existing version. @hasVersion@ is equal to
+  -- @fromVersion . Just@.
+  --
+  -- @since 0.1.0.0
+  hasVersion :: String -> Pattern
+  hasVersion = fromVersion . Just
 
+  -- | Make a pattern from no version. @hasVersion@ is equal to @fromVersion
+  -- Nothing@.
+  --
+  -- @since 0.1.0.0
+  hasNoVersion :: Pattern
+  hasNoVersion = fromVersion Nothing
 
---------------------------------------------------------------------------------
--- | Inverts a pattern, e.g.
---
--- > complement "foo/bar.html"
---
--- will match /anything/ except @\"foo\/bar.html\"@
-complement :: Pattern -> Pattern
-complement = Complement
+  -- | A pattern that matches everything.
+  --
+  -- @since 0.1.0.0
+  everything :: Pattern
+  everything = Pattern $ \_ -> True
 
+  -- | A pattern that matches nothing.
+  --
+  -- @since 0.1.0.0
+  nothing :: Pattern
+  nothing = Pattern $ \_ -> False
 
---------------------------------------------------------------------------------
--- | Check if an identifier matches a pattern
-matches :: Pattern -> Identifier -> Bool
-matches Everything     _ = True
-matches (Complement p) i = not $ matches p i
-matches (And x y)      i = matches x i && matches y i
-matches (Glob p)       i = isJust $ capture (Glob p) i
-matches (List l)       i = i `S.member` l
-matches (Regex r)      i = toFilePath i =~ r
-matches (Version v)    i = getIdentVersion i == v
+  -- | Make an "and" pattern.
+  --
+  -- @since 0.1.0.0
+  (.&&.) :: Pattern -> Pattern -> Pattern
+  Pattern f .&&. Pattern g = Pattern $ \i -> f i && g i
 
+  -- | Make an "or" pattern.
+  --
+  -- @since 0.1.0.0
+  (.||.) :: Pattern -> Pattern -> Pattern
+  Pattern f .||. Pattern g = Pattern $ \i -> f i || g i
 
---------------------------------------------------------------------------------
--- | Given a list of identifiers, retain only those who match the given pattern
-filterMatches :: Pattern -> [Identifier] -> [Identifier]
-filterMatches = filter . matches
-
-
---------------------------------------------------------------------------------
--- | Split a list at every possible point, generate a list of (init, tail)
--- cases. The result is sorted with inits decreasing in length.
-splits :: [a] -> [([a], [a])]
-splits = inits &&& tails >>> uncurry zip >>> reverse
-
-
---------------------------------------------------------------------------------
--- | Match a glob or regex pattern against an identifier, generating a list of captures
-capture :: Pattern -> Identifier -> Maybe [String]
-capture (Glob p) i = capture' p (toFilePath i)
-capture (Regex pat) i = Just groups
-  where (_, _, _, groups) = ((toFilePath i) =~ pat) :: (String, String, String, [String])
-capture _        _ = Nothing
-
-
---------------------------------------------------------------------------------
--- | Internal verion of 'capture'
-capture' :: [GlobComponent] -> String -> Maybe [String]
-capture' [] [] = Just []  -- An empty match
-capture' [] _  = Nothing  -- No match
-capture' (Literal l : ms) str
-    -- Match the literal against the string
-    | l `isPrefixOf` str = capture' ms $ drop (length l) str
-    | otherwise          = Nothing
-capture' (Capture : ms) str =
-    -- Match until the next /
-    let (chunk, rest) = break (== '/') str
-    in msum $ [ fmap (i :) (capture' ms (t ++ rest)) | (i, t) <- splits chunk ]
-capture' (CaptureMany : ms) str =
-    -- Match everything
-    msum $ [ fmap (i :) (capture' ms t) | (i, t) <- splits str ]
-
-
---------------------------------------------------------------------------------
--- | Create an identifier from a pattern by filling in the captures with a given
--- string
---
--- Example:
---
--- > fromCapture (fromGlob "tags/*") "foo"
---
--- Result:
---
--- > "tags/foo"
-fromCapture :: Pattern -> String -> Identifier
-fromCapture pattern = fromCaptures pattern . repeat
-
-
---------------------------------------------------------------------------------
--- | Create an identifier from a pattern by filling in the captures with the
--- given list of strings
-fromCaptures :: Pattern -> [String] -> Identifier
-fromCaptures (Glob p) = fromFilePath . fromCaptures' p
-fromCaptures _        = error $
-    "Hexyll.Core.Identifier.Pattern.fromCaptures: fromCaptures only works " ++
-    "on simple globs!"
-
-
---------------------------------------------------------------------------------
--- | Internally used version of 'fromCaptures'
-fromCaptures' :: [GlobComponent] -> [String] -> String
-fromCaptures' []        _ = mempty
-fromCaptures' (m : ms) [] = case m of
-    Literal l -> l `mappend` fromCaptures' ms []
-    _         -> error $  "Hexyll.Core.Identifier.Pattern.fromCaptures': "
-                       ++ "identifier list exhausted"
-fromCaptures' (m : ms) ids@(i : is) = case m of
-    Literal l -> l `mappend` fromCaptures' ms ids
-    _         -> i `mappend` fromCaptures' ms is
+  -- | Make an compelent pattern.
+  --
+  -- @since 0.1.0.0
+  complement :: Pattern -> Pattern
+  complement (Pattern f) = Pattern $ \i -> not $ f i

@@ -51,7 +51,7 @@ import qualified Data.Set                       as S
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier.OldPattern
 import qualified Hexyll.Core.Logger             as Logger
 import           Hexyll.Core.Metadata
 import           Hexyll.Core.Provider

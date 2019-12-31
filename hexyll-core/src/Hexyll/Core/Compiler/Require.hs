@@ -23,7 +23,7 @@ import           Data.Typeable
 import           Hexyll.Core.Compiler.Internal
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern
+import           Hexyll.Core.Identifier.OldPattern
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata
 import           Hexyll.Core.Store              (Store)
