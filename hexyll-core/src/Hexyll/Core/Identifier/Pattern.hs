@@ -94,6 +94,8 @@ module Hexyll.Core.Identifier.Pattern
   --
   -- 'PatternData' is based on logical conjuction, and is not contain "or"
   -- pattern.
+  --
+  -- @since 0.1.0.0
   newtype PatternData = PatternData { patternData :: [PrimPattern] }
     deriving (Eq, Show)
 
