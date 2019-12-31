@@ -47,6 +47,7 @@ module Hexyll.Core.Identifier.Pattern where
 
   fromList :: [Identifier] -> Pattern
   fromList = foldr (\i p -> fromIdentifier i .||. p) nothing
+  -- It's fused from @foldr (.||.) nothing . map fromIdentifier@.
 
   fromRegex :: String -> Pattern
   fromRegex = compilePrim . Regex
