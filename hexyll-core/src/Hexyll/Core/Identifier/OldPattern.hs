@@ -49,11 +49,6 @@ module Hexyll.Core.Identifier.OldPattern
       -- * Applying patterns
     , matches
     , filterMatches
-
-      -- * Capturing strings
-    , capture
-    , fromCapture
-    , fromCaptures
     ) where
 
 
