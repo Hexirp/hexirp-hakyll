@@ -51,7 +51,7 @@ module Hexyll.Core.Identifier.Pattern where
     deriving (Eq, Show)
 
   instance IsString PatternData where
-    fromString s = PatternData [fromString s]
+    fromString s = fromPrim . fromString
 
   instance Binary PatternData where
     put x = put $ patternData x
@@ -75,6 +75,9 @@ module Hexyll.Core.Identifier.Pattern where
 
   instance Monoid Pattern where
     mempty = everything
+
+  fromPrim :: PrimPattern -> PatternData
+  fromPrim p = PatternData [p]
 
   compileOld :: Old.Pattern -> Pattern
   compileOld p = Pattern $ Old.matches p
