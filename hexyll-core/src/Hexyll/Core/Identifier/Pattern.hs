@@ -10,7 +10,7 @@
 module Hexyll.Core.Identifier.Pattern
   ( -- * Types
     PrimPattern (..)
-  , PattrnData (..)
+  , PatternData (..)
   , Pattern (..)
     -- * Compiling
   , fromPrim
