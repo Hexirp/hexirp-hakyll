@@ -19,7 +19,7 @@ module Hexyll.Core.Identifier.Pattern where
     | Version (Maybe String)
     deriving (Eq, Show)
 
-  instance IsStrng PrimPattern where
+  instance IsString PrimPattern where
     fromString = Glob . fromString
 
   instance Binary PrimPattern where
