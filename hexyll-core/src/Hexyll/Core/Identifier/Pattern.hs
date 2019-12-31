@@ -22,13 +22,7 @@ module Hexyll.Core.Identifier.Pattern where
   newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
 
   compileOld :: Old.Pattern -> Pattern
-  compileOld Old.Everything = everything
-  compileOld (Old.Complement p) = complement (compileOld p)
-  compileOld (Old.And x y) = compileOld x .&&. compileOld y
-  compileOld (Old.Glob g) = compileOldGlob g
-  compileOld (Old.List is) = compileOldList is
-  compileOld (Old.Regex r) = compileOldRegex r
-  compileOld (Old.Version v) = compileOldVersion v
+  compileOld p = Pattern $ Old.matches p
 
   compilePrim :: PrimPattern -> Pattern
   compilePrim (Glob p)    = Pattern $ \i -> Glob.match p (toFilePath i)
