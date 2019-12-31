@@ -7,7 +7,34 @@
 -- Portability: portable
 --
 -- This module defines 'Pattern', a type of pattern matching to 'Identifier'.
-module Hexyll.Core.Identifier.Pattern where
+module Hexyll.Core.Identifier.Pattern
+  ( -- * Types
+    PrimPattern (..)
+  , PattrnData (..)
+  , Pattern (..)
+    -- * Compiling
+  , fromPrim
+  , compileOld
+  , compilePrim
+  , compile
+    -- * Matching
+  , match
+    -- * Creating Patterns
+  , fromPredicate
+  , fromIdentifier
+  , fromGlob
+  , fromList
+  , fromRegex
+  , fromVersion
+  , hasVersion
+  , hasNoVersion
+    -- * Composing patterns
+  , everything
+  , nothing
+  , (.&&.)
+  , (.||.)
+  , complement
+  ) where
 
   import Prelude
 
