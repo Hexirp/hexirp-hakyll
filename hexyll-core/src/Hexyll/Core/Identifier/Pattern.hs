@@ -2,6 +2,7 @@ module Hexyll.Core.Identifier.Pattern where
 
   import Prelude
 
+  import Data.String (IsString (..))
   import Data.Binary (Binary (..), putWord8, getWord8)
 
   import qualified System.FilePath.Glob as Glob
@@ -17,6 +18,9 @@ module Hexyll.Core.Identifier.Pattern where
     | Regex String
     | Version (Maybe String)
     deriving (Eq, Show)
+
+  instance IsStrng PrimPattern where
+    fromString = Glob . Glob.compile
 
   instance Binary PrimPattern where
     put x = case x of
@@ -46,6 +50,9 @@ module Hexyll.Core.Identifier.Pattern where
   newtype PatternData = PatternData { patternData :: [PrimPattern] }
     deriving (Eq, Show)
 
+  instance IsString PatternData where
+    fromString s = PatternData [fromString s]
+
   instance Binary PatternData where
     put x = put $ patternData x
     get = do
@@ -59,6 +66,9 @@ module Hexyll.Core.Identifier.Pattern where
     mempty = PatternData []
 
   newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
+
+  instance IsString Pattern where
+    fromString = compile . fromString
 
   instance Semigroup Pattern where
     (<>) = (.&&.)
