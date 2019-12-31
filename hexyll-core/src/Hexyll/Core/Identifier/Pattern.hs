@@ -27,11 +27,14 @@ module Hexyll.Core.Identifier.Pattern where
   nothing :: Pattern
   nothing = Pattern $ \_ -> False
 
+  fromIdentifier :: Identifier -> Pattern
+  fromIdentifier i = Pattern (i ==)
+
   fromGlob :: String -> Pattern
   fromGlob = compile . Glob . Glob.compile
 
   fromList :: [Identifier] -> Pattern
-  fromList = foldr (\i p -> Pattern (i ==) .||. p) nothing
+  fromList = foldr (\i p -> fromIdentifier i .||. p) nothing
 
   fromRegex :: String -> Pattern
   fromRegex = compile . Regex
