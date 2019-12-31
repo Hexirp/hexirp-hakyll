@@ -97,6 +97,12 @@ module Hexyll.Core.Identifier.Pattern where
   nothing :: Pattern
   nothing = Pattern $ \_ -> False
 
+  match :: Pattern -> Identifier -> Bool
+  match = runPattern
+
+  fromPredicate :: (Identifier -> Bool) -> Pattern
+  fromPredicate = Pattern
+
   fromIdentifier :: Identifier -> Pattern
   fromIdentifier i = Pattern (i ==)
 
