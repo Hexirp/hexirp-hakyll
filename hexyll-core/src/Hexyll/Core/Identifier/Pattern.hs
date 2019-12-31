@@ -16,7 +16,7 @@ module Hexyll.Core.Identifier.Pattern where
     | Version (Maybe String)
     deriving (Eq, Show)
 
-  newtype PatternData = PatternData { unPatternData :: [PrimPattern] }
+  newtype PatternData = PatternData { patternData :: [PrimPattern] }
     deriving (Eq, Show)
 
   newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
