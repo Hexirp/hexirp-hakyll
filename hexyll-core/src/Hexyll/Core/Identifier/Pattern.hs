@@ -2,7 +2,7 @@ module Hexyll.Core.Identifier.Pattern where
 
   import Prelude
 
-  import Data.Binary (Binary (..), getWord8)
+  import Data.Binary (Binary (..), putWord8, getWord8)
 
   import qualified System.FilePath.Glob as Glob
 
@@ -22,7 +22,7 @@ module Hexyll.Core.Identifier.Pattern where
     put x = case x of
       Glob p -> do
         putWord8 0
-        put $ decompile p
+        put $ Glob.decompile p
       Regex r -> do
         putWord8 1
         put r
@@ -34,7 +34,7 @@ module Hexyll.Core.Identifier.Pattern where
       case t of
         0 -> do
           s <- get
-          return $ Glob $ compile s
+          return $ Glob $ Glob.compile s
         1 -> do
           r <- get
           return $ Regex r
