@@ -27,11 +27,12 @@ import           Data.Typeable                  (Typeable)
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.OldPattern
+import qualified Hexyll.Core.Identifier.Pattern as New
 
 
 --------------------------------------------------------------------------------
 data Dependency
-    = PatternDependency Pattern (Set Identifier)
+    = PatternDependency New.Pattern (Set Identifier)
     | IdentifierDependency Identifier
     deriving (Show, Typeable)
 
