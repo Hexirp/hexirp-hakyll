@@ -20,7 +20,7 @@ module Hexyll.Core.Identifier.Pattern where
     deriving (Eq, Show)
 
   instance IsStrng PrimPattern where
-    fromString = Glob . Glob.compile
+    fromString = Glob . fromString
 
   instance Binary PrimPattern where
     put x = case x of
