@@ -30,7 +30,8 @@ module Hexyll.Core.Identifier.Pattern where
   compilePrim (Version v) = Pattern $ \i -> getIdentVersion i == v
 
   compile :: PatternData -> Pattern
-  compile (PatternData x) = Pattern $ foldr (.&&.) everything x
+  compile (PatternData x) = foldr (\p s -> compilePrim p .&&. s) everything x
+  -- It's fused from @foldr (.&&.) everything . map compilePrim@.
 
   everything :: Pattern
   everything = Pattern $ \_ -> True
