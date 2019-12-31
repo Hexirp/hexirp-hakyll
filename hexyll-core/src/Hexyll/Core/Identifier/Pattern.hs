@@ -2,6 +2,8 @@ module Hexyll.Core.Identifier.Pattern where
 
   import Prelude
 
+  import Data.Binary (Binary (..), getWord8)
+
   import qualified System.FilePath.Glob as Glob
 
   import Text.Regex.TDFA ((=~))
@@ -16,10 +18,53 @@ module Hexyll.Core.Identifier.Pattern where
     | Version (Maybe String)
     deriving (Eq, Show)
 
+  instance Binary PrimPattern where
+    put x = case x of
+      Glob p -> do
+        putWord8 0
+        put $ decompile p
+      Regex r -> do
+        putWord8 1
+        put r
+      Version v -> do
+        putWord8 2
+        put v
+    get = do
+      t <- getWord8
+      case t of
+        0 -> do
+          s <- get
+          return $ Glob $ compile s
+        1 -> do
+          r <- get
+          return $ Regex r
+        2 -> do
+          v <- get
+          return $ Version v
+        _ -> error "Data.Binary.get: Invalid PrimPattern"
+
   newtype PatternData = PatternData { patternData :: [PrimPattern] }
     deriving (Eq, Show)
 
+  instance Binary PatternData where
+    put x = put $ patternData x
+    get = do
+      x <- get
+      return $ PatternData x
+
+  instance Semigroup PatternData where
+    PatternData x <> PatternData y = PatternData (x ++ y)
+
+  instance Monoid PatternData where
+    mempty = PatternData []
+
   newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
+
+  instance Semigroup Pattern where
+    (<>) = (.&&.)
+
+  instance Monoid Pattern where
+    mempty = everything
 
   compileOld :: Old.Pattern -> Pattern
   compileOld p = Pattern $ Old.matches p
