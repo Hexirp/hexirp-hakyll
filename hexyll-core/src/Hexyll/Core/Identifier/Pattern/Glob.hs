@@ -18,7 +18,7 @@ module Hexyll.Core.Identifier.Pattern.Glob where
   import Data.String     (IsString (..))
   import Data.Binary     (Binary (..))
 
-  import System.FilePath.Glob as Glob
+  import qualified System.FilePath.Glob as Glob
 
   data Pattern = Pattern { unPattern :: Glob.Pattern }
     deriving (Eq, Show, Generic)
