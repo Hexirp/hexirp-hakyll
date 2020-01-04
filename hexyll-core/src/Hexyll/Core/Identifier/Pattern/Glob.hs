@@ -1,18 +1,15 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 -- |
 -- Module:      Hexyll.Core.Identifier.Pattern
 -- Copyright:   (c) 2019 Hexirp
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
 -- Stability:   unstable
--- Portability: non-portable (compiler: GHC, extensions: DeriveGeneric)
+-- Portability: portable
 --
 -- This module defines a type for glob patterns.
 module Hexyll.Core.Identifier.Pattern.Glob where
 
   import Prelude
-  import GHC.Generics
 
   import Control.DeepSeq (NFData (..))
   import Data.String     (IsString (..))
@@ -21,7 +18,7 @@ module Hexyll.Core.Identifier.Pattern.Glob where
   import qualified System.FilePath.Glob as Glob
 
   data Pattern = Pattern { unPattern :: Glob.Pattern }
-    deriving (Eq, Show, Generic)
+    deriving (Eq, Show)
 
   instance IsString Pattern where
     fromString = Pattern . fromString
@@ -30,7 +27,10 @@ module Hexyll.Core.Identifier.Pattern.Glob where
     put = put . Glob.decompile . unPattern
     get = Pattern . Glob.compile <$> get
 
-  instance NFData Pattern
+  instance NFData Pattern where
+    rnf (Pattern x) = rnf (decompile x) `seq` ()
+    -- This may be incomplete. But it is necessary there are no instances
+    -- @'NFData' 'Glob.Pattern'@.
 
   match :: String -> Pattern -> Bool
   match s (Pattern p) = Glob.match p s
