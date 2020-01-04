@@ -51,7 +51,7 @@ data RuleSet = RuleSet
 
 --------------------------------------------------------------------------------
 instance Semigroup RuleSet where
-    (<>) (RuleSet r1 c1 s1 p1) (RuleSet r2 c2 s2 p2) =
+    (<>) (RuleSet r1 c1 s1) (RuleSet r2 c2 s2) =
         RuleSet (mappend r1 r2) (mappend c1 c2) (mappend s1 s2)
 
 instance Monoid RuleSet where
