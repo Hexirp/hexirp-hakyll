@@ -48,12 +48,12 @@ module HExyll.Core.Identifier.PatternExpr where
   -- | A type of pattern matching to 'Identifier', reprensented as
   -- @'Identifier' -> 'Bool'@.
   --
-  -- * 'fromGlob' - from a glob pattern. The function checks whether it is
+  -- * 'fromGlob' - from a glob pattern. The function checks whether it is a
   --   correct glob pattern.
   -- * 'fromRegex' - from a regex pattern.
   -- * 'fromVersion' - from a version of 'Identifier'. The pattern is
   --   interpreted as: @matchExpr (fromVersion mv) i === getIdentVersion i ==
-  --   mv@
+  --   mv@.
   -- * 'everything' - The pattern matches everything.
   -- * @(.&&.)@ - The logical conjunction of two patterns.
   -- * 'nothing' - The patter matches nothing.
