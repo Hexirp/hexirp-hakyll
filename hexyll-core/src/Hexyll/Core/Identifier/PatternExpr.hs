@@ -63,7 +63,7 @@ module Hexyll.Core.Identifier.PatternExpr where
   matchPrim i x = case x of
     Glob p -> Glob.match p (toFilePath i)
     Regex r -> toFilePath i =~ r
-    Versiom mv -> getIdentVersion i == mv
+    Version mv -> getIdentVersion i == mv
 
   -- | A type of pattern matching to 'Identifier', reprensented as
   -- @'Identifier' -> 'Bool'@.
