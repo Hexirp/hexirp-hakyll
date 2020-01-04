@@ -30,7 +30,7 @@ module Hexyll.Core.Identifier.Pattern where
 
   import Hexyll.Core.Identifier
 
-  -- | A primitive token of 'PatternExpr'.
+  -- | A primitive pattern of 'PatternExpr'.
   --
   -- The type allows three patterns -- glob pattern, regex pattern, and
   -- matching version.
