@@ -188,6 +188,18 @@ module Hexyll.Core.Identifier.PatternExpr where
   complement :: PatternExpr -> PatternExpr
   complement = PeComplement
 
+  -- | Convert a 'PatternExpr' to a 'PatternConj'.
+  --
+  -- @since 0.1.0.0
+  toPatternConj :: PatternExpr -> PatternConj
+  toPatternConj p = PatternConj [p]
+
+  -- | Convert a 'PatternExpr' to a 'PatternDisj'.
+  --
+  -- @since 0.1.0.0
+  toPatternDisj :: PatternExpr -> PatternDisj
+  toPatternDisj p = PatternDisj [p]
+
   -- | A conjunction of 'PatternExpr's.
   --
   -- 'PatternConj' has the instance of 'Monoid' that implements 'mappend' as
@@ -199,7 +211,7 @@ module Hexyll.Core.Identifier.PatternExpr where
 
   -- | @since 0.1.0.0
   instance IsString PatternConj where
-    fromString = PatternConj . fromString
+    fromString = toPatternConj . fromString
 
   -- | @since 0.1.0.0
   instance Binary PatternConj where
@@ -225,7 +237,7 @@ module Hexyll.Core.Identifier.PatternExpr where
 
   -- | @since 0.1.0.0
   instance IsString PatternDisj where
-    fromString = PatternDisj . fromString
+    fromString = toPatternDisj . fromString
 
   -- | @since 0.1.0.0
   instance Binary PatternDisj where
