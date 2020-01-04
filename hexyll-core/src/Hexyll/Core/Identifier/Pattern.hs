@@ -1,4 +1,4 @@
-module Hexyll.Core.Identifier.PatternExpr where
+module Hexyll.Core.Identifier.Pattern where
 
   import Prelude
 
