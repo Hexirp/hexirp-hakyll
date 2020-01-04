@@ -34,7 +34,7 @@ module Hexyll.Core.Identifier.Pattern.Glob where
 
   -- | @since 0.1.0.0
   instance NFData Pattern where
-    rnf (Pattern x) = rnf (decompile x) `seq` ()
+    rnf (Pattern x) = rnf (Glob.decompile x) `seq` ()
     -- This may be incomplete. But it is necessary there are no instances
     -- @'NFData' 'Glob.Pattern'@.
 
