@@ -31,3 +31,6 @@ module Hexyll.Core.Identifier.Pattern.Glob where
     get = Pattern . Glob.compile <$> get
 
   instance NFData Pattern
+
+  match :: String -> Pattern -> Bool
+  match s (Pattern p) = Glob.match p s

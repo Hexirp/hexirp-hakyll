@@ -79,7 +79,7 @@ module Hexyll.Core.Identifier.Pattern where
   -- @since 0.1.0.0
   matchPrim :: Identifier -> PrimPattern -> Bool
   matchPrim i x = case x of
-    Glob p -> Glob.match p (toFilePath i)
+    Glob p -> Glob.match (toFilePath i) p
     Regex r -> toFilePath i =~ r
     Version mv -> getIdentVersion i == mv
 
