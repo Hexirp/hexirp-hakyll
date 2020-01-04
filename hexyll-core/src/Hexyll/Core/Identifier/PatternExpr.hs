@@ -113,3 +113,33 @@ module Hexyll.Core.Identifier.PatternExpr where
   -- @since 0.1.0.0
   fromVersion :: Maybe String -> PatternExpr
   fromVersion = fromPrim . Version
+
+  -- | The pattern matches everything.
+  --
+  -- @since 0.1.0.0
+  everything :: PatternExpr
+  everything = PeEverything
+
+  -- | The logical conjunction of two patterns.
+  --
+  -- @since 0.1.0.0
+  (.&&.) :: PatternExpr -> PatternExpr -> PatternExpr
+  (.&&.) = PeAnd
+
+  -- | The pattern matches nothing.
+  --
+  -- @since 0.1.0.0
+  nothing :: PatternExpr
+  nothing = PeNothing
+
+  -- | The logical disjunction of two patterns.
+  --
+  -- @since 0.1.0.0
+  (.||.) :: PatternExpr -> PatternExpr -> Pattern Expr
+  (.||.) = PeOr
+
+  -- | The logical complement of a pattern.
+  --
+  -- @since 0.1.0.0
+  complement :: PatternExpr -> PatternExpr
+  complement = PeComplement
