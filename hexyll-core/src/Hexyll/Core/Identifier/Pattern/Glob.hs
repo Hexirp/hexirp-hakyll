@@ -12,11 +12,11 @@
 module Hexyll.Core.Identifier.Pattern.Glob where
 
   import Prelude
-  import GHC.Generic
+  import GHC.Generics
 
-  import Control.NFData (NFData (..))
-  import Data.String    (IsString (..))
-  import Data.Binary    (Binary (..))
+  import Control.DeepSeq (NFData (..))
+  import Data.String     (IsString (..))
+  import Data.Binary     (Binary (..))
 
   import System.FilePath.Glob as Glob
 
