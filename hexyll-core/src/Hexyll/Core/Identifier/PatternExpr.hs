@@ -68,6 +68,7 @@ module Hexyll.Core.Identifier.PatternExpr where
   -- | A type of pattern matching to 'Identifier', reprensented as
   -- @'Identifier' -> 'Bool'@.
   --
+  -- * 'fromPrim' - from a 'PrimPattern'.
   -- * 'fromGlob' - from a glob pattern. The function checks whether it is a
   --   correct glob pattern.
   -- * 'fromRegex' - from a regex pattern.
