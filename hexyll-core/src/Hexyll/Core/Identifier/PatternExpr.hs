@@ -1,5 +1,16 @@
 module Hexyll.Core.Identifier.PatternExpr where
 
+  import Prelude
+
+  import Data.String (IsString (..))
+  import Data.Binary (Binary (..), putWord8, getWord8)
+
+  import qualified System.FilePath.Glob as Glob
+
+  import Text.Regex.TDFA ((=~))
+
+  import Hexyll.Core.Identifier
+
   -- | A primitive token of 'PatternExpr'.
   --
   -- The type allows three patterns -- glob pattern, regex pattern, and
