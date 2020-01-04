@@ -38,6 +38,22 @@ module Hexyll.Core.Identifier.Pattern.Glob where
     -- This may be incomplete. But it is necessary there are no instances
     -- @'NFData' 'Glob.Pattern'@.
 
+  -- | Compile a 'String' to a 'Pattern'.
+  --
+  -- The function is a wrapper function of 'Glob.compile'.
+  --
+  -- @since 0.1.0.0
+  compile :: String -> Pattern
+  compile = Pattern . Glob.compile
+
+  -- | Decompile a 'Pattern' to a 'String'.
+  --
+  -- The function is a wrapper function of 'Glob.decompile'.
+  --
+  -- @since 0.1.0.0
+  decompile :: Pattern -> String
+  decompile = Glob.decompile . unPattern
+
   -- | Match a 'String' with a 'Pattern'.
   --
   -- The function is a wrapper function of 'Glob.match'.
