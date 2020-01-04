@@ -45,6 +45,22 @@ module HExyll.Core.Identifier.PatternExpr where
           return $ Version v
         _ -> error "Data.Binary.get: Invalid PrimPattern"
 
+  -- | A type of pattern matching to 'Identifier', reprensented as
+  -- @'Identifier' -> 'Bool'@.
+  --
+  -- * 'fromGlob' - from a glob pattern. The function checks whether it is
+  --   correct glob pattern.
+  -- * 'fromRegex' - from a regex pattern.
+  -- * 'fromVersion' - from a version of 'Identifier'. The pattern is
+  --   interpreted as: @matchExpr (fromVersion mv) i === getIdentVersion i ==
+  --   mv@
+  -- * 'everything' - The pattern matches everything.
+  -- * @(.&&.)@ - The logical conjunction of two patterns.
+  -- * 'nothing' - The patter matches nothing.
+  -- * @(.||.)@ - The logical disjunction of two patterns.
+  -- * 'complement' - The logical complement of a pattern.
+  --
+  -- @since 0.1.0.0
   data PatternExpr
     = PePrim PrimPattern
     | PeEverything
@@ -54,8 +70,12 @@ module HExyll.Core.Identifier.PatternExpr where
     | PeComplement PatternExpr
     deriving (Eq, Show)
 
+  -- | @since 0.1.0.0
   instance IsString PatternExpr where
     fromString = fromPrim . fromString
 
+  -- | Make a pattern from a 'PrimPattern'.
+  --
+  -- @since 0.1.0.0
   fromPrim :: PrimPattern -> PatternExpr
   fromPrim = PePrim
