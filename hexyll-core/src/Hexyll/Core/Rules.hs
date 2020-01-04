@@ -62,26 +62,20 @@ import           Hexyll.Core.Writable
 --------------------------------------------------------------------------------
 -- | Add a route
 tellRoute :: Routes -> Rules ()
-tellRoute route' = Rules $ tell $ RuleSet route' mempty mempty mempty
+tellRoute route' = Rules $ tell $ RuleSet route' mempty mempty
 
 
 --------------------------------------------------------------------------------
 -- | Add a number of compilers
 tellCompilers :: [(Identifier, Compiler SomeItem)] -> Rules ()
-tellCompilers compilers = Rules $ tell $ RuleSet mempty compilers mempty mempty
+tellCompilers compilers = Rules $ tell $ RuleSet mempty compilers mempty
 
 
 --------------------------------------------------------------------------------
 -- | Add resources
 tellResources :: [Identifier] -> Rules ()
 tellResources resources' = Rules $ tell $
-    RuleSet mempty mempty (S.fromList resources') mempty
-
-
---------------------------------------------------------------------------------
--- | Add a pattern
-tellPattern :: Pattern -> Rules ()
-tellPattern pattern = Rules $ tell $ RuleSet mempty mempty mempty pattern
+    RuleSet mempty mempty (S.fromList resources')
 
 
 --------------------------------------------------------------------------------
