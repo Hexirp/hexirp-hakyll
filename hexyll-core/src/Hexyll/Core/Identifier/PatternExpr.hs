@@ -65,7 +65,7 @@ module Hexyll.Core.Identifier.PatternExpr where
     Regex r -> toFilePath i =~ r
     Version mv -> getIdentVersion i == mv
 
-  -- | A type of pattern matching to 'Identifier', reprensented as
+  -- | A expression of pattern matching to 'Identifier', reprensented as
   -- @'Identifier' -> 'Bool'@.
   --
   -- * 'fromPrim' - from a 'PrimPattern'.
@@ -285,3 +285,36 @@ module Hexyll.Core.Identifier.PatternExpr where
   -- @since 0.1.0.0
   matchDisj :: Identifier -> PatternDisj -> Bool
   matchDisj i (PatternDisj x) = any (matchExpr i) x
+
+  -- | A type of pattern matching to 'Identifier'.
+  --
+  -- @since 0.1.0.0
+  newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
+
+  -- | @since 0.1.0.0
+  instance IsString Pattern where
+    fromString = compileExpr . fromString
+
+  -- | Compile a 'PatternExpr' to a 'Pattern'.
+  --
+  -- @since 0.1.0.0
+  compileExpr :: PatternExpr -> Pattern
+  compileExpr p = Predicate $ \i -> matchExpr i p
+
+  -- | Compile a 'PatternConj' to a 'Pattern'.
+  --
+  -- @since 0.1.0.0
+  compileConj :: PatternConj -> Pattern
+  compileConj p = Predicate $ \i -> matchConj i p
+
+  -- | Compile a 'PatternDisj' to a 'Pattern'.
+  --
+  -- @since 0.1.0.0
+  compileDisj :: PatternDisj -> Pattern
+  compileDisj p = Predicate $ \i -> matchDisj i p
+
+  -- | Match a 'Identifier' with a 'Pattern'.
+  --
+  -- @since 0.1.0.0
+  match :: Identifier -> Pattern -> Bool
+  match i (Pattern p) = p i
