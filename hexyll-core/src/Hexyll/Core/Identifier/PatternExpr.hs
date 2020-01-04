@@ -56,6 +56,15 @@ module Hexyll.Core.Identifier.PatternExpr where
           return $ Version v
         _ -> error "Data.Binary.get: Invalid PrimPattern"
 
+  -- | Match a 'Identifier' with 'PrimPattern'
+  --
+  -- @since 0.1.0.0
+  matchPrim :: Identifier -> PrimPattern -> Bool
+  matchPrim i x = case x of
+    Glob p -> Glob.match p (toFilePath i)
+    Regex r -> toFilePath i =~ r
+    Versiom mv -> getIdentVersion i == mv
+
   -- | A type of pattern matching to 'Identifier', reprensented as
   -- @'Identifier' -> 'Bool'@.
   --
@@ -200,6 +209,18 @@ module Hexyll.Core.Identifier.PatternExpr where
   toPatternDisj :: PatternExpr -> PatternDisj
   toPatternDisj p = PatternDisj [p]
 
+  -- | Match a 'Identifier' with a 'PatternExpr'.
+  --
+  -- @since 0.1.0.0
+  matchExpr :: Identifier -> PatternExpr -> Bool
+  matchExpr i x = case x of
+    PePrim p -> matchPrim i p
+    PeEverything -> True
+    PeAnd x0 x1 -> matchExpr i x0 && matchExpr i x1
+    PeNothing -> False
+    PeOr x0 x1 -> matchExpr i x0 || matchExpr i x1
+    PeComplement xc -> not (matchExpr i xc)
+
   -- | A conjunction of 'PatternExpr's.
   --
   -- 'PatternConj' has the instance of 'Monoid' that implements 'mappend' as
@@ -220,11 +241,17 @@ module Hexyll.Core.Identifier.PatternExpr where
 
   -- | @since 0.1.0.0
   instance Semigroup PatternConj where
-    PatternConj x <> PatternConj = PatternConj (x <> y)
+    PatternConj x <> PatternConj y = PatternConj (x <> y)
 
   -- | @since 0.1.0.0
   instance Monoid PatternConj where
     mempty = PatternConj mempty
+
+  -- | Match a 'Identifier' with a 'PatternConj'.
+  --
+  -- @since 0.1.0.0
+  matchConj :: Identifier -> PatternConj -> Bool
+  matchConj i (PatternConj x) = all (matchExpr i) x
 
   -- | A disjunction of 'PatternExpr's.
   --
@@ -246,8 +273,14 @@ module Hexyll.Core.Identifier.PatternExpr where
 
   -- | @since 0.1.0.0
   instance Semigroup PatternDisj where
-    PatternDisj x <> PatternDisj = PatternConj (x <> y)
+    PatternDisj x <> PatternDisj y = PatternConj (x <> y)
 
   -- | @since 0.1.0.0
   instance Monoid PatternDisj where
     mempty = PatternDisj mempty
+
+  -- | Match a 'Identifier' with a 'PatternDisj'.
+  --
+  -- @since 0.1.0.0
+  matchDisj :: Identifier -> PatternDisj -> Bool
+  matchDisj i (PatternDisj x) = any (matchExpr i) x
