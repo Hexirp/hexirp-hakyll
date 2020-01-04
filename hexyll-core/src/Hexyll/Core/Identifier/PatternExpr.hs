@@ -129,58 +129,6 @@ module Hexyll.Core.Identifier.PatternExpr where
           return $ PeComplement xc
         _ -> error "Data.Binary.get: Invalid PatternExpr"
 
-  -- | A conjunction of 'PatternExpr's.
-  --
-  -- 'PatternConj' has the instance of 'Monoid' that implements 'mappend' as
-  -- logical conjunction.
-  --
-  -- @since 0.1.0.0
-  newtype PatternConj = PatternConj { unPatternConj :: [PatternExpr] }
-    deriving (Eq, Show)
-
-  -- | @since 0.1.0.0
-  instance IsString PatternConj where
-    fromString = PatternConj . fromString
-
-  -- | @since 0.1.0.0
-  instance Binary PatternConj where
-    put (PatternConj x) = put x
-    get = PatternConj <$> get
-
-  -- | @since 0.1.0.0
-  instance Semigroup PatternConj where
-    PatternConj x <> PatternConj = PatternConj (x <> y)
-
-  -- | @since 0.1.0.0
-  instance Monoid PatternConj where
-    mempty = PatternConj mempty
-
-  -- | A disjunction of 'PatternExpr's.
-  --
-  -- 'PatternDisj' has the instance of 'Monoid' that implements 'mappend' as
-  -- logical disjunction.
-  --
-  -- @since 0.1.0.0
-  newtype PatternDisj = PatternDisj { unPatternDisj :: [PatternExpr] }
-    deriving (Eq, Show)
-
-  -- | @since 0.1.0.0
-  instance IsString PatternDisj where
-    fromString = PatternDisj . fromString
-
-  -- | @since 0.1.0.0
-  instance Binary PatternDisj where
-    put (PatternDisj x) = put x
-    get = PatternDisj <$> get
-
-  -- | @since 0.1.0.0
-  instance Semigroup PatternDisj where
-    PatternDisj x <> PatternDisj = PatternConj (x <> y)
-
-  -- | @since 0.1.0.0
-  instance Monoid PatternDisj where
-    mempty = PatternDisj mempty
-
   -- | Make a pattern from a 'PrimPattern'.
   --
   -- @since 0.1.0.0
@@ -239,3 +187,55 @@ module Hexyll.Core.Identifier.PatternExpr where
   -- @since 0.1.0.0
   complement :: PatternExpr -> PatternExpr
   complement = PeComplement
+
+  -- | A conjunction of 'PatternExpr's.
+  --
+  -- 'PatternConj' has the instance of 'Monoid' that implements 'mappend' as
+  -- logical conjunction.
+  --
+  -- @since 0.1.0.0
+  newtype PatternConj = PatternConj { unPatternConj :: [PatternExpr] }
+    deriving (Eq, Show)
+
+  -- | @since 0.1.0.0
+  instance IsString PatternConj where
+    fromString = PatternConj . fromString
+
+  -- | @since 0.1.0.0
+  instance Binary PatternConj where
+    put (PatternConj x) = put x
+    get = PatternConj <$> get
+
+  -- | @since 0.1.0.0
+  instance Semigroup PatternConj where
+    PatternConj x <> PatternConj = PatternConj (x <> y)
+
+  -- | @since 0.1.0.0
+  instance Monoid PatternConj where
+    mempty = PatternConj mempty
+
+  -- | A disjunction of 'PatternExpr's.
+  --
+  -- 'PatternDisj' has the instance of 'Monoid' that implements 'mappend' as
+  -- logical disjunction.
+  --
+  -- @since 0.1.0.0
+  newtype PatternDisj = PatternDisj { unPatternDisj :: [PatternExpr] }
+    deriving (Eq, Show)
+
+  -- | @since 0.1.0.0
+  instance IsString PatternDisj where
+    fromString = PatternDisj . fromString
+
+  -- | @since 0.1.0.0
+  instance Binary PatternDisj where
+    put (PatternDisj x) = put x
+    get = PatternDisj <$> get
+
+  -- | @since 0.1.0.0
+  instance Semigroup PatternDisj where
+    PatternDisj x <> PatternDisj = PatternConj (x <> y)
+
+  -- | @since 0.1.0.0
+  instance Monoid PatternDisj where
+    mempty = PatternDisj mempty
