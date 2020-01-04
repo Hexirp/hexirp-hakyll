@@ -1,4 +1,4 @@
-module HExyll.Core.Identifier.PatternExpr where
+module Hexyll.Core.Identifier.PatternExpr where
 
   -- | A primitive token of 'PatternExpr'.
   --
