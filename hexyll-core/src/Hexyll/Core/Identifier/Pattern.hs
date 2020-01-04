@@ -24,11 +24,10 @@ module Hexyll.Core.Identifier.Pattern where
   import Data.String (IsString (..))
   import Data.Binary (Binary (..), putWord8, getWord8)
 
-  import qualified System.FilePath.Glob as Glob
-
   import Text.Regex.TDFA ((=~))
 
-  import Hexyll.Core.Identifier
+  import           Hexyll.Core.Identifier
+  import qualified Hexyll.Core.Identifier.Pattern.Glob as Glob
 
   -- | A primitive pattern of 'PatternExpr'.
   --
@@ -54,7 +53,7 @@ module Hexyll.Core.Identifier.Pattern where
     put x = case x of
       Glob p -> do
         putWord8 0
-        put $ Glob.decompile p
+        put p
       Regex r -> do
         putWord8 1
         put r
@@ -65,8 +64,8 @@ module Hexyll.Core.Identifier.Pattern where
       t <- getWord8
       case t of
         0 -> do
-          s <- get
-          return $ Glob $ Glob.compile s
+          p <- get
+          return $ Glob p
         1 -> do
           r <- get
           return $ Regex r
