@@ -274,7 +274,7 @@ module Hexyll.Core.Identifier.PatternExpr where
 
   -- | @since 0.1.0.0
   instance Semigroup PatternDisj where
-    PatternDisj x <> PatternDisj y = PatternConj (x <> y)
+    PatternDisj x <> PatternDisj y = PatternDisj (x <> y)
 
   -- | @since 0.1.0.0
   instance Monoid PatternDisj where
@@ -299,19 +299,19 @@ module Hexyll.Core.Identifier.PatternExpr where
   --
   -- @since 0.1.0.0
   compileExpr :: PatternExpr -> Pattern
-  compileExpr p = Predicate $ \i -> matchExpr i p
+  compileExpr p = Pattern (\i -> matchExpr i p)
 
   -- | Compile a 'PatternConj' to a 'Pattern'.
   --
   -- @since 0.1.0.0
   compileConj :: PatternConj -> Pattern
-  compileConj p = Predicate $ \i -> matchConj i p
+  compileConj p = Pattern (\i -> matchConj i p)
 
   -- | Compile a 'PatternDisj' to a 'Pattern'.
   --
   -- @since 0.1.0.0
   compileDisj :: PatternDisj -> Pattern
-  compileDisj p = Predicate $ \i -> matchDisj i p
+  compileDisj p = Pattern (\i -> matchDisj i p)
 
   -- | Match a 'Identifier' with a 'Pattern'.
   --
