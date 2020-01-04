@@ -21,14 +21,14 @@ module Hexyll.Core.Identifier.Pattern where
 
   import Prelude
 
-  import Data.String (IsString (..))
-  import Data.Binary (Binary (..), putWord8, getWord8)
-
-  import qualified System.FilePath.Glob as Glob
+  import Control.DeepSeq (NFData (..))
+  import Data.String     (IsString (..))
+  import Data.Binary     (Binary (..), putWord8, getWord8)
 
   import Text.Regex.TDFA ((=~))
 
-  import Hexyll.Core.Identifier
+  import           Hexyll.Core.Identifier
+  import qualified Hexyll.Core.Identifier.Pattern.Glob as Glob
 
   -- | A primitive pattern of 'PatternExpr'.
   --
@@ -54,7 +54,7 @@ module Hexyll.Core.Identifier.Pattern where
     put x = case x of
       Glob p -> do
         putWord8 0
-        put $ Glob.decompile p
+        put p
       Regex r -> do
         putWord8 1
         put r
@@ -65,8 +65,8 @@ module Hexyll.Core.Identifier.Pattern where
       t <- getWord8
       case t of
         0 -> do
-          s <- get
-          return $ Glob $ Glob.compile s
+          p <- get
+          return $ Glob p
         1 -> do
           r <- get
           return $ Regex r
@@ -75,12 +75,19 @@ module Hexyll.Core.Identifier.Pattern where
           return $ Version v
         _ -> error "Data.Binary.get: Invalid PrimPattern"
 
+  -- | @since 0.1.0.0
+  instance NFData PrimPattern where
+    rnf x = case x of
+      Glob p -> rnf p `seq` ()
+      Regex r -> rnf r `seq` ()
+      Version mv -> rnf mv `seq` ()
+
   -- | Match a 'Identifier' with 'PrimPattern'
   --
   -- @since 0.1.0.0
   matchPrim :: Identifier -> PrimPattern -> Bool
   matchPrim i x = case x of
-    Glob p -> Glob.match p (toFilePath i)
+    Glob p -> Glob.match (toFilePath i) p
     Regex r -> toFilePath i =~ r
     Version mv -> getIdentVersion i == mv
 
@@ -157,6 +164,16 @@ module Hexyll.Core.Identifier.Pattern where
           xc <- get
           return $ PeComplement xc
         _ -> error "Data.Binary.get: Invalid PatternExpr"
+
+  -- | @since 0.1.0.0
+  instance NFData PatternExpr where
+    rnf x = case x of
+      PePrim p -> rnf p `seq` ()
+      PeEverything -> ()
+      PeAnd x0 x1 -> rnf x0 `seq` rnf x1 `seq` ()
+      PeNothing -> ()
+      PeOr x0 x1 -> rnf x0 `seq` rnf x1 `seq` ()
+      PeComplement xc -> rnf xc `seq` ()
 
   -- | Make a pattern from a 'PrimPattern'.
   --
@@ -260,6 +277,10 @@ module Hexyll.Core.Identifier.Pattern where
     get = PatternConj <$> get
 
   -- | @since 0.1.0.0
+  instance NFData PatternConj where
+    rnf (PatternConj x) = rnf x
+
+  -- | @since 0.1.0.0
   instance Semigroup PatternConj where
     PatternConj x <> PatternConj y = PatternConj (x <> y)
 
@@ -290,6 +311,10 @@ module Hexyll.Core.Identifier.Pattern where
   instance Binary PatternDisj where
     put (PatternDisj x) = put x
     get = PatternDisj <$> get
+
+  -- | @since 0.1.0.0
+  instance NFData PatternDisj where
+    rnf (PatternDisj x) = rnf x
 
   -- | @since 0.1.0.0
   instance Semigroup PatternDisj where
