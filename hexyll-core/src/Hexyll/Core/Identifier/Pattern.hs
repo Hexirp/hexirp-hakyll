@@ -1,40 +1,23 @@
 -- |
--- Module:      Hexyll.Core.Identifier
+-- Module:      Hexyll.Core.Identifier.Pattern
 -- Copyright:   (c) 2019 Hexirp
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
--- Stability:   stable
+-- Stability:   unstable
 -- Portability: portable
 --
--- This module defines 'Pattern', a type of pattern matching to 'Identifier'.
-module Hexyll.Core.Identifier.Pattern
-  ( -- * Types
-    PrimPattern (..)
-  , PatternData (..)
-  , Pattern (..)
-    -- * Compiling
-  , fromPrim
-  , compileOld
-  , compilePrim
-  , compile
-    -- * Matching
-  , match
-    -- * Creating Patterns
-  , fromPredicate
-  , fromIdentifier
-  , fromGlob
-  , fromList
-  , fromRegex
-  , fromVersion
-  , hasVersion
-  , hasNoVersion
-    -- * Composing patterns
-  , everything
-  , nothing
-  , (.&&.)
-  , (.||.)
-  , complement
-  ) where
+-- This module defines a type of pattern matching to 'Identifier'.
+--
+-- 'PrimPattern' is a primitive pattern. 'PatternExpr' is an expression of
+-- pattern. 'PatternConj' is a conjunction of 'PatternExpr's. 'PatternDisj' is
+-- a disjunction of 'PatternExpr's. 'Pattern' is a pattern.
+--
+-- I recommend to use 'PatternExpr'. If you want to the instance of 'Monoid',
+-- you can use 'PatternConj' or 'PatternDisj'. I was able to define the
+-- instance @'Monoid' 'PatternExpr'@ with @(.&&.)@ or @(.||.)@. But, it is not
+-- a real monoid because of @x .&&. (y .&&. z) /= (x .&&. y) .&&. z@ and
+-- @x .||. (y .||. z) /= (x .||. y) .||. z@.
+module Hexyll.Core.Identifier.Pattern where
 
   import Prelude
 
@@ -45,10 +28,12 @@ module Hexyll.Core.Identifier.Pattern
 
   import Text.Regex.TDFA ((=~))
 
-  import           Hexyll.Core.Identifier
-  import qualified Hexyll.Core.Identifier.OldPattern as Old
+  import Hexyll.Core.Identifier
 
-  -- | A primitive token of 'PatternData'.
+  -- | A primitive pattern of 'PatternExpr'.
+  --
+  -- The type allows three patterns -- glob pattern, regex pattern, and
+  -- matching version.
   --
   -- 'PrimPattern' has the instance of 'IsString' interpreting the string as
   -- a glob pattern.
@@ -90,164 +75,265 @@ module Hexyll.Core.Identifier.Pattern
           return $ Version v
         _ -> error "Data.Binary.get: Invalid PrimPattern"
 
-  -- | A serializable 'Pattern'.
-  --
-  -- 'PatternData' is based on logical conjuction, and is not contain "or"
-  -- pattern.
+  -- | Match a 'Identifier' with 'PrimPattern'
   --
   -- @since 0.1.0.0
-  newtype PatternData = PatternData { patternData :: [PrimPattern] }
+  matchPrim :: Identifier -> PrimPattern -> Bool
+  matchPrim i x = case x of
+    Glob p -> Glob.match p (toFilePath i)
+    Regex r -> toFilePath i =~ r
+    Version mv -> getIdentVersion i == mv
+
+  -- | A expression of pattern matching to 'Identifier', reprensented as
+  -- @'Identifier' -> 'Bool'@.
+  --
+  -- * 'fromPrim' - from a 'PrimPattern'.
+  -- * 'fromGlob' - from a glob pattern. The function checks whether it is a
+  --   correct glob pattern.
+  -- * 'fromRegex' - from a regex pattern.
+  -- * 'fromVersion' - from a version of 'Identifier'. The pattern is
+  --   interpreted as: @matchExpr (fromVersion mv) i === getIdentVersion i ==
+  --   mv@.
+  -- * 'everything' - The pattern matches everything.
+  -- * @(.&&.)@ - The logical conjunction of two patterns.
+  -- * 'nothing' - The patter matches nothing.
+  -- * @(.||.)@ - The logical disjunction of two patterns.
+  -- * 'complement' - The logical complement of a pattern.
+  --
+  -- @since 0.1.0.0
+  data PatternExpr
+    = PePrim PrimPattern
+    | PeEverything
+    | PeAnd PatternExpr PatternExpr
+    | PeNothing
+    | PeOr PatternExpr PatternExpr
+    | PeComplement PatternExpr
     deriving (Eq, Show)
 
   -- | @since 0.1.0.0
-  instance IsString PatternData where
+  instance IsString PatternExpr where
     fromString = fromPrim . fromString
 
   -- | @since 0.1.0.0
-  instance Binary PatternData where
-    put x = put $ patternData x
+  instance Binary PatternExpr where
+    put x = case x of
+      PePrim pp -> do
+        putWord8 0
+        put pp
+      PeEverything ->
+        putWord8 1
+      PeAnd x0 x1 -> do
+        putWord8 2
+        put x0
+        put x1
+      PeNothing ->
+        putWord8 3
+      PeOr x0 x1 -> do
+        putWord8 4
+        put x0
+        put x1
+      PeComplement xc -> do
+        putWord8 5
+        put xc
     get = do
-      x <- get
-      return $ PatternData x
+      t <- getWord8
+      case t of
+        0 -> do
+          pp <- get
+          return $ PePrim pp
+        1 ->
+          return $ PeEverything
+        2 -> do
+          x0 <- get
+          x1 <- get
+          return $ PeAnd x0 x1
+        3 ->
+          return $ PeNothing
+        4 -> do
+          x0 <- get
+          x1 <- get
+          return $ PeOr x0 x1
+        5 -> do
+          xc <- get
+          return $ PeComplement xc
+        _ -> error "Data.Binary.get: Invalid PatternExpr"
+
+  -- | Make a pattern from a 'PrimPattern'.
+  --
+  -- @since 0.1.0.0
+  fromPrim :: PrimPattern -> PatternExpr
+  fromPrim = PePrim
+
+  -- | Make a pattern from a glob pattern.
+  --
+  -- The function checks whether it is a correct glob pattern.
+  --
+  -- @since 0.1.0.0
+  fromGlob :: String -> PatternExpr
+  fromGlob = fromPrim . Glob . Glob.compile
+
+  -- | Make a pattern from a regex pattern.
+  --
+  -- @since 0.1.0.0
+  fromRegex :: String -> PatternExpr
+  fromRegex = fromPrim . Regex
+
+  -- | Make a pattern from a version.
+  --
+  -- The pattern is interpreted as: @matchExpr (fromVersion mv) i ===
+  -- getIdentVersion i == mv@.
+  --
+  -- @since 0.1.0.0
+  fromVersion :: Maybe String -> PatternExpr
+  fromVersion = fromPrim . Version
+
+  -- | The pattern matches everything.
+  --
+  -- @since 0.1.0.0
+  everything :: PatternExpr
+  everything = PeEverything
+
+  -- | The logical conjunction of two patterns.
+  --
+  -- @since 0.1.0.0
+  (.&&.) :: PatternExpr -> PatternExpr -> PatternExpr
+  (.&&.) = PeAnd
+
+  -- | The pattern matches nothing.
+  --
+  -- @since 0.1.0.0
+  nothing :: PatternExpr
+  nothing = PeNothing
+
+  -- | The logical disjunction of two patterns.
+  --
+  -- @since 0.1.0.0
+  (.||.) :: PatternExpr -> PatternExpr -> PatternExpr
+  (.||.) = PeOr
+
+  -- | The logical complement of a pattern.
+  --
+  -- @since 0.1.0.0
+  complement :: PatternExpr -> PatternExpr
+  complement = PeComplement
+
+  -- | Convert a 'PatternExpr' to a 'PatternConj'.
+  --
+  -- @since 0.1.0.0
+  toPatternConj :: PatternExpr -> PatternConj
+  toPatternConj p = PatternConj [p]
+
+  -- | Convert a 'PatternExpr' to a 'PatternDisj'.
+  --
+  -- @since 0.1.0.0
+  toPatternDisj :: PatternExpr -> PatternDisj
+  toPatternDisj p = PatternDisj [p]
+
+  -- | Match a 'Identifier' with a 'PatternExpr'.
+  --
+  -- @since 0.1.0.0
+  matchExpr :: Identifier -> PatternExpr -> Bool
+  matchExpr i x = case x of
+    PePrim p -> matchPrim i p
+    PeEverything -> True
+    PeAnd x0 x1 -> matchExpr i x0 && matchExpr i x1
+    PeNothing -> False
+    PeOr x0 x1 -> matchExpr i x0 || matchExpr i x1
+    PeComplement xc -> not (matchExpr i xc)
+
+  -- | A conjunction of 'PatternExpr's.
+  --
+  -- 'PatternConj' has the instance of 'Monoid' that implements 'mappend' as
+  -- logical conjunction.
+  --
+  -- @since 0.1.0.0
+  newtype PatternConj = PatternConj { unPatternConj :: [PatternExpr] }
+    deriving (Eq, Show)
 
   -- | @since 0.1.0.0
-  instance Semigroup PatternData where
-    PatternData x <> PatternData y = PatternData (x ++ y)
+  instance IsString PatternConj where
+    fromString = toPatternConj . fromString
 
   -- | @since 0.1.0.0
-  instance Monoid PatternData where
-    mempty = PatternData []
+  instance Binary PatternConj where
+    put (PatternConj x) = put x
+    get = PatternConj <$> get
+
+  -- | @since 0.1.0.0
+  instance Semigroup PatternConj where
+    PatternConj x <> PatternConj y = PatternConj (x <> y)
+
+  -- | @since 0.1.0.0
+  instance Monoid PatternConj where
+    mempty = PatternConj mempty
+
+  -- | Match a 'Identifier' with a 'PatternConj'.
+  --
+  -- @since 0.1.0.0
+  matchConj :: Identifier -> PatternConj -> Bool
+  matchConj i (PatternConj x) = all (matchExpr i) x
+
+  -- | A disjunction of 'PatternExpr's.
+  --
+  -- 'PatternDisj' has the instance of 'Monoid' that implements 'mappend' as
+  -- logical disjunction.
+  --
+  -- @since 0.1.0.0
+  newtype PatternDisj = PatternDisj { unPatternDisj :: [PatternExpr] }
+    deriving (Eq, Show)
+
+  -- | @since 0.1.0.0
+  instance IsString PatternDisj where
+    fromString = toPatternDisj . fromString
+
+  -- | @since 0.1.0.0
+  instance Binary PatternDisj where
+    put (PatternDisj x) = put x
+    get = PatternDisj <$> get
+
+  -- | @since 0.1.0.0
+  instance Semigroup PatternDisj where
+    PatternDisj x <> PatternDisj y = PatternDisj (x <> y)
+
+  -- | @since 0.1.0.0
+  instance Monoid PatternDisj where
+    mempty = PatternDisj mempty
+
+  -- | Match a 'Identifier' with a 'PatternDisj'.
+  --
+  -- @since 0.1.0.0
+  matchDisj :: Identifier -> PatternDisj -> Bool
+  matchDisj i (PatternDisj x) = any (matchExpr i) x
 
   -- | A type of pattern matching to 'Identifier'.
-  --
-  -- The 'Monoid' instance is based on logical conjuction.
   --
   -- @since 0.1.0.0
   newtype Pattern = Pattern { runPattern :: Identifier -> Bool }
 
   -- | @since 0.1.0.0
   instance IsString Pattern where
-    fromString = compile . fromString
+    fromString = compileExpr . fromString
 
-  -- | @since 0.1.0.0
-  instance Semigroup Pattern where
-    (<>) = (.&&.)
-
-  -- | @since 0.1.0.0
-  instance Monoid Pattern where
-    mempty = everything
-
-  -- | Convert a 'PrimPattern' to a 'PatternData'.
+  -- | Compile a 'PatternExpr' to a 'Pattern'.
   --
   -- @since 0.1.0.0
-  fromPrim :: PrimPattern -> PatternData
-  fromPrim p = PatternData [p]
+  compileExpr :: PatternExpr -> Pattern
+  compileExpr p = Pattern (\i -> matchExpr i p)
 
-  -- | Compile a 'Old.Pattern' to a 'Pattern'.
+  -- | Compile a 'PatternConj' to a 'Pattern'.
   --
   -- @since 0.1.0.0
-  compileOld :: Old.Pattern -> Pattern
-  compileOld p = Pattern $ Old.matches p
+  compileConj :: PatternConj -> Pattern
+  compileConj p = Pattern (\i -> matchConj i p)
 
-  -- | Compile a 'PrimPattern' to a 'Pattern'.
+  -- | Compile a 'PatternDisj' to a 'Pattern'.
   --
   -- @since 0.1.0.0
-  compilePrim :: PrimPattern -> Pattern
-  compilePrim (Glob p)    = Pattern $ \i -> Glob.match p (toFilePath i)
-  compilePrim (Regex r)   = Pattern $ \i -> toFilePath i =~ r
-  compilePrim (Version v) = Pattern $ \i -> getIdentVersion i == v
+  compileDisj :: PatternDisj -> Pattern
+  compileDisj p = Pattern (\i -> matchDisj i p)
 
-  -- | Compile a 'PatternData' to a 'Pattern'.
-  compile :: PatternData -> Pattern
-  compile (PatternData x) = foldr (\p s -> compilePrim p .&&. s) everything x
-  -- It's fused from @foldr (.&&.) everything . map compilePrim@.
-
-  -- | Match a pattern to an identifier.
+  -- | Match a 'Identifier' with a 'Pattern'.
   --
   -- @since 0.1.0.0
-  match :: Pattern -> Identifier -> Bool
-  match = runPattern
-
-  -- | Make a pattern from a predicate.
-  --
-  -- @since 0.1.0.0
-  fromPredicate :: (Identifier -> Bool) -> Pattern
-  fromPredicate = Pattern
-
-  -- | Make a pattern from a identifier. @fromIdentifier i@ is equal to
-  -- @fromPredicate (i ==)@.
-  --
-  -- @since 0.1.0.0
-  fromIdentifier :: Identifier -> Pattern
-  fromIdentifier i = Pattern (i ==)
-
-  -- | Make a pattern from a glob pattern. See "System.FilePath.Glob".
-  --
-  -- @since 0.1.0.0
-  fromGlob :: String -> Pattern
-  fromGlob = compilePrim . Glob . Glob.compile
-
-  -- | Make a pattern from a identifier list. @fromList@ is equal to @foldr
-  -- (.||.) nothing . map fromIdentifier@.
-  --
-  -- @since 0.1.0.0
-  fromList :: [Identifier] -> Pattern
-  fromList = foldr (\i p -> fromIdentifier i .||. p) nothing
-  -- It's fused from @foldr (.||.) nothing . map fromIdentifier@.
-
-  -- | Make a pattern from a regex pattern. See "Text.Regex.TDFA".
-  --
-  -- @since 0.1.0.0
-  fromRegex :: String -> Pattern
-  fromRegex = compilePrim . Regex
-
-  -- | Make a pattern from a version. It is a pattern matching by strict
-  -- equality.
-  --
-  -- @since 0.1.0.0
-  fromVersion :: Maybe String -> Pattern
-  fromVersion = compilePrim . Version
-
-  -- | Make a pattern from a existing version. @hasVersion@ is equal to
-  -- @fromVersion . Just@.
-  --
-  -- @since 0.1.0.0
-  hasVersion :: String -> Pattern
-  hasVersion = fromVersion . Just
-
-  -- | Make a pattern from no version. @hasVersion@ is equal to @fromVersion
-  -- Nothing@.
-  --
-  -- @since 0.1.0.0
-  hasNoVersion :: Pattern
-  hasNoVersion = fromVersion Nothing
-
-  -- | A pattern that matches everything.
-  --
-  -- @since 0.1.0.0
-  everything :: Pattern
-  everything = Pattern $ \_ -> True
-
-  -- | A pattern that matches nothing.
-  --
-  -- @since 0.1.0.0
-  nothing :: Pattern
-  nothing = Pattern $ \_ -> False
-
-  -- | Make an "and" pattern.
-  --
-  -- @since 0.1.0.0
-  (.&&.) :: Pattern -> Pattern -> Pattern
-  Pattern f .&&. Pattern g = Pattern $ \i -> f i && g i
-
-  -- | Make an "or" pattern.
-  --
-  -- @since 0.1.0.0
-  (.||.) :: Pattern -> Pattern -> Pattern
-  Pattern f .||. Pattern g = Pattern $ \i -> f i || g i
-
-  -- | Make an compelent pattern.
-  --
-  -- @since 0.1.0.0
-  complement :: Pattern -> Pattern
-  complement (Pattern f) = Pattern $ \i -> not $ f i
+  match :: Identifier -> Pattern -> Bool
+  match i (Pattern p) = p i
