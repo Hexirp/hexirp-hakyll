@@ -14,7 +14,7 @@ module Hexyll.Core.Identifier.Pattern.Glob where
   import Prelude
   import GHC.Generic
 
-  import Control.NFData (NFData (..)
+  import Control.NFData (NFData (..))
   import Data.String    (IsString (..))
   import Data.Binary    (Binary (..))
 
