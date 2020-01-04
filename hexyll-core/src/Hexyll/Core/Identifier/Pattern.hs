@@ -1,3 +1,19 @@
+-- |
+-- Module:      Hexyll.Core.Identifier.Pattern
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   unstable
+-- Portability: portable
+--
+-- This module defines a type of pattern matching to 'Identifier'.
+--
+-- 'PrimPattern' is the primitive patterns. 'PatternExpr' is the expressions of
+-- patterns. 'PatternConj' is a conjunction of 'PatternExpr's. 'PatternDisj' is
+-- a disjunction of 'PatternExpr's. 'Pattern' is the patterns.
+--
+-- I recommend to use 'PatternExpr'. If you want to the instance of 'Monoid',
+-- you can use 'PatternConj' or 'PatternDisj'.
 module Hexyll.Core.Identifier.Pattern where
 
   import Prelude
