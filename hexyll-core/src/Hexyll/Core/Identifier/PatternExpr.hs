@@ -85,6 +85,49 @@ module Hexyll.Core.Identifier.PatternExpr where
   instance IsString PatternExpr where
     fromString = fromPrim . fromString
 
+  -- | @since 0.1.0.0
+  instance Binary PatternExpr where
+    put x = case x of
+      PePrim pp -> do
+        putWord8 0
+        put pp
+      PeEverything ->
+        putWord8 1
+      PeAnd x0 x1 -> do
+        putWord8 2
+        put x0
+        put x1
+      PeNothing ->
+        putWord8 3
+      PeOr x0 x1 -> do
+        putWord8 4
+        put x0
+        put x1
+      PeComplement xc -> do
+        putWord8 5
+        put xc
+    get = do
+      t <- getWord8
+      case t of
+        0 -> do
+          pp <- get
+          return $ PePrim pp
+        1 ->
+          return $ PeEverything
+        2 -> do
+          x0 <- get
+          x1 <- get
+          return $ PeAnd x0 x1
+        3 ->
+          return $ PeNothing
+        4 -> do
+          x0 <- get
+          x1 <- get
+          return $ PeOr x0 x1
+        5 -> do
+          xc <- get
+          return $ PeComplement xc
+
   -- | Make a pattern from a 'PrimPattern'.
   --
   -- @since 0.1.0.0
