@@ -79,3 +79,26 @@ module HExyll.Core.Identifier.PatternExpr where
   -- @since 0.1.0.0
   fromPrim :: PrimPattern -> PatternExpr
   fromPrim = PePrim
+
+  -- | Make a pattern from a glob pattern.
+  --
+  -- The function checks whether it is a correct glob pattern.
+  --
+  -- @since 0.1.0.0
+  fromGlob :: String -> PatternExpr
+  fromGlob = fromPrim . Glob . Glob.compile
+
+  -- | Make a pattern from a regex pattern.
+  --
+  -- @since 0.1.0.0
+  fromRegex :: String -> PatternExpr
+  fromRegex = fromPrim . Regex
+
+  -- | Make a pattern from a version.
+  --
+  -- The pattern is interpreted as: @matchExpr (fromVersion mv) i ===
+  -- getIdentVersion i == mv@.
+  --
+  -- @since 0.1.0.0
+  fromVersion :: Maybe String -> PatternExpr
+  fromVersion = fromPrim . Version
