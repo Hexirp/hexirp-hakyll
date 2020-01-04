@@ -15,7 +15,8 @@
 -- I recommend to use 'PatternExpr'. If you want to the instance of 'Monoid',
 -- you can use 'PatternConj' or 'PatternDisj'. I was able to define the
 -- instance @'Monoid' 'PatternExpr'@ with @(.&&.)@ or @(.||.)@. But, it is not
--- a real monoid because of @x .&&. (y .&&. z) /= (x .&&. y) .&&. z@.
+-- a real monoid because of @x .&&. (y .&&. z) /= (x .&&. y) .&&. z@ and
+-- @x .||. (y .||. z) /= (x .||. y) .||. z@.
 module Hexyll.Core.Identifier.Pattern where
 
   import Prelude
