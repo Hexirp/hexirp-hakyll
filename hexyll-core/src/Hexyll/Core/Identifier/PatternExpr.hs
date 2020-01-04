@@ -135,7 +135,7 @@ module Hexyll.Core.Identifier.PatternExpr where
   -- logical conjunction.
   --
   -- @since 0.1.0.0
-  newtype PatternConj = PatternConj [PatternExpr]
+  newtype PatternConj = PatternConj { unPatternConj :: [PatternExpr] }
     deriving (Eq, Show)
 
   -- | @since 0.1.0.0
@@ -153,7 +153,33 @@ module Hexyll.Core.Identifier.PatternExpr where
 
   -- | @since 0.1.0.0
   instance Monoid PatternConj where
-    mempty = PatternConj []
+    mempty = PatternConj mempty
+
+  -- | A disjunction of 'PatternExpr's.
+  --
+  -- 'PatternDisj' has the instance of 'Monoid' that implements 'mappend' as
+  -- logical disjunction.
+  --
+  -- @since 0.1.0.0
+  newtype PatternDisj = PatternDisj { unPatternDisj :: [PatternExpr] }
+    deriving (Eq, Show)
+
+  -- | @since 0.1.0.0
+  instance IsString PatternDisj where
+    fromString = PatternDisj . fromString
+
+  -- | @since 0.1.0.0
+  instance Binary PatternDisj where
+    put (PatternDisj x) = put x
+    get = PatternDisj <$> get
+
+  -- | @since 0.1.0.0
+  instance Semigroup PatternDisj where
+    PatternDisj x <> PatternDisj = PatternConj (x <> y)
+
+  -- | @since 0.1.0.0
+  instance Monoid PatternDisj where
+    mempty = PatternDisj mempty
 
   -- | Make a pattern from a 'PrimPattern'.
   --
