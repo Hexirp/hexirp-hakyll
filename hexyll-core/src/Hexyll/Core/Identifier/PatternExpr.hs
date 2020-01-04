@@ -178,7 +178,7 @@ module Hexyll.Core.Identifier.PatternExpr where
   -- | The logical disjunction of two patterns.
   --
   -- @since 0.1.0.0
-  (.||.) :: PatternExpr -> PatternExpr -> Pattern Expr
+  (.||.) :: PatternExpr -> PatternExpr -> PatternExpr
   (.||.) = PeOr
 
   -- | The logical complement of a pattern.
