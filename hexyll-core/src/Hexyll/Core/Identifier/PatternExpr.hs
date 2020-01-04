@@ -127,6 +127,7 @@ module Hexyll.Core.Identifier.PatternExpr where
         5 -> do
           xc <- get
           return $ PeComplement xc
+        _ -> error "Data.Binary.get: Invalid PatternExpr"
 
   -- | Make a pattern from a 'PrimPattern'.
   --
