@@ -130,6 +130,7 @@ instance Binary Pattern where
         _ -> Version <$> get
 
 
+{-
 --------------------------------------------------------------------------------
 instance Semigroup Pattern where
     (<>) = And
@@ -138,6 +139,7 @@ instance Monoid Pattern where
     mempty  = Everything
     mappend = (<>)
 
+-}
 --------------------------------------------------------------------------------
 instance IsString Pattern where
     fromString = fromGlob
