@@ -129,6 +129,32 @@ module Hexyll.Core.Identifier.PatternExpr where
           return $ PeComplement xc
         _ -> error "Data.Binary.get: Invalid PatternExpr"
 
+  -- | A conjunction of 'PatternExpr's.
+  --
+  -- 'PatternConj' has the instance of 'Monoid' that implements 'mappend' as
+  -- logical conjunction.
+  --
+  -- @since 0.1.0.0
+  newtype PatternConj = PatternConj [PatternExpr]
+    deriving (Eq, Show)
+
+  -- | @since 0.1.0.0
+  instance IsString PatternConj where
+    fromString = PatternConj . fromString
+
+  -- | @since 0.1.0.0
+  instance Binary PatternConj where
+    put (PatternConj x) = put x
+    get = PatternConj <$> get
+
+  -- | @since 0.1.0.0
+  instance Semigroup PatternConj where
+    PatternConj x <> PatternConj = PatternConj (x <> y)
+
+  -- | @since 0.1.0.0
+  instance Monoid PatternConj where
+    mempty = PatternConj []
+
   -- | Make a pattern from a 'PrimPattern'.
   --
   -- @since 0.1.0.0
