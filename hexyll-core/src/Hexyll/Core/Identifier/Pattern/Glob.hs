@@ -29,7 +29,7 @@ module Hexyll.Core.Identifier.Pattern.Glob where
 
   -- | @since 0.1.0.0
   instance Binary Pattern where
-    put = put . Glob.decompile . unPattern
+    put (Pattern x) = put $ Glob.decompile x
     get = Pattern . Glob.compile <$> get
 
   -- | @since 0.1.0.0
