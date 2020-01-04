@@ -14,8 +14,8 @@
 --
 -- I recommend to use 'PatternExpr'. If you want to the instance of 'Monoid',
 -- you can use 'PatternConj' or 'PatternDisj'. I was able to define the
--- instance @'Monoid' 'PatternExpr'@ with @(.&&.)@ or @(.||.)@. But, it is not
--- a real monoid because of @x .&&. (y .&&. z) /= (x .&&. y) .&&. z@ and
+-- instance @'Monoid' 'PatternExpr'@ with @('.&&.')@ or @('.||.')@. But, it is
+-- not a real monoid because of @x .&&. (y .&&. z) /= (x .&&. y) .&&. z@ and
 -- @x .||. (y .||. z) /= (x .||. y) .||. z@.
 module Hexyll.Core.Identifier.Pattern where
 
@@ -102,9 +102,9 @@ module Hexyll.Core.Identifier.Pattern where
   --   interpreted as: @matchExpr (fromVersion mv) i === getIdentVersion i ==
   --   mv@.
   -- * 'everything' - The pattern matches everything.
-  -- * @(.&&.)@ - The logical conjunction of two patterns.
+  -- * @('.&&.')@ - The logical conjunction of two patterns.
   -- * 'nothing' - The patter matches nothing.
-  -- * @(.||.)@ - The logical disjunction of two patterns.
+  -- * @('.||.')@ - The logical disjunction of two patterns.
   -- * 'complement' - The logical complement of a pattern.
   --
   -- @since 0.1.0.0
@@ -181,7 +181,7 @@ module Hexyll.Core.Identifier.Pattern where
   fromPrim :: PrimPattern -> PatternExpr
   fromPrim = PePrim
 
-  -- | Make a pattern from a glob pattern.
+  -- | Make a pattern from a glob pattern. See "System.FilePath.Glob".
   --
   -- The function checks whether it is a correct glob pattern.
   --
@@ -189,7 +189,7 @@ module Hexyll.Core.Identifier.Pattern where
   fromGlob :: String -> PatternExpr
   fromGlob = fromPrim . Glob . Glob.compile
 
-  -- | Make a pattern from a regex pattern.
+  -- | Make a pattern from a regex pattern. See "Text.Regex.TDFA".
   --
   -- @since 0.1.0.0
   fromRegex :: String -> PatternExpr
@@ -197,8 +197,8 @@ module Hexyll.Core.Identifier.Pattern where
 
   -- | Make a pattern from a version.
   --
-  -- The pattern is interpreted as: @matchExpr (fromVersion mv) i ===
-  -- getIdentVersion i == mv@.
+  -- The pattern is interpreted as: @'matchExpr' ('fromVersion' mv) i ===
+  -- 'getIdentVersion' i == mv@.
   --
   -- @since 0.1.0.0
   fromVersion :: Maybe String -> PatternExpr
