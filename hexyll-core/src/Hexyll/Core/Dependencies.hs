@@ -26,7 +26,7 @@ import           Data.Typeable                  (Typeable)
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern
 
 
 --------------------------------------------------------------------------------
