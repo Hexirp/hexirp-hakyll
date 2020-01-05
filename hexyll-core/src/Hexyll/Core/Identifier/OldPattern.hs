@@ -29,7 +29,7 @@
 -- The 'capture' function allows the user to get access to the elements captured
 -- by the capture elements in a glob or regex pattern.
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-module Hexyll.Core.Identifier.OldPattern
+module Hexyll.Core.Identifier.OldPattern {-# DEPRECATED "Use Hexyll.Core.Identifier.Pattern instead of" #-}
     ( -- * The pattern type
       Pattern
 
