@@ -299,6 +299,6 @@ toNew Everything = New.everything
 toNew (Complement xc) = complement (toNew xc)
 toNew (And x0 x1) = toNew x0 New..&&. toNew x1
 toNew (List is) = S.foldr (\i p -> (New.fromGlob (toFilePath i) .&&. New.fromVersion (getIdentVersion i)) .||. p) New.nothing is
-toNew (Glog g) = New.fromGlob (decompile g)
+toNew (Glob g) = New.fromGlob (decompile g)
 toNew (Regex r) = New.fromRegex r
 toNew (Version mv) = New.fromVersion mv
