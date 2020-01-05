@@ -31,7 +31,7 @@ import           Hexyll.Core.Identifier.Pattern
 
 --------------------------------------------------------------------------------
 data Dependency
-    = PatternDependency Pattern (Set Identifier)
+    = PatternDependency PatternExpr (Set Identifier)
     | IdentifierDependency Identifier
     deriving (Show, Typeable)
 
