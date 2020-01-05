@@ -115,7 +115,7 @@ checkChangedPatterns = do
     go _   ds (IdentifierDependency i) = return $ IdentifierDependency i : ds
     go id' ds (PatternDependency p ls) = do
         universe <- ask
-        let ls' = S.fromList $ filterMatches p universe
+        let ls' = S.fromList $ filter (`matchExpr` p) universe
         if ls == ls'
             then return $ PatternDependency p ls : ds
             else do
