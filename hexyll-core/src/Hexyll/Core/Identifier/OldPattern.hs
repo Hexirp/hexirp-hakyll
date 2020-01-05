@@ -49,6 +49,8 @@ module Hexyll.Core.Identifier.OldPattern
       -- * Applying patterns
     , matches
     , filterMatches
+
+    , toNew
     ) where
 
 
