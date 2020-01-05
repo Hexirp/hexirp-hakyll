@@ -73,6 +73,7 @@ import           Data.Set               (Set)
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
+import qualified Hexyll.Core.Identifier.Pattern as New
 
 
 --------------------------------------------------------------------------------
@@ -286,3 +287,18 @@ capture' (Capture : ms) str =
 capture' (CaptureMany : ms) str =
     -- Match everything
     msum $ [ fmap (i :) (capture' ms t) | (i, t) <- splits str ]
+
+
+
+
+-- | Convert a 'Pattern' to a 'New.Pattern'.
+--
+-- @since 0.1.0.0
+toNew :: Pattern -> New.Pattern
+toNew Everything = New.everything
+toNew (Complement xc) = complement (toNew xc)
+toNew (And x0 x1) = toNew x0 New..&&. toNew x1
+toNew (List is) = S.foldr (\i p -> (New.fromGlob (toFilePath i) .&&. New.fromVersion (getIdentVersion i)) .||. p) New.nothing is
+toNew (Glog g) = New.fromGlob (decompile g)
+toNew (Regex r) = New.fromRegex r
+toNew (Version mv) = New.fromVersion mv
