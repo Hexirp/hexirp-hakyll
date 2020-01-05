@@ -300,7 +300,7 @@ toNew (Glob g) = New.fromGlob (decompile g)
 toNew (Regex r) = New.fromRegex r
 toNew (Version mv) = New.fromVersion mv
 
-decompile :: [GlobComponet] -> String
+decompile :: [GlobComponent] -> String
 decompile = concatMap f where
   f :: GlobComponent -> String
   f Capture = "*"
