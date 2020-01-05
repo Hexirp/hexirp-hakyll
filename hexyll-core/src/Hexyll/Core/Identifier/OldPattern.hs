@@ -291,9 +291,6 @@ capture' (CaptureMany : ms) str =
 
 
 
--- | Convert a 'Pattern' to a 'New.Pattern'.
---
--- @since 0.1.0.0
 toNew :: Pattern -> New.Pattern
 toNew Everything = New.everything
 toNew (Complement xc) = complement (toNew xc)
@@ -302,3 +299,10 @@ toNew (List is) = S.foldr (\i p -> (New.fromGlob (toFilePath i) .&&. New.fromVer
 toNew (Glob g) = New.fromGlob (decompile g)
 toNew (Regex r) = New.fromRegex r
 toNew (Version mv) = New.fromVersion mv
+
+decompile :: [GlobComponet] -> String
+decompile = concatMap f where
+  f :: GlobComponent -> String
+  f Capture = "*"
+  f CaptureMany = "**"
+  f (Literal s) = s
