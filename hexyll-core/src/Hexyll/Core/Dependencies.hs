@@ -1,5 +1,4 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE DeriveDataTypeable #-}
 module Hexyll.Core.Dependencies
     ( Dependency (..)
     , DependencyFacts
