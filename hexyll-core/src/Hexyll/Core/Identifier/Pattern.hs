@@ -46,4 +46,5 @@ module Hexyll.Core.Identifier.Pattern
 
   import Prelude
 
+  import Hexyll.Core.Identifier
   import Hexyll.Core.Identifier.Pattern.Internal
