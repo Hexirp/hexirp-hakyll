@@ -29,38 +29,32 @@ import           Hexyll.Core.Identifier.Pattern
 
 
 --------------------------------------------------------------------------------
-newtype Dependency = Dependency { unDependency :: PatternExpr }
-  deriving (Eq, Show)
+data Dependency
+    = PatternDependency PatternExpr (Set Identifier)
+    | IdentifierDependency Identifier
+    deriving (Show, Typeable)
 
+
+--------------------------------------------------------------------------------
 instance Binary Dependency where
-  put (Dependency x) = put x
-  get = Dependency <$> get
+    put (PatternDependency p is) = putWord8 0 >> put p >> put is
+    put (IdentifierDependency i) = putWord8 1 >> put i
+    get = getWord8 >>= \t -> case t of
+        0 -> PatternDependency <$> get <*> get
+        1 -> IdentifierDependency <$> get
+        _ -> error "Data.Binary.get: Invalid Dependency"
 
-newtype DependencyFacts
-  = DependencyFacts { unDependencyFacts :: Map Identifier [Dependency] }
-  deriving (Eq, Show)
 
-newtype DependencyCache
-  = DependencyCache { unDependencyCache :: Map Identifier [Identifier] }
-  deriving (Eq, Show)
+--------------------------------------------------------------------------------
+type DependencyFacts = Map Identifier [Dependency]
 
-newtype DependencyLog = DependencyLog { unDependencyLog :: String -> String }
 
-instance Semigroup DependencyLog where
-  DependencyLog x <> DependencyLog y = DependencyLog (x <> y)
-
-instance Monoid DependencyLog where
-  mempty = DependencyLog mempty
-
-type KnownIdentifierList = [Identifier]
-type MarkedIdentifierList = [Identifier]
-
+--------------------------------------------------------------------------------
 outOfDate
-  :: KnownIdentifierList
-  -> MarkedIdentifierList
-  -> DependencyFacts
-  -> DependencyCache
-  -> (MarkedIdentifierList, DependencyCache, DependencyLog)
+    :: [Identifier]     -- ^ All known identifiers
+    -> Set Identifier   -- ^ Initially out-of-date resources
+    -> DependencyFacts  -- ^ Old dependency facts
+    -> (Set Identifier, DependencyFacts, [String])
 outOfDate universe ood oldFacts =
     let (_, state, logs) = runRWS rws universe (DependencyState oldFacts ood)
     in (dependencyOod state, dependencyFacts state, logs)
