@@ -8,7 +8,7 @@
 -- Stability:   internal
 -- Portability: portable
 --
--- You should use "Hexyll.Core.Identifier".
+-- This is an internal module for "Hexyll.Core.Identifier".
 module Hexyll.Core.Identifier.Internal where
 
   import Prelude
