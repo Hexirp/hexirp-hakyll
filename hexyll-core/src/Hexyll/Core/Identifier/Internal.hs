@@ -16,7 +16,7 @@
 --
 -- A 'Identifier' value can have its version. The information about version is
 -- used inside the library.
-module Hexyll.Core.Identifier where
+module Hexyll.Core.Identifier.Internal where
 
   import Prelude
 
