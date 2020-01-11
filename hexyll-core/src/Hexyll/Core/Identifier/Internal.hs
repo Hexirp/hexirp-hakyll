@@ -6,16 +6,7 @@
 -- Stability:   internal
 -- Portability: portable
 --
--- This module defines 'Identifier', a type used to uniquely identify an item.
--- An identifier is conceptually similar to a file path. Examples of
--- identifiers are:
---
--- * @posts/foo.markdown@
--- * @index@
--- * @error/404@
---
--- A 'Identifier' value can have its version. The information about version is
--- used inside the library.
+-- You should use "Hexyll.Core.Identifier".
 module Hexyll.Core.Identifier.Internal where
 
   import Prelude
