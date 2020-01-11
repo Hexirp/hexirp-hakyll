@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK not-home #-}
+
 -- |
 -- Module:      Hexyll.Core.Identifier.Pattern.Internal
 -- Copyright:   (c) 2019 Hexirp
