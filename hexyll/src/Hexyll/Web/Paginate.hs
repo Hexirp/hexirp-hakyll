@@ -68,7 +68,7 @@ buildPaginateWith grouper pattern makeId = do
     return Paginate
         { paginateMap        = M.fromList (zip [1 ..] idGroups)
         , paginateMakeId     = makeId
-        , paginateDependency = PatternDependency pattern idsSet
+        , paginateDependency = PatternDependency (toNew pattern) idsSet
         }
 
 

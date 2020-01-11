@@ -129,7 +129,7 @@ buildTagsWith f pattern makeId = do
     ids    <- getMatches pattern
     tagMap <- foldM addTags M.empty ids
     let set' = S.fromList ids
-    return $ Tags (M.toList tagMap) makeId (PatternDependency pattern set')
+    return $ Tags (M.toList tagMap) makeId (PatternDependency (toNew pattern) set')
   where
     -- Create a tag map for one page
     addTags tagMap id' = do

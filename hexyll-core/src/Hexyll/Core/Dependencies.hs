@@ -1,5 +1,4 @@
 --------------------------------------------------------------------------------
-{-# LANGUAGE DeriveDataTypeable #-}
 module Hexyll.Core.Dependencies
     ( Dependency (..)
     , DependencyFacts
@@ -26,12 +25,12 @@ import           Data.Typeable                  (Typeable)
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern
 
 
 --------------------------------------------------------------------------------
 data Dependency
-    = PatternDependency Pattern (Set Identifier)
+    = PatternDependency PatternExpr (Set Identifier)
     | IdentifierDependency Identifier
     deriving (Show, Typeable)
 
@@ -115,7 +114,7 @@ checkChangedPatterns = do
     go _   ds (IdentifierDependency i) = return $ IdentifierDependency i : ds
     go id' ds (PatternDependency p ls) = do
         universe <- ask
-        let ls' = S.fromList $ filterMatches p universe
+        let ls' = S.fromList $ filter (`matchExpr` p) universe
         if ls == ls'
             then return $ PatternDependency p ls : ds
             else do

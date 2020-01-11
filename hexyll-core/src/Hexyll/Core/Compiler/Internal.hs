@@ -350,5 +350,5 @@ compilerGetMatches pattern = do
     universe <- compilerUniverse <$> compilerAsk
     let matching = filterMatches pattern $ S.toList universe
         set'     = S.fromList matching
-    compilerTellDependencies [PatternDependency pattern set']
+    compilerTellDependencies [PatternDependency (toNew pattern) set']
     return matching

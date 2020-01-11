@@ -29,7 +29,7 @@
 -- The 'capture' function allows the user to get access to the elements captured
 -- by the capture elements in a glob or regex pattern.
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-module Hexyll.Core.Identifier.OldPattern
+module Hexyll.Core.Identifier.OldPattern {-# DEPRECATED "Use Hexyll.Core.Identifier.Pattern instead of" #-}
     ( -- * The pattern type
       Pattern
 
@@ -49,6 +49,8 @@ module Hexyll.Core.Identifier.OldPattern
       -- * Applying patterns
     , matches
     , filterMatches
+
+    , toNew
     ) where
 
 
@@ -73,6 +75,7 @@ import           Data.Set               (Set)
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
+import qualified Hexyll.Core.Identifier.Pattern as New
 
 
 --------------------------------------------------------------------------------
@@ -286,3 +289,22 @@ capture' (Capture : ms) str =
 capture' (CaptureMany : ms) str =
     -- Match everything
     msum $ [ fmap (i :) (capture' ms t) | (i, t) <- splits str ]
+
+
+
+
+toNew :: Pattern -> New.PatternExpr
+toNew Everything = New.everything
+toNew (Complement xc) = New.complement (toNew xc)
+toNew (And x0 x1) = toNew x0 New..&&. toNew x1
+toNew (List is) = S.foldr (\i p -> (New.fromGlob (toFilePath i) New..&&. New.fromVersion (getIdentVersion i)) New..||. p) New.nothing is
+toNew (Glob g) = New.fromGlob (decompile g)
+toNew (Regex r) = New.fromRegex r
+toNew (Version mv) = New.fromVersion mv
+
+decompile :: [GlobComponent] -> String
+decompile = concatMap f where
+  f :: GlobComponent -> String
+  f Capture = "*"
+  f CaptureMany = "**"
+  f (Literal s) = s
