@@ -30,6 +30,9 @@ module Hexyll.Core.Identifier.Pattern
   , nothing
   , (.||.)
   , complement
+  , -- ** Advanced Combinator
+    fromIdentifier
+  , fromList
   , -- ** Converting
     toPatternConj
   , toPatternDisj
@@ -56,3 +59,22 @@ module Hexyll.Core.Identifier.Pattern
 
   import Hexyll.Core.Identifier
   import Hexyll.Core.Identifier.Pattern.Internal
+
+  -- | Make a pattern from a 'Identifier'.
+  --
+  -- The pattern is interpreted as: @'fromIdentifier' i == ('fromGlob'
+  -- ('toFilePath' i) '.&&.' 'fromVersion' ('getIdentVersion' i))@.
+  --
+  -- @since 0.1.0.0
+  fromIdentifier :: Identifier -> PatternExpr
+  fromIdentifier i =
+    fromGlob (toFilePath i) .&&. fromVersion (getIdentVersion i)
+
+  -- | Make a pattern from a list.
+  --
+  -- The pattern is interpreted as: @'fromList x == foldr (.||.) nothing (map
+  -- fromIdentifier x)@.
+  --
+  -- @since 0.1.0.0
+  fromList :: [Identifier] -> PatternExpr
+  fromList = foldr (\x p -> fromIdentifier x .||. p) nothing
