@@ -72,8 +72,8 @@ module Hexyll.Core.Identifier.Pattern
 
   -- | Make a pattern from a list.
   --
-  -- The pattern is interpreted as: @'fromList x == foldr (.||.) nothing (map
-  -- fromIdentifier x)@.
+  -- The pattern is interpreted as: @'fromList' x == foldr ('.||.') 'nothing'
+  -- (map 'fromIdentifier' x)@.
   --
   -- @since 0.1.0.0
   fromList :: [Identifier] -> PatternExpr
