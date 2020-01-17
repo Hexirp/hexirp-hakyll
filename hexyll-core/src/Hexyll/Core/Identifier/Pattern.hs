@@ -18,25 +18,33 @@
 -- not a real monoid because of @x .&&. (y .&&. z) /= (x .&&. y) .&&. z@ and
 -- @x .||. (y .||. z) /= (x .||. y) .||. z@.
 module Hexyll.Core.Identifier.Pattern
-  ( PatternExpr
-  , fromGlob
+  ( -- * PatternExpr
+    PatternExpr
+  , -- ** Primitive Combinator
+    fromGlob
   , fromRegex
   , fromVersion
-  , everything
+  , -- ** Logical Combinator
+    everything
   , (.&&.)
   , nothing
   , (.||.)
   , complement
-  , toPatternConj
+  , -- ** Converting
+    toPatternConj
   , toPatternDisj
-  , matchExpr
-  , PatternConj ( PatternConj )
+  , -- ** Matching
+    matchExpr
+  , -- * PatternConj
+    PatternConj ( PatternConj )
   , unPatternConj
   , matchConj
-  , PatternDisj ( PatternDisj )
+  , -- * PatternDisj
+    PatternDisj ( PatternDisj )
   , unPatternDisj
   , matchDisj
-  , Pattern ( Pattern )
+  , -- * Pattern
+    Pattern ( Pattern )
   , runPattern
   , compileExpr
   , compileConj
