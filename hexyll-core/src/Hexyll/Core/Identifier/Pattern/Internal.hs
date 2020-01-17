@@ -99,6 +99,9 @@ module Hexyll.Core.Identifier.Pattern.Internal where
   -- * @('.||.')@ - The logical disjunction of two patterns.
   -- * 'complement' - The logical complement of a pattern.
   --
+  -- If you want to make a pattern that matches file pathes that includes some
+  -- asterisks (e.g. @*foo*.txt@), escape with 'fromRegex'.
+  --
   -- @since 0.1.0.0
   data PatternExpr
     = PePrim PrimPattern
