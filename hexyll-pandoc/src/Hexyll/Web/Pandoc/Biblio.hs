@@ -116,8 +116,8 @@ readPandocBiblio ropt csl biblio item = do
 --------------------------------------------------------------------------------
 pandocBiblioCompiler :: String -> String -> Compiler (Item String)
 pandocBiblioCompiler cslFileName bibFileName = do
-    csl <- load $ fromFilePath cslFileName
-    bib <- load $ fromFilePath bibFileName
+    csl <- load $ ufromFilePath cslFileName
+    bib <- load $ ufromFilePath bibFileName
     liftM writePandoc
         (getResourceBody >>= readPandocBiblio ropt csl bib)
     where ropt = defaultHexyllReaderOptions
