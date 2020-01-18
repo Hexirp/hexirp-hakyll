@@ -33,9 +33,9 @@ module Hexyll.Core.Identifier
   -- to file.
   --
   -- 'ufromFilePath' is a partical function. You should be careful. I
-  -- recommended to only use this function for values.
+  -- recommended to only use this function for constants.
   --
-  -- > indexIdent = ufromFilePath "index.md":
+  -- > indexIdent = ufromFilePath "index.md"
   --
   -- @since 0.1.0.0
   ufromFilePath :: FilePath -> Identifier
