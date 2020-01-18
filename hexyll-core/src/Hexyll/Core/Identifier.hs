@@ -19,6 +19,7 @@
 module Hexyll.Core.Identifier
   ( Identifier
   , fromFilePath
+  , ufromFilePath
   , toFilePath
   , getIdentVersion
   , setIdentVersion
@@ -27,3 +28,17 @@ module Hexyll.Core.Identifier
   import Prelude
 
   import Hexyll.Core.Identifier.Internal
+
+  -- | Parse an identifier from a string. The string should be a relative path
+  -- to file.
+  --
+  -- 'ufromFilePath' is a partical function. You should be careful. I
+  -- recommended to only use this function for values.
+  --
+  -- > indexIdent = ufromFilePath "index.md":
+  --
+  -- @since 0.1.0.0
+  ufromFilePath :: FilePath -> Identifier
+  ufromFilePath s = case fromFilePath s of
+    Nothing -> error "Identifier.ufromFilePath: It's not a relative path to file."
+    Just i -> i

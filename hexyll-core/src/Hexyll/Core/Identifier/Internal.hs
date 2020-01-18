@@ -67,10 +67,8 @@ module Hexyll.Core.Identifier.Internal where
   -- to file.
   --
   -- @since 0.1.0.0
-  fromFilePath :: FilePath -> Identifier
-  fromFilePath s = case parseRelFile s of
-    Nothing -> error "Identifier.fromFilePath: It's not a relative path to file."
-    Just p -> Identifier Nothing p
+  fromFilePath :: MonadThrow m => FilePath -> m Identifier
+  fromFilePath s = Identifier Nothing <$> parseRelFile s
 
   -- | Convert an identifier to a relative 'FilePath'.
   --
