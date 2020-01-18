@@ -125,7 +125,7 @@ getResourceInfo directory universe identifier = do
     return $ ResourceInfo (BinaryTime mtime) $
         if mdRsc `S.member` universe then Just mdRsc else Nothing
   where
-    mdRsc = fromFilePath $ flip addExtension "metadata" $ toFilePath identifier
+    mdRsc = ufromFilePath $ flip addExtension "metadata" $ toFilePath identifier
 
 
 --------------------------------------------------------------------------------
