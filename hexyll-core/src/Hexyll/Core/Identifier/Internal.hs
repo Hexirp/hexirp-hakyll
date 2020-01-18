@@ -13,13 +13,13 @@ module Hexyll.Core.Identifier.Internal where
 
   import Prelude
 
-  import Control.Monad   (mzero)
+  import Control.Monad       (mzero)
+  import Control.Monad.Catch (MonadThrow)
+
   import Control.DeepSeq (NFData (..))
-
-  import Data.String   (IsString, fromString)
-  import Data.Typeable (Typeable)
-
-  import Data.Binary (Binary (..))
+  import Data.Binary     (Binary (..))
+  import Data.String     (IsString, fromString)
+  import Data.Typeable   (Typeable)
 
   import qualified Path
   import           Path hiding (toFilePath)
