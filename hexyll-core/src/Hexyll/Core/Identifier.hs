@@ -29,8 +29,8 @@ module Hexyll.Core.Identifier
 
   import Hexyll.Core.Identifier.Internal
 
-  -- | Parse an identifier from a string. The string should be a relative path
-  -- to file.
+  -- | An unsafe 'fromFilePath', parse an identifier from a string. The string
+  -- should be a relative path to file.
   --
   -- 'ufromFilePath' is a partical function. You should be careful. I
   -- recommended to only use this function for constants.
