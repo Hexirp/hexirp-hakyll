@@ -51,7 +51,12 @@ module Hexyll.Core.Identifier.Internal where
 
   -- | @since 0.1.0.0
   instance IsString Identifier where
-    fromString = fromFilePath
+    fromString s = case fromFilePath s of
+      Left e -> error $ unlines
+        [ "fromString @Identifier: It's not a relative path to file."
+        , "fromString @Identifier: " ++ show (show e)
+        ]
+      Right i -> i
 
   -- | @since 0.1.0.0
   instance NFData Identifier where
