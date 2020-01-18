@@ -97,7 +97,7 @@ newProvider :: Store                  -- ^ Store to use
             -> FilePath               -- ^ Search directory
             -> IO Provider            -- ^ Resulting provider
 newProvider store ignore directory = do
-    list <- map fromFilePath <$> getRecursiveContents ignore directory
+    list <- map ufromFilePath <$> getRecursiveContents ignore directory
     let universe = S.fromList list
     files <- fmap (maxmtime . M.fromList) $ forM list $ \identifier -> do
         rInfo <- getResourceInfo directory universe identifier
