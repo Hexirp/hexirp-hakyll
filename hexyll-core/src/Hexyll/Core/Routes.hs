@@ -194,5 +194,5 @@ composeRoutes (Routes f) (Routes g) = Routes $ \p i -> do
     case mfp of
         Nothing -> return (Nothing, um)
         Just fp -> do
-            (mfp', um') <- g p (fromFilePath fp)
+            (mfp', um') <- g p (ufromFilePath fp)
             return (mfp', um || um')
