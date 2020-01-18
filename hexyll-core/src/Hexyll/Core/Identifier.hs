@@ -40,5 +40,8 @@ module Hexyll.Core.Identifier
   -- @since 0.1.0.0
   ufromFilePath :: FilePath -> Identifier
   ufromFilePath s = case fromFilePath s of
-    Nothing -> error "Identifier.ufromFilePath: It's not a relative path to file."
-    Just i -> i
+    Left e -> error $ unlines
+      [ "Identifier.ufromFilePath: It's not a relative path to file."
+      , "Identifier.ufromFilePath: " ++ show (show e)
+      ]
+    Right i -> i
