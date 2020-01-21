@@ -181,7 +181,7 @@ applyTemplate' tes context x = go tes
     applyElem (Partial e) = withErrorMessage headMsg $
         applyStringExpr typeMsg e >>= \p ->
         withErrorMessage inclMsg $ do
-            tpl' <- loadBody (fromFilePath p)
+            tpl' <- loadBody (ufromFilePath p)
             itemBody <$> applyTemplate tpl' context x
       where
         headMsg = "In expr '$partial(" ++ show e ++ ")$'"
@@ -256,5 +256,5 @@ applyAsTemplate context item = do
 unsafeReadTemplateFile :: FilePath -> Compiler Template
 unsafeReadTemplateFile file = do
     tpl <- unsafeCompiler $ readFile file
-    compileTemplateFile (fromFilePath file) tpl
+    compileTemplateFile (ufromFilePath file) tpl
 {-# DEPRECATED unsafeReadTemplateFile "Use templateCompiler" #-}

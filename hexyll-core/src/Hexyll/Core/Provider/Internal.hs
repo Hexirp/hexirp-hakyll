@@ -97,7 +97,7 @@ newProvider :: Store                  -- ^ Store to use
             -> FilePath               -- ^ Search directory
             -> IO Provider            -- ^ Resulting provider
 newProvider store ignore directory = do
-    list <- map fromFilePath <$> getRecursiveContents ignore directory
+    list <- map ufromFilePath <$> getRecursiveContents ignore directory
     let universe = S.fromList list
     files <- fmap (maxmtime . M.fromList) $ forM list $ \identifier -> do
         rInfo <- getResourceInfo directory universe identifier
@@ -125,7 +125,7 @@ getResourceInfo directory universe identifier = do
     return $ ResourceInfo (BinaryTime mtime) $
         if mdRsc `S.member` universe then Just mdRsc else Nothing
   where
-    mdRsc = fromFilePath $ flip addExtension "metadata" $ toFilePath identifier
+    mdRsc = ufromFilePath $ flip addExtension "metadata" $ toFilePath identifier
 
 
 --------------------------------------------------------------------------------

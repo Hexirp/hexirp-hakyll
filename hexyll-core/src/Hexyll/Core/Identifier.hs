@@ -19,6 +19,7 @@
 module Hexyll.Core.Identifier
   ( Identifier
   , fromFilePath
+  , ufromFilePath
   , toFilePath
   , getIdentVersion
   , setIdentVersion
@@ -26,81 +27,21 @@ module Hexyll.Core.Identifier
 
   import Prelude
 
-  import Control.Monad   (mzero)
-  import Control.DeepSeq (NFData (..))
+  import Hexyll.Core.Identifier.Internal
 
-  import Data.String   (IsString, fromString)
-  import Data.Typeable (Typeable)
-
-  import Data.Binary (Binary (..))
-
-  import qualified Path
-  import           Path hiding (toFilePath)
-
-  -- | A type used to uniquely identify an item.
+  -- | An unsafe 'fromFilePath', parse an identifier from a string. The string
+  -- should be a relative path to file.
   --
-  -- It is similar to 'FilePath'. But, a 'Identifier' value can have its
-  -- version. The information about version is used inside the library.
+  -- 'ufromFilePath' is a partical function. You should be careful. I
+  -- recommended to only use this function for constants.
+  --
+  -- > indexIdent = ufromFilePath "index.md"
   --
   -- @since 0.1.0.0
-  data Identifier = Identifier
-    { identifierVersion :: Maybe String
-    , identifierPath    :: Path Rel File
-    } deriving (Eq, Ord, Typeable)
-
-  -- | @since 0.1.0.0
-  instance Binary Identifier where
-    put (Identifier v p) = do
-      put v
-      put $ Path.toFilePath p
-    get = do
-      v <- get
-      p <- do
-        s <- get
-        case parseRelFile s of
-          Nothing -> mzero
-          Just p -> return p
-      return $ Identifier v p
-
-  -- | @since 0.1.0.0
-  instance IsString Identifier where
-    fromString = fromFilePath
-
-  -- | @since 0.1.0.0
-  instance NFData Identifier where
-    rnf (Identifier v p) = rnf v `seq` rnf p `seq` ()
-
-  -- | @since 0.1.0.0
-  instance Show Identifier where
-    show i = case identifierVersion i of
-        Nothing -> toFilePath i
-        Just v  -> toFilePath i ++ " (" ++ v ++ ")"
-
-  -- | Parse an identifier from a string. The string should be a relative path
-  -- to file.
-  --
-  -- @since 0.1.0.0
-  fromFilePath :: FilePath -> Identifier
-  fromFilePath s = case parseRelFile s of
-    Nothing -> error "Identifier.fromFilePath: It's not a relative path to file."
-    Just p -> Identifier Nothing p
-
-  -- | Convert an identifier to a relative 'FilePath'.
-  --
-  -- @since 0.1.0.0
-  toFilePath :: Identifier -> FilePath
-  toFilePath = Path.toFilePath . identifierPath
-
-  -- | Get the version of an identifier. I recommend that you do not use this
-  -- function.
-  --
-  -- @since 0.1.0.0
-  getIdentVersion :: Identifier -> Maybe String
-  getIdentVersion = identifierVersion
-
-  -- | Set the version of an identifier. I recommend that you do not use this
-  -- function.
-  --
-  -- @since 0.1.0.0
-  setIdentVersion :: Maybe String -> Identifier -> Identifier
-  setIdentVersion v i = i { identifierVersion = v }
+  ufromFilePath :: FilePath -> Identifier
+  ufromFilePath s = case fromFilePath s of
+    Left e -> error $ unlines
+      [ "Identifier.ufromFilePath: It's not a relative path to file."
+      , "Identifier.ufromFilePath: " ++ show (show e)
+      ]
+    Right i -> i

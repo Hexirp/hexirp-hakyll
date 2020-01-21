@@ -221,7 +221,7 @@ mapContext f (Context c) = Context $ \k a i -> do
 snippetField :: Context String
 snippetField = functionField "snippet" f
   where
-    f [contentsPath] _ = loadBody (fromFilePath contentsPath)
+    f [contentsPath] _ = loadBody (ufromFilePath contentsPath)
     f []             _ = fail "No argument to function 'snippet()'"
     f _              _ = fail "Too many arguments to function 'snippet()'"
 

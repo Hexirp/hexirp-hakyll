@@ -1,9 +1,11 @@
+{-# OPTIONS_HADDOCK not-home #-}
+
 -- |
 -- Module:      Hexyll.Core.Identifier.Pattern
 -- Copyright:   (c) 2019 Hexirp
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
--- Stability:   unstable
+-- Stability:   internal
 -- Portability: portable
 --
 -- This module defines a type for glob patterns.
