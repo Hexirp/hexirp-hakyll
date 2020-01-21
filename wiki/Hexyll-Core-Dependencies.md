@@ -34,7 +34,7 @@ data DependencyEnv = DependencyEnv
   , identifierUniverse :: IdentifierUniverse
   } deriving (Eq, Show)
 
-date DependencyState = DependencyState
+data DependencyState = DependencyState
   { dependencyCache     :: DependencyCache
   , identifierOutOfDate :: IdentifierOutOfDate
   } deriving (Eq, Show)
@@ -48,3 +48,5 @@ type DependencyM = RWS DependencyEnv DependencyState DependencyLog
 2. リソースの追加か削除で、依存するリソースのセットが変化したリソースを検出する
 3. 以下を古いリソースが新しく見つからなくなるまで繰り返す
   1. まだ古いリソースだとされていないリソースの中から、依存しているリソースが古くなったリソースを検出する
+
+あまり Writer モナドは使いたくないが、この場合は文字列を一つずつリストに加えていくログ用なので、評価した時に必要なメモリ数が評価しないときに必要なメモリ数とあまり変わらないと予測される。
