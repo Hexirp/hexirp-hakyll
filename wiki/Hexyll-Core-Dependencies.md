@@ -1,0 +1,50 @@
+# Hexyll.Core.Dependencies
+
+このモジュールは古いリソースを検出するためのライブラリである。
+
+## 型
+
+型は以下のようになる。
+
+```haskell
+-- | 依存
+newtype Dependency = Dependency PatternExpr
+-- | 依存関係
+newtype DependencyFacts = DependencyFacts (Map Identifier Dependency)
+-- | 依存関係のキャッシュ
+newtype DependencyCache = DependencyCache (Map Identifier Identifier)
+-- | 依存関係のログ
+newtype DependencyLog = DependencyLog (DList String)
+
+-- | 今与えられているリソース
+type IdentifierUniverse = [Identifier]
+-- | 更新が必要なリソース
+type IdentifierOutOfDate = Set Identifier
+
+outOfDate :: IdentifierUniverse -> IdentifierOutOfDate -> DependencyFacts -> DependencyCache -> (IdentifierOutOfDate -> DependencyCache -> DependencyLog -> r) -> r
+```
+
+## 内部実装
+
+このようなモナドを使う。
+
+```haskell
+data DependencyEnv = DependencyEnv
+  { dependencyFacts :: DependencyFacts
+  , identifierUniverse :: IdentifierUniverse
+  } deriving (Eq, Show)
+
+date DependencyState = DependencyState
+  { dependencyCache     :: DependencyCache
+  , identifierOutOfDate :: IdentifierOutOfDate
+  } deriving (Eq, Show)
+
+type DependencyM = RWS DependencyEnv DependencyState DependencyLog
+```
+
+実行のフェーズは三つある。
+
+1. 新しいリソースを検出する
+2. リソースの追加か削除で、依存するリソースのセットが変化したリソースを検出する
+3. 以下を古いリソースが新しく見つからなくなるまで繰り返す
+  1. まだ古いリソースだとされていないリソースの中から、依存しているリソースが古くなったリソースを検出する
