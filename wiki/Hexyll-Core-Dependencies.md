@@ -24,6 +24,8 @@ type IdentifierOutOfDate = Set Identifier
 outOfDate :: IdentifierUniverse -> IdentifierOutOfDate -> DependencyFacts -> DependencyCache -> (IdentifierOutOfDate -> DependencyCache -> DependencyLog -> r) -> r
 ```
 
+ここでキャッシュにはキャッシュした際のリソースのセットと、依存関係のマップの二種類あるが、前者は後者のキーと一致するため、一つのマップにまとめられる。
+
 ## 内部実装
 
 このようなモナドを使う。
