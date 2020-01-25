@@ -28,6 +28,44 @@ import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern
 
 
+-- | A dependency.
+newtype Dependency = Dependency PatternExpr
+-- | Dependency factors.
+newtype DependencyFacts = DependencyFacts (Map Identifier [Dependency])
+-- | Caches of dependency factors.
+newtype DependencyCache = DependencyCache (Map Identifier [Identifier])
+
+-- | A type of a list of known resources.
+type IdentifierUniverse = [Identifier]
+-- | A type of a list of outdated resources.
+type IdentifierOutOfDate = Set Identifier
+-- | A type of a log for 'outOfDate'.
+type DependencyLog = DList String
+
+outOfDate
+  :: IdentifierUniverse
+  -> IdentifierOutOfDate
+  -> DependencyFacts
+  -> DependencyCache
+  -> (IdentifierOutOfDate, DependencyCache, DependencyLog)
+outOfDate iu io df dc =
+  case runRWS outOfDate' (DependencyEnv df iu) (DependencyState dc io) of
+    ((), DependencyState dc' io', log) -> (io', dc', log)
+
+-- | A type of an environment for 'outOfDate'.
+data DependencyEnv = DependencyEnv
+  { dependencyFacts :: DependencyFacts
+  , identifierUniverse :: IdentifierUniverse
+  } deriving (Eq, Show)
+
+-- | A type of a state for 'outOfDate'.
+data DependencyState = DependencyState
+  { dependencyCache     :: DependencyCache
+  , identifierOutOfDate :: IdentifierOutOfDate
+  } deriving (Eq, Show)
+
+type DependencyM = RWS DependencyEnv DependencyState DependencyLog
+
 --------------------------------------------------------------------------------
 data Dependency
     = PatternDependency PatternExpr (Set Identifier)
