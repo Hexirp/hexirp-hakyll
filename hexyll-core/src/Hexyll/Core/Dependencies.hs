@@ -32,16 +32,24 @@ import Hexyll.Core.Identifier
 import Hexyll.Core.Identifier.Pattern
 
 -- | A dependency.
-newtype Dependency = Dependency PatternExpr
+newtype Dependency = Dependency { unDependency :: PatternExpr }
+
 -- | Dependency factors.
-newtype DependencyFacts = DependencyFacts (Map Identifier [Dependency])
+newtype DependencyFacts = DependencyFacts
+  { unDependencyFacts :: Map Identifier [Dependency] 
+  }
+
 -- | Caches of dependency factors.
-newtype DependencyCache = DependencyCache (Map Identifier [Identifier])
+newtype DependencyCache = DependencyCache
+  { unDependencyCache :: Map Identifier [Identifier]
+  }
 
 -- | A type of a list of known resources.
 type IdentifierUniverse = [Identifier]
+
 -- | A type of a list of outdated resources.
 type IdentifierOutOfDate = Set Identifier
+
 -- | A type of a log for 'outOfDate'.
 type CalculationLog = [String]
 
@@ -90,12 +98,15 @@ getCache = rws $ \_ s -> case s of
 
 checkNew :: DependencyM ()
 checkNew = do
-    universe <- askUniverse
-    cache <- getCache
-    forM_ universe $ \i -> unless (i `M.member` cache) $ do
-        tellLog $ show id' ++ " is out-of-date because it is new"
-        markOutOfDate i
+  universe <- askUniverse
+  cache <- getCache
+  forM_ universe $ \i ->
+    unless (i `M.member` unDependencyCache cache) $ do
+      tellLog $ show id' ++ " is out-of-date because it is new"
+      markOutOfDate i
 
+checkChangedPatterns :: DependencyM ()
+checkChangedPattern = undefined
 
 --------------------------------------------------------------------------------
 dependenciesFor :: Identifier -> DependencyM [Identifier]
