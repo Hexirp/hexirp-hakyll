@@ -106,7 +106,9 @@ checkNew = do
       markOutOfDate i
 
 checkChangedPatterns :: DependencyM ()
-checkChangedPattern = undefined
+checkChangedPattern = do
+  cache <- getCache
+  forM_ (M.toList cache) $ \(ident, _) -> do
 
 --------------------------------------------------------------------------------
 dependenciesFor :: Identifier -> DependencyM [Identifier]
