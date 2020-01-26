@@ -80,6 +80,22 @@ markOutOfDate i = rws $ \_ s -> case s of
 tellLog :: String -> DependencyM ()
 tellLog l = rws $ \_ s -> ((), s, singleton l)
 
+askUniverse :: DependencyM IdentifierUniverse
+askUniverse = rws $ \r s -> case r of
+  DependencyEnv _ iu -> (iu, s, mempty)
+
+getCache :: DependencyM DependencyCache
+getCache = rws $ \_ s -> case s of
+  DependencyState dc io -> (dc, DependencyState dc io, mempty)
+
+checkNew :: DependencyM ()
+checkNew = do
+    universe <- ask
+    facts    <- dependencyFacts <$> State.get
+    forM_ universe $ \id' -> unless (id' `M.member` facts) $ do
+        tell [show id' ++ " is out-of-date because it is new"]
+        markOod id'
+
 
 --------------------------------------------------------------------------------
 dependenciesFor :: Identifier -> DependencyM [Identifier]
@@ -92,15 +108,6 @@ dependenciesFor id' = do
 
 
 --------------------------------------------------------------------------------
-checkNew :: DependencyM ()
-checkNew = do
-    universe <- ask
-    facts    <- dependencyFacts <$> State.get
-    forM_ universe $ \id' -> unless (id' `M.member` facts) $ do
-        tell [show id' ++ " is out-of-date because it is new"]
-        markOod id'
-
-
 --------------------------------------------------------------------------------
 checkChangedPatterns :: DependencyM ()
 checkChangedPatterns = do
