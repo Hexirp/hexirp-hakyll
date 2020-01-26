@@ -70,7 +70,7 @@ data DependencyState = DependencyState
 -- | A type of a log for 'outOfDate'.
 type DependencyLog = DList String
 
-type DependencyM = RWS DependencyEnv DependencyState DependencyLog
+type DependencyM = RWS DependencyEnv DependencyLog DependencyState
 
 markOutOfDate :: Identifier -> DependencyM ()
 markOutOfDate i = rws $ \_ s -> case s of
