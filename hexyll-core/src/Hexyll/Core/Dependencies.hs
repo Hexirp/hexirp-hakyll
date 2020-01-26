@@ -90,11 +90,11 @@ getCache = rws $ \_ s -> case s of
 
 checkNew :: DependencyM ()
 checkNew = do
-    universe <- ask
-    facts    <- dependencyFacts <$> State.get
-    forM_ universe $ \id' -> unless (id' `M.member` facts) $ do
-        tell [show id' ++ " is out-of-date because it is new"]
-        markOod id'
+    universe <- askUniverse
+    cache <- getCache
+    forM_ universe $ \i -> unless (i `M.member` cache) $ do
+        tellLog $ show id' ++ " is out-of-date because it is new"
+        markOutOfDate i
 
 
 --------------------------------------------------------------------------------
