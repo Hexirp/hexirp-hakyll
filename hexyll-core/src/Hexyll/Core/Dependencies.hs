@@ -73,9 +73,12 @@ type DependencyLog = DList String
 type DependencyM = RWS DependencyEnv DependencyState DependencyLog
 
 markOutOfDate :: Identifier -> DependencyM ()
-markOutOfDate i = rws $ \r s -> case s of
+markOutOfDate i = rws $ \_ s -> case s of
   DependencyState dc io -> let io' = S.insert i id in
     io' `seq` ((), DependencyState dc io', mempty)
+
+tellLog :: String -> DependencyM ()
+tellLog l = rws $ \_ s -> ((), s, singleton l)
 
 
 --------------------------------------------------------------------------------
