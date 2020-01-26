@@ -67,54 +67,6 @@ data DependencyState = DependencyState
 type DependencyM = RWS DependencyEnv DependencyState DependencyLog
 
 --------------------------------------------------------------------------------
-data Dependency
-    = PatternDependency PatternExpr (Set Identifier)
-    | IdentifierDependency Identifier
-    deriving (Show, Typeable)
-
-
---------------------------------------------------------------------------------
-instance Binary Dependency where
-    put (PatternDependency p is) = putWord8 0 >> put p >> put is
-    put (IdentifierDependency i) = putWord8 1 >> put i
-    get = getWord8 >>= \t -> case t of
-        0 -> PatternDependency <$> get <*> get
-        1 -> IdentifierDependency <$> get
-        _ -> error "Data.Binary.get: Invalid Dependency"
-
-
---------------------------------------------------------------------------------
-type DependencyFacts = Map Identifier [Dependency]
-
-
---------------------------------------------------------------------------------
-outOfDate
-    :: [Identifier]     -- ^ All known identifiers
-    -> Set Identifier   -- ^ Initially out-of-date resources
-    -> DependencyFacts  -- ^ Old dependency facts
-    -> (Set Identifier, DependencyFacts, [String])
-outOfDate universe ood oldFacts =
-    let (_, state, logs) = runRWS rws universe (DependencyState oldFacts ood)
-    in (dependencyOod state, dependencyFacts state, logs)
-  where
-    rws = do
-        checkNew
-        checkChangedPatterns
-        bruteForce
-
-
---------------------------------------------------------------------------------
-data DependencyState = DependencyState
-    { dependencyFacts :: DependencyFacts
-    , dependencyOod   :: Set Identifier
-    } deriving (Show)
-
-
---------------------------------------------------------------------------------
-type DependencyM a = RWS [Identifier] [String] DependencyState a
-
-
---------------------------------------------------------------------------------
 markOod :: Identifier -> DependencyM ()
 markOod id' = State.modify $ \s ->
     s {dependencyOod = S.insert id' $ dependencyOod s}
