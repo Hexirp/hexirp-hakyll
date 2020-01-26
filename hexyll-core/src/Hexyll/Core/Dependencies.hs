@@ -26,6 +26,8 @@ import Prelude
 
 import Data.DList (DList, toList, singleton)
 
+import Control.Monad.Trans.RWS.Strict (RWS, rws, runRWS)
+
 import Hexyll.Core.Identifier
 import Hexyll.Core.Identifier.Pattern
 
@@ -70,10 +72,10 @@ type DependencyLog = DList String
 
 type DependencyM = RWS DependencyEnv DependencyState DependencyLog
 
---------------------------------------------------------------------------------
-markOod :: Identifier -> DependencyM ()
-markOod id' = State.modify $ \s ->
-    s {dependencyOod = S.insert id' $ dependencyOod s}
+markOutOfDate :: Identifier -> DependencyM ()
+markOutOfDate i = rws $ \r s -> case s of
+  DependencyState dc io -> let io' = S.insert i id in
+    io' `seq` ((), DependencyState dc io', mempty)
 
 
 --------------------------------------------------------------------------------
