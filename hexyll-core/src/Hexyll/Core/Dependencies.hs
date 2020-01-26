@@ -22,11 +22,12 @@ import           Data.Set                       (Set)
 import qualified Data.Set                       as S
 import           Data.Typeable                  (Typeable)
 
+import Prelude
 
---------------------------------------------------------------------------------
-import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern
+import Data.DList (DList, toList, singleton)
 
+import Hexyll.Core.Identifier
+import Hexyll.Core.Identifier.Pattern
 
 -- | A dependency.
 newtype Dependency = Dependency PatternExpr
@@ -40,17 +41,17 @@ type IdentifierUniverse = [Identifier]
 -- | A type of a list of outdated resources.
 type IdentifierOutOfDate = Set Identifier
 -- | A type of a log for 'outOfDate'.
-type DependencyLog = DList String
+type CalculationLog = [String]
 
 outOfDate
   :: IdentifierUniverse
   -> IdentifierOutOfDate
   -> DependencyFacts
   -> DependencyCache
-  -> (IdentifierOutOfDate, DependencyCache, DependencyLog)
+  -> (IdentifierOutOfDate, DependencyCache, CalculationLog)
 outOfDate iu io df dc =
   case runRWS outOfDate' (DependencyEnv df iu) (DependencyState dc io) of
-    ((), DependencyState dc' io', log) -> (io', dc', log)
+    ((), DependencyState dc' io', log) -> (io', dc', toList log)
 
 -- | A type of an environment for 'outOfDate'.
 data DependencyEnv = DependencyEnv
@@ -63,6 +64,9 @@ data DependencyState = DependencyState
   { dependencyCache     :: DependencyCache
   , identifierOutOfDate :: IdentifierOutOfDate
   } deriving (Eq, Show)
+
+-- | A type of a log for 'outOfDate'.
+type DependencyLog = DList String
 
 type DependencyM = RWS DependencyEnv DependencyState DependencyLog
 
