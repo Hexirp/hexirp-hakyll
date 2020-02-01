@@ -26,7 +26,7 @@ import Prelude
 
 import Data.DList (DList, toList, singleton)
 
-import Control.Monad.Trans.RWS.Strict (RWS, rws, runRWS)
+import Control.Monad.Trans.RWS.Lazy (RWS, rws, runRWS)
 
 import Hexyll.Core.Identifier
 import Hexyll.Core.Identifier.Pattern
