@@ -144,23 +144,31 @@ checkChangedPattern = do
       markOutOfDate i
       modifyCache $ DependencyCache . M.insert i df . unDependencyCache
 
---------------------------------------------------------------------------------
 bruteForce :: DependencyM ()
 bruteForce = do
-    todo <- ask
-    go todo
-  where
-    go todo = do
-        (todo', changed) <- foldM check ([], False) todo
-        when changed (go todo')
+  universe <- askUniverse
+  bruteForce_0 universe
 
-    check (todo, changed) id' = do
-        deps <- dependenciesFor id'
-        ood  <- dependencyOod <$> State.get
-        case find (`S.member` ood) deps of
-            Nothing -> return (id' : todo, changed)
-            Just d  -> do
-                tell [show id' ++ " is out-of-date because " ++
-                    show d ++ " is out-of-date"]
-                markOod id'
-                return (todo, True)
+bruteForce_0 :: [Identifier] -> DependencyM ()
+bruteForce_0 is = do
+    (is', changed) <- bruteForce_1 is False
+    when changed $ bruteForce_0 is'
+
+bruteForce_1 :: [Identifier] -> Bool -> DependencyM ([Identifier], Bool)
+bruteForce_1 []        _ = return ([], False)
+bruteForce_1 (iv : is) b = do
+  (is', b') <- bruteForce is b
+  deps <- dependenciesForCache iv
+  ood <- getDependencyOutOfDate
+  case find (`S.menber` ood) deps of
+    Nothing ->
+      return (iv : is', b')
+    Just idep -> do
+      tellLog $ concat $
+        [ show i
+        , " is out-of-date because "
+        , show idep
+        , " is out-of-date"
+        ]
+      markOutOfDate i
+      return (is', True)
