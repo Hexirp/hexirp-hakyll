@@ -131,8 +131,8 @@ checkChangedPattern :: DependencyM ()
 checkChangedPattern = do
   universe <- askUniverse
   forM_ universe $ \i -> do
-    df <- dependencyFor i
-    dc <- dependencyForCache i
+    df <- dependenciesFor i
+    dc <- dependenciesForCache i
     when (df /= dc) $ do
       tellLog $ show i ++ "is out-of-date because its pattern changed"
       markOutOfDate i
