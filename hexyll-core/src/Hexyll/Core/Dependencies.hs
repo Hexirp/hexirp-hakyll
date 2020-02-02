@@ -106,6 +106,11 @@ getCache :: DependencyM DependencyCache
 getCache = rws $ \_ s -> case s of
   DependencyState dc io -> (dc, DependencyState dc io, mempty)
 
+modifyCache :: (DependencyCache -> DependencyCache) -> DependencyM ()
+modifyCache f = rws $ \_ s -> case s of
+  DependencyState dc io -> let dc' = f dc in
+    dc' `seq` ((), DependencyState dc' io, mempty)
+
 checkNew :: DependencyM ()
 checkNew = do
   universe <- askUniverse
