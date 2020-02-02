@@ -112,33 +112,25 @@ dependenciesFor :: Identifier -> DependencyM [Identifier]
 dependenciesFor i = do
   universe <- askUniverse
   ds <- fromMaybe [] $ M.loopup i facts
-  return $ concat $ for ds $ \d -> filter (`matchExpr` d) $ universe
+  return $ concat $ for ds $ \d -> filter (`matchExpr` d) universe
 
 dependenciesForCache :: Identifier -> DependencyM [Identifier]
 dependenciesForCache i = do
   cache <- getCache
   return $ fromMaybe [] $ M.loopup i $ unDependencyCache cache
 
---------------------------------------------------------------------------------
-checkChangedPatterns :: DependencyM ()
-checkChangedPatterns = do
-    facts <- M.toList . dependencyFacts <$> State.get
-    forM_ facts $ \(id', deps) -> do
-        deps' <- foldM (go id') [] deps
-        State.modify $ \s -> s
-            {dependencyFacts = M.insert id' deps' $ dependencyFacts s}
-  where
-    go _   ds (IdentifierDependency i) = return $ IdentifierDependency i : ds
-    go id' ds (PatternDependency p ls) = do
-        universe <- ask
-        let ls' = S.fromList $ filter (`matchExpr` p) universe
-        if ls == ls'
-            then return $ PatternDependency p ls : ds
-            else do
-                tell [show id' ++ " is out-of-date because a pattern changed"]
-                markOod id'
-                return $ PatternDependency p ls' : ds
-
+checkChangedPattern :: DependencyM ()
+checkChangedPattern = do
+  universe <- askUniverse
+  forM_ universe $ \i -> do
+    df <- dependencyFor i
+    dc <- dependencyForCache i
+    if df == dc
+      then return dc
+      else do
+        tellLog $ show i ++ "is out-of-date because its pattern changed"
+        markOutOfDate i
+        modifyCache $ DependencyCache . M.insert i df . unDependencyCache
 
 --------------------------------------------------------------------------------
 bruteForce :: DependencyM ()
