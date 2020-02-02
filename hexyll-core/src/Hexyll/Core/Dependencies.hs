@@ -88,13 +88,12 @@ markOutOfDate i = rws $ \_ s -> case s of
 tellLog :: String -> DependencyM ()
 tellLog l = rws $ \_ s -> ((), s, singleton l)
 
-askUniverse :: DependencyM IdentifierUniverse
-askUniverse = rws $ \r s -> case r of
-  DependencyEnv _ iu -> (iu, s, mempty)
-
 askFacts :: DependencyM DependencyFacts
 askFacts = rws $ \r s -> case r of
   DependencyEnv df _ -> (df, s, mempty)
+
+askUniverse :: DependencyM IdentifierUniverse
+askUniverse = M.keys . unDependencyFacts <$> askFacts
 
 getCache :: DependencyM DependencyCache
 getCache = rws $ \_ s -> case s of
@@ -111,7 +110,7 @@ checkNew = do
 
 dependenciesFor :: Identifier -> DependencyM [Identifier]
 dependenciesFor i = do
-  universe <- M.keys <$> unDependencyFacts <$> askFacts
+  universe <- askUniverse
   ds <- fromMaybe [] $ M.loopup i facts
   return $ concat $ for ds $ \d -> filter (`matchExpr` d) $ universe
 
