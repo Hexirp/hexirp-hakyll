@@ -88,6 +88,10 @@ outOfDate' = do
   checkChangedPattern
   bruteForce
 
+getOutOfDate :: DependencyM DependencyOutOfDate
+getOutOfDate = rws $ \_ s -> case s of
+  DependencyState dc io -> (io, DependencyState dc io, mempty)
+
 markOutOfDate :: Identifier -> DependencyM ()
 markOutOfDate i = rws $ \_ s -> case s of
   DependencyState dc io -> let io' = S.insert i io in
@@ -159,7 +163,7 @@ bruteForce_1 []        _ = return ([], False)
 bruteForce_1 (iv : is) b = do
   (is', b') <- bruteForce is b
   deps <- dependenciesForCache iv
-  ood <- getDependencyOutOfDate
+  ood <- getOutOfDate
   case find (`S.member` ood) deps of
     Nothing ->
       return (iv : is', b')
