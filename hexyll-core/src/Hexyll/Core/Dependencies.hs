@@ -89,7 +89,7 @@ outOfDate' = do
 
 markOutOfDate :: Identifier -> DependencyM ()
 markOutOfDate i = rws $ \_ s -> case s of
-  DependencyState dc io -> let io' = S.insert i id in
+  DependencyState dc io -> let io' = S.insert i io in
     io' `seq` ((), DependencyState dc io', mempty)
 
 tellLog :: String -> DependencyM ()
