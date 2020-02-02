@@ -105,22 +105,12 @@ checkNew = do
       tellLog $ show id' ++ " is out-of-date because it is new"
       markOutOfDate i
 
-checkChangedPatterns :: DependencyM ()
-checkChangedPattern = do
-  cache <- getCache
-  forM_ (M.toList cache) $ \(ident, _) -> do
-
---------------------------------------------------------------------------------
 dependenciesFor :: Identifier -> DependencyM [Identifier]
-dependenciesFor id' = do
-    facts <- dependencyFacts <$> State.get
-    return $ concatMap dependenciesFor' $ fromMaybe [] $ M.lookup id' facts
-  where
-    dependenciesFor' (IdentifierDependency i) = [i]
-    dependenciesFor' (PatternDependency _ is) = S.toList is
+dependenciesFor i = do
+  facts <- askFacts
+  ds <- fromMaybe [] $ M.loopup i facts
+  return $ concat $ for ds $ \d -> filter (`matchExpr` d) $ M.keys facts
 
-
---------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 checkChangedPatterns :: DependencyM ()
 checkChangedPatterns = do
