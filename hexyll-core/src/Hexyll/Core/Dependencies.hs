@@ -110,7 +110,7 @@ checkNew :: DependencyM ()
 checkNew = do
   universe <- askUniverse
   cache <- getCache
-  forM_ universe $ \(i, _) ->
+  forM_ universe $ \i ->
     unless (i `M.member` unDependencyCache cache) $ do
       tellLog $ show id' ++ " is out-of-date because it is new"
       markOutOfDate i
