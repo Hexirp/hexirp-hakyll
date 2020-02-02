@@ -92,6 +92,10 @@ askUniverse :: DependencyM IdentifierUniverse
 askUniverse = rws $ \r s -> case r of
   DependencyEnv _ iu -> (iu, s, mempty)
 
+askFacts :: DependencyM DependencyFacts
+askFacts = rws $ \r s -> case r of
+  DependencyEnv df _ -> (df, s, mempty)
+
 getCache :: DependencyM DependencyCache
 getCache = rws $ \_ s -> case s of
   DependencyState dc io -> (dc, DependencyState dc io, mempty)
