@@ -111,6 +111,11 @@ dependenciesFor i = do
   ds <- fromMaybe [] $ M.loopup i facts
   return $ concat $ for ds $ \d -> filter (`matchExpr` d) $ M.keys facts
 
+dependenciesForCache :: Identifier -> DependencyM [Identifier]
+dependenciesForCache i = do
+  cache <- getCache
+  return $ fromMaybe [] $ M.loopup i $ unDependencyCache cache
+
 --------------------------------------------------------------------------------
 checkChangedPatterns :: DependencyM ()
 checkChangedPatterns = do
