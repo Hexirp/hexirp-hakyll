@@ -23,6 +23,7 @@ import qualified Data.Set                       as S
 import           Data.Typeable                  (Typeable)
 
 import Prelude
+import Data.Traversable (for)
 
 import Data.DList (DList, toList, singleton)
 
