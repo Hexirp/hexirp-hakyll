@@ -33,16 +33,17 @@ import Hexyll.Core.Identifier.Pattern
 
 -- | A dependency.
 newtype Dependency = Dependency { unDependency :: PatternExpr }
+  deriving (Eq, Show)
 
 -- | Dependency factors.
 newtype DependencyFacts = DependencyFacts
   { unDependencyFacts :: Map Identifier [Dependency] 
-  }
+  } deriving (Eq, Show)
 
 -- | Caches of dependency factors.
 newtype DependencyCache = DependencyCache
   { unDependencyCache :: Map Identifier [Identifier]
-  }
+  } deriving (Eq, Show)
 
 -- | A type of a list of known resources.
 type IdentifierUniverse = [Identifier]
