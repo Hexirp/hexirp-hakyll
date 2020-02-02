@@ -117,9 +117,10 @@ checkNew = do
 
 dependenciesFor :: Identifier -> DependencyM [Identifier]
 dependenciesFor i = do
+  facts <- askFacts
   universe <- askUniverse
-  ds <- fromMaybe [] $ M.lookup i facts
-  return $ concat $ for ds $ \d -> filter (`matchExpr` d) universe
+  return $ concat $ for (fromMaybe [] $ M.lookup i facts) $ \d ->
+    filter (`matchExpr` d) universe
 
 dependenciesForCache :: Identifier -> DependencyM [Identifier]
 dependenciesForCache i = do
