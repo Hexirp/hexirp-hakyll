@@ -111,13 +111,13 @@ checkNew = do
 dependenciesFor :: Identifier -> DependencyM [Identifier]
 dependenciesFor i = do
   universe <- askUniverse
-  ds <- fromMaybe [] $ M.loopup i facts
+  ds <- fromMaybe [] $ M.lookup i facts
   return $ concat $ for ds $ \d -> filter (`matchExpr` d) universe
 
 dependenciesForCache :: Identifier -> DependencyM [Identifier]
 dependenciesForCache i = do
   cache <- getCache
-  return $ fromMaybe [] $ M.loopup i $ unDependencyCache cache
+  return $ fromMaybe [] $ M.lookup i $ unDependencyCache cache
 
 checkChangedPattern :: DependencyM ()
 checkChangedPattern = do
