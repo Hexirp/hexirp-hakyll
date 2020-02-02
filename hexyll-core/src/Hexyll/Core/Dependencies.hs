@@ -81,6 +81,12 @@ type DependencyLog = DList String
 
 type DependencyM = RWS DependencyEnv DependencyLog DependencyState
 
+outOfDate' :: DependencyM ()
+outOfDate' = do
+  checkNew
+  checkChangedPattern
+  bruteForce
+
 markOutOfDate :: Identifier -> DependencyM ()
 markOutOfDate i = rws $ \_ s -> case s of
   DependencyState dc io -> let io' = S.insert i id in
