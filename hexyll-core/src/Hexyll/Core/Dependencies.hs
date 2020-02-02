@@ -125,12 +125,10 @@ checkChangedPattern = do
   forM_ universe $ \i -> do
     df <- dependencyFor i
     dc <- dependencyForCache i
-    if df == dc
-      then return dc
-      else do
-        tellLog $ show i ++ "is out-of-date because its pattern changed"
-        markOutOfDate i
-        modifyCache $ DependencyCache . M.insert i df . unDependencyCache
+    when (df /= dc) $ do
+      tellLog $ show i ++ "is out-of-date because its pattern changed"
+      markOutOfDate i
+      modifyCache $ DependencyCache . M.insert i df . unDependencyCache
 
 --------------------------------------------------------------------------------
 bruteForce :: DependencyM ()
