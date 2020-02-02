@@ -160,7 +160,7 @@ bruteForce_1 (iv : is) b = do
   (is', b') <- bruteForce is b
   deps <- dependenciesForCache iv
   ood <- getDependencyOutOfDate
-  case find (`S.menber` ood) deps of
+  case find (`S.member` ood) deps of
     Nothing ->
       return (iv : is', b')
     Just idep -> do
