@@ -88,7 +88,7 @@ outOfDate' = do
   checkChangedPattern
   bruteForce
 
-getOutOfDate :: DependencyM DependencyOutOfDate
+getOutOfDate :: DependencyM IdentifierOutOfDate
 getOutOfDate = rws $ \_ s -> case s of
   DependencyState dc io -> (io, DependencyState dc io, mempty)
 
