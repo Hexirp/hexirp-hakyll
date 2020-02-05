@@ -19,6 +19,7 @@ import           Data.Maybe ( fromMaybe )
 import qualified Data.Set   as S
 import           Data.Set   ( Set )
 
+import Control.Monad                ( forM_, when, unless )
 import Control.Monad.Trans.RWS.Lazy ( RWS, rws, runRWS )
 
 import Hexyll.Core.Identifier
