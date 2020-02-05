@@ -130,7 +130,7 @@ dependenciesFor i = do
   facts <- askFacts
   universe <- askUniverse
   return $ let ds = fromMaybe [] $ M.lookup i $ unDependencyFacts facts in
-    concat $ for ds $ \d -> filter (`matchExpr` d) universe
+    concat $ for ds $ \d -> filter (`matchExpr` unDependency d) universe
 
 dependenciesForCache :: Identifier -> DependencyM [Identifier]
 dependenciesForCache i = do
