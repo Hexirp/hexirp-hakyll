@@ -1,9 +1,5 @@
 --------------------------------------------------------------------------------
-module Hexyll.Core.Dependencies
-    ( Dependency (..)
-    , DependencyFacts
-    , outOfDate
-    ) where
+module Hexyll.Core.Dependencies where
 
 import Prelude
 
