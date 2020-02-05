@@ -7,11 +7,6 @@ module Hexyll.Core.Dependencies
 
 
 --------------------------------------------------------------------------------
-import           Control.Monad                  (foldM, forM_, unless, when)
-import           Control.Monad.Reader           (ask)
-import           Control.Monad.RWS              (RWS, runRWS)
-import qualified Control.Monad.State            as State
-import           Control.Monad.Writer           (tell)
 import           Data.Binary                    (Binary (..), getWord8,
                                                  putWord8)
 import           Data.List                      (find)
