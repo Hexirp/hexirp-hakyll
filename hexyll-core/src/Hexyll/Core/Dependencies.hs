@@ -30,6 +30,10 @@ instance Binary Dependency where
   put (Dependency x) = put x
   get = Dependency <$> get
 
+-- | @since 0.1.0.0
+instance NFData Dependency where
+  rnf (Dependency x) = rnf x
+
 -- | Dependency factors.
 newtype DependencyFacts = DependencyFacts
   { unDependencyFacts :: Map Identifier [Dependency] 
@@ -40,6 +44,10 @@ instance Binary DependencyFacts where
   put (DependencyFacts x) = put x
   get = DependencyFacts <$> get
 
+-- | @since 0.1.0.0
+instance NFData DependencyFacts where
+  rnf (DependencyFacts x) = rnf x
+
 -- | Caches of dependency factors.
 newtype DependencyCache = DependencyCache
   { unDependencyCache :: Map Identifier [Identifier]
@@ -49,6 +57,10 @@ newtype DependencyCache = DependencyCache
 instance Binary DependencyCache where
   put (DependencyCache x) = put x
   get = DependencyCache <$> get
+
+-- | @since 0.1.0.0
+instance NFData DependencyCache where
+  rnf (DependencyCache x) = rnf x
 
 -- | A type of a list of known resources.
 type IdentifierUniverse = [Identifier]
