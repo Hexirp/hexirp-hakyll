@@ -11,13 +11,13 @@ import Data.Binary      ( Binary (..), getWord8, putWord8 )
 import Data.Traversable ( for )
 import Data.Typeable    ( Typeable )
 
-import           Data.DList ( DList, toList, singleton )
-import           Data.List  ( find )
-import qualified Data.Map   as M
-import           Data.Map   ( Map )
-import           Data.Maybe ( fromMaybe )
-import qualified Data.Set   as S
-import           Data.Set   ( Set )
+import           Data.DList    ( DList, toList, singleton )
+import           Data.List     ( find )
+import qualified Data.Map as M
+import           Data.Map      ( Map )
+import           Data.Maybe    ( fromMaybe )
+import qualified Data.Set as S
+import           Data.Set      ( Set )
 
 import Control.Monad                ( forM_, when, unless )
 import Control.Monad.Trans.RWS.Lazy ( RWS, rws, runRWS )
