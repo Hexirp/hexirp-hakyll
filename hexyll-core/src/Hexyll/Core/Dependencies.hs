@@ -169,10 +169,10 @@ bruteForce_1 (iv : is) b = do
       return (iv : is', b')
     Just idep -> do
       tellLog $ concat $
-        [ show i
+        [ show iv
         , " is out-of-date because "
         , show idep
         , " is out-of-date"
         ]
-      markOutOfDate i
+      markOutOfDate iv
       return (is', True)
