@@ -5,24 +5,21 @@ module Hexyll.Core.Dependencies
     , outOfDate
     ) where
 
-
---------------------------------------------------------------------------------
-import           Data.Binary                    (Binary (..), getWord8,
-                                                 putWord8)
-import           Data.List                      (find)
-import           Data.Map                       (Map)
-import qualified Data.Map                       as M
-import           Data.Maybe                     (fromMaybe)
-import           Data.Set                       (Set)
-import qualified Data.Set                       as S
-import           Data.Typeable                  (Typeable)
-
 import Prelude
-import Data.Traversable (for)
 
-import Data.DList (DList, toList, singleton)
+import Data.Binary      ( Binary (..), getWord8, putWord8 )
+import Data.Traversable ( for )
+import Data.Typeable    ( Typeable )
 
-import Control.Monad.Trans.RWS.Lazy (RWS, rws, runRWS)
+import           Data.DList ( DList, toList, singleton )
+import           Data.List  ( find )
+import qualified Data.Map   as M
+import           Data.Map   ( Map )
+import           Data.Maybe ( fromMaybe )
+import qualified Data.Set   as S
+import           Data.Set   ( Set )
+
+import Control.Monad.Trans.RWS.Lazy ( RWS, rws, runRws )
 
 import Hexyll.Core.Identifier
 import Hexyll.Core.Identifier.Pattern
