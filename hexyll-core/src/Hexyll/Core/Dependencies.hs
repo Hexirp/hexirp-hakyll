@@ -161,7 +161,7 @@ bruteForce_0 is = do
 bruteForce_1 :: [Identifier] -> Bool -> DependencyM ([Identifier], Bool)
 bruteForce_1 []        _ = return ([], False)
 bruteForce_1 (iv : is) b = do
-  (is', b') <- bruteForce is b
+  (is', b') <- bruteForce_1 is b
   deps <- dependenciesForCache iv
   ood <- getOutOfDate
   case find (`S.member` ood) deps of
