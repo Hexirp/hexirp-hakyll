@@ -23,17 +23,32 @@ import Hexyll.Core.Identifier.Pattern
 
 -- | A dependency.
 newtype Dependency = Dependency { unDependency :: PatternExpr }
-  deriving (Eq, Show)
+  deriving (Eq, Show, Typeable)
+
+-- | @since 0.1.0.0
+instance Binary Dependency where
+  put (Dependency x) = put x
+  get = Dependency <$> get
 
 -- | Dependency factors.
 newtype DependencyFacts = DependencyFacts
   { unDependencyFacts :: Map Identifier [Dependency] 
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Typeable)
+
+-- | @since 0.1.0.0
+instance Binary DependencyFacts where
+  put (DependencyFacts x) = put x
+  get = DependencyFacts <$> get
 
 -- | Caches of dependency factors.
 newtype DependencyCache = DependencyCache
   { unDependencyCache :: Map Identifier [Identifier]
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Typeable)
+
+-- | @since 0.1.0.0
+instance Binary DependencyCache where
+  put (DependencyCache x) = put x
+  get = DependencyCache <$> get
 
 -- | A type of a list of known resources.
 type IdentifierUniverse = [Identifier]
@@ -58,13 +73,13 @@ outOfDate iu io df dc =
 data DependencyEnv = DependencyEnv
   { dependencyFacts :: DependencyFacts
   , identifierUniverse :: IdentifierUniverse
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Typeable)
 
 -- | A type of a state for 'outOfDate'.
 data DependencyState = DependencyState
   { dependencyCache     :: DependencyCache
   , identifierOutOfDate :: IdentifierOutOfDate
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Typeable)
 
 -- | A type of a log for 'outOfDate'.
 type DependencyLog = DList String
