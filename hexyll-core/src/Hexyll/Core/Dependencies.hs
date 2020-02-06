@@ -3,7 +3,7 @@ module Hexyll.Core.Dependencies where
 
 import Prelude
 
-import Data.Binary      ( Binary (..), getWord8, putWord8 )
+import Data.Binary      ( Binary (..) )
 import Data.Traversable ( for )
 import Data.Typeable    ( Typeable )
 
