@@ -74,19 +74,18 @@ type IdentifierOutOfDate = Set Identifier
 type CalculationLog = [String]
 
 outOfDate
-  :: IdentifierUniverse
-  -> IdentifierOutOfDate
+  :: IdentifierOutOfDate
   -> DependencyFacts
   -> DependencyCache
   -> (IdentifierOutOfDate, DependencyCache, CalculationLog)
-outOfDate iu io df dc =
-  case runRWS outOfDate' (DependencyEnv df iu) (DependencyState dc io) of
+outOfDate io df dc =
+  case runRWS outOfDate' (DependencyEnv df ()) (DependencyState dc io) of
     ((), DependencyState dc' io', dl) -> (io', dc', toList dl)
 
 -- | A type of an environment for 'outOfDate'.
 data DependencyEnv = DependencyEnv
   { dependencyFacts :: DependencyFacts
-  , identifierUniverse :: IdentifierUniverse
+  , identifierUniverse :: ()
   } deriving (Eq, Show, Typeable)
 
 -- | A type of a state for 'outOfDate'.
