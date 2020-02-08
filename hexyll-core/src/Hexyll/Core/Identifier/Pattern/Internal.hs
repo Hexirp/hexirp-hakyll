@@ -252,7 +252,7 @@ module Hexyll.Core.Identifier.Pattern.Internal where
 
   -- | @since 0.1.0.0
   instance IsString PatternConj where
-    fromString = toPatternConj . fromString
+    fromString = fromPatternToConj . fromString
 
   -- | @since 0.1.0.0
   instance Binary PatternConj where
@@ -294,7 +294,7 @@ module Hexyll.Core.Identifier.Pattern.Internal where
 
   -- | @since 0.1.0.0
   instance IsString PatternDisj where
-    fromString = toPatternDisj . fromString
+    fromString = fromPatternToDisj . fromString
 
   -- | @since 0.1.0.0
   instance Binary PatternDisj where
