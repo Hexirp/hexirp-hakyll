@@ -229,18 +229,6 @@ module Hexyll.Core.Identifier.Pattern.Internal where
   complement :: PatternExpr -> PatternExpr
   complement = PeComplement
 
-  -- | Convert a 'PatternExpr' to a 'PatternConj'.
-  --
-  -- @since 0.1.0.0
-  toPatternConj :: PatternExpr -> PatternConj
-  toPatternConj p = PatternConj [p]
-
-  -- | Convert a 'PatternExpr' to a 'PatternDisj'.
-  --
-  -- @since 0.1.0.0
-  toPatternDisj :: PatternExpr -> PatternDisj
-  toPatternDisj p = PatternDisj [p]
-
   -- | Match a 'Identifier' with a 'PatternExpr'.
   --
   -- @since 0.1.0.0
@@ -283,6 +271,12 @@ module Hexyll.Core.Identifier.Pattern.Internal where
   instance Monoid PatternConj where
     mempty = PatternConj mempty
 
+  -- | Convert a 'PatternExpr' to a 'PatternConj'.
+  --
+  -- @since 0.1.0.0
+  fromPatternToConj :: PatternExpr -> PatternConj
+  fromPatternToConj p = PatternConj [p]
+
   -- | Match a 'Identifier' with a 'PatternConj'.
   --
   -- @since 0.1.0.0
@@ -318,6 +312,12 @@ module Hexyll.Core.Identifier.Pattern.Internal where
   -- | @since 0.1.0.0
   instance Monoid PatternDisj where
     mempty = PatternDisj mempty
+
+  -- | Convert a 'PatternExpr' to a 'PatternDisj'.
+  --
+  -- @since 0.1.0.0
+  fromPatternToDisj :: PatternExpr -> PatternDisj
+  fromPatternToDisj p = PatternDisj [p]
 
   -- | Match a 'Identifier' with a 'PatternDisj'.
   --

@@ -33,18 +33,17 @@ module Hexyll.Core.Identifier.Pattern
   , -- ** Advanced Combinator
     fromIdentifier
   , fromList
-  , -- ** Converting
-    toPatternConj
-  , toPatternDisj
   , -- ** Matching
     matchExpr
   , -- * PatternConj
     PatternConj ( PatternConj )
   , unPatternConj
+  , fromPatternToConj
   , matchConj
   , -- * PatternDisj
     PatternDisj ( PatternDisj )
   , unPatternDisj
+  , fromPatternToDisj
   , matchDisj
   , -- * Pattern
     Pattern ( Pattern )
