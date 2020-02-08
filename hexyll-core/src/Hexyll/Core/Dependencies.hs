@@ -25,7 +25,7 @@ import Hexyll.Core.Identifier.Pattern
 
 -- | A dependency.
 newtype Dependency = Dependency { unDependency :: PatternExpr }
-  deriving (Eq, Show, Typeable)
+  deriving (Eq, Ord, Show, Typeable)
 
 -- | @since 0.1.0.0
 instance Binary Dependency where

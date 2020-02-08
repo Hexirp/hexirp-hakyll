@@ -35,7 +35,7 @@ module Hexyll.Core.Identifier.Pattern.Internal where
     = Glob Glob.Pattern
     | Regex String
     | Version (Maybe String)
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
 
   -- | @since 0.1.0.0
   instance IsString PrimPattern where
@@ -110,7 +110,7 @@ module Hexyll.Core.Identifier.Pattern.Internal where
     | PeNothing
     | PeOr PatternExpr PatternExpr
     | PeComplement PatternExpr
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
 
   -- | @since 0.1.0.0
   instance IsString PatternExpr where
@@ -260,7 +260,7 @@ module Hexyll.Core.Identifier.Pattern.Internal where
   --
   -- @since 0.1.0.0
   newtype PatternConj = PatternConj { unPatternConj :: [PatternExpr] }
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
 
   -- | @since 0.1.0.0
   instance IsString PatternConj where
@@ -296,7 +296,7 @@ module Hexyll.Core.Identifier.Pattern.Internal where
   --
   -- @since 0.1.0.0
   newtype PatternDisj = PatternDisj { unPatternDisj :: [PatternExpr] }
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
 
   -- | @since 0.1.0.0
   instance IsString PatternDisj where
