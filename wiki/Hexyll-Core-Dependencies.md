@@ -10,38 +10,45 @@
 -- | 依存
 newtype Dependency = Dependency PatternExpr
 -- | 依存関係
-newtype DependencyFacts = DependencyFacts (Map Identifier Dependency)
+newtype DependencyFacts = DependencyFacts (Map Identifier [Dependency])
 -- | 依存関係のキャッシュ
-newtype DependencyCache = DependencyCache (Map Identifier Identifier)
+newtype DependencyCache = DependencyCache (Map Identifier [Identifier])
 -- | 依存関係のログ
-newtype DependencyLog = DependencyLog (DList String)
+type CalculationLog = [String]
 
--- | 今与えられているリソース
-type IdentifierUniverse = [Identifier]
 -- | 更新が必要なリソース
 type IdentifierOutOfDate = Set Identifier
 
-outOfDate :: IdentifierUniverse -> IdentifierOutOfDate -> DependencyFacts -> DependencyCache -> (IdentifierOutOfDate -> DependencyCache -> DependencyLog -> r) -> r
+outOfDate
+  :: IdentifierOutOfDate
+  -> DependencyFacts
+  -> DependencyCache
+  -> (IdentifierOutOfDate, DependencyCache, CalculationLog)
 ```
 
-ここでキャッシュにはキャッシュした際のリソースのセットと、依存関係のマップの二種類あるが、前者は後者のキーと一致するため、一つのマップにまとめられる。
+環境には今分かっているリソースと依存関係の二種類あるが、前者は後者のマップのキーとなっているため、一つにまとめられる。
+
+キャッシュには、キャッシュした際のリソースのセットと依存関係のマップの二種類あるが、前者は後者のキーとなっているため、一つのマップにまとめられる。
+
+ポイントなのは依存はパターンで表されるためパターンが一致しても依存するリソースが同じとは限らないことである。
 
 ## 内部実装
 
 このようなモナドを使う。
 
 ```haskell
-data DependencyEnv = DependencyEnv
+newtype DependencyEnv = DependencyEnv
   { dependencyFacts :: DependencyFacts
-  , identifierUniverse :: IdentifierUniverse
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Typeable)
 
 data DependencyState = DependencyState
   { dependencyCache     :: DependencyCache
   , identifierOutOfDate :: IdentifierOutOfDate
-  } deriving (Eq, Show)
+  } deriving (Eq, Show, Typeable)
 
-type DependencyM = RWS DependencyEnv DependencyState DependencyLog
+type DependencyLog = DList String
+
+type DependencyM = RWS DependencyEnv DependencyLog DependencyState
 ```
 
 実行のフェーズは三つある。
