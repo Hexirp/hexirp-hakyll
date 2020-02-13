@@ -68,3 +68,7 @@ hexirp-hakyll は [hakyll](https://github.com/jaspervdj/hakyll) を `f2778e12046
 私は Hackage を通して使う以上、それでの記述に従うべきと考える。しかし、問題なのは Hackage で配布される package のソースコードで COPYRIGHT が含まれるかどうかだ。どういうライセンスが適用されるかは、最終的にソースコードに同梱されている説明によって決められるべきであるからだ。そして、 Hackage で配布される package には COPYRIGHT が含まれていた。
 
 そのため、私は pandoc のライセンスを GNU General Public License version 2 or later として解釈している。
+
+## サンプル
+
+リポジトリについているサンプルはありませんが、もともと自分で使うために作っているものなので、自分のブログで使用しています。
