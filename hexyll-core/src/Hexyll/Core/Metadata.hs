@@ -49,9 +49,9 @@ class Monad m => MonadMetadata m where
     getMetadata    :: Identifier -> m Metadata
     getMatches     :: Dependency -> m [Identifier]
 
-    getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
-    getAllMetadata pattern = do
-        matches' <- getMatches pattern
+    getAllMetadata :: Dependency -> m [(Identifier, Metadata)]
+    getAllMetadata dep = do
+        matches' <- getMatches dep
         forM matches' $ \id' -> do
             metadata <- getMetadata id'
             return (id', metadata)
@@ -77,9 +77,9 @@ getMetadataField' identifier key = do
 
 
 --------------------------------------------------------------------------------
-makePatternDependency :: MonadMetadata m => Pattern -> m Dependency
-makePatternDependency pattern = do
-    matches' <- getMatches pattern
+makePatternDependency :: MonadMetadata m => Dependency -> m Dependency
+makePatternDependency dep = do
+    matches' <- getMatches dep
     return $ PatternDependency (toNew pattern) (S.fromList matches')
 
 
