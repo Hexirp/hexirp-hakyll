@@ -47,7 +47,7 @@ lookupStringList key meta =
 --------------------------------------------------------------------------------
 class Monad m => MonadMetadata m where
     getMetadata    :: Identifier -> m Metadata
-    getMatches     :: Pattern -> m [Identifier]
+    getMatches     :: Dependency -> m [Identifier]
 
     getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
     getAllMetadata pattern = do
