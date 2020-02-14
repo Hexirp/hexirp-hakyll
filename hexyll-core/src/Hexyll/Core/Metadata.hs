@@ -77,7 +77,7 @@ getMetadataField' identifier key = do
 
 
 --------------------------------------------------------------------------------
-makePatternDependency :: MonadMetadata m => Dependency -> m (Set Identifier)
+makePatternDependency :: MonadMetadata m => Dependency -> m (S.Set Identifier)
 makePatternDependency dep = do
     matches' <- getMatches dep
     return $ S.fromList matches'
