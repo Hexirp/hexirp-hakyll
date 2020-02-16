@@ -147,7 +147,7 @@ getNewCache = rws $ \_ s -> case s of
   DependencyState dc io -> (dc, DependencyState dc io, mempty)
 
 lookupNewCache :: Identifier -> DependencyM (Maybe [Identifier])
-lookupOldCache i = do
+lookupNewCache i = do
   dc <- getNewCache
   return $ M.lookup i $ unDependencyCache dc
 
