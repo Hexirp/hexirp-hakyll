@@ -128,7 +128,7 @@ askFacts = rws $ \r s -> case r of
 lookupFacts :: Identifier -> DependencyM [Dependency]
 lookupFacts i = do
   facts <- askFacts
-  return $ fromMaybe [] $ M.lookup i $ unDependencyFacts
+  return $ fromMaybe [] $ M.lookup i $ unDependencyFacts facts
 
 askUniverse :: DependencyM IdentifierUniverse
 askUniverse = M.keys . unDependencyFacts <$> askFacts
