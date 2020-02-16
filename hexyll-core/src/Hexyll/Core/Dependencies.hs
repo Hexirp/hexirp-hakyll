@@ -181,7 +181,7 @@ dependenciesFor :: Identifier -> DependencyM [Identifier]
 dependenciesFor i = do
   universe <- askUniverse
   ds <- lookupFacts i
-  m_is <- lookupNewCache
+  m_is <- lookupNewCache i
   case m_is of
     Nothing -> return $ concat $ for ds $ \d ->
       filter (`matchExpr` unDependency d) universe
