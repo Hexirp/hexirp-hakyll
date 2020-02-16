@@ -172,10 +172,10 @@ check = do
         markOutOfDate i
       Just ois -> do
         nis <- dependenciesFor i
+        insertNewCache i nis
         when (ois /= nis) $ do
           tellLog $ show i ++ " is out-of-date because its pattern changed"
           markOutOfDate i
-          insertNewCache i nis
 
 dependenciesFor :: Identifier -> DependencyM [Identifier]
 dependenciesFor i = do
