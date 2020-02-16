@@ -135,7 +135,7 @@ askUniverse = M.keys . unDependencyFacts <$> askFacts
 
 askOldCache :: DependencyM DependencyCache
 askOldCache = rws $ \r s -> case r of
-  DependencyEnv df dc -> (dc, s, mempty)
+  DependencyEnv _ dc -> (dc, s, mempty)
 
 lookupOldCache :: Identifier -> DependencyM (Maybe [Identifier])
 lookupOldCache i = do
