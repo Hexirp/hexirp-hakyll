@@ -153,8 +153,11 @@ lookupNewCache i = do
 
 insertNewCache :: Identifier -> [Identifier] -> DependencyM ()
 insertNewCache i is = rws $ \_ s -> case s of
-  DependencyState dc io -> let dc' = M.insert i is dc in
-    dc' `seq` ((), DependencyState dc' io, mempty)
+  DependencyState dc io ->
+    let
+      dc' = DependencyCache $ M.insert i is $ unDependencyCache dc
+    in
+      dc' `seq` ((), DependencyState dc' io, mempty)
 
 check :: DependencyM ()
 check = do
