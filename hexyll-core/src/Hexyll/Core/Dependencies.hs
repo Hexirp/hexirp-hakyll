@@ -83,7 +83,7 @@ outOfDate io df dc =
     ((), DependencyState dc' io', dl) -> (io', dc', toList dl)
 
 -- | A type of an environment for 'outOfDate'.
-newtype DependencyEnv = DependencyEnv
+data DependencyEnv = DependencyEnv
   { dependencyFacts    :: DependencyFacts
   , dependencyOldCache :: DependencyCache
   } deriving (Eq, Show, Typeable)
