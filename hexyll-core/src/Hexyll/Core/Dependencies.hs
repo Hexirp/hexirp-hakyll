@@ -17,7 +17,7 @@ import           Data.Set      ( Set )
 
 import Control.DeepSeq ( NFData (..) )
 
-import Control.Monad                ( forM_, when, unless )
+import Control.Monad                ( forM_, when )
 import Control.Monad.Trans.RWS.Lazy ( RWS, rws, runRWS )
 
 import Hexyll.Core.Identifier
