@@ -124,7 +124,7 @@ tellLog l = rws $ \_ s -> ((), s, singleton l)
 
 askFacts :: DependencyM DependencyFacts
 askFacts = rws $ \r s -> case r of
-  DependencyEnv df -> (df, s, mempty)
+  DependencyEnv df _ -> (df, s, mempty)
 
 askUniverse :: DependencyM IdentifierUniverse
 askUniverse = M.keys . unDependencyFacts <$> askFacts
