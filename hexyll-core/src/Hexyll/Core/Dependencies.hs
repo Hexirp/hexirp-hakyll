@@ -162,8 +162,6 @@ insertNewCache i is = rws $ \_ s -> case s of
 check :: DependencyM ()
 check = do
   universe <- askUniverse
-  oldCache <- askOldCache
-  newCache <- getNewCache
   forM_ universe $ \i -> do
     m_ois <- lookupOldCache i
     case m_ois of
