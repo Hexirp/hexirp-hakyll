@@ -126,17 +126,39 @@ askFacts :: DependencyM DependencyFacts
 askFacts = rws $ \r s -> case r of
   DependencyEnv df _ -> (df, s, mempty)
 
+lookupFacts :: Identifier -> DependencyM (Maybe [Dependency])
+lookupFacts i = do
+  facts <- askFacts
+  return $ M.lookup i $ unDependencyFacts
+
 askUniverse :: DependencyM IdentifierUniverse
 askUniverse = M.keys . unDependencyFacts <$> askFacts
 
-getCache :: DependencyM DependencyCache
-getCache = rws $ \_ s -> case s of
+askOldCache :: DependencyM DependencyCache
+askOldCache = rws $ \r s -> case r of
+  DependencyEnv df dc -> (dc, s, mempty)
+
+getNewCache :: DependencyM DependencyCache
+getNewCache = rws $ \_ s -> case s of
   DependencyState dc io -> (dc, DependencyState dc io, mempty)
 
-modifyCache :: (DependencyCache -> DependencyCache) -> DependencyM ()
-modifyCache f = rws $ \_ s -> case s of
+modifyNewCache :: (DependencyCache -> DependencyCache) -> DependencyM ()
+modifyNewCache f = rws $ \_ s -> case s of
   DependencyState dc io -> let dc' = f dc in
     dc' `seq` ((), DependencyState dc' io, mempty)
+
+check :: DependencyM ()
+check = do
+  universe <- askUniverse
+  oldCache <- askOldCache
+  newCache <- getNewCache
+  forM_ universe $ \i -> do
+    md <- lookupFacts i
+    case md of
+      Nothing -> do
+        tellLog $ show i ++ " is out-of-date because it is new"
+        markOutOfDate i
+      Just d -> do
 
 checkNew :: DependencyM ()
 checkNew = do
