@@ -79,7 +79,12 @@ outOfDate
   -> DependencyCache
   -> (IdentifierOutOfDate, DependencyCache, CalculationLog)
 outOfDate io df dc =
-  case runRWS outOfDate' (DependencyEnv df dc) (DependencyState M.empty io) of
+  let
+    env :: DependencyEnv
+    env = DependencyEnv df dc
+    initState :: DependencyState
+    initState = DependencyState (DependencyCache M.empty) io
+  in case runRWS outOfDate' env initState of
     ((), DependencyState dc' io', dl) -> (io', dc', toList dl)
 
 -- | A type of an environment for 'outOfDate'.
