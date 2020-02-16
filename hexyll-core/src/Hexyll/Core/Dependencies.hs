@@ -106,8 +106,7 @@ type DependencyM = RWS DependencyEnv DependencyLog DependencyState
 
 outOfDate' :: DependencyM ()
 outOfDate' = do
-  checkNew
-  checkChangedPattern
+  check
   bruteForce
 
 getOutOfDate :: DependencyM IdentifierOutOfDate
@@ -126,10 +125,10 @@ askFacts :: DependencyM DependencyFacts
 askFacts = rws $ \r s -> case r of
   DependencyEnv df _ -> (df, s, mempty)
 
-lookupFacts :: Identifier -> DependencyM (Maybe [Dependency])
+lookupFacts :: Identifier -> DependencyM [Dependency]
 lookupFacts i = do
   facts <- askFacts
-  return $ M.lookup i $ unDependencyFacts
+  return $ fromMaybe [] $ M.lookup i $ unDependencyFacts
 
 askUniverse :: DependencyM IdentifierUniverse
 askUniverse = M.keys . unDependencyFacts <$> askFacts
@@ -138,13 +137,23 @@ askOldCache :: DependencyM DependencyCache
 askOldCache = rws $ \r s -> case r of
   DependencyEnv df dc -> (dc, s, mempty)
 
+lookupOldCache :: Identifier -> DependencyM (Maybe [Identifier])
+lookupOldCache i = do
+  dc <- askOldCache
+  return $ M.lookup i $ unDependencyCache dc
+
 getNewCache :: DependencyM DependencyCache
 getNewCache = rws $ \_ s -> case s of
   DependencyState dc io -> (dc, DependencyState dc io, mempty)
 
-modifyNewCache :: (DependencyCache -> DependencyCache) -> DependencyM ()
-modifyNewCache f = rws $ \_ s -> case s of
-  DependencyState dc io -> let dc' = f dc in
+lookupNewCache :: Identifier -> DependencyM (Maybe [Identifier])
+lookupOldCache i = do
+  dc <- getNewCache
+  return $ M.lookup i $ unDependencyCache dc
+
+insertNewCache :: Identifier -> [Identifier] -> DependencyM ()
+insertNewCache i is = rws $ \_ s -> case s of
+  DependencyState dc io -> let dc' = M.insert i is dc in
     dc' `seq` ((), DependencyState dc' io, mempty)
 
 check :: DependencyM ()
@@ -153,44 +162,27 @@ check = do
   oldCache <- askOldCache
   newCache <- getNewCache
   forM_ universe $ \i -> do
-    md <- lookupFacts i
-    case md of
+    m_ois <- lookupOldCache i
+    case m_ois of
       Nothing -> do
         tellLog $ show i ++ " is out-of-date because it is new"
         markOutOfDate i
-      Just d -> do
-
-checkNew :: DependencyM ()
-checkNew = do
-  universe <- askUniverse
-  cache <- getCache
-  forM_ universe $ \i ->
-    unless (i `M.member` unDependencyCache cache) $ do
-      tellLog $ show i ++ " is out-of-date because it is new"
-      markOutOfDate i
+      Just ois -> do
+        nis <- dependenciesFor i
+        when (ois /= nis) $ do
+          tellLog $ show i ++ " is out-of-date because its pattern changed"
+          markOutOfDate i
+          insertNewCache i nis
 
 dependenciesFor :: Identifier -> DependencyM [Identifier]
 dependenciesFor i = do
-  facts <- askFacts
   universe <- askUniverse
-  return $ let ds = fromMaybe [] $ M.lookup i $ unDependencyFacts facts in
-    concat $ for ds $ \d -> filter (`matchExpr` unDependency d) universe
-
-dependenciesForCache :: Identifier -> DependencyM [Identifier]
-dependenciesForCache i = do
-  cache <- getCache
-  return $ fromMaybe [] $ M.lookup i $ unDependencyCache cache
-
-checkChangedPattern :: DependencyM ()
-checkChangedPattern = do
-  universe <- askUniverse
-  forM_ universe $ \i -> do
-    df <- dependenciesFor i
-    dc <- dependenciesForCache i
-    when (df /= dc) $ do
-      tellLog $ show i ++ "is out-of-date because its pattern changed"
-      markOutOfDate i
-      modifyCache $ DependencyCache . M.insert i df . unDependencyCache
+  ds <- lookupFacts i
+  m_is <- lookupNewCache
+  case m_is of
+    Nothing -> return $ concat $ for ds $ \d ->
+      filter (`matchExpr` unDependency d) universe
+    Just is -> return is
 
 bruteForce :: DependencyM ()
 bruteForce = do
