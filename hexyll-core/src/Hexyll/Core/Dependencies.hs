@@ -38,7 +38,7 @@ instance NFData Dependency where
 
 -- | Dependency factors.
 newtype DependencyFacts = DependencyFacts
-  { unDependencyFacts :: Map Identifier [Dependency] 
+  { unDependencyFacts :: Map Identifier [Dependency]
   } deriving (Eq, Show, Typeable)
 
 -- | @since 0.1.0.0
@@ -52,7 +52,7 @@ instance NFData DependencyFacts where
 
 -- | Caches of dependency factors.
 newtype DependencyCache = DependencyCache
-  { unDependencyCache :: Map Identifier [Identifier]
+  { unDependencyCache :: Map Identifier (Set Identifier)
   } deriving (Eq, Show, Typeable)
 
 -- | @since 0.1.0.0
