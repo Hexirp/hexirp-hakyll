@@ -188,7 +188,8 @@ dependenciesFor i = do
 bruteForce :: DependencyM ()
 bruteForce = do
   universe <- askUniverse
-  bruteForce_0 universe
+  ood <- getOutOfDate
+  bruteForce_0 $ filter (`S.notMember` ood) universe
 
 bruteForce_0 :: [Identifier] -> DependencyM ()
 bruteForce_0 is = do
