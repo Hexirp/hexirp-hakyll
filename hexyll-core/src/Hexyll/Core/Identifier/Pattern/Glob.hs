@@ -13,6 +13,8 @@ module Hexyll.Core.Identifier.Pattern.Glob where
 
   import Prelude
 
+  import Data.Function (on)
+
   import Control.DeepSeq (NFData (..))
   import Data.String     (IsString (..))
   import Data.Binary     (Binary (..))
@@ -24,6 +26,10 @@ module Hexyll.Core.Identifier.Pattern.Glob where
   -- @since 0.1.0.0
   data Pattern = Pattern { unPattern :: Glob.Pattern }
     deriving (Eq, Show)
+
+  -- | @since 0.1.0.0
+  instance Ord Pattern where
+    compare (Pattern x) (Pattern y) = (compare `on` Glob.decompile) x y
 
   -- | @since 0.1.0.0
   instance IsString Pattern where
