@@ -47,11 +47,11 @@ lookupStringList key meta =
 --------------------------------------------------------------------------------
 class Monad m => MonadMetadata m where
     getMetadata    :: Identifier -> m Metadata
-    getMatches     :: Dependency -> m [Identifier]
+    getMatches     :: Pattern -> m [Identifier]
 
-    getAllMetadata :: Dependency -> m [(Identifier, Metadata)]
-    getAllMetadata dep = do
-        matches' <- getMatches dep
+    getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
+    getAllMetadata pattern = do
+        matches' <- getMatches pattern
         forM matches' $ \id' -> do
             metadata <- getMetadata id'
             return (id', metadata)
@@ -77,10 +77,10 @@ getMetadataField' identifier key = do
 
 
 --------------------------------------------------------------------------------
-makePatternDependency :: MonadMetadata m => Dependency -> m (S.Set Identifier)
-makePatternDependency dep = do
-    matches' <- getMatches dep
-    return $ S.fromList matches'
+makePatternDependency :: MonadMetadata m => Pattern -> m Dependency
+makePatternDependency pattern = do
+    matches' <- getMatches pattern
+    return $ PatternDependency (toNew pattern) (S.fromList matches')
 
 
 --------------------------------------------------------------------------------
