@@ -49,12 +49,13 @@ instance Binary Metadata where
 
 --------------------------------------------------------------------------------
 lookupString :: String -> Metadata -> Maybe String
-lookupString key meta = HMS.lookup (T.pack key) meta >>= Yaml.toString
+lookupString key (Metadata meta) =
+  HMS.lookup (T.pack key) meta >>= Yaml.toString
 
 
 --------------------------------------------------------------------------------
 lookupStringList :: String -> Metadata -> Maybe [String]
-lookupStringList key meta =
+lookupStringList key (Metadata meta) =
     HMS.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
 
 
