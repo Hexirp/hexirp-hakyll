@@ -96,7 +96,7 @@ module Data.Yaml.Hexyll
       String s -> do
         putWord8 2
         put s
-      Numver n -> do
+      Number n -> do
         putWord8 3
         put n
       Bool b -> do
