@@ -37,6 +37,15 @@ newtype Metadata = Metadata
   { unMetadata :: Yaml.Object
   } deriving ( Eq, Show, Typeable )
 
+instance Binary Metadata where
+  put (Metadata x) = put $ Yaml.BinaryValue $ Yaml.Object x
+  get = do
+    Yaml.BinaryValue x' <- get
+    case x' of
+      Yaml.Object x ->
+        return x
+      _ ->
+        error "Data.Binary.get: Invalid Metadata"
 
 --------------------------------------------------------------------------------
 lookupString :: String -> Metadata -> Maybe String
@@ -86,18 +95,5 @@ makePatternDependency :: MonadMetadata m => Pattern -> m Dependency
 makePatternDependency pattern = do
     matches' <- getMatches pattern
     return $ PatternDependency (toNew pattern) (S.fromList matches')
-
-
---------------------------------------------------------------------------------
--- | Newtype wrapper for serialization.
-newtype BinaryMetadata = BinaryMetadata
-    {unBinaryMetadata :: Metadata}
-
-
-instance Binary BinaryMetadata where
-    put (BinaryMetadata obj) = put (BinaryYaml $ Yaml.Object obj)
-    get = do
-        BinaryYaml (Yaml.Object obj) <- get
-        return $ BinaryMetadata obj
 
 
