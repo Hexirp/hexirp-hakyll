@@ -28,7 +28,7 @@ import qualified Data.Yaml.Hexyll                      as Yaml
 import Data.Typeable ( Typeable )
 
 import Hexyll.Core.Identifier
-import Hexyll.Core.Identifier.OldPattern
+import Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 import Hexyll.Core.Dependencies
 
 
@@ -59,17 +59,21 @@ lookupStringList key (Metadata meta) =
     HMS.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
 
 
---------------------------------------------------------------------------------
-class Monad m => MonadMetadata m where
-    getMetadata    :: Identifier -> m Metadata
-    getMatches     :: Pattern -> m [Identifier]
+data Pattern = Pattern
+  { unPattern :: PatternExpr
+  } deriving ( Eq, Ord, Show, Typeable )
 
-    getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
-    getAllMetadata pattern = do
-        matches' <- getMatches pattern
-        forM matches' $ \id' -> do
-            metadata <- getMetadata id'
-            return (id', metadata)
+class Monad m => MonadMetadata m where
+
+  getMetadata :: Identifier -> m Metadata
+  getMatches  :: Pattern -> m [Identifier]
+
+  getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
+  getAllMetadata p = do
+    is <- getMatches p
+    forM is $ \i -> do
+      m <- getMetadata i
+      return (i, m)
 
 
 --------------------------------------------------------------------------------
