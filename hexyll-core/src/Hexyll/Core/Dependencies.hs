@@ -8,6 +8,6 @@ module Hexyll.Core.Dependencies
   , outOfDate
   ) where
 
-import Prelude ()
+  import Prelude ()
 
-import Hexyll.Core.Dependencies.Internal
+  import Hexyll.Core.Dependencies.Internal
