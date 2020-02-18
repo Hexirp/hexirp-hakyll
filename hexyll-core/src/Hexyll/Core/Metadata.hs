@@ -30,7 +30,9 @@ import           Hexyll.Core.Identifier.OldPattern
 
 
 --------------------------------------------------------------------------------
-type Metadata = Yaml.Object
+newtype Metadata = Metadata
+  { unMetadata :: Yaml.Object
+  } deriving ( Eq, Ord, Show, Typeable )
 
 
 --------------------------------------------------------------------------------
