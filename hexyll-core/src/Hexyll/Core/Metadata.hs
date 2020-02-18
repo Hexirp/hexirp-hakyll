@@ -35,7 +35,7 @@ import Hexyll.Core.Dependencies
 --------------------------------------------------------------------------------
 newtype Metadata = Metadata
   { unMetadata :: Yaml.Object
-  } deriving ( Eq, Ord, Show, Typeable )
+  } deriving ( Eq, Show, Typeable )
 
 
 --------------------------------------------------------------------------------
