@@ -43,7 +43,7 @@ instance Binary Metadata where
     Yaml.BinaryValue x' <- get
     case x' of
       Yaml.Object x ->
-        return x
+        return $ Metadata x
       _ ->
         error "Data.Binary.get: Invalid Metadata"
 
