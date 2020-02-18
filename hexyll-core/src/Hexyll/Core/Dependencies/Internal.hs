@@ -2,9 +2,9 @@ module Hexyll.Core.Dependencies.Internal where
 
 import Prelude
 
-import Data.Binary      ( Binary (..) )
-import Data.Traversable ( for )
-import Data.Typeable    ( Typeable )
+import Control.DeepSeq ( NFData (..) )
+import Data.Binary     ( Binary (..) )
+import Data.Typeable   ( Typeable )
 
 import           Data.DList    ( DList, toList, singleton )
 import           Data.List     ( find )
@@ -14,9 +14,9 @@ import           Data.Maybe    ( fromMaybe )
 import qualified Data.Set as S
 import           Data.Set      ( Set )
 
-import Control.DeepSeq ( NFData (..) )
+import Control.Monad    ( forM_, when )
+import Data.Traversable ( for )
 
-import Control.Monad                ( forM_, when )
 import Control.Monad.Trans.RWS.Lazy ( RWS, rws, runRWS )
 
 import Hexyll.Core.Identifier
