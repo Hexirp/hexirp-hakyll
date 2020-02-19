@@ -48,7 +48,8 @@ instance Binary Dependency where
 instance NFData Dependency where
   rnf (Dependency x) = rnf x
 
--- | A type of dependency factors.
+-- | A type of dependency factors. This keys is resources and this values is
+-- dependencies.
 --
 -- @since 0.1.0.0
 newtype DependencyFacts = DependencyFacts
@@ -277,7 +278,7 @@ dependenciesFor i = do
 
 -- | Calculate out-of-dated resources by brute force.
 --
--- This function has an rule:
+-- This function has a rule:
 --
 -- * Resources that depend on the resource to be updated should be updated.
 --
