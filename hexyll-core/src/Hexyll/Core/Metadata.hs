@@ -3,18 +3,15 @@ module Hexyll.Core.Metadata where
 
 
 --------------------------------------------------------------------------------
-import           Control.Arrow                  (second)
-import           Control.Monad                  (forM)
-import           Data.Binary                    (Binary (..), getWord8,
-                                                 putWord8, Get)
-import qualified Data.HashMap.Strict            as HMS
-import qualified Data.Set                       as S
-import qualified Data.Text                      as T
-import qualified Data.Vector                    as V
-import qualified Data.Yaml                             as Yaml
-import qualified Data.Yaml.Hexyll                      as Yaml
-
+import Data.Binary   ( Binary (..) )
 import Data.Typeable ( Typeable )
+
+import qualified Data.HashMap.Strict as HM
+import qualified Data.Text           as T
+import qualified Data.Yaml           as Yaml
+import qualified Data.Yaml.Hexyll    as Yaml
+
+import Control.Monad ( forM )
 
 import Hexyll.Core.Identifier
 import Hexyll.Core.Identifier.Pattern hiding ( Pattern )
@@ -39,13 +36,13 @@ instance Binary Metadata where
 --------------------------------------------------------------------------------
 lookupString :: String -> Metadata -> Maybe String
 lookupString key (Metadata meta) =
-  HMS.lookup (T.pack key) meta >>= Yaml.toString
+  HM.lookup (T.pack key) meta >>= Yaml.toString
 
 
 --------------------------------------------------------------------------------
 lookupStringList :: String -> Metadata -> Maybe [String]
 lookupStringList key (Metadata meta) =
-    HMS.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
+    HM.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
 
 
 data Pattern = Pattern
