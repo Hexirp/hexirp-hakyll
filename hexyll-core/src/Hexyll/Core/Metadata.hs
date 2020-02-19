@@ -38,10 +38,10 @@ instance Binary Metadata where
         error "Data.Binary.get: Invalid Metadata"
 
 instance Yaml.ToJSON Metadata where
-  toJSON (Metadata x) = toJSON x
+  toJSON (Metadata x) = Yaml.toJSON x
 
 instance Yaml.FromJSON Metadata where
-  parseJSON v = Metadata <$> parseJSON v
+  parseJSON v = Metadata <$> Yaml.parseJSON v
 
 --------------------------------------------------------------------------------
 lookupString :: String -> Metadata -> Maybe String
