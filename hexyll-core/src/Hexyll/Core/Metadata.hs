@@ -21,6 +21,12 @@ newtype Metadata = Metadata
   { unMetadata :: Yaml.Object
   } deriving ( Eq, Show, Typeable )
 
+instance Semigroup Metadata where
+  Metadata x <> Metadata y = Metadata (x <> y)
+
+instance Monoid Metadata where
+  mempty = Metadata mempty
+
 instance Binary Metadata where
   put (Metadata x) = put $ Yaml.BinaryValue $ Yaml.Object x
   get = do
@@ -30,6 +36,12 @@ instance Binary Metadata where
         return $ Metadata x
       _ ->
         error "Data.Binary.get: Invalid Metadata"
+
+instance Yaml.ToJSON Metadata where
+  toJSON (Metadata x) = toJSON
+
+instance Yaml.FromJSON Metadata where
+  parseJSON v = Metadata <$> parseJSON v
 
 --------------------------------------------------------------------------------
 lookupString :: String -> Metadata -> Maybe String
