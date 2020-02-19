@@ -15,8 +15,6 @@ import Control.Monad ( forM )
 
 import Hexyll.Core.Identifier
 import Hexyll.Core.Identifier.Pattern hiding ( Pattern )
-import Hexyll.Core.Dependencies
-
 
 --------------------------------------------------------------------------------
 newtype Metadata = Metadata
