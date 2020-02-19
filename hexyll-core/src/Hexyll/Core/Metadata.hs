@@ -1,16 +1,5 @@
 --------------------------------------------------------------------------------
-module Hexyll.Core.Metadata
-    ( Metadata
-    , lookupString
-    , lookupStringList
-
-    , MonadMetadata (..)
-    , getMetadataField
-    , getMetadataField'
-    , makePatternDependency
-
-    , BinaryMetadata (..)
-    ) where
+module Hexyll.Core.Metadata where
 
 
 --------------------------------------------------------------------------------
