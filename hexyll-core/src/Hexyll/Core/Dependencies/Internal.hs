@@ -150,27 +150,6 @@ outOfDate' = do
   check
   bruteForce
 
--- | Get an 'IdentifierOutOfDate' on 'DependencyM'.
---
--- @since 0.1.0.0
-getOutOfDate :: DependencyM IdentifierOutOfDate
-getOutOfDate = rws $ \_ s -> case s of
-  DependencyState dc io -> (io, DependencyState dc io, mempty)
-
--- | Mark an identifier as out-of-date on 'DependencyM'.
---
--- @since 0.1.0.0
-markOutOfDate :: Identifier -> DependencyM ()
-markOutOfDate i = rws $ \_ s -> case s of
-  DependencyState dc io -> let io' = S.insert i io in
-    io' `seq` ((), DependencyState dc io', mempty)
-
--- | Tell a string to the log on 'DependencyM'.
---
--- @since 0.1.0.0
-tellLog :: String -> DependencyM ()
-tellLog l = rws $ \_ s -> ((), s, singleton l)
-
 -- | Ask the 'DependencyFacts' on 'DependencyM'.
 --
 -- @since 0.1.0.0
@@ -236,6 +215,27 @@ insertNewCache i is = rws $ \_ s -> case s of
       dc' = DependencyCache $ M.insert i is $ unDependencyCache dc
     in
       dc' `seq` ((), DependencyState dc' io, mempty)
+
+-- | Get an 'IdentifierOutOfDate' on 'DependencyM'.
+--
+-- @since 0.1.0.0
+getOutOfDate :: DependencyM IdentifierOutOfDate
+getOutOfDate = rws $ \_ s -> case s of
+  DependencyState dc io -> (io, DependencyState dc io, mempty)
+
+-- | Mark an identifier as out-of-date on 'DependencyM'.
+--
+-- @since 0.1.0.0
+markOutOfDate :: Identifier -> DependencyM ()
+markOutOfDate i = rws $ \_ s -> case s of
+  DependencyState dc io -> let io' = S.insert i io in
+    io' `seq` ((), DependencyState dc io', mempty)
+
+-- | Tell a string to the log on 'DependencyM'.
+--
+-- @since 0.1.0.0
+tellLog :: String -> DependencyM ()
+tellLog l = rws $ \_ s -> ((), s, singleton l)
 
 -- | Check if it should be updated.
 --
