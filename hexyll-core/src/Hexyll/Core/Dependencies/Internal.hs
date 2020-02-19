@@ -67,6 +67,9 @@ module Hexyll.Core.Dependencies.Internal where
 
   -- | A type of caches of dependency factors.
   --
+  -- This can be viewed as an adjacency list representation of a directed
+  -- graph.
+  --
   -- @since 0.1.0.0
   newtype DependencyCache = DependencyCache
     { unDependencyCache :: Map Identifier [Identifier]
@@ -97,6 +100,26 @@ module Hexyll.Core.Dependencies.Internal where
   type CalculationLog = [String]
 
   -- | Calculate which resources need updating.
+  --
+  -- @
+  --   (io', dc', cl) = outOfDate io df dc
+  -- @
+  --
+  -- @io@ is a set of marked resources. If no resources are marked from the
+  -- start, give an empty set.
+  --
+  -- @df@ is a dependency map.
+  --
+  -- @dc@ is a dependency cache. If there is no cache, give an empty map.
+  -- It is needed to identify resources that do not need to be updated.
+  --
+  -- @io'@ is a set of resources to be updated. It is the most important
+  -- calculation result.
+  --
+  -- @dc'@ is a new dependency cache. It is needed to identify resources that
+  -- do not need to be updated.
+  --
+  -- @cl@ is a log of calculation. It is just a list of 'String'.
   --
   -- @since 0.1.0.0
   outOfDate
