@@ -38,7 +38,7 @@ instance Binary Metadata where
         error "Data.Binary.get: Invalid Metadata"
 
 instance Yaml.ToJSON Metadata where
-  toJSON (Metadata x) = toJSON
+  toJSON (Metadata x) = toJSON x
 
 instance Yaml.FromJSON Metadata where
   parseJSON v = Metadata <$> parseJSON v
