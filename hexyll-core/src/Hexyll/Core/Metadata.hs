@@ -95,10 +95,3 @@ getMetadataField' identifier key = do
             "Item " ++ show identifier ++ " has no metadata field " ++ show key
 
 
---------------------------------------------------------------------------------
-makePatternDependency :: MonadMetadata m => Pattern -> m Dependency
-makePatternDependency pattern = do
-    matches' <- getMatches pattern
-    return $ PatternDependency (toNew pattern) (S.fromList matches')
-
-
