@@ -23,9 +23,10 @@ import           Data.Typeable
 import           Hexyll.Core.Compiler.Internal
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import           Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.Store              (Store)
 import qualified Hexyll.Core.Store              as Store
 
@@ -97,6 +98,13 @@ loadSnapshotBody :: (Binary a, Typeable a)
 loadSnapshotBody id' snapshot = fmap itemBody $ loadSnapshot id' snapshot
 
 
+data Pattern = Pattern
+  { unPattern :: PatternExpr
+  } deriving ( Eq, Ord, Show, Typeable )
+
+match :: Identifier -> Pattern -> Bool
+match i (Pattern p) = matchExpr i p
+
 --------------------------------------------------------------------------------
 -- | This function allows you to 'load' a dynamic list of items
 loadAll :: (Binary a, Typeable a) => Pattern -> Compiler [Item a]
@@ -107,8 +115,8 @@ loadAll pattern = loadAllSnapshots pattern final
 -- | Load a specific snapshot for each of dynamic list of items
 loadAllSnapshots :: (Binary a, Typeable a)
                  => Pattern -> Snapshot -> Compiler [Item a]
-loadAllSnapshots pattern snapshot = do
-    matching <- getMatches pattern
+loadAllSnapshots (Pattern pattern) snapshot = do
+    matching <- getMatches $ Meta.Pattern pattern
     mapM (\i -> loadSnapshot i snapshot) matching
 
 
