@@ -22,7 +22,7 @@ resourceMetadata p r
     | otherwise                = do
         -- TODO keep time in md cache
         load p r
-        Store.Found (BinaryMetadata md) <- Store.get (providerStore p)
+        Store.Found md <- Store.get (providerStore p)
             [name, toFilePath r, "metadata"]
         return md
 
@@ -49,7 +49,7 @@ load p r = do
     mmof <- Store.isMember store mdk
     unless mmof $ do
         (md, body) <- loadMetadata p r
-        Store.set store mdk (BinaryMetadata md)
+        Store.set store mdk md
         Store.set store bk  body
   where
     store = providerStore p

@@ -1,60 +1,75 @@
 --------------------------------------------------------------------------------
-module Hexyll.Core.Metadata
-    ( Metadata
-    , lookupString
-    , lookupStringList
-
-    , MonadMetadata (..)
-    , getMetadataField
-    , getMetadataField'
-    , makePatternDependency
-
-    , BinaryMetadata (..)
-    ) where
+module Hexyll.Core.Metadata where
 
 
 --------------------------------------------------------------------------------
-import           Control.Arrow                  (second)
-import           Control.Monad                  (forM)
-import           Data.Binary                    (Binary (..), getWord8,
-                                                 putWord8, Get)
-import qualified Data.HashMap.Strict            as HMS
-import qualified Data.Set                       as S
-import qualified Data.Text                      as T
-import qualified Data.Vector                    as V
-import qualified Data.Yaml                             as Yaml
-import qualified Data.Yaml.Hexyll                      as Yaml
-import           Hexyll.Core.Dependencies
-import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import Data.Binary   ( Binary (..) )
+import Data.Typeable ( Typeable )
 
+import qualified Data.HashMap.Strict as HM
+import qualified Data.Text           as T
+import qualified Data.Yaml           as Yaml
+import qualified Data.Yaml.Hexyll    as Yaml
+
+import Control.Monad ( forM )
+
+import Hexyll.Core.Identifier
+import Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 
 --------------------------------------------------------------------------------
-type Metadata = Yaml.Object
+newtype Metadata = Metadata
+  { unMetadata :: Yaml.Object
+  } deriving ( Eq, Show, Typeable )
 
+instance Semigroup Metadata where
+  Metadata x <> Metadata y = Metadata (x <> y)
+
+instance Monoid Metadata where
+  mempty = Metadata mempty
+
+instance Binary Metadata where
+  put (Metadata x) = put $ Yaml.BinaryValue $ Yaml.Object x
+  get = do
+    Yaml.BinaryValue x' <- get
+    case x' of
+      Yaml.Object x ->
+        return $ Metadata x
+      _ ->
+        error "Data.Binary.get: Invalid Metadata"
+
+instance Yaml.ToJSON Metadata where
+  toJSON (Metadata x) = Yaml.toJSON x
+
+instance Yaml.FromJSON Metadata where
+  parseJSON v = Metadata <$> Yaml.parseJSON v
 
 --------------------------------------------------------------------------------
 lookupString :: String -> Metadata -> Maybe String
-lookupString key meta = HMS.lookup (T.pack key) meta >>= Yaml.toString
+lookupString key (Metadata meta) =
+  HM.lookup (T.pack key) meta >>= Yaml.toString
 
 
 --------------------------------------------------------------------------------
 lookupStringList :: String -> Metadata -> Maybe [String]
-lookupStringList key meta =
-    HMS.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
+lookupStringList key (Metadata meta) =
+    HM.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
 
 
---------------------------------------------------------------------------------
+data Pattern = Pattern
+  { unPattern :: PatternExpr
+  } deriving ( Eq, Ord, Show, Typeable )
+
 class Monad m => MonadMetadata m where
-    getMetadata    :: Identifier -> m Metadata
-    getMatches     :: Pattern -> m [Identifier]
 
-    getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
-    getAllMetadata pattern = do
-        matches' <- getMatches pattern
-        forM matches' $ \id' -> do
-            metadata <- getMetadata id'
-            return (id', metadata)
+  getMetadata :: Identifier -> m Metadata
+  getMatches  :: Pattern -> m [Identifier]
+
+  getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
+  getAllMetadata p = do
+    is <- getMatches p
+    forM is $ \i -> do
+      m <- getMetadata i
+      return (i, m)
 
 
 --------------------------------------------------------------------------------
@@ -76,64 +91,3 @@ getMetadataField' identifier key = do
             "Item " ++ show identifier ++ " has no metadata field " ++ show key
 
 
---------------------------------------------------------------------------------
-makePatternDependency :: MonadMetadata m => Pattern -> m Dependency
-makePatternDependency pattern = do
-    matches' <- getMatches pattern
-    return $ PatternDependency (toNew pattern) (S.fromList matches')
-
-
---------------------------------------------------------------------------------
--- | Newtype wrapper for serialization.
-newtype BinaryMetadata = BinaryMetadata
-    {unBinaryMetadata :: Metadata}
-
-
-instance Binary BinaryMetadata where
-    put (BinaryMetadata obj) = put (BinaryYaml $ Yaml.Object obj)
-    get = do
-        BinaryYaml (Yaml.Object obj) <- get
-        return $ BinaryMetadata obj
-
-
---------------------------------------------------------------------------------
-newtype BinaryYaml = BinaryYaml {unBinaryYaml :: Yaml.Value}
-
-
---------------------------------------------------------------------------------
-instance Binary BinaryYaml where
-    put (BinaryYaml yaml) = case yaml of
-        Yaml.Object obj -> do
-            putWord8 0
-            let list :: [(T.Text, BinaryYaml)]
-                list = map (second BinaryYaml) $ HMS.toList obj
-            put list
-
-        Yaml.Array arr -> do
-            putWord8 1
-            let list = map BinaryYaml (V.toList arr) :: [BinaryYaml]
-            put list
-
-        Yaml.String s -> putWord8 2 >> put s
-        Yaml.Number n -> putWord8 3 >> put n
-        Yaml.Bool   b -> putWord8 4 >> put b
-        Yaml.Null     -> putWord8 5
-
-    get = do
-        tag <- getWord8
-        case tag of
-            0 -> do
-                list <- get :: Get [(T.Text, BinaryYaml)]
-                return $ BinaryYaml $ Yaml.Object $
-                    HMS.fromList $ map (second unBinaryYaml) list
-
-            1 -> do
-                list <- get :: Get [BinaryYaml]
-                return $ BinaryYaml $
-                    Yaml.Array $ V.fromList $ map unBinaryYaml list
-
-            2 -> BinaryYaml . Yaml.String <$> get
-            3 -> BinaryYaml . Yaml.Number <$> get
-            4 -> BinaryYaml . Yaml.Bool   <$> get
-            5 -> return $ BinaryYaml Yaml.Null
-            _ -> fail "Data.Binary.get: Invalid Binary Metadata"

@@ -6,18 +6,24 @@
 -- Stability:   unstable
 -- Portability: portable
 --
--- This module includes functions about "Data.Yaml".
+-- This module includes types and functions about "Data.Yaml".
 module Data.Yaml.Hexyll
   ( toString
   , toList
+  , BinaryValue (..)
   ) where
 
   import Prelude
 
-  import qualified Data.Text   as T
-  import qualified Data.Vector as V
-  import           Data.Yaml
+  import Data.Typeable ( Typeable )
+  import Data.Coerce   ( coerce )
+  import Data.Binary   ( Binary (..), putWord8, getWord8 )
+
+  import qualified Data.Text           as T
+  import qualified Data.Vector         as V
+  import qualified Data.HashMap.Strict as HM
   import           Data.Scientific
+  import           Data.Yaml
 
   -- | Convert 'Value' to 'String' for hexyll. If 'toString' apply to a value
   -- which is not a scalar (is 'Object', 'Array', or 'Null'), will return
@@ -64,3 +70,69 @@ module Data.Yaml.Hexyll
   toList :: Value -> Maybe [Value]
   toList (Array a) = Just (V.toList a)
   toList _         = Nothing
+
+  newtype BinaryValue = BinaryValue
+    { unBinaryValue :: Value
+    } deriving ( Eq, Show, Typeable )
+
+  instance Binary BinaryValue where
+    put (BinaryValue v) = case v of
+      Object o -> do
+        putWord8 0
+        put $
+          let
+            coerce' :: [(T.Text, Value)] -> [(T.Text, BinaryValue)]
+            coerce' = coerce
+          in
+            coerce' $ HM.toList o
+      Array a -> do
+        putWord8 1
+        put $
+          let
+            coerce' :: [Value] -> [BinaryValue]
+            coerce' = coerce
+          in
+            coerce' $ V.toList a
+      String s -> do
+        putWord8 2
+        put s
+      Number n -> do
+        putWord8 3
+        put n
+      Bool b -> do
+        putWord8 4
+        put b
+      Null ->
+        putWord8 5
+    get = do
+      t <- getWord8
+      case t of
+        0 -> do
+          o' <- get
+          return $
+            let
+              coerce' :: [(T.Text, BinaryValue)] -> [(T.Text, Value)]
+              coerce' = coerce
+            in
+              BinaryValue $ Object $ HM.fromList $ coerce' o'
+        1 -> do
+          a' <- get
+          return $
+            let
+              coerce' :: [BinaryValue] -> [Value]
+              coerce' = coerce
+            in
+              BinaryValue $ Array $ V.fromList $ coerce' a'
+        2 -> do
+          s <- get
+          return $ BinaryValue $ String s
+        3 -> do
+          n <- get
+          return $ BinaryValue $ Number n
+        4 -> do
+          b <- get
+          return $ BinaryValue $ Bool b
+        5 ->
+          return $ BinaryValue Null
+        _ ->
+          error "Data.Binary.get: Invalid BinaryValue"
