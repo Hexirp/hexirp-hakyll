@@ -7,3 +7,4 @@
 * Metadata の仕組みと extensible パッケージは相性が良いかもしれない。
 * logger や store は rio に似たパターンが使える箇所である。
 * Compiler 型は Mearly マシンなどが読解の糸口にならないだろうか。
+* `newtype Object f g = Object { runObject :: forall tag x. f tag -> (g tag x, x -> Object f g) }` とか。
