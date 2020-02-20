@@ -28,7 +28,7 @@ module Hexyll.Core.Dependencies.Internal where
   import Control.Monad    ( forM_, when )
   import Data.Traversable ( for )
 
-  import Control.Monad.Trans.RWS.Lazy ( RWS, rws, runRWS )
+  import Control.Monad.Trans.RWS.Strict ( RWS, rws, runRWS )
 
   import Hexyll.Core.Identifier
   import Hexyll.Core.Identifier.Pattern
