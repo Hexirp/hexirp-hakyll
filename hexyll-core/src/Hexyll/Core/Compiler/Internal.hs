@@ -51,10 +51,10 @@ import qualified Data.Set                       as S
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, unPattern, match )
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import qualified Hexyll.Core.Logger as Logger
 import           Hexyll.Core.Metadata           hiding ( Pattern, unPattern, match )
-import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..), match )
+import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Routes             hiding ( Pattern, unPattern, match )
 import           Hexyll.Core.Store
