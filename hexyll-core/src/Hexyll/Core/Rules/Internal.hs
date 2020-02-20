@@ -52,6 +52,20 @@ data RuleSet = RuleSet
     }
 
 
+data Pattern = Pattern
+  { unPattern :: PatternDisj
+  } deriving ( Eq, Ord, Show, Typeable )
+
+instance Semigroup Pattern where
+  Pattern x <> Pattern y = Pattern (x <> y)
+
+instance Monoid Pattern where
+  mempty = Pattern mempty
+
+match :: Identifier -> Pattern -> Bool
+match i (Pattern p) = matchDisj i p
+
+
 --------------------------------------------------------------------------------
 instance Semigroup RuleSet where
     (<>) (RuleSet r1 c1 s1 p1) (RuleSet r2 c2 s2 p2) =
