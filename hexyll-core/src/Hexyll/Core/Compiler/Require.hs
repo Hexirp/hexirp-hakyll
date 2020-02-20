@@ -26,7 +26,7 @@ import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata           hiding ( Pattern, match )
-import           Hexyll.Core.Metadata as Meta   ( Pattern (..) )
+import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.Store              (Store)
 import qualified Hexyll.Core.Store              as Store
 
