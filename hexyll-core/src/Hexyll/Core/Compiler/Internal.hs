@@ -54,7 +54,7 @@ import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import qualified Hexyll.Core.Logger as Logger
 import           Hexyll.Core.Metadata           hiding ( Pattern, match )
-import qualified Hexyll.Core.Metadata as Meta   ( Pattern, match )
+import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..), match )
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Routes             hiding ( Pattern, match )
 import           Hexyll.Core.Store
