@@ -56,7 +56,7 @@ import           Hexyll.Core.Item.SomeItem
 import           Hexyll.Core.Metadata           hiding ( Pattern, match )
 import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.Routes             hiding ( Pattern, match )
-import qualified Hexyll.Core.Routes as Meta     ( Pattern (..) )
+import qualified Hexyll.Core.Routes as Route    ( Pattern (..) )
 import           Hexyll.Core.Rules.Internal     hiding ( match )
 import           Hexyll.Core.Writable
 
