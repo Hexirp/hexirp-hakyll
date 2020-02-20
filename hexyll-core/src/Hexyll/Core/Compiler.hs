@@ -50,6 +50,7 @@ import           Hexyll.Core.Provider
 import           Hexyll.Core.Routes
 import qualified Hexyll.Core.Store             as Store
 
+import Hexyll.Core.Identifier.Pattern ( fromIdentifier )
 
 --------------------------------------------------------------------------------
 -- | Get the underlying identifier.
