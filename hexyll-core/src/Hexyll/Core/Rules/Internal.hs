@@ -21,13 +21,15 @@ import           Data.Set                       (Set)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Compiler.Internal  hiding ( Pattern )
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 import           Hexyll.Core.Item.SomeItem
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Metadata           hiding ( Pattern )
 import           Hexyll.Core.Provider
-import           Hexyll.Core.Routes
+import           Hexyll.Core.Routes             hiding ( Pattern )
+
+import Data.Typeable ( fromIdentifier )
 
 
 --------------------------------------------------------------------------------
