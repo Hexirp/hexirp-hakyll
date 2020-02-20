@@ -92,7 +92,7 @@ instance Monoid Routes where
 
 
 newtype Pattern = Pattern { unPattern :: PatternExpr }
-  deriving ( Eq, Show, Typeable )
+  deriving ( Eq, Ord, Show, Typeable )
 
 match :: Identifier -> Pattern -> Bool
 match i (Pattern p) = matchExpr i p
