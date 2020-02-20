@@ -47,15 +47,15 @@ import           Data.Typeable                  (Typeable)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Compiler.Internal  hiding ( Pattern, match )
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
 import           Hexyll.Core.Item.SomeItem
-import           Hexyll.Core.Metadata
-import           Hexyll.Core.Routes
-import           Hexyll.Core.Rules.Internal
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import           Hexyll.Core.Routes             hiding ( Pattern, match )
+import           Hexyll.Core.Rules.Internal     hiding ( match )
 import           Hexyll.Core.Writable
 
 
