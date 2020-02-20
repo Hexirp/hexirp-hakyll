@@ -53,7 +53,7 @@ import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.OldPattern
 import qualified Hexyll.Core.Logger             as Logger
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Metadata              hiding ( Pattern )
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Routes
 import           Hexyll.Core.Store
