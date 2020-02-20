@@ -49,7 +49,7 @@ import           System.FilePath                (replaceExtension)
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.OldPattern
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Metadata              hiding ( Pattern )
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Util.String
 
