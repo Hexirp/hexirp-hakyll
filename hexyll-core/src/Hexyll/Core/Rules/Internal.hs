@@ -21,13 +21,13 @@ import           Data.Set                       (Set)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal  hiding ( Pattern )
+import           Hexyll.Core.Compiler.Internal  hiding ( Pattern, match )
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern hiding ( Pattern )
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item.SomeItem
-import           Hexyll.Core.Metadata           hiding ( Pattern )
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
 import           Hexyll.Core.Provider
-import           Hexyll.Core.Routes             hiding ( Pattern )
+import           Hexyll.Core.Routes             hiding ( Pattern, match )
 
 import Data.Typeable ( Typeable )
 
@@ -104,7 +104,7 @@ instance MonadMetadata Rules where
 
     getMatches pattern = Rules $ do
         provider <- rulesProvider <$> ask
-        return $ filterMatches pattern $ resourceList provider
+        return $ filter (`match` pattern) $ resourceList provider
 
 
 --------------------------------------------------------------------------------
