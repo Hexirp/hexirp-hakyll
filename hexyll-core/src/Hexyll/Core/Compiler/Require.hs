@@ -98,13 +98,6 @@ loadSnapshotBody :: (Binary a, Typeable a)
 loadSnapshotBody id' snapshot = fmap itemBody $ loadSnapshot id' snapshot
 
 
-data Pattern = Pattern
-  { unPattern :: PatternExpr
-  } deriving ( Eq, Ord, Show, Typeable )
-
-match :: Identifier -> Pattern -> Bool
-match i (Pattern p) = matchExpr i p
-
 --------------------------------------------------------------------------------
 -- | This function allows you to 'load' a dynamic list of items
 loadAll :: (Binary a, Typeable a) => Pattern -> Compiler [Item a]
