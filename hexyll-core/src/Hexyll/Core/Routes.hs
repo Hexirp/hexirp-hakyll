@@ -31,6 +31,7 @@ module Hexyll.Core.Routes
     ( UsedMetadata
     , Routes
     , Pattern (..)
+    , match
     , runRoutes
     , idRoute
     , setExtension
