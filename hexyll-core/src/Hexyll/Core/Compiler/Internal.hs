@@ -33,6 +33,9 @@ module Hexyll.Core.Compiler.Internal
     , compilerDebugEntries
     , compilerTellDependencies
     , compilerTellCacheHits
+
+    , Pattern (..)
+    , match
     ) where
 
 
