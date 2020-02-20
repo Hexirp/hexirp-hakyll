@@ -33,6 +33,8 @@ module Hexyll.Core.Identifier.Pattern
   , -- ** Advanced Combinator
     fromIdentifier
   , fromList
+  , fromConj
+  , fromDisj
   , -- ** Matching
     matchExpr
   , -- * PatternConj
@@ -77,3 +79,9 @@ module Hexyll.Core.Identifier.Pattern
   -- @since 0.1.0.0
   fromList :: [Identifier] -> PatternExpr
   fromList = foldr (\x p -> fromIdentifier x .||. p) nothing
+
+  fromConj :: PatternConj -> PatternExpr
+  fromConj (PatternConj p) = foldr (.&&.) nothing p
+
+  fromDisj :: PatternDisj -> PatternExpr
+  fromDisj (PatternDisj p) = foldr (.||.) everything p

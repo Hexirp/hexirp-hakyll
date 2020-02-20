@@ -33,6 +33,9 @@ module Hexyll.Core.Compiler.Internal
     , compilerDebugEntries
     , compilerTellDependencies
     , compilerTellCacheHits
+
+    , Pattern (..)
+    , match
     ) where
 
 
@@ -51,13 +54,16 @@ import qualified Data.Set                       as S
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
-import qualified Hexyll.Core.Logger             as Logger
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
+import qualified Hexyll.Core.Logger as Logger
+import           Hexyll.Core.Metadata           hiding ( Pattern, unPattern, match )
+import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.Provider
-import           Hexyll.Core.Routes
+import           Hexyll.Core.Routes             hiding ( Pattern, unPattern, match )
 import           Hexyll.Core.Store
 
+
+import Data.Typeable ( Typeable )
 
 --------------------------------------------------------------------------------
 -- | Whilst compiling an item, it possible to save multiple snapshots of it, and
@@ -190,7 +196,7 @@ instance Applicative Compiler where
 -- | Access provided metadata from anywhere
 instance MonadMetadata Compiler where
     getMetadata = compilerGetMetadata
-    getMatches  = compilerGetMatches
+    getMatches (Meta.Pattern p) = compilerGetMatches (Pattern p)
 
 
 --------------------------------------------------------------------------------
@@ -340,15 +346,21 @@ compilerTellCacheHits ch = compilerTell mempty {compilerCacheHits = ch}
 compilerGetMetadata :: Identifier -> Compiler Metadata
 compilerGetMetadata identifier = do
     provider <- compilerProvider <$> compilerAsk
-    compilerTellDependencies [IdentifierDependency identifier]
+    compilerTellDependencies [Dependency $ fromIdentifier identifier]
     compilerUnsafeIO $ resourceMetadata provider identifier
 
+data Pattern = Pattern
+  { unPattern :: PatternExpr
+  } deriving ( Eq, Ord, Show, Typeable )
+
+match :: Identifier -> Pattern -> Bool
+match i (Pattern p) = matchExpr i p
 
 --------------------------------------------------------------------------------
 compilerGetMatches :: Pattern -> Compiler [Identifier]
 compilerGetMatches pattern = do
     universe <- compilerUniverse <$> compilerAsk
-    let matching = filterMatches pattern $ S.toList universe
+    let matching = filter (`match` pattern) $ S.toList universe
         set'     = S.fromList matching
-    compilerTellDependencies [PatternDependency (toNew pattern) set']
+    compilerTellDependencies [Dependency $ unPattern pattern]
     return matching

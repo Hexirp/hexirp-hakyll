@@ -23,9 +23,10 @@ import           Data.Typeable
 import           Hexyll.Core.Compiler.Internal
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.Store              (Store)
 import qualified Hexyll.Core.Store              as Store
 
@@ -62,7 +63,7 @@ loadSnapshot id' snapshot = do
     -- Quick check for better error messages
     when (id' `S.notMember` universe) $ fail notFound
 
-    compilerTellDependencies [IdentifierDependency id']
+    compilerTellDependencies [Dependency $ fromIdentifier id']
     compilerResult $ CompilerRequire (id', snapshot) $ do
         result <- compilerUnsafeIO $ Store.get store (key id' snapshot)
         case result of
@@ -107,8 +108,8 @@ loadAll pattern = loadAllSnapshots pattern final
 -- | Load a specific snapshot for each of dynamic list of items
 loadAllSnapshots :: (Binary a, Typeable a)
                  => Pattern -> Snapshot -> Compiler [Item a]
-loadAllSnapshots pattern snapshot = do
-    matching <- getMatches pattern
+loadAllSnapshots (Pattern pattern) snapshot = do
+    matching <- getMatches $ Meta.Pattern pattern
     mapM (\i -> loadSnapshot i snapshot) matching
 
 

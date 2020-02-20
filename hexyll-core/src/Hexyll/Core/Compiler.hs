@@ -50,6 +50,7 @@ import           Hexyll.Core.Provider
 import           Hexyll.Core.Routes
 import qualified Hexyll.Core.Store             as Store
 
+import Hexyll.Core.Identifier.Pattern ( fromIdentifier )
 
 --------------------------------------------------------------------------------
 -- | Get the underlying identifier.
@@ -81,7 +82,7 @@ getRoute identifier = do
     -- Note that this makes us dependend on that identifier: when the metadata
     -- of that item changes, the route may change, hence we have to recompile
     (mfp, um) <- compilerUnsafeIO $ runRoutes routes provider identifier
-    when um $ compilerTellDependencies [IdentifierDependency identifier]
+    when um $ compilerTellDependencies [Dependency $ fromIdentifier identifier]
     return mfp
 
 

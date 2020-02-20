@@ -47,15 +47,17 @@ import           Data.Typeable                  (Typeable)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Compiler.Internal  hiding ( Pattern, match )
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
 import           Hexyll.Core.Item.SomeItem
-import           Hexyll.Core.Metadata
-import           Hexyll.Core.Routes
-import           Hexyll.Core.Rules.Internal
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
+import           Hexyll.Core.Routes             hiding ( Pattern, match )
+import qualified Hexyll.Core.Routes as Route    ( Pattern (..) )
+import           Hexyll.Core.Rules.Internal     hiding ( match )
 import           Hexyll.Core.Writable
 
 
@@ -112,7 +114,7 @@ flush = Rules $ do
             let fastPattern = fromList ids
 
             -- Write out the compilers and routes
-            unRules $ tellRoute $ matchRoute fastPattern route'
+            unRules $ tellRoute $ matchRoute (Route.Pattern fastPattern) route'
             unRules $ tellCompilers $ [(id', compiler) | id' <- ids]
 
     put $ emptyRulesState
@@ -131,13 +133,13 @@ matchInternal pattern getIDs rules = do
 
 --------------------------------------------------------------------------------
 match :: Pattern -> Rules () -> Rules ()
-match pattern = matchInternal pattern $ getMatches pattern
+match (Pattern pattern) = matchInternal (Pattern pattern) $ getMatches (Meta.Pattern $ fromDisj pattern)
 
 
 --------------------------------------------------------------------------------
 matchMetadata :: Pattern -> (Metadata -> Bool) -> Rules () -> Rules ()
-matchMetadata pattern metadataPred = matchInternal pattern $
-    map fst . filter (metadataPred . snd) <$> getAllMetadata pattern
+matchMetadata (Pattern pattern) metadataPred = matchInternal (Pattern pattern) $
+    map fst . filter (metadataPred . snd) <$> getAllMetadata (Meta.Pattern $ fromDisj pattern)
 
 
 --------------------------------------------------------------------------------

@@ -30,6 +30,8 @@
 module Hexyll.Core.Routes
     ( UsedMetadata
     , Routes
+    , Pattern (..)
+    , match
     , runRoutes
     , idRoute
     , setExtension
@@ -48,11 +50,13 @@ import           System.FilePath                (replaceExtension)
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Util.String
 
+
+import Data.Typeable ( Typeable )
 
 --------------------------------------------------------------------------------
 -- | When you ran a route, it's useful to know whether or not this used
@@ -86,6 +90,12 @@ instance Monoid Routes where
     mempty  = Routes $ \_ _ -> return (Nothing, False)
     mappend = (<>)
 
+
+newtype Pattern = Pattern { unPattern :: PatternExpr }
+  deriving ( Eq, Ord, Show, Typeable )
+
+match :: Identifier -> Pattern -> Bool
+match i (Pattern p) = matchExpr i p
 
 --------------------------------------------------------------------------------
 -- | Apply a route to an identifier
@@ -130,7 +140,7 @@ setExtension extension = customRoute $
 -- otherwise
 matchRoute :: Pattern -> Routes -> Routes
 matchRoute pattern (Routes route) = Routes $ \p id' ->
-    if matches pattern id' then route p id' else return (Nothing, False)
+    if match id' pattern then route p id' else return (Nothing, False)
 
 
 --------------------------------------------------------------------------------

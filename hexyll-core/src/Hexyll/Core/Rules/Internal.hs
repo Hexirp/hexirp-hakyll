@@ -9,6 +9,8 @@ module Hexyll.Core.Rules.Internal
     , emptyRulesState
     , Rules (..)
     , runRules
+    , Pattern (..)
+    , match
     ) where
 
 
@@ -21,13 +23,16 @@ import           Data.Set                       (Set)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.Compiler.Internal  hiding ( Pattern, match )
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item.SomeItem
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import qualified Hexyll.Core.Metadata as Meta   ( match )
 import           Hexyll.Core.Provider
-import           Hexyll.Core.Routes
+import           Hexyll.Core.Routes             hiding ( Pattern, match )
+
+import Data.Typeable ( Typeable )
 
 
 --------------------------------------------------------------------------------
@@ -52,10 +57,23 @@ data RuleSet = RuleSet
     }
 
 
+data Pattern = Pattern
+  { unPattern :: PatternDisj
+  } deriving ( Eq, Ord, Show, Typeable )
+
+instance Semigroup Pattern where
+  Pattern x <> Pattern y = Pattern (x <> y)
+
+instance Monoid Pattern where
+  mempty = Pattern mempty
+
+match :: Identifier -> Pattern -> Bool
+match i (Pattern p) = matchDisj i p
+
+
 --------------------------------------------------------------------------------
 instance Semigroup RuleSet where
-    (<>) (RuleSet r1 c1 s1 p1) (RuleSet r2 c2 s2 p2) =
-        RuleSet (mappend r1 r2) (mappend c1 c2) (mappend s1 s2) (p1 .||. p2)
+    RuleSet r1 c1 s1 p1 <> RuleSet r2 c2 s2 p2 = RuleSet (r1 <> r2) (c1 <> c2) (s1 <> s2) (p1 <> p2)
 
 instance Monoid RuleSet where
     mempty  = RuleSet mempty mempty mempty mempty
@@ -89,7 +107,7 @@ instance MonadMetadata Rules where
 
     getMatches pattern = Rules $ do
         provider <- rulesProvider <$> ask
-        return $ filterMatches pattern $ resourceList provider
+        return $ filter (`Meta.match` pattern) $ resourceList provider
 
 
 --------------------------------------------------------------------------------
