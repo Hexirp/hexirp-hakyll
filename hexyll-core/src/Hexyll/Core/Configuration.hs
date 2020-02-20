@@ -19,13 +19,14 @@ module Hexyll.Core.Configuration
 
   import Prelude
 
-  import Data.List    (isPrefixOf, isSuffixOf)
-  import Data.Default (Default (..))
+  import Data.Default ( Default (..) )
+
+  import Data.List ( isPrefixOf, isSuffixOf )
 
   import Path
 
-  import System.Exit    (ExitCode)
-  import System.Process (system)
+  import System.Exit    ( ExitCode )
+  import System.Process ( system )
 
   -- | The top-level hexyll configration.
   --
