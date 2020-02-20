@@ -26,6 +26,7 @@ import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item.SomeItem
 import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import qualified Hexyll.Core.Metadata as Meta   ( match )
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Routes             hiding ( Pattern, match )
 
@@ -104,7 +105,7 @@ instance MonadMetadata Rules where
 
     getMatches pattern = Rules $ do
         provider <- rulesProvider <$> ask
-        return $ filter (`match` pattern) $ resourceList provider
+        return $ filter (`Meta.match` pattern) $ resourceList provider
 
 
 --------------------------------------------------------------------------------
