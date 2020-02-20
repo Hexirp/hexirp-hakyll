@@ -71,10 +71,14 @@ module Data.Yaml.Hexyll
   toList (Array a) = Just (V.toList a)
   toList _         = Nothing
 
+  -- | A wrapper for the instance @'Binary' 'Value'@.
+  --
+  -- @since 0.1.0.0
   newtype BinaryValue = BinaryValue
     { unBinaryValue :: Value
     } deriving ( Eq, Show, Typeable )
 
+  -- | @since 0.1.0.0
   instance Binary BinaryValue where
     put (BinaryValue v) = case v of
       Object o -> do
