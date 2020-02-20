@@ -133,13 +133,13 @@ matchInternal pattern getIDs rules = do
 
 --------------------------------------------------------------------------------
 match :: Pattern -> Rules () -> Rules ()
-match (Pattern pattern) = matchInternal pattern $ getMatches (Meta.Pattern pattern)
+match (Pattern pattern) = matchInternal (Pattern pattern) $ getMatches (Meta.Pattern $ fromDisj pattern)
 
 
 --------------------------------------------------------------------------------
 matchMetadata :: Pattern -> (Metadata -> Bool) -> Rules () -> Rules ()
-matchMetadata (Pattern pattern) metadataPred = matchInternal pattern $
-    map fst . filter (metadataPred . snd) <$> getAllMetadata (Meta.Pattern pattern)
+matchMetadata (Pattern pattern) metadataPred = matchInternal (Pattern pattern) $
+    map fst . filter (metadataPred . snd) <$> getAllMetadata (Meta.Pattern $ fromDisj pattern)
 
 
 --------------------------------------------------------------------------------
