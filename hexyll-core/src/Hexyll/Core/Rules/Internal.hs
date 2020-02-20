@@ -9,6 +9,8 @@ module Hexyll.Core.Rules.Internal
     , emptyRulesState
     , Rules (..)
     , runRules
+    , Pattern (..)
+    , match
     ) where
 
 
