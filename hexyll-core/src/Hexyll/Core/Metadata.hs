@@ -14,7 +14,7 @@ import qualified Data.Yaml.Hexyll    as Yaml
 import Control.Monad ( forM )
 
 import Hexyll.Core.Identifier
-import Hexyll.Core.Identifier.Pattern hiding ( Pattern )
+import Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 
 --------------------------------------------------------------------------------
 newtype Metadata = Metadata
@@ -58,6 +58,9 @@ lookupStringList key (Metadata meta) =
 data Pattern = Pattern
   { unPattern :: PatternExpr
   } deriving ( Eq, Ord, Show, Typeable )
+
+match :: Identifier -> Pattern -> Bool
+match i (Pattern p) = matchExpr i p
 
 class Monad m => MonadMetadata m where
 

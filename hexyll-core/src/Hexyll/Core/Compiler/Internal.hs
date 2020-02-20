@@ -51,9 +51,9 @@ import qualified Data.Set                       as S
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import qualified Hexyll.Core.Logger             as Logger
-import           Hexyll.Core.Metadata              hiding ( Pattern )
+import           Hexyll.Core.Metadata
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Routes
 import           Hexyll.Core.Store
@@ -348,7 +348,7 @@ compilerGetMetadata identifier = do
 compilerGetMatches :: Pattern -> Compiler [Identifier]
 compilerGetMatches pattern = do
     universe <- compilerUniverse <$> compilerAsk
-    let matching = filterMatches pattern $ S.toList universe
+    let matching = filter (`match` pattern) $ S.toList universe
         set'     = S.fromList matching
     compilerTellDependencies [PatternDependency (toNew pattern) set']
     return matching
