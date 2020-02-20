@@ -70,8 +70,7 @@ match i (Pattern p) = matchDisj i p
 
 --------------------------------------------------------------------------------
 instance Semigroup RuleSet where
-    (<>) (RuleSet r1 c1 s1 p1) (RuleSet r2 c2 s2 p2) =
-        RuleSet (mappend r1 r2) (mappend c1 c2) (mappend s1 s2) (p1 .||. p2)
+    RuleSet r1 c1 s1 p1 <> RuleSet r2 c2 s2 p2 = RuleSet (r1 <> r2) (c1 <> c2) (s1 <> s2) (p1 <> p2)
 
 instance Monoid RuleSet where
     mempty  = RuleSet mempty mempty mempty mempty
