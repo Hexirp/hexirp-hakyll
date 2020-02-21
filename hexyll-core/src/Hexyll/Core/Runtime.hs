@@ -73,6 +73,7 @@ run config logger rules = do
             , runtimeSnapshots = S.empty
             , runtimeTodo      = M.empty
             , runtimeFacts     = oldFacts
+            , runtimeCache     = DependencyCache M.empty
             }
 
     -- Run the program and fetch the resulting state
