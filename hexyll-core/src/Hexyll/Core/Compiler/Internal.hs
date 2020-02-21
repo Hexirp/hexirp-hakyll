@@ -64,6 +64,7 @@ import           Hexyll.Core.Store
 
 
 import Data.Typeable ( Typeable )
+import Data.String ( IsString (..) )
 
 --------------------------------------------------------------------------------
 -- | Whilst compiling an item, it possible to save multiple snapshots of it, and
@@ -349,12 +350,15 @@ compilerGetMetadata identifier = do
     compilerTellDependencies [Dependency $ fromIdentifier identifier]
     compilerUnsafeIO $ resourceMetadata provider identifier
 
-data Pattern = Pattern
+newtype Pattern = Pattern
   { unPattern :: PatternExpr
   } deriving ( Eq, Ord, Show, Typeable )
 
 match :: Identifier -> Pattern -> Bool
 match i (Pattern p) = matchExpr i p
+
+instance IsString Pattern where
+  fromString s = Pattern $ fromString s
 
 --------------------------------------------------------------------------------
 compilerGetMatches :: Pattern -> Compiler [Identifier]
