@@ -107,7 +107,7 @@ instance MonadMetadata Rules where
 
     getMatches (Meta.Pattern pattern) = Rules $ do
         provider <- rulesProvider <$> ask
-        return $ filter (matchExpr pattern) $ resourceList provider
+        return $ filter (`matchExpr` pattern) $ resourceList provider
 
 
 --------------------------------------------------------------------------------
