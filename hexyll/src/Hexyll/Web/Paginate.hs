@@ -23,6 +23,7 @@ import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.Rules
 import           Hexyll.Web.Html
 import           Hexyll.Web.Template.Context
@@ -63,14 +64,14 @@ buildPaginateWith
     -> Pattern                             -- ^ Select items to paginate
     -> (PageNumber -> Identifier)          -- ^ Identifiers for the pages
     -> m Paginate
-buildPaginateWith grouper pattern makeId = do
-    ids      <- getMatches pattern
+buildPaginateWith grouper (Pattern pattern) makeId = do
+    ids      <- getMatches $ Meta.Pattern pattern
     idGroups <- grouper ids
     let idsSet = S.fromList ids
     return Paginate
         { paginateMap        = M.fromList (zip [1 ..] idGroups)
         , paginateMakeId     = makeId
-        , paginateDependency = PatternDependency (toNew pattern) idsSet
+        , paginateDependency = Dependency pattern
         }
 
 
@@ -80,7 +81,7 @@ paginateRules paginator rules =
     forM_ (M.toList $ paginateMap paginator) $ \(idx, identifiers) ->
         rulesExtraDependencies [paginateDependency paginator] $
             create [paginateMakeId paginator idx] $
-                rules idx $ fromList identifiers
+                rules idx $ Pattern $ fromList identifiers
 
 
 --------------------------------------------------------------------------------
