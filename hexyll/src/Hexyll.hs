@@ -36,7 +36,7 @@ import           Hexyll.Core.File
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
-import           Hexyll.Core.Metadata           hiding ( Pattern, unPattern, match )
+import           Hexyll.Core.Metadata           hiding ( Pattern, unPattern )
 import           Hexyll.Core.Routes             hiding ( Pattern, unPattern, match )
 import           Hexyll.Core.Rules
 import           Hexyll.Core.UnixFilter
@@ -48,9 +48,9 @@ import           Hexyll.Web.CompressCss
 import           Hexyll.Web.Feed
 import           Hexyll.Web.Html
 import           Hexyll.Web.Html.RelativizeUrls
-import           Hexyll.Web.Paginate
+import           Hexyll.Web.Paginate            hiding ( Pattern, unPattern )
 import           Hexyll.Web.Redirect
-import           Hexyll.Web.Tags
+import           Hexyll.Web.Tags                hiding ( Pattern, unPattern )
 import           Hexyll.Web.Template
 import           Hexyll.Web.Template.Context
 import           Hexyll.Web.Template.List
