@@ -59,6 +59,8 @@ module Hexyll.Web.Tags
     , categoryField
     , sortTagsBy
     , caseInsensitiveTags
+
+    , Pattern (..)
     ) where
 
 
@@ -94,6 +96,7 @@ import           Hexyll.Web.Template.Context
 
 
 import Data.Typeable ( Typeable )
+import Data.String ( IsString (..) )
 
 
 --------------------------------------------------------------------------------
@@ -351,9 +354,9 @@ caseInsensitiveTags :: (String, [Identifier]) -> (String, [Identifier])
 caseInsensitiveTags = comparing $ map toLower . fst
 
 
-data Pattern = Pattern
+newtype Pattern = Pattern
   { unPattern :: PatternExpr
   } deriving ( Eq, Ord, Show, Typeable )
 
-match :: Identifier -> Pattern -> Bool
-match i (Pattern p) = matchExpr i p
+instance IsString Pattern where
+  fromString s = Pattern $ fromString s
