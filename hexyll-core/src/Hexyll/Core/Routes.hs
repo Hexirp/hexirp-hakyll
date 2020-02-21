@@ -57,7 +57,7 @@ import           Hexyll.Core.Util.String
 
 
 import Data.Typeable ( Typeable )
-import Data.String ( IsString )
+import Data.String ( IsString (..) )
 
 --------------------------------------------------------------------------------
 -- | When you ran a route, it's useful to know whether or not this used
