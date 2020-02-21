@@ -23,7 +23,7 @@ import           TestSuite.Util
 --------------------------------------------------------------------------------
 tests :: TestTree
 tests = testGroup "Hexyll.Core.Runtime.Tests" $
-    fromAssertions "run" [case01, case02]
+    fromAssertions "run" [case02] -- [case01, case02]
 
 
 --------------------------------------------------------------------------------
