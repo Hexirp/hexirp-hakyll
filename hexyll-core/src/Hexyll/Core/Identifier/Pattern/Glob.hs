@@ -24,7 +24,7 @@ module Hexyll.Core.Identifier.Pattern.Glob where
   -- | The wrapper of 'Glob.Pattern'.
   --
   -- @since 0.1.0.0
-  data Pattern = Pattern { unPattern :: Glob.Pattern }
+  newtype Pattern = Pattern { unPattern :: Glob.Pattern }
     deriving (Eq, Show)
 
   -- | @since 0.1.0.0
