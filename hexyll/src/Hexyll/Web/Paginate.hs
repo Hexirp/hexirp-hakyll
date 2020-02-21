@@ -20,13 +20,15 @@ import qualified Data.Set                       as S
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Compiler
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
 import           Hexyll.Core.Rules
 import           Hexyll.Web.Html
 import           Hexyll.Web.Template.Context
 
+
+import Data.Typeable ( Typeable )
 
 --------------------------------------------------------------------------------
 type PageNumber = Int
@@ -151,3 +153,12 @@ paginateContext pag currentPage = mconcat
     url (n, i) = getRoute i >>= \mbR -> case mbR of
         Just r  -> return $ toUrl r
         Nothing -> fail $ "No URL for page: " ++ show n
+
+
+
+data Pattern = Pattern
+  { unPattern :: PatternExpr
+  } deriving ( Eq, Ord, Show, Typeable )
+
+match :: Identifier -> Pattern -> Bool
+match i (Pattern p) = matchExpr i p
