@@ -86,6 +86,7 @@ import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.Rules
 import           Hexyll.Core.Util.String
 import           Hexyll.Web.Html
@@ -128,11 +129,11 @@ buildTagsWith :: MonadMetadata m
               -> Pattern
               -> (String -> Identifier)
               -> m Tags
-buildTagsWith f pattern makeId = do
-    ids    <- getMatches pattern
+buildTagsWith f (Pattern pattern) makeId = do
+    ids    <- getMatches (Meta.Pattern pattern)
     tagMap <- foldM addTags M.empty ids
     let set' = S.fromList ids
-    return $ Tags (M.toList tagMap) makeId (PatternDependency (toNew pattern) set')
+    return $ Tags (M.toList tagMap) makeId (Dependency pattern)
   where
     -- Create a tag map for one page
     addTags tagMap id' = do
@@ -158,7 +159,7 @@ tagsRules tags rules =
     forM_ (tagsMap tags) $ \(tag, identifiers) ->
         rulesExtraDependencies [tagsDependency tags] $
             create [tagsMakeId tags tag] $
-                rules tag $ fromList identifiers
+                rules tag $ Pattern $ fromList identifiers
 
 
 --------------------------------------------------------------------------------
