@@ -56,7 +56,7 @@ run config logger rules = do
     -- Get old facts
     mOldFacts <- Store.get store factsKey
     let (oldFacts) = case mOldFacts of Store.Found f -> f
-                                       _             -> mempty
+                                       _             -> DependencyFacts $ M.empty
 
     -- Build runtime read/state
     let compilers = rulesCompilers ruleSet
