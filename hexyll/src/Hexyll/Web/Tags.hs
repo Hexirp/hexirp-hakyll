@@ -83,9 +83,9 @@ import qualified Text.Blaze.Html5.Attributes     as A
 import           Hexyll.Core.Compiler
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
-import           Hexyll.Core.Metadata
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
 import           Hexyll.Core.Rules
 import           Hexyll.Core.Util.String
 import           Hexyll.Web.Html
