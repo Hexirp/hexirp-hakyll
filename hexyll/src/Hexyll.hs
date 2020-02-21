@@ -6,7 +6,7 @@ module Hexyll
     , module Hexyll.Core.Configuration
     , module Hexyll.Core.File
     , module Hexyll.Core.Identifier
-    , module Hexyll.Core.Identifier.OldPattern
+    , module Hexyll.Core.Identifier.Pattern
     , module Hexyll.Core.Item
     , module Hexyll.Core.Metadata
     , module Hexyll.Core.Routes
@@ -36,8 +36,8 @@ import           Hexyll.Core.File
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
-import           Hexyll.Core.Metadata           hiding ( Pattern, match )
-import           Hexyll.Core.Routes             hiding ( Pattern, match )
+import           Hexyll.Core.Metadata           hiding ( Pattern, unPattern, match )
+import           Hexyll.Core.Routes             hiding ( Pattern, unPattern, match )
 import           Hexyll.Core.Rules
 import           Hexyll.Core.UnixFilter
 import           Hexyll.Core.Util.File
