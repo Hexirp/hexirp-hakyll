@@ -10,7 +10,6 @@ module Hexyll.Core.Rules.Internal
     , Rules (..)
     , runRules
     , Pattern (..)
-    , match
     ) where
 
 
@@ -23,16 +22,17 @@ import           Data.Set                       (Set)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal  hiding ( Pattern, match )
+import           Hexyll.Core.Compiler.Internal  hiding ( Pattern )
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 import           Hexyll.Core.Item.SomeItem
-import           Hexyll.Core.Metadata           hiding ( Pattern, match )
-import qualified Hexyll.Core.Metadata as Meta   ( match )
+import           Hexyll.Core.Metadata           hiding ( Pattern )
+import qualified Hexyll.Core.Metadata as Meta ( Pattern (..) )
 import           Hexyll.Core.Provider
-import           Hexyll.Core.Routes             hiding ( Pattern, match )
+import           Hexyll.Core.Routes             hiding ( Pattern )
 
 import Data.Typeable ( Typeable )
+import Data.String ( IsString (..) )
 
 
 --------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ data RuleSet = RuleSet
     }
 
 
-data Pattern = Pattern
+newtype Pattern = Pattern
   { unPattern :: PatternDisj
   } deriving ( Eq, Ord, Show, Typeable )
 
@@ -67,8 +67,8 @@ instance Semigroup Pattern where
 instance Monoid Pattern where
   mempty = Pattern mempty
 
-match :: Identifier -> Pattern -> Bool
-match i (Pattern p) = matchDisj i p
+instance IsString Pattern where
+  fromString s = Pattern $ fromString s
 
 
 --------------------------------------------------------------------------------
@@ -105,9 +105,9 @@ instance MonadMetadata Rules where
         provider <- rulesProvider <$> ask
         liftIO $ resourceMetadata provider identifier
 
-    getMatches pattern = Rules $ do
+    getMatches (Meta.Pattern pattern) = Rules $ do
         provider <- rulesProvider <$> ask
-        return $ filter (`Meta.match` pattern) $ resourceList provider
+        return $ filter (matchExpr pattern) $ resourceList provider
 
 
 --------------------------------------------------------------------------------
