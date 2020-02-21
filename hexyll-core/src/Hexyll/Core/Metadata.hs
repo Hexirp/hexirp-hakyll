@@ -5,6 +5,7 @@ module Hexyll.Core.Metadata where
 --------------------------------------------------------------------------------
 import Data.Binary   ( Binary (..) )
 import Data.Typeable ( Typeable )
+import Data.String ( IsString (..) )
 
 import qualified Data.HashMap.Strict as HM
 import qualified Data.Text           as T
@@ -14,7 +15,7 @@ import qualified Data.Yaml.Hexyll    as Yaml
 import Control.Monad ( forM )
 
 import Hexyll.Core.Identifier
-import Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
+import Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 
 --------------------------------------------------------------------------------
 newtype Metadata = Metadata
@@ -55,12 +56,12 @@ lookupStringList key (Metadata meta) =
     HM.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
 
 
-data Pattern = Pattern
+newtype Pattern = Pattern
   { unPattern :: PatternExpr
   } deriving ( Eq, Ord, Show, Typeable )
 
-match :: Identifier -> Pattern -> Bool
-match i (Pattern p) = matchExpr i p
+instance IsString Pattern where
+  fromString s = Pattern $ fromString s
 
 class Monad m => MonadMetadata m where
 
