@@ -42,7 +42,7 @@ case01 = do
                     >>= saveSnapshot "raw"
                     >>= renderParagraphs
 
-        match (fromList ["partial.html", "partial-helper.html"]) $
+        match (Pattern $ fromList ["partial.html", "partial-helper.html"]) $
             compile templateCompiler
         create ["partial.html.out"] $ do
             route idRoute
