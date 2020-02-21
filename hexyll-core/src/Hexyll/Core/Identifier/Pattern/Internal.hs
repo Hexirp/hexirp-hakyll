@@ -252,7 +252,7 @@ module Hexyll.Core.Identifier.Pattern.Internal where
 
   -- | @since 0.1.0.0
   instance IsString PatternConj where
-    fromString = fromPatternToConj . fromString
+    fromString = fromExprToConj . fromString
 
   -- | @since 0.1.0.0
   instance Binary PatternConj where
@@ -274,8 +274,8 @@ module Hexyll.Core.Identifier.Pattern.Internal where
   -- | Convert a 'PatternExpr' to a 'PatternConj'.
   --
   -- @since 0.1.0.0
-  fromPatternToConj :: PatternExpr -> PatternConj
-  fromPatternToConj p = PatternConj [p]
+  fromExprToConj :: PatternExpr -> PatternConj
+  fromExprToConj p = PatternConj [p]
 
   -- | Match a 'Identifier' with a 'PatternConj'.
   --
@@ -294,7 +294,7 @@ module Hexyll.Core.Identifier.Pattern.Internal where
 
   -- | @since 0.1.0.0
   instance IsString PatternDisj where
-    fromString = fromPatternToDisj . fromString
+    fromString = fromExprToDisj . fromString
 
   -- | @since 0.1.0.0
   instance Binary PatternDisj where
@@ -316,8 +316,8 @@ module Hexyll.Core.Identifier.Pattern.Internal where
   -- | Convert a 'PatternExpr' to a 'PatternDisj'.
   --
   -- @since 0.1.0.0
-  fromPatternToDisj :: PatternExpr -> PatternDisj
-  fromPatternToDisj p = PatternDisj [p]
+  fromExprToDisj :: PatternExpr -> PatternDisj
+  fromExprToDisj p = PatternDisj [p]
 
   -- | Match a 'Identifier' with a 'PatternDisj'.
   --
