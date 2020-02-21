@@ -92,6 +92,9 @@ import           Hexyll.Web.Html
 import           Hexyll.Web.Template.Context
 
 
+import Data.Typeable ( Typeable )
+
+
 --------------------------------------------------------------------------------
 -- | Data about tags
 data Tags = Tags
@@ -345,3 +348,11 @@ sortTagsBy f t = t {tagsMap = sortBy f (tagsMap t)}
 caseInsensitiveTags :: (String, [Identifier]) -> (String, [Identifier])
                     -> Ordering
 caseInsensitiveTags = comparing $ map toLower . fst
+
+
+data Pattern = Pattern
+  { unPattern :: PatternExpr
+  } deriving ( Eq, Ord, Show, Typeable )
+
+match :: Identifier -> Pattern -> Bool
+match i (Pattern p) = matchExpr i p
