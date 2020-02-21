@@ -7,6 +7,8 @@ module Hexyll.Web.Paginate
     , paginateEvery
     , paginateRules
     , paginateContext
+
+    , Pattern (..)
     ) where
 
 
@@ -20,16 +22,17 @@ import qualified Data.Set                       as S
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Compiler
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 import           Hexyll.Core.Item
-import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import           Hexyll.Core.Metadata           hiding ( Pattern )
 import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
-import           Hexyll.Core.Rules              hiding ( Pattern, match )
+import           Hexyll.Core.Rules              hiding ( Pattern )
 import           Hexyll.Web.Html
 import           Hexyll.Web.Template.Context
 
 
 import Data.Typeable ( Typeable )
+import Data.String ( IsString (..) )
 
 --------------------------------------------------------------------------------
 type PageNumber = Int
@@ -157,9 +160,9 @@ paginateContext pag currentPage = mconcat
 
 
 
-data Pattern = Pattern
+newtype Pattern = Pattern
   { unPattern :: PatternExpr
   } deriving ( Eq, Ord, Show, Typeable )
 
-match :: Identifier -> Pattern -> Bool
-match i (Pattern p) = matchExpr i p
+instance IsString Pattern where
+  fromString s = Pattern $ fromString s
