@@ -51,12 +51,13 @@ import           System.FilePath                (replaceExtension)
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
-import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import           Hexyll.Core.Metadata           hiding ( Pattern )
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Util.String
 
 
 import Data.Typeable ( Typeable )
+import Data.String ( IsString )
 
 --------------------------------------------------------------------------------
 -- | When you ran a route, it's useful to know whether or not this used
@@ -93,6 +94,9 @@ instance Monoid Routes where
 
 newtype Pattern = Pattern { unPattern :: PatternExpr }
   deriving ( Eq, Ord, Show, Typeable )
+
+instance IsString Pattern where
+  fromString s = Pattern $ fromString s
 
 match :: Identifier -> Pattern -> Bool
 match i (Pattern p) = matchExpr i p
