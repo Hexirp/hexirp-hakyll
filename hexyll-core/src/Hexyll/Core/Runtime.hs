@@ -250,7 +250,7 @@ chase trail id'
                 modify $ \s -> s
                     { runtimeDone  = S.insert id' (runtimeDone s)
                     , runtimeTodo  = M.delete id' (runtimeTodo s)
-                    , runtimeFacts = M.insert id' facts (runtimeFacts s)
+                    , runtimeFacts = DependencyFact $ M.insert id' facts (unDependencyFact $ runtimeFacts s)
                     }
 
             -- Try something else first
