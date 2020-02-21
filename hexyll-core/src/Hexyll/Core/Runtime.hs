@@ -112,6 +112,7 @@ data RuntimeState = RuntimeState
     , runtimeSnapshots :: Set (Identifier, Snapshot)
     , runtimeTodo      :: Map Identifier (Compiler SomeItem)
     , runtimeFacts     :: DependencyFacts
+    , runtimeCache     :: DependencyCache
     }
 
 
@@ -137,13 +138,14 @@ scheduleOutOfDate = do
     provider <- runtimeProvider <$> ask
     universe <- runtimeUniverse <$> ask
     facts    <- runtimeFacts    <$> get
+    cache    <- runtimeCache    <$> get
     todo     <- runtimeTodo     <$> get
 
     let identifiers = M.keys universe
         modified    = S.fromList $ flip filter identifiers $
             resourceModified provider
 
-    let (ood, facts', msgs) = outOfDate identifiers modified facts
+    let (ood, cache', msgs) = outOfDate modified facts cache
         todo'               = M.filterWithKey
             (\id' _ -> id' `S.member` ood) universe
 
@@ -155,7 +157,7 @@ scheduleOutOfDate = do
         { runtimeDone  = runtimeDone s `S.union`
             (S.fromList identifiers `S.difference` ood)
         , runtimeTodo  = todo `M.union` todo'
-        , runtimeFacts = facts'
+        , runtimeCache = cache'
         }
 
 
