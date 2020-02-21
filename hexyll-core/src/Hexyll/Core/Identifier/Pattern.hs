@@ -80,8 +80,14 @@ module Hexyll.Core.Identifier.Pattern
   fromList :: [Identifier] -> PatternExpr
   fromList = foldr (\x p -> fromIdentifier x .||. p) nothing
 
+  -- | Make a pattern from a 'PatternConj'.
+  --
+  -- @since 0.1.0.0
   fromConj :: PatternConj -> PatternExpr
   fromConj (PatternConj p) = foldr (.&&.) nothing p
 
+  -- | Make a pattern from a 'PatternDisj'.
+  --
+  -- @since 0.1.0.0
   fromDisj :: PatternDisj -> PatternExpr
   fromDisj (PatternDisj p) = foldr (.||.) everything p
