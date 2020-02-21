@@ -34,10 +34,10 @@ import           Hexyll.Core.Compiler
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.File
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.OldPattern
+import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
-import           Hexyll.Core.Metadata
-import           Hexyll.Core.Routes
+import           Hexyll.Core.Metadata           hiding ( Pattern, match )
+import           Hexyll.Core.Routes             hiding ( Pattern, match )
 import           Hexyll.Core.Rules
 import           Hexyll.Core.UnixFilter
 import           Hexyll.Core.Util.File
