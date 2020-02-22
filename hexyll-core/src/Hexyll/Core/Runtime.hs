@@ -223,6 +223,7 @@ chase trail id'
             CompilerDone (SomeItem item) cwrite -> do
                 -- Print some info
                 let facts = compilerDependencies cwrite
+                    cache = compilerCache cwrite
                     cacheHits
                         | compilerCacheHits cwrite <= 0 = "updated"
                         | otherwise                     = "cached "
@@ -253,6 +254,7 @@ chase trail id'
                     { runtimeDone  = S.insert id' (runtimeDone s)
                     , runtimeTodo  = M.delete id' (runtimeTodo s)
                     , runtimeFacts = DependencyFacts $ M.insert id' facts (unDependencyFacts $ runtimeFacts s)
+                    , runtimeCache = DependencyCache $ M.insert id' cache (unDependencyCache $ runtimeCache s)
                     }
 
             -- Try something else first
