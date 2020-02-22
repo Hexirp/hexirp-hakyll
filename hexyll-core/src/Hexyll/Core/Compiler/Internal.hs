@@ -31,7 +31,7 @@ module Hexyll.Core.Compiler.Internal
 
       -- * Utilities
     , compilerDebugEntries
-    , compilerTellDependencies
+    , compilerTellDependenciesCache
     , compilerTellCacheHits
 
     , Pattern (..)
@@ -335,7 +335,7 @@ compilerTellDependenciesCache ds cs = do
   compilerDebugLog $ map (\d ->
       "Hexyll.Core.Compiler.Internal: Adding dependency: " ++ show d) ds
   compilerTell mempty {compilerDependencies = ds, compilerCache = cs}
-{-# INLINE compilerTellDependencies #-}
+{-# INLINE compilerTellDependenciesCache #-}
 
 
 --------------------------------------------------------------------------------
