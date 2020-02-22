@@ -28,7 +28,7 @@ module Hexyll.Core.Rules
       -- * Advanced usage
     , preprocess
     , Dependency (..)
-    , rulesExtraDependencies
+    , rulesExtraDependenciesCache
 
     , Pattern (..)
     ) where
