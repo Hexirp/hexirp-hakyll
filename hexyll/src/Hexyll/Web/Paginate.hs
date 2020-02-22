@@ -82,7 +82,7 @@ buildPaginateWith grouper (Pattern pattern) makeId = do
 paginateRules :: Paginate -> (PageNumber -> Pattern -> Rules ()) -> Rules ()
 paginateRules paginator rules =
     forM_ (M.toList $ paginateMap paginator) $ \(idx, identifiers) ->
-        rulesExtraDependencies [paginateDependency paginator] $
+        rulesExtraDependenciesCache [paginateDependency paginator] identifiers $
             create [paginateMakeId paginator idx] $
                 rules idx $ Pattern $ fromList identifiers
 
