@@ -40,6 +40,9 @@ import           Hexyll.Core.Util.File
 import           Hexyll.Core.Writable
 
 
+import Debug.Trace
+
+
 --------------------------------------------------------------------------------
 run :: Configuration -> Logger -> Rules a -> IO (ExitCode, RuleSet)
 run config logger rules = do
@@ -159,7 +162,7 @@ scheduleOutOfDate = do
     modify $ \s -> s
         { runtimeDone  = runtimeDone s `S.union`
             (S.fromList identifiers `S.difference` ood)
-        , runtimeTodo  = todo `M.union` todo'
+        , runtimeTodo  = trace "added-todo" $ todo `M.union` todo'
         , runtimeCache = cache'
         }
 
