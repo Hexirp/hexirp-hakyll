@@ -95,17 +95,18 @@ data CompilerRead = CompilerRead
 --------------------------------------------------------------------------------
 data CompilerWrite = CompilerWrite
     { compilerDependencies :: [Dependency]
+    , compilerCache        :: [Identifier]
     , compilerCacheHits    :: Int
     } deriving (Show)
 
 
 --------------------------------------------------------------------------------
 instance Semigroup CompilerWrite where
-    (<>) (CompilerWrite d1 h1) (CompilerWrite d2 h2) =
-        CompilerWrite (d1 ++ d2) (h1 + h2)
+    (<>) (CompilerWrite d1 i1 h1) (CompilerWrite d2 i2 h2) =
+        CompilerWrite (d1 ++ d2) (i1 ++ i2) (h1 + h2)
 
 instance Monoid CompilerWrite where
-    mempty  = CompilerWrite [] 0
+    mempty  = CompilerWrite [] [] 0
     mappend = (<>)
 
 
@@ -329,11 +330,11 @@ compilerDebugEntries msg = compilerDebugLog . (msg:) . map indent
 
 
 --------------------------------------------------------------------------------
-compilerTellDependencies :: [Dependency] -> Compiler ()
-compilerTellDependencies ds = do
+compilerTellDependenciesCache :: [Dependency] -> [Identifier] -> Compiler ()
+compilerTellDependenciesCache ds cs = do
   compilerDebugLog $ map (\d ->
       "Hexyll.Core.Compiler.Internal: Adding dependency: " ++ show d) ds
-  compilerTell mempty {compilerDependencies = ds}
+  compilerTell mempty {compilerDependencies = ds, compilerCache = cs}
 {-# INLINE compilerTellDependencies #-}
 
 
@@ -347,7 +348,7 @@ compilerTellCacheHits ch = compilerTell mempty {compilerCacheHits = ch}
 compilerGetMetadata :: Identifier -> Compiler Metadata
 compilerGetMetadata identifier = do
     provider <- compilerProvider <$> compilerAsk
-    compilerTellDependencies [Dependency $ fromIdentifier identifier]
+    compilerTellDependenciesiCache [Dependency $ fromIdentifier identifier] [identifier]
     compilerUnsafeIO $ resourceMetadata provider identifier
 
 newtype Pattern = Pattern
@@ -366,5 +367,5 @@ compilerGetMatches pattern = do
     universe <- compilerUniverse <$> compilerAsk
     let matching = filter (`match` pattern) $ S.toList universe
         set'     = S.fromList matching
-    compilerTellDependencies [Dependency $ unPattern pattern]
+    compilerTellDependenciesCache [Dependency $ unPattern pattern] set'
     return matching
