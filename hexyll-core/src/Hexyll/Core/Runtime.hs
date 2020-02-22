@@ -55,9 +55,10 @@ run config logger rules = do
 
     -- Get old facts
     mOldCache <- Store.get store cacheKey
-    let oldCache = case mOldCache of
-      Store.Found c -> c
-      _             -> DependencyCache $ M.empty
+    let
+      oldCache = case mOldCache of
+        Store.Found c -> c
+        _             -> DependencyCache $ M.empty
 
     -- Build runtime read/state
     let compilers = rulesCompilers ruleSet
