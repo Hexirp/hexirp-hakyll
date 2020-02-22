@@ -193,8 +193,8 @@ preprocess = Rules . liftIO
 -- still want correct builds.
 --
 -- A useful utility for this purpose is 'makePatternDependency'.
-rulesExtraDependencies :: [Dependency] -> Rules a -> Rules a
-rulesExtraDependencies deps rules =
+rulesExtraDependenciesCache :: [Dependency] -> [Identifier] -> Rules a -> Rules a
+rulesExtraDependenciesCache deps cache rules =
     -- Note that we add the dependencies seemingly twice here. However, this is
     -- done so that 'rulesExtraDependencies' works both if we have something
     -- like:
@@ -215,13 +215,13 @@ rulesExtraDependencies deps rules =
     fixCompiler = modify $ \s -> case rulesCompiler s of
         Nothing -> s
         Just c  -> s
-            { rulesCompiler = Just $ compilerTellDependencies deps >> c
+            { rulesCompiler = Just $ compilerTellDependenciesCache deps cache >> c
             }
 
     -- (2) Adds the dependencies to the compilers that are already in the ruleset
     fixRuleSet ruleSet = ruleSet
         { rulesCompilers =
-            [ (i, compilerTellDependencies deps >> c)
+            [ (i, compilerTellDependenciesCache deps cache >> c)
             | (i, c) <- rulesCompilers ruleSet
             ]
         }
