@@ -348,7 +348,7 @@ compilerTellCacheHits ch = compilerTell mempty {compilerCacheHits = ch}
 compilerGetMetadata :: Identifier -> Compiler Metadata
 compilerGetMetadata identifier = do
     provider <- compilerProvider <$> compilerAsk
-    compilerTellDependenciesiCache [Dependency $ fromIdentifier identifier] [identifier]
+    compilerTellDependenciesCache [Dependency $ fromIdentifier identifier] [identifier]
     compilerUnsafeIO $ resourceMetadata provider identifier
 
 newtype Pattern = Pattern
