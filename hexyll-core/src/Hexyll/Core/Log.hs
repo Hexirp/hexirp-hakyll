@@ -1,3 +1,14 @@
+-- |
+-- Module:      Hexyll.Core.Log
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: non-portable (multi-parameter type classes)
+--
+-- This module provides an environment for logging.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Log where
 
   import Prelude
@@ -10,15 +21,27 @@ module Hexyll.Core.Log where
   import Lens.Micro        (Lens')
   import Lens.Micro.Extras (view)
 
+  -- | The log level of a message in 'LogEnv'. This comes from apache log4j.
+  --
+  -- @since 0.1.0.0
   data LogLevel = LevelDebug | LevelInfo | LevelWarn | LevelError | LevelFatal
     deriving (Eq, Ord, Enum, Bounded, Show, Typeable)
 
+  -- | The message type in 'LogEnv'.
+  --
+  -- @since 0.1.0.0
   type LogMessage = String
 
+  -- | The type of environment for logging.
+  --
+  -- @since 0.1.0.0
   newtype LogEnv = LogEnv
     { logFunc :: LogLevel -> LogMessage -> IO ()
     } deriving (Typeable)
 
+  -- | Make 'LogEnv' strictly.
+  --
+  -- @since 0.1.0.0
   sqLogEnv :: (LogLevel -> LogMessage -> IO ()) -> LogEnv
   sqLogEnv f = f `seq` LogEnv f
 
