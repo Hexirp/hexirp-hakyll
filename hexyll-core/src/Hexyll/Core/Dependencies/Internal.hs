@@ -126,7 +126,7 @@ module Hexyll.Core.Dependencies.Internal where
     -> [Identifier]
     -> DependencyCache
     -> DependencyCache
-  insertFacts i is (DependencyCache df) = DependencyCache $ M.insert i is df
+  insertCache i is (DependencyCache df) = DependencyCache $ M.insert i is df
 
   -- | A type of a list of known resources.
   --
