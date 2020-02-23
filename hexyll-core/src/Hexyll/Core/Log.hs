@@ -2,7 +2,12 @@ module Hexyll.Core.Log where
 
   import Prelude
 
-  import Data.Typeable
+  import Data.Typeable (Typeable)
+
+  import Control.Monad.IO.Class     (MonadIO, liftIO)
+  import Control.Monad.Reader.Class (MonadReader (ask))
+
+  import Lens.Micro (Lens', view)
 
   data LogLevel = LevelDebug | LevelInfo | LevelWarn | LevelError | LevelFatal
     deriving ( Eq, Ord, Enum, Bounded, Show, Typeable )
@@ -28,8 +33,8 @@ module Hexyll.Core.Log where
     -> LogMessage
     -> m ()
   logGeneric ll lm = do
-    le <- view logEnvL
-    liftIO $ logFunc le ll lm
+    env <- ask
+    liftIO $ logFunc (view logEnvL env) ll lm
 
   logDebug
     :: (MonadIO m, MonadReader env m, HasLogFunc env)
