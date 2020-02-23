@@ -28,7 +28,7 @@ module Hexyll.Core.Log where
     logEnvL = id
 
   logGeneric
-    :: (MonadIO m, MonadReader env m, HasLogFunc env)
+    :: (MonadIO m, MonadReader env m, HasLogEnv env)
     => LogLevel
     -> LogMessage
     -> m ()
@@ -37,31 +37,31 @@ module Hexyll.Core.Log where
     liftIO $ logFunc (view logEnvL env) ll lm
 
   logDebug
-    :: (MonadIO m, MonadReader env m, HasLogFunc env)
+    :: (MonadIO m, MonadReader env m, HasLogEnv env)
     => LogMessage
     -> m ()
   logDebug lm = logGeneric LevelDebug lm
 
   logInfo
-    :: (MonadIO m, MonadReader env m, HasLogFunc env)
+    :: (MonadIO m, MonadReader env m, HasLogEnv env)
     => LogMessage
     -> m ()
   logInfo lm = logGeneric LevelInfo lm
 
   logWarn
-    :: (MonadIO m, MonadReader env m, HasLogFunc env)
+    :: (MonadIO m, MonadReader env m, HasLogEnv env)
     => LogMessage
     -> m ()
   logWarn lm = logGeneric LevelWarn lm
 
   logError
-    :: (MonadIO m, MonadReader env m, HasLogFunc env)
+    :: (MonadIO m, MonadReader env m, HasLogEnv env)
     => LogMessage
     -> m ()
   logError lm = logGeneric LevelError lm
 
   logFatal
-    :: (MonadIO m, MonadReader env m, HasLogFunc env)
+    :: (MonadIO m, MonadReader env m, HasLogEnv env)
     => LogMessage
     -> m ()
   logFatal lm = logGeneric LevelFatal lm
