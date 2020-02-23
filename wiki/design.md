@@ -130,3 +130,68 @@ Hexyll.Core.Store
 * ユーザーが、
   * **コンパイラを組み立てる。**
     * **リソースに付随するメタデータを読み込める。**
+
+## 2020-02-23
+
+ますます設計が必要そうな感じになってきた。
+
+`Item` は `Identifier` とそれが表すアイテムの組である。単純な型である。
+
+`Provider` はコンパイル対象のファイル群を表す。リソースについての追加情報のマップ、ストア、ディレクトリへのファイルパスを含む。リソースについての追加情報は更新時間と対応するメタデータへの識別子である。ここはストアを直接参照しているけど、それは抽象化したほうがいいと思われる。
+
+`Store` はリソースを格納するところである。
+
+`Compiler` は Mealy Machine に類似している。必要な情報を読み込み、 IO モナドの文脈の下で計算し、最終結果として「コンパイルの終了」「スナップショットの出力、続行」「必要なリソースのコンパイルの要求、スナップショットの出力、続行」「エラーの出力、終了」という結果を出す。前は Compiler は Arrow だったようだ。 https://github.com/jaspervdj/hakyll/commit/760b4344377c81922ce5ab4ba05a41f88f45165d で変更されている。ほとんど意味はなかったようだ。スナップショットの意味がわからない。
+
+`Hexyll.Core.Runtime` を読んでみたが、よく分からない。あるリソースのコンパイルの要求があったとき、そのスナップショットがあれば、そのリソースの計算は終了している扱いになるみたい？
+
+```haskell
+    Domain
+
+hexyll-core  > [ 1 of 35] Compiling Control.Monad.Hexyll
+hexyll-core  > [ 2 of 35] Compiling Data.List.Hexyll
+hexyll-core  > [ 3 of 35] Compiling Data.Yaml.Hexyll
+hexyll-core  > [ 4 of 35] Compiling Hexyll.Core.Configuration
+hexyll-core  > [ 5 of 35] Compiling Hexyll.Core.Identifier.Internal
+hexyll-core  > [ 6 of 35] Compiling Hexyll.Core.Identifier
+hexyll-core  > [ 7 of 35] Compiling Hexyll.Core.Identifier.Pattern.Glob
+hexyll-core  > [ 8 of 35] Compiling Hexyll.Core.Identifier.Pattern.Internal
+hexyll-core  > [ 9 of 35] Compiling Hexyll.Core.Identifier.Pattern
+hexyll-core  > [15 of 35] Compiling Hexyll.Core.Util.File
+hexyll-core  > [20 of 35] Compiling Hexyll.Core.Util.Parser
+hexyll-core  > [21 of 35] Compiling Hexyll.Core.Util.String
+hexyll-core  > [24 of 35] Compiling Hexyll.Core.Item
+hexyll-core  > [27 of 35] Compiling Hexyll.Core.UnixFilter
+hexyll-core  > [28 of 35] Compiling Hexyll.Core.Writable
+hexyll-core  > [29 of 35] Compiling Hexyll.Core.Item.SomeItem
+hexyll-core  > [33 of 35] Compiling Hexyll.Core.File
+hexyll-core  > [34 of 35] Compiling Paths_hexyll_core
+hexyll-core  > [35 of 35] Compiling System.Directory.Hexyll
+
+hexyll-core  > [13 of 35] Compiling Hexyll.Core.Metadata
+hexyll-core  > [22 of 35] Compiling Hexyll.Core.Routes
+hexyll-core  > [23 of 35] Compiling Hexyll.Core.Compiler.Internal
+hexyll-core  > [25 of 35] Compiling Hexyll.Core.Compiler.Require
+hexyll-core  > [26 of 35] Compiling Hexyll.Core.Compiler
+hexyll-core  > [30 of 35] Compiling Hexyll.Core.Rules.Internal
+hexyll-core  > [32 of 35] Compiling Hexyll.Core.Rules
+
+    Application
+
+hexyll-core  > [10 of 35] Compiling Hexyll.Core.Dependencies.Internal
+hexyll-core  > [11 of 35] Compiling Hexyll.Core.Dependencies
+hexyll-core  > [31 of 35] Compiling Hexyll.Core.Runtime
+
+    Presentation
+
+    Infrastructure
+
+hexyll-core  > [12 of 35] Compiling Hexyll.Core.Logger
+hexyll-core  > [14 of 35] Compiling Hexyll.Core.Store
+hexyll-core  > [16 of 35] Compiling Hexyll.Core.Provider.Internal
+hexyll-core  > [17 of 35] Compiling Hexyll.Core.Provider.Metadata
+hexyll-core  > [18 of 35] Compiling Hexyll.Core.Provider.MetadataCache
+hexyll-core  > [19 of 35] Compiling Hexyll.Core.Provider
+```
+
+ただのイメージだけで分類した。
