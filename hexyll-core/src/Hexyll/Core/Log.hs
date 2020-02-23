@@ -10,13 +10,13 @@ module Hexyll.Core.Log where
   import Lens.Micro (Lens', view)
 
   data LogLevel = LevelDebug | LevelInfo | LevelWarn | LevelError | LevelFatal
-    deriving ( Eq, Ord, Enum, Bounded, Show, Typeable )
+    deriving (Eq, Ord, Enum, Bounded, Show, Typeable)
 
   type LogMessage = String
 
   newtype LogEnv = LogEnv
     { logFunc :: LogLevel -> LogMessage -> IO ()
-    } deriving ( Typeable )
+    } deriving (Typeable)
 
   sqLogEnv :: (LogLevel -> LogMessage -> IO ()) -> LogEnv
   sqLogEnv f = f `seq` LogEnv f
