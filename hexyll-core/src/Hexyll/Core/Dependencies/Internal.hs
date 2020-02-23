@@ -316,14 +316,14 @@ module Hexyll.Core.Dependencies.Internal where
   check = do
     universe <- askUniverse
     forM_ universe $ \i -> do
-      m_ois <- lookupOldCache i
+      m_ois <- askLookupOldCache i
       case m_ois of
         Nothing -> do
           tellLog $ show i ++ " is out-of-date because it is new"
           markOutOfDate i
         Just ois -> do
           nis <- dependenciesFor i
-          insertNewCache i nis
+          modifyInsertNewCache i nis
           when (ois /= nis) $ do
             tellLog $ show i ++ " is out-of-date because its pattern changed"
             markOutOfDate i
@@ -336,8 +336,8 @@ module Hexyll.Core.Dependencies.Internal where
   dependenciesFor :: Identifier -> DependencyM [Identifier]
   dependenciesFor i = do
     universe <- askUniverse
-    ds <- lookupFacts i
-    m_is <- lookupNewCache i
+    ds <- askLookupFacts i
+    m_is <- getLookupNewCache i
     case m_is of
       Nothing -> return $ concat $ for ds $ \d ->
         filter (`matchExpr` unDependency d) universe
