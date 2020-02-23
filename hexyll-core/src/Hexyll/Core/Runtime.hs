@@ -54,9 +54,11 @@ run config logger rules = do
     ruleSet  <- runRules rules provider
 
     -- Get old facts
-    mOldFacts <- Store.get store factsKey
-    let (oldFacts) = case mOldFacts of Store.Found f -> f
-                                       _             -> DependencyFacts $ M.empty
+    mOldCache <- Store.get store cacheKey
+    let
+      oldCache = case mOldCache of
+        Store.Found c -> c
+        _             -> DependencyCache $ M.empty
 
     -- Build runtime read/state
     let compilers = rulesCompilers ruleSet
@@ -72,8 +74,8 @@ run config logger rules = do
             { runtimeDone      = S.empty
             , runtimeSnapshots = S.empty
             , runtimeTodo      = M.empty
-            , runtimeFacts     = oldFacts
-            , runtimeCache     = DependencyCache M.empty
+            , runtimeFacts     = DependencyFacts M.empty
+            , runtimeCache     = oldCache
             }
 
     -- Run the program and fetch the resulting state
@@ -85,7 +87,7 @@ run config logger rules = do
             return (ExitFailure 1, ruleSet)
 
         Right (_, s, _) -> do
-            Store.set store factsKey $ runtimeFacts s
+            Store.set store cacheKey $ runtimeCache s
 
             Logger.debug logger "Removing tmp directory..."
             removeDirectory $ toFilePath $ tmpDirectory config
@@ -93,7 +95,7 @@ run config logger rules = do
             Logger.flush logger
             return (ExitSuccess, ruleSet)
   where
-    factsKey = ["Hexyll.Core.Runtime.run", "facts"]
+    cacheKey = ["Hexyll.Core.Runtime.run", "cache"]
 
 
 --------------------------------------------------------------------------------
@@ -221,6 +223,7 @@ chase trail id'
             CompilerDone (SomeItem item) cwrite -> do
                 -- Print some info
                 let facts = compilerDependencies cwrite
+                    cache = compilerCache cwrite
                     cacheHits
                         | compilerCacheHits cwrite <= 0 = "updated"
                         | otherwise                     = "cached "
@@ -251,6 +254,7 @@ chase trail id'
                     { runtimeDone  = S.insert id' (runtimeDone s)
                     , runtimeTodo  = M.delete id' (runtimeTodo s)
                     , runtimeFacts = DependencyFacts $ M.insert id' facts (unDependencyFacts $ runtimeFacts s)
+                    , runtimeCache = DependencyCache $ M.insert id' cache (unDependencyCache $ runtimeCache s)
                     }
 
             -- Try something else first

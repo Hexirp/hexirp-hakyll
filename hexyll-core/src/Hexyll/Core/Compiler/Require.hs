@@ -63,7 +63,7 @@ loadSnapshot id' snapshot = do
     -- Quick check for better error messages
     when (id' `S.notMember` universe) $ fail notFound
 
-    compilerTellDependencies [Dependency $ fromIdentifier id']
+    compilerTellDependenciesCache [Dependency $ fromIdentifier id'] [id']
     compilerResult $ CompilerRequire (id', snapshot) $ do
         result <- compilerUnsafeIO $ Store.get store (key id' snapshot)
         case result of

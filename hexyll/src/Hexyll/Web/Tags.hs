@@ -160,7 +160,7 @@ buildCategories = buildTagsWith getCategory
 tagsRules :: Tags -> (String -> Pattern -> Rules ()) -> Rules ()
 tagsRules tags rules =
     forM_ (tagsMap tags) $ \(tag, identifiers) ->
-        rulesExtraDependencies [tagsDependency tags] $
+        rulesExtraDependenciesCache [tagsDependency tags] identifiers $
             create [tagsMakeId tags tag] $
                 rules tag $ Pattern $ fromList identifiers
 
