@@ -7,7 +7,8 @@ module Hexyll.Core.Log where
   import Control.Monad.IO.Class     (MonadIO, liftIO)
   import Control.Monad.Reader.Class (MonadReader (ask))
 
-  import Lens.Micro (Lens', view)
+  import Lens.Micro        (Lens')
+  import Lens.Micro.Extras (view)
 
   data LogLevel = LevelDebug | LevelInfo | LevelWarn | LevelError | LevelFatal
     deriving (Eq, Ord, Enum, Bounded, Show, Typeable)
