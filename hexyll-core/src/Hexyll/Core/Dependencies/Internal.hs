@@ -74,7 +74,7 @@ module Hexyll.Core.Dependencies.Internal where
   -- | Lookup the value at a key in the 'DependencyFacts'.
   --
   -- @since 0.1.0.0
-  lookupFacts :: Identifier -> DependencyFacts -> [Dependency]
+  lookupFacts :: Identifier -> DependencyFacts -> Maybe [Dependency]
   lookupFacts i (DependencyFacts df) = M.lookup i df
 
   -- | Insert a new key and value in the 'DependencyFacts'.
@@ -115,7 +115,7 @@ module Hexyll.Core.Dependencies.Internal where
   -- | Lookup the value at a key in the 'DependencyCache'.
   --
   -- @since 0.1.0.0
-  lookupCache :: Identifier -> DependencyCache -> [Identifier]
+  lookupCache :: Identifier -> DependencyCache -> Maybe [Identifier]
   lookupCache i (DependencyCache df) = M.lookup i df
 
   -- | Insert a new key and value in the 'DependencyCache'.
