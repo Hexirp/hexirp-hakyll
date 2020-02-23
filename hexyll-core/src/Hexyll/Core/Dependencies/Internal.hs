@@ -19,11 +19,11 @@ module Hexyll.Core.Dependencies.Internal where
 
   import           Data.DList    ( DList, toList, singleton )
   import           Data.List     ( find )
-  import qualified Data.Map as M
   import           Data.Map      ( Map )
+  import qualified Data.Map as M
   import           Data.Maybe    ( fromMaybe )
-  import qualified Data.Set as S
   import           Data.Set      ( Set )
+  import qualified Data.Set as S
 
   import Control.Monad    ( forM_, when )
   import Data.Traversable ( for )
@@ -65,6 +65,28 @@ module Hexyll.Core.Dependencies.Internal where
   instance NFData DependencyFacts where
     rnf (DependencyFacts x) = rnf x
 
+  -- | The empty 'DependencyFacts'.
+  --
+  -- @since 0.1.0.0
+  emptyFacts :: DependencyFacts
+  emptyFacts = DependencyFacts M.empty
+
+  -- | Lookup the value at a key in the 'DependencyFacts'.
+  --
+  -- @since 0.1.0.0
+  lookupFacts :: Identifier -> DependencyFacts -> Maybe [Dependency]
+  lookupFacts i (DependencyFacts df) = M.lookup i df
+
+  -- | Insert a new key and value in the 'DependencyFacts'.
+  --
+  -- @since 0.1.0.0
+  insertFacts
+    :: Identifier
+    -> [Dependency]
+    -> DependencyFacts
+    -> DependencyFacts
+  insertFacts i ds (DependencyFacts df) = DependencyFacts $ M.insert i ds df
+
   -- | A type of caches of dependency factors.
   --
   -- This can be viewed as an adjacency list representation of a directed
@@ -83,6 +105,28 @@ module Hexyll.Core.Dependencies.Internal where
   -- | @since 0.1.0.0
   instance NFData DependencyCache where
     rnf (DependencyCache x) = rnf x
+
+  -- | The empty 'DependencyCache'.
+  --
+  -- @since 0.1.0.0
+  emptyCache :: DependencyCache
+  emptyCache = DependencyCache M.empty
+
+  -- | Lookup the value at a key in the 'DependencyCache'.
+  --
+  -- @since 0.1.0.0
+  lookupCache :: Identifier -> DependencyCache -> Maybe [Identifier]
+  lookupCache i (DependencyCache df) = M.lookup i df
+
+  -- | Insert a new key and value in the 'DependencyCache'.
+  --
+  -- @since 0.1.0.0
+  insertCache
+    :: Identifier
+    -> [Identifier]
+    -> DependencyCache
+    -> DependencyCache
+  insertCache i is (DependencyCache df) = DependencyCache $ M.insert i is df
 
   -- | A type of a list of known resources.
   --
@@ -184,10 +228,10 @@ module Hexyll.Core.Dependencies.Internal where
   -- 'DependencyFacts' on 'DependencyM'.
   --
   -- @since 0.1.0.0
-  lookupFacts :: Identifier -> DependencyM [Dependency]
-  lookupFacts i = do
+  askLookupFacts :: Identifier -> DependencyM [Dependency]
+  askLookupFacts i = do
     facts <- askFacts
-    return $ fromMaybe [] $ M.lookup i $ unDependencyFacts facts
+    return $ fromMaybe [] $ lookupFacts i facts
 
   -- | Ask the 'IdentifierUniverse' on 'DependencyM'.
   --
@@ -206,10 +250,10 @@ module Hexyll.Core.Dependencies.Internal where
   -- 'DependencyCache' on 'DependencyM'.
   --
   -- @since 0.1.0.0
-  lookupOldCache :: Identifier -> DependencyM (Maybe [Identifier])
-  lookupOldCache i = do
+  askLookupOldCache :: Identifier -> DependencyM (Maybe [Identifier])
+  askLookupOldCache i = do
     dc <- askOldCache
-    return $ M.lookup i $ unDependencyCache dc
+    return $ lookupCache i dc
 
   -- | Get a new 'DependencyCache' on 'DependencyM'.
   --
@@ -222,22 +266,19 @@ module Hexyll.Core.Dependencies.Internal where
   -- 'DependencyCache' on 'DependencyM'.
   --
   -- @since 0.1.0.0
-  lookupNewCache :: Identifier -> DependencyM (Maybe [Identifier])
-  lookupNewCache i = do
+  getLookupNewCache :: Identifier -> DependencyM (Maybe [Identifier])
+  getLookupNewCache i = do
     dc <- getNewCache
-    return $ M.lookup i $ unDependencyCache dc
+    return $ lookupCache i dc
 
   -- | Insert a new key 'Identifier' and value @['Identifier']@ in a new
   -- 'DependencyCache' on 'DependencyM'.
   --
   -- @since 0.1.0.0
-  insertNewCache :: Identifier -> [Identifier] -> DependencyM ()
-  insertNewCache i is = rws $ \_ s -> case s of
-    DependencyState dc io ->
-      let
-        dc' = DependencyCache $ M.insert i is $ unDependencyCache dc
-      in
-        dc' `seq` ((), DependencyState dc' io, mempty)
+  modifyInsertNewCache :: Identifier -> [Identifier] -> DependencyM ()
+  modifyInsertNewCache i is = rws $ \_ s -> case s of
+    DependencyState dc io -> let dc' = insertCache i is dc in
+      dc' `seq` ((), DependencyState dc' io, mempty)
 
   -- | Get an 'IdentifierOutOfDate' on 'DependencyM'.
   --
@@ -272,14 +313,14 @@ module Hexyll.Core.Dependencies.Internal where
   check = do
     universe <- askUniverse
     forM_ universe $ \i -> do
-      m_ois <- lookupOldCache i
+      m_ois <- askLookupOldCache i
       case m_ois of
         Nothing -> do
           tellLog $ show i ++ " is out-of-date because it is new"
           markOutOfDate i
         Just ois -> do
           nis <- dependenciesFor i
-          insertNewCache i nis
+          modifyInsertNewCache i nis
           when (ois /= nis) $ do
             tellLog $ show i ++ " is out-of-date because its pattern changed"
             markOutOfDate i
@@ -292,8 +333,8 @@ module Hexyll.Core.Dependencies.Internal where
   dependenciesFor :: Identifier -> DependencyM [Identifier]
   dependenciesFor i = do
     universe <- askUniverse
-    ds <- lookupFacts i
-    m_is <- lookupNewCache i
+    ds <- askLookupFacts i
+    m_is <- getLookupNewCache i
     case m_is of
       Nothing -> return $ concat $ for ds $ \d ->
         filter (`matchExpr` unDependency d) universe

@@ -11,7 +11,13 @@
 module Hexyll.Core.Dependencies
   ( Dependency (..)
   , DependencyFacts (..)
+  , emptyFacts
+  , lookupFacts
+  , insertFacts
   , DependencyCache (..)
+  , emptyCache
+  , lookupCache
+  , insertCache
   , IdentifierUniverse
   , IdentifierOutOfDate
   , CalculationLog
