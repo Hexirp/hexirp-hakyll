@@ -4,6 +4,8 @@ module Hexyll.Core.IdentifierSpec (spec) where
 
   import Prelude
 
+  import Data.Maybe (isJust)
+
   import Test.Hspec
   import Test.QuickCheck
 
@@ -24,35 +26,52 @@ module Hexyll.Core.IdentifierSpec (spec) where
         show (setIdentVersion (Just "pdf") $ ufromFilePath "a.txt")
             `shouldBe` "a.txt (pdf)"
 
+    describe "fromFilePath" $ do
+
+      it "can parse 'foo.txt'" $ do
+        isJust (fromFilePath "foo.txt") `shouldBe` True
+
+      it "can not parse 'foo/'" $ do
+        isJust (fromFilePath "foo/") `shouldBe` False
+#if defined(mingw32_HOST_OS) || defined(__MINGW32__)
+
+      it "can not parse 'C:\\foo.md'" $ do
+        isJust (fromFilePath "C:\\foo.md") `shouldBe` False
+#else
+
+      it "can not parse '/foo.md'" $ do
+        isJust (fromFilePath "/foo.md") `shouldBe` False
+#endif
+
     describe "ufromFilePath" $ do
 
       it "can parse 'foo.txt'" $ do
         rnf (ufromFilePath "foo.txt") `shouldBe` ()
 
       it "can not parse 'foo/'" $ do
-        (evaluate $ ufromFilePath "foo/") `shouldThrow` anyErrorCall
+        evaluate (ufromFilePath "foo/") `shouldThrow` anyErrorCall
 #if defined(mingw32_HOST_OS) || defined(__MINGW32__)
 
       it "can not parse 'C:\\foo.md'" $ do
-        (evaluate $ ufromFilePath "C:\\foo.md") `shouldThrow` anyErrorCall
+        evaluate (ufromFilePath "C:\\foo.md") `shouldThrow` anyErrorCall
 #else
 
       it "can not parse '/foo.md'" $ do
-        (evaluate $ ufromFilePath "/foo.md") `shouldThrow` anyErrorCall
+        evaluate (ufromFilePath "/foo.md") `shouldThrow` anyErrorCall
 #endif
 
     describe "toFilePath" $ do
 #if defined(mingw32_HOST_OS) || defined(__MINGW32__)
 
       it "returns a path with '\\' separated" $ do
-        (toFilePath $ ufromFilePath "foo\\bar.md") `shouldBe` "foo\\bar.md"
+        toFilePath (ufromFilePath "foo\\bar.md") `shouldBe` "foo\\bar.md"
 
       it "returns a path with '\\' separated (posix style)" $ do
-        (toFilePath $ ufromFilePath "foo/bar.md") `shouldBe` "foo\\bar.md"
+        toFilePath (ufromFilePath "foo/bar.md") `shouldBe` "foo\\bar.md"
 #else
 
       it "returns a path with '/' separated" $ do
-        (toFilePath $ ufromFilePath "foo/bar.md") `shouldBe` "foo/bar.md"
+        toFilePath (ufromFilePath "foo/bar.md") `shouldBe` "foo/bar.md"
 #endif
 
     describe "getIdentVersion" $ do
