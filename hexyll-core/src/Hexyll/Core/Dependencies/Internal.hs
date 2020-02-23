@@ -19,11 +19,11 @@ module Hexyll.Core.Dependencies.Internal where
 
   import           Data.DList    ( DList, toList, singleton )
   import           Data.List     ( find )
-  import qualified Data.Map as M
   import           Data.Map      ( Map )
+  import qualified Data.Map as M
   import           Data.Maybe    ( fromMaybe )
-  import qualified Data.Set as S
   import           Data.Set      ( Set )
+  import qualified Data.Set as S
 
   import Control.Monad    ( forM_, when )
   import Data.Traversable ( for )
@@ -65,6 +65,28 @@ module Hexyll.Core.Dependencies.Internal where
   instance NFData DependencyFacts where
     rnf (DependencyFacts x) = rnf x
 
+  -- | The empty 'DependencyFacts'.
+  --
+  -- @since 0.1.0.0
+  emptyFacts :: DependencyFacts
+  emptyFacts = DependencyFacts M.empty
+
+  -- | Lookup the value at a key in the 'DependencyFacts'.
+  --
+  -- @since 0.1.0.0
+  lookupFacts :: Identifier -> DependencyFacts -> [Dependency]
+  lookupFacts i (DependencyFacts df) = M.lookup i df
+
+  -- | Insert a new key and value in the 'DependencyFacts'.
+  --
+  -- @since 0.1.0.0
+  insertFacts
+    :: Identifier
+    -> [Dependency]
+    -> DependencyFacts
+    -> DependencyFacts
+  insertFacts i ds (DependencyFacts df) = DependencyFacts $ M.insert i ds df
+
   -- | A type of caches of dependency factors.
   --
   -- This can be viewed as an adjacency list representation of a directed
@@ -83,6 +105,28 @@ module Hexyll.Core.Dependencies.Internal where
   -- | @since 0.1.0.0
   instance NFData DependencyCache where
     rnf (DependencyCache x) = rnf x
+
+  -- | The empty 'DependencyCache'.
+  --
+  -- @since 0.1.0.0
+  emptyCache :: DependencyCache
+  emptyCache = DependencyCache M.empty
+
+  -- | Lookup the value at a key in the 'DependencyCache'.
+  --
+  -- @since 0.1.0.0
+  lookupCache :: Identifier -> DependencyCache -> [Identifier]
+  lookupCache i (DependencyCache df) = M.lookup i df
+
+  -- | Insert a new key and value in the 'DependencyCache'.
+  --
+  -- @since 0.1.0.0
+  insertCache
+    :: Identifier
+    -> [Identifier]
+    -> DependencyCache
+    -> DependencyCache
+  insertFacts i is (DependencyCache df) = DependencyCache $ M.insert i is df
 
   -- | A type of a list of known resources.
   --
