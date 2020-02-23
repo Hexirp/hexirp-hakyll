@@ -4,6 +4,8 @@ module Hexyll.Core.IdentifierSpec (spec) where
 
   import Prelude
 
+  import Data.Maybe (isJust)
+
   import Test.Hspec
   import Test.QuickCheck
 
