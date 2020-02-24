@@ -22,3 +22,23 @@ module Hexyll.Core.Store where
     { storeSet :: !(forall a. (Binary a, Typeable a) => StoreKey -> a -> IO ())
     , storeGet :: !(forall a. (Binary a, Typeable a) => StoreKey -> IO (StoreResult a))
     } deriving (Typeable)
+
+  class HasStoreEnv env where
+    storeEnvL :: Lens' env StoreEnv
+
+  set
+    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Binary a, Typeable a)
+    => StoreKey
+    -> a
+    -> m ()
+  set sk x = do
+    env <- ask
+    liftIO $ storeSet (view storeEnvL env) sk x
+
+  get
+    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Binary a, Typeable a)
+    => StoreKey
+    -> m (StoreResult a)
+  set sk = do
+    env <- ask
+    liftIO $ storeGet (view storeEnvL env) sk
