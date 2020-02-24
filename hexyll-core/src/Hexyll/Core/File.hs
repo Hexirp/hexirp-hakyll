@@ -28,7 +28,7 @@ import           Hexyll.Core.Compiler.Internal
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Item
 import           Hexyll.Core.Provider
-import qualified Hexyll.Core.Store             as Store
+import qualified Hexyll.Core.OldStore          as Store
 import           Hexyll.Core.Util.File
 import           Hexyll.Core.Writable
 

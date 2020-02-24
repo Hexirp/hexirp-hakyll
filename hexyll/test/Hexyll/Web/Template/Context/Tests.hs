@@ -14,7 +14,7 @@ import           Test.Tasty.HUnit            (Assertion, testCase, (@=?))
 import           Hexyll.Core.Compiler
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Provider
-import           Hexyll.Core.Store           (Store)
+import           Hexyll.Core.OldStore           (Store)
 import           Hexyll.Web.Template.Context
 import           TestSuite.Util
 

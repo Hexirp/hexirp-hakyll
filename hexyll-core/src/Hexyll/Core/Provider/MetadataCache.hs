@@ -12,7 +12,7 @@ import           Hexyll.Core.Identifier
 import           Hexyll.Core.Metadata
 import           Hexyll.Core.Provider.Internal
 import           Hexyll.Core.Provider.Metadata
-import qualified Hexyll.Core.Store             as Store
+import qualified Hexyll.Core.OldStore          as Store
 
 
 --------------------------------------------------------------------------------

@@ -32,8 +32,8 @@ import           Hexyll.Core.Configuration
 import           Hexyll.Core.Identifier hiding (toFilePath)
 import qualified Hexyll.Core.Logger            as Logger
 import           Hexyll.Core.Provider
-import           Hexyll.Core.Store             (Store)
-import qualified Hexyll.Core.Store             as Store
+import           Hexyll.Core.OldStore             (Store)
+import qualified Hexyll.Core.OldStore             as Store
 import           Hexyll.Core.Util.File
 import           Hexyll.Core.Item
 
