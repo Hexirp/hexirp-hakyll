@@ -206,3 +206,22 @@ hexyll-core  > [19 of 35] Compiling Hexyll.Core.Provider
   * ログにインデントを入れる。
   * ログに色を入れる。
   * ログにスレッドの階層構造を反映させる。
+
+## 2020-02-24
+
+Haskell 方面へ寄っていく。
+
+### coding
+
+三つの層を置く。
+
+* ReaderT パターン
+* mtl パターン
+* 関数
+
+これらが適用できるであろう箇所はいくつかある。
+
+* ログ
+* メタデータ
+  * 特に、これは `Hexyll.Core.Metadata` の `MonadMetadata` と `Hexyll.Core.Provider` の `Provider` と道具が揃っている。
+* ストア
