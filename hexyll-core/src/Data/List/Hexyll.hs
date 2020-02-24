@@ -7,6 +7,8 @@
 -- Portability: portable
 --
 -- This module includes additional functions of "Data.List".
+--
+-- @since 0.1.0.0
 module Data.List.Hexyll
   ( breakWhen
   ) where

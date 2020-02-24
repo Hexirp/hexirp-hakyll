@@ -7,6 +7,8 @@
 -- Portability: portable
 --
 -- This module includes types and functions about "Data.Yaml".
+--
+-- @since 0.1.0.0
 module Data.Yaml.Hexyll
   ( toString
   , toList

@@ -9,6 +9,8 @@
 -- Portability: portable
 --
 -- This is an internal module for "Hexyll.Core.Identifier.Pattern".
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Identifier.Pattern.Internal where
 
   import Prelude

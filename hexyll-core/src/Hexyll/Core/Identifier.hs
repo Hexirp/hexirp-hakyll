@@ -16,6 +16,8 @@
 --
 -- A 'Identifier' value can have its version. The information about version is
 -- used inside the library.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Identifier
   ( Identifier
   , fromFilePath

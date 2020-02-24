@@ -7,6 +7,8 @@
 -- Portability: portable
 --
 -- This module includes extra functions of "Control.Monad".
+--
+-- @since 0.1.0.0
 module Control.Monad.Hexyll
   ( orM
   ) where

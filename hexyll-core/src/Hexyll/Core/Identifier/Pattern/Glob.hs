@@ -9,6 +9,8 @@
 -- Portability: portable
 --
 -- This module defines a type for glob patterns.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Identifier.Pattern.Glob where
 
   import Prelude

@@ -10,6 +10,8 @@
 -- Portability: non-portable (GHC Extensions: CPP + TemplateHaskell)
 --
 -- This module defines a datastructure for the top-level hexyll configuration.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Configuration
   ( Configuration (..)
   , defaultConfiguration

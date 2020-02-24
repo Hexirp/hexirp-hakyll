@@ -8,6 +8,8 @@
 --
 -- This module provides 'outOfDate' that mark resources to be updated as
 -- out-of-date.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Dependencies
   ( Dependency (..)
   , DependencyFacts (..)
