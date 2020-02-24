@@ -40,18 +40,15 @@ module Hexyll.Core.Identifier.Pattern
   , -- ** Matching
     matchExpr
   , -- * PatternConj
-    PatternConj ( PatternConj )
-  , unPatternConj
+    PatternConj (..)
   , fromExprToConj
   , matchConj
   , -- * PatternDisj
-    PatternDisj ( PatternDisj )
-  , unPatternDisj
+    PatternDisj (..)
   , fromExprToDisj
   , matchDisj
   , -- * Pattern
-    Pattern ( Pattern )
-  , runPattern
+    Pattern (..)
   , compileExpr
   , compileConj
   , compileDisj
