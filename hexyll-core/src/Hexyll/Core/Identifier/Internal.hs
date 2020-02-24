@@ -33,8 +33,8 @@ module Hexyll.Core.Identifier.Internal where
   --
   -- @since 0.1.0.0
   data Identifier = Identifier
-    { identifierVersion :: Maybe String
-    , identifierPath    :: Path Rel File
+    { identifierVersion :: !(Maybe String)
+    , identifierPath    :: !(Path Rel File)
     } deriving (Eq, Ord, Typeable)
 
   -- | @since 0.1.0.0

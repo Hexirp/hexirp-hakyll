@@ -186,16 +186,16 @@ module Hexyll.Core.Dependencies.Internal where
   --
   -- @since 0.1.0.0
   data DependencyEnv = DependencyEnv
-    { dependencyFacts    :: DependencyFacts
-    , dependencyOldCache :: DependencyCache
+    { dependencyFacts    :: !DependencyFacts
+    , dependencyOldCache :: !DependencyCache
     } deriving (Eq, Show, Typeable)
 
   -- | A type of a state for 'outOfDate'.
   --
   -- @since 0.1.0.0
   data DependencyState = DependencyState
-    { dependencyNewCache  :: DependencyCache
-    , identifierOutOfDate :: IdentifierOutOfDate
+    { dependencyNewCache  :: !DependencyCache
+    , identifierOutOfDate :: !IdentifierOutOfDate
     } deriving (Eq, Show, Typeable)
 
   -- | A type of a log for 'outOfDate'.

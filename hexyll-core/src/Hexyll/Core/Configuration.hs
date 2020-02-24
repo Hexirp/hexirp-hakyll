@@ -52,21 +52,21 @@ module Hexyll.Core.Configuration
   -- @since 0.1.0.0
   data Configuration = Configuration
     { -- | Directory in which the output written.
-      destinationDirectory :: Path Rel Dir
+      destinationDirectory :: !(Path Rel Dir)
     , -- | Directory where hexyll's internal store is kept.
-      storeDirectory       :: Path Rel Dir
+      storeDirectory       :: !(Path Rel Dir)
     , -- | Directory in which some temporary files will be kept.
-      tmpDirectory         :: Path Rel Dir
+      tmpDirectory         :: !(Path Rel Dir)
     , -- | Directory where hexyll finds the files to compile.
-      providerDirectory    :: Path Rel Dir
+      providerDirectory    :: !(Path Rel Dir)
     , -- | Function to determine ignored files.
-      ignoreFile           :: Path Rel File -> Bool
+      ignoreFile           :: !(Path Rel File -> Bool)
     , -- | System command to upload/deploy your site.
-      deployCommand        :: String
+      deployCommand        :: !String
     , -- | Function to deploy the site from Haskell.
-      deploySite           :: Configuration -> IO ExitCode
+      deploySite           :: !(Configuration -> IO ExitCode)
     , -- | Flag to use an in-memory cache for items.
-      inMemoryCache        :: Bool
+      inMemoryCache        :: !Bool
     }
 
   -- | @since 0.1.0.0
