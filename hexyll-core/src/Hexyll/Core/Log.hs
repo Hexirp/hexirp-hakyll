@@ -13,13 +13,13 @@ module Hexyll.Core.Log where
 
   import Prelude
 
-  import Data.Typeable (Typeable)
+  import Data.Typeable ( Typeable )
 
-  import Control.Monad.IO.Class     (MonadIO, liftIO)
-  import Control.Monad.Reader.Class (MonadReader (ask))
+  import Control.Monad.IO.Class     ( MonadIO, liftIO )
+  import Control.Monad.Reader.Class ( MonadReader ( ask ) )
 
-  import Lens.Micro        (Lens')
-  import Lens.Micro.Extras (view)
+  import Lens.Micro        ( Lens' )
+  import Lens.Micro.Extras ( view )
 
   -- | The log level of a message in 'LogEnv'. This comes from apache log4j.
   --
