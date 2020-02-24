@@ -16,7 +16,7 @@ import           Test.Tasty.QuickCheck   (testProperty)
 
 
 --------------------------------------------------------------------------------
-import qualified Hexyll.Core.Store       as Store
+import qualified Hexyll.Core.OldStore       as Store
 import           TestSuite.Util
 
 

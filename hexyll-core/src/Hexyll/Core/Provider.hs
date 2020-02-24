@@ -26,7 +26,7 @@ module Hexyll.Core.Provider
 --------------------------------------------------------------------------------
 import qualified Hexyll.Core.Provider.Internal      as Internal
 import qualified Hexyll.Core.Provider.MetadataCache as Internal
-import           Hexyll.Core.Store                  (Store)
+import           Hexyll.Core.OldStore               (Store)
 
 
 --------------------------------------------------------------------------------

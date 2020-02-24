@@ -37,8 +37,8 @@ import           System.FilePath        (addExtension, (</>))
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Store      (Store)
-import qualified Hexyll.Core.Store      as Store
+import           Hexyll.Core.OldStore   (Store)
+import qualified Hexyll.Core.OldStore   as Store
 import           Hexyll.Core.Util.File
 
 

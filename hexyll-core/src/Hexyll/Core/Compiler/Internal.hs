@@ -60,7 +60,7 @@ import           Hexyll.Core.Metadata           hiding ( Pattern, unPattern )
 import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.Provider
 import           Hexyll.Core.Routes             hiding ( Pattern, unPattern, match )
-import           Hexyll.Core.Store
+import           Hexyll.Core.OldStore
 
 
 import Data.Typeable ( Typeable )
