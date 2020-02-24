@@ -1,4 +1,4 @@
-module Hexyll.Core.Log where
+module Hexyll.Core.Store where
 
   import Prelude
 
