@@ -15,19 +15,22 @@ module Hexyll.Core.Store where
 
   type StoreKey = [String]
 
-  data StoreResult a = StoreFound a | StoreNotFound | StoreWrongType TypeRep TypeRep
+  data StoreResult a
+    = StoreFound a
+    | StoreNotFound
+    | StoreWrongType TypeRep
     deriving (Eq, Show, Typeable)
 
   data StoreEnv = StoreEnv
-    { storeSet :: !(forall a. (Binary a, Typeable a) => StoreKey -> a -> IO ())
-    , storeGet :: !(forall a. (Binary a, Typeable a) => StoreKey -> IO (StoreResult a))
-    } deriving (Typeable)
+    { storeSet :: !(forall a. Typeable a => StoreKey -> a -> IO ())
+    , storeGet :: !(forall a. Typeable a => StoreKey -> IO (StoreResult a))
+    } deriving Typeable
 
   class HasStoreEnv env where
     storeEnvL :: Lens' env StoreEnv
 
   set
-    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Binary a, Typeable a)
+    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Typeable a)
     => StoreKey
     -> a
     -> m ()
@@ -36,7 +39,7 @@ module Hexyll.Core.Store where
     liftIO $ storeSet (view storeEnvL env) sk x
 
   get
-    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Binary a, Typeable a)
+    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Typeable a)
     => StoreKey
     -> m (StoreResult a)
   get sk = do
