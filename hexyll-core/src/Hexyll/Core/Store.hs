@@ -4,7 +4,8 @@ module Hexyll.Core.Store where
 
   import Prelude
 
-  import Data.Typeable ( Typeable )
+  import Data.Binary   ( Binary )
+  import Data.Typeable ( Typeable, TypeRep )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
   import Control.Monad.Reader.Class ( MonadReader ( ask ) )
