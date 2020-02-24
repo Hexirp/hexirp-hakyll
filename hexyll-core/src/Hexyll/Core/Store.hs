@@ -39,6 +39,6 @@ module Hexyll.Core.Store where
     :: (MonadIO m, MonadReader env m, HasStoreEnv env, Binary a, Typeable a)
     => StoreKey
     -> m (StoreResult a)
-  set sk = do
+  get sk = do
     env <- ask
     liftIO $ storeGet (view storeEnvL env) sk
