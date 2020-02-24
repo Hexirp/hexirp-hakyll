@@ -1,5 +1,5 @@
 -- |
--- Module:      Hexyll.Core.Log
+-- Module:      Hexyll.Core.LogEnv
 -- Copyright:   (c) 2019 Hexirp
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
@@ -9,7 +9,7 @@
 -- This module provides an environment for logging.
 --
 -- @since 0.1.0.0
-module Hexyll.Core.Log where
+module Hexyll.Core.LogEnv where
 
   import Prelude
 

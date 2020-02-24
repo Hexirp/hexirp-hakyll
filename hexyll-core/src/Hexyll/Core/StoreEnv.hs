@@ -1,6 +1,6 @@
 {-# LANGUAGE RankNTypes #-}
 
-module Hexyll.Core.Store where
+module Hexyll.Core.StoreEnv where
 
   import Prelude
 
