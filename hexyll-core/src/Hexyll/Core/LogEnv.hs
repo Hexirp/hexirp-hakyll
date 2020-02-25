@@ -39,12 +39,6 @@ module Hexyll.Core.LogEnv where
     { logFunc :: LogLevel -> LogMessage -> IO ()
     } deriving (Typeable)
 
-  -- | Make 'LogEnv' strictly.
-  --
-  -- @since 0.1.0.0
-  sqLogEnv :: (LogLevel -> LogMessage -> IO ()) -> LogEnv
-  sqLogEnv f = f `seq` LogEnv f
-
   -- | Environment values with a logging function.
   --
   -- @since 0.1.0.0
