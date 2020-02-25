@@ -53,3 +53,9 @@ module Hexyll.Core.LogEnv where
     env <- ask
     liftIO $ let logEnv = view logEnvL env in
       logFunc logEnv (logOption logEnv) ll lm
+
+  data LogOption = LogOption
+    { logMinLevel :: LogLevel
+    , logSource :: String
+    , logIndentLevel :: Int
+    } deriving (Eq, Ord, Show, Typeable)
