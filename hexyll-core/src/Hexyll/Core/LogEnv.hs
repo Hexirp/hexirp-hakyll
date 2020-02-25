@@ -59,3 +59,20 @@ module Hexyll.Core.LogEnv where
     , logSource :: String
     , logIndentLevel :: Int
     } deriving (Eq, Ord, Show, Typeable)
+
+  newLogFunc :: LogOption -> LogLevel -> LogMessage -> IO ()
+  newLogFunc lo ll lm =
+      when (logMinLevel lo <= ll) $
+        putStrLn $
+          ""
+            ++ replicate (logIndentLevel lo) ' '
+            ++ level ll
+            ++ (logSource io ++ ":")
+            ++ " "
+            ++ lm
+    where
+      level LogDebug = "[DEBUG]:"
+      level LogInfo = "[INFO]:"
+      level LogWarn = "[WARN]:"
+      level LogError = "[Error]:"
+      level LogFatal = "[FATAL]:"
