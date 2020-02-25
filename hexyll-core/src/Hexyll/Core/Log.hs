@@ -2,6 +2,8 @@ module Hexyll.Core.Log where
 
   import Prelude
 
+  import Data.Typeable ( Typeable )
+
   -- | The log level of a message in 'LogEnv'. This comes from apache log4j.
   --
   -- @since 0.1.0.0
