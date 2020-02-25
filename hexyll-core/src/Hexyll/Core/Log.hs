@@ -15,3 +15,33 @@ module Hexyll.Core.Log where
 
   class Monad m => MonadLog m where
     logGeneric :: LogLevel -> LogMessage -> m ()
+
+  -- | Log a DEBUG level message.
+  --
+  -- @since 0.1.0.0
+  logDebug :: MonadLog m => LogMessage -> m ()
+  logDebug lm = logGeneric LevelDebug lm
+
+  -- | Log a INFO level message.
+  --
+  -- @since 0.1.0.0
+  logInfo :: MonadLog m => LogMessage -> m ()
+  logInfo lm = logGeneric LevelInfo lm
+
+  -- | Log a WARN level message.
+  --
+  -- @since 0.1.0.0
+  logWarn :: MonadLog m => LogMessage -> m ()
+  logWarn lm = logGeneric LevelWarn lm
+
+  -- | Log a ERROR level message.
+  --
+  -- @since 0.1.0.0
+  logError :: MonadLog m => LogMessage -> m ()
+  logError lm = logGeneric LevelError lm
+
+  -- | Log a FATAL level message.
+  --
+  -- @since 0.1.0.0
+  logFatal :: MonadLog m => LogMessage -> m ()
+  logFatal lm = logGeneric LevelFatal lm
