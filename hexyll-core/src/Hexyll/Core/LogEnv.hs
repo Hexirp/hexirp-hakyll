@@ -28,7 +28,7 @@ module Hexyll.Core.LogEnv where
   -- @since 0.1.0.0
   data LogEnv = LogEnv
     { logFunc :: !(LogOption -> LogLevel -> LogMessage -> IO ())
-    , logOption :: LogOption
+    , logOption :: !LogOption
     } deriving (Typeable)
 
   -- | Environment values with a logging function.
