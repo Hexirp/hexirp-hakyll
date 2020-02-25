@@ -225,3 +225,29 @@ Haskell 方面へ寄っていく。
 * メタデータ
   * 特に、これは `Hexyll.Core.Metadata` の `MonadMetadata` と `Hexyll.Core.Provider` の `Provider` と道具が揃っている。
 * ストア
+
+## 2020-02-25
+
+モナドの設計についての考察。
+
+### coding
+
+https://github.com/Hexirp/hexirp-hakyll/blob/2d20aefa0e928db0cd4ba93526a73712949676c5/hexyll-core/src/Hexyll/Core/Compiler/Internal.hs#L75-L196 を見よ。
+
+```haskell
+newtype Compiler a = Compiler { unCompiler :: CompilerRead -> IO (CompilerResult a) }
+
+data CompilerResult a = CompilerDone a CompilerWrite | CompilerSnapshot Snapshot (Compiler a) | CompilerRequire (Identifier, Snapshot) (Compiler a) | CompilerError (CompilerErrors String)
+```
+
+なぜ、これが仮にでもモナドとして扱えるのか。もちろん、当のモナドの実装は具体的なコードが入り込んでおり、厳密にはモナドとしては扱えない。しかし、それを除いたら実装は正しいように見える。こんな見たことがない形をした型がモナドになれるのか。
+
+色々考えた結論からすると、 Compiler は Coroutine 系モナドである。
+
+```haskell
+data CompilerSuspend a = CompilerSnapshot Snapshot a | CompilerRequire Identifier Snapshot a | CompilerError (CompilerErrors String)
+
+type Compiler = ReaderT CompilerRead (WriterT CompilerWrite (Coroutine CompilerSuspend IO))
+```
+
+この Coroutine モナドは ReaderT デザインパターンで代替できないモナドの一つである（他には継続モナドなどがある）。コマンドのような命令を表す型を定義する方法で代替できないか考える。
