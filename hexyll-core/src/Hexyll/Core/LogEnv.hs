@@ -44,11 +44,12 @@ module Hexyll.Core.LogEnv where
   -- | Log a message with a given level.
   --
   -- @since 0.1.0.0
-  logGeneric
+  logGenericEnv
     :: (MonadIO m, MonadReader env m, HasLogEnv env)
     => LogLevel
     -> LogMessage
     -> m ()
-  logGeneric ll lm = do
+  logGenericEnv ll lm = do
     env <- ask
-    liftIO $ logFunc (view logEnvL env) ll lm
+    liftIO $ let logEnv = view logEnvL env in
+      logFunc logEnv (logOption logEnv) ll lm
