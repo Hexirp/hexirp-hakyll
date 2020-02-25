@@ -21,22 +21,14 @@ module Hexyll.Core.LogEnv where
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
 
-  -- | The log level of a message in 'LogEnv'. This comes from apache log4j.
-  --
-  -- @since 0.1.0.0
-  data LogLevel = LevelDebug | LevelInfo | LevelWarn | LevelError | LevelFatal
-    deriving (Eq, Ord, Enum, Bounded, Show, Typeable)
-
-  -- | The message type in 'LogEnv'.
-  --
-  -- @since 0.1.0.0
-  type LogMessage = String
+  import Hexyll.Core.Log ( LogLevel, LogMessage )
 
   -- | The type of environment for logging.
   --
   -- @since 0.1.0.0
-  newtype LogEnv = LogEnv
-    { logFunc :: LogLevel -> LogMessage -> IO ()
+  data LogEnv = LogEnv
+    { logFunc :: !(LogOption -> LogLevel -> LogMessage -> IO ())
+    , logOption :: LogOption
     } deriving (Typeable)
 
   -- | Environment values with a logging function.
