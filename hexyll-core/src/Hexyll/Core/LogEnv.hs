@@ -21,7 +21,7 @@ module Hexyll.Core.LogEnv where
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
 
-  import Hexyll.Core.Log ( LogLevel, LogMessage )
+  import Hexyll.Core.Log
 
   -- | The type of environment for logging.
   --
