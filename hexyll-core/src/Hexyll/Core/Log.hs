@@ -15,6 +15,8 @@ module Hexyll.Core.Log where
   -- @since 0.1.0.0
   type LogMessage = String
 
+  -- | A monad for logging. This has a simple function 'logGeneric' which
+  -- requires 'LogLevel' and 'LogMessage' and put a log.
   class Monad m => MonadLog m where
     logGeneric :: LogLevel -> LogMessage -> m ()
 
