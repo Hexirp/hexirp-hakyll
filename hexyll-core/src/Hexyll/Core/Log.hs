@@ -4,13 +4,13 @@ module Hexyll.Core.Log where
 
   import Data.Typeable ( Typeable )
 
-  -- | The log level of a message in 'LogEnv'. This comes from apache log4j.
+  -- | The log level of a message in the log. This comes from apache log4j.
   --
   -- @since 0.1.0.0
   data LogLevel = LevelDebug | LevelInfo | LevelWarn | LevelError | LevelFatal
     deriving (Eq, Ord, Enum, Bounded, Show, Typeable)
 
-  -- | The message type in 'LogEnv'.
+  -- | The message type in the log.
   --
   -- @since 0.1.0.0
   type LogMessage = String
