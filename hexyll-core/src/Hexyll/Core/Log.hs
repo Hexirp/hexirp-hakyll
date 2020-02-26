@@ -28,6 +28,8 @@ module Hexyll.Core.Log where
 
   -- | A monad for logging. This has a simple function 'logGeneric' which
   -- requires 'LogLevel' and 'LogMessage' and put a log.
+  --
+  -- @since 0.1.0.0
   class Monad m => MonadLog m where
     logGeneric :: LogLevel -> LogMessage -> m ()
 
