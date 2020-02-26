@@ -65,7 +65,7 @@ module Hexyll.Core.LogEnv where
     , logIndentLevel :: Int
     } deriving (Eq, Ord, Show, Typeable)
 
-  -- | Make a new logging function.
+  -- | A simple logging function.
   --
   -- @since 0.1.0.0
   simpleLogFunc :: LogOption -> LogLevel -> LogMessage -> IO ()
