@@ -68,8 +68,8 @@ module Hexyll.Core.LogEnv where
   -- | Make a new logging function.
   --
   -- @since 0.1.0.0
-  newLogFunc :: LogOption -> LogLevel -> LogMessage -> IO ()
-  newLogFunc lo ll lm =
+  simpleLogFunc :: LogOption -> LogLevel -> LogMessage -> IO ()
+  simpleLogFunc lo ll lm =
       when (logMinLevel lo <= ll) $
         putStrLn $ header ++ " " ++ lm
     where
