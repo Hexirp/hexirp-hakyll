@@ -15,4 +15,4 @@ module Hexyll.Core.Store where
   class Monad m => MonadStore m where
     save :: Typeable a => StoreKey -> a -> m ()
     load :: Typeable a => StoreKey -> m (StoreResult a)
-    remove :: Typeable a => StoreKey -> m Bool
+    remove :: StoreKey -> m Bool
