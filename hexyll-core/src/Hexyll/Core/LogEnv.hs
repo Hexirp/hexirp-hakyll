@@ -56,12 +56,18 @@ module Hexyll.Core.LogEnv where
     liftIO $ let logEnv = view logEnvL env in
       logFunc logEnv (logOption logEnv) ll lm
 
+  -- | The option of 'LogEnv'.
+  --
+  -- @since 0.1.0.0
   data LogOption = LogOption
     { logMinLevel :: LogLevel
     , logSource :: String
     , logIndentLevel :: Int
     } deriving (Eq, Ord, Show, Typeable)
 
+  -- | Make a new logging function.
+  --
+  -- @since 0.1.0.0
   newLogFunc :: LogOption -> LogLevel -> LogMessage -> IO ()
   newLogFunc lo ll lm =
       when (logMinLevel lo <= ll) $
