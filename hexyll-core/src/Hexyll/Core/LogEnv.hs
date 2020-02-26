@@ -63,16 +63,14 @@ module Hexyll.Core.LogEnv where
   newLogFunc :: LogOption -> LogLevel -> LogMessage -> IO ()
   newLogFunc lo ll lm =
       when (logMinLevel lo <= ll) $
-        putStrLn $
-          ""
-            ++ replicate (logIndentLevel lo) ' '
-            ++ level ll
-            ++ (logSource io ++ ":")
-            ++ " "
-            ++ lm
+        putStrLn $ header ++ " " ++ lm
     where
-      level LogDebug = "[DEBUG]:"
-      level LogInfo = "[INFO]:"
-      level LogWarn = "[WARN]:"
-      level LogError = "[Error]:"
-      level LogFatal = "[FATAL]:"
+      indent = replicate (logIndentLevel lo) ' '
+      level = case ll of
+        LevelDebug -> "[DEBUG]:"
+        LevelInfo -> "[INFO]:"
+        LevelWarn -> "[WARN]:"
+        LevelError -> "[Error]:"
+        LevelFatal -> "[FATAL]:"
+      source = logSource io ++ ":"
+      header = indent ++ level ++ source
