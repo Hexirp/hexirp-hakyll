@@ -83,6 +83,9 @@ module Hexyll.Core.LogEnv where
       source = logSource lo ++ ":"
       header = indent ++ level ++ source
 
+  -- | A simple 'LogEnv'.
+  --
+  -- @since 0.1.0.0
   simpleLogEnv :: LogEnv
   simpleLogEnv = LogEnv
     { logFunc = simpleLogFunc
