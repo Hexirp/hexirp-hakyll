@@ -82,3 +82,13 @@ module Hexyll.Core.LogEnv where
         LevelFatal -> "[FATAL]:"
       source = logSource lo ++ ":"
       header = indent ++ level ++ source
+
+  simpleLogEnv :: LogEnv
+  simpleLogEnv = LogEnv
+    { logFunc = simpleLogFunc
+    , logOption = LogOption
+      { logMinLevel = LevelWarn
+      , logSource = ""
+      , logIndentLevel = 0
+      }
+    }
