@@ -60,9 +60,9 @@ module Hexyll.Core.LogEnv where
   --
   -- @since 0.1.0.0
   data LogOption = LogOption
-    { logMinLevel :: LogLevel
-    , logSource :: String
-    , logIndentLevel :: Int
+    { logMinLevel :: !LogLevel
+    , logSource :: !String
+    , logIndentLevel :: !Int
     } deriving (Eq, Ord, Show, Typeable)
 
   -- | A simple logging function.
