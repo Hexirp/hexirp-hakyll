@@ -13,6 +13,8 @@ module Hexyll.Core.LogEnv where
 
   import Prelude
 
+  import Control.Monad ( when )
+
   import Data.Typeable ( Typeable )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
