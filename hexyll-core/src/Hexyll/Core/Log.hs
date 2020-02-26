@@ -1,3 +1,14 @@
+-- |
+-- Module:      Hexyll.Core.Log
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: portable
+--
+-- This module provides the basic types and type classes for logging.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Log where
 
   import Prelude
