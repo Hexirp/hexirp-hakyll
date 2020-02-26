@@ -72,5 +72,5 @@ module Hexyll.Core.LogEnv where
         LevelWarn -> "[WARN]:"
         LevelError -> "[Error]:"
         LevelFatal -> "[FATAL]:"
-      source = logSource io ++ ":"
+      source = logSource lo ++ ":"
       header = indent ++ level ++ source
