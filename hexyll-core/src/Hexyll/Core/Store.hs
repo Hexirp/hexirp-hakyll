@@ -13,6 +13,6 @@ module Hexyll.Core.Store where
     deriving (Eq, Show, Typeable)
 
   class Monad m => MonadStore m where
-    setInStore :: Typeable a => StoreKey -> a -> m ()
-    getInStore :: Typeable a => StoreKey -> m (StoreResult a)
-    removeInStore :: StoreKey -> m Bool
+    save :: Typeable a => StoreKey -> a -> m ()
+    load :: Typeable a => StoreKey -> m (StoreResult a)
+    remove :: Typeable a => StoreKey -> m (StoreResult a)
