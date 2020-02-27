@@ -453,3 +453,26 @@ class Monad m => MonadStore m where
       Just msv -> msv
 ```
 
+```haskell
+type StoreKey = [String]
+
+data StoreValue where
+  StoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
+class Monad m => MonadStore m where
+  save :: StoreKey -> StoreValue -> m ()
+  loadDelay :: StoreKey -> m (Maybe (m StoreValue))
+
+  load :: StoreKey -> m (Maybe StoreValue)
+  load sk = do
+    mmsv <- loadDelay sk
+    case mmsv of
+      Nothing -> return Nothing
+      Just msv -> msv
+
+  isMember :: StoreKey -> m Bool
+  isMember sk = do
+    mmsv <- loadDelay sk
+    return $ isJust mmsv
+```
+
