@@ -6,6 +6,9 @@ module Hexyll.Core.Store where
 
   type StoreKey = String
 
+  data StoreValue where
+    StoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
   data StoreResult a
     = StoreFound a
     | StoreNotFound
@@ -13,6 +16,5 @@ module Hexyll.Core.Store where
     deriving (Eq, Show, Typeable)
 
   class Monad m => MonadStore m where
-    save :: Typeable a => StoreKey -> a -> m ()
-    load :: Typeable a => StoreKey -> m (StoreResult a)
-    remove :: StoreKey -> m Bool
+    save :: StoreKey -> StoreValue -> m ()
+    load :: StoreKey -> m (Maybe StoreValue)
