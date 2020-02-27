@@ -270,3 +270,186 @@ Store は何ができるのか。
     * キャッシュが存在した場合は普通に読み込めるが、存在しない場合と保存されていた値と型が合わない場合の二つの異常な結果がある。
   * 一つのキャッシュを削除する。
     * キーだけを参照する。型もチェックすべきかどうか分からないが。結果は削除が成功したなら True でキャッシュが存在しなかったなら False とする。
+
+## 2020-02-27
+
+MonadStore についての考察。
+
+### coding
+
+```haskell
+type StoreKey = [String]
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: (Binary a, Typeable a) => StoreKey -> a -> m ()
+  set :: (Binary a, Typeable a) => StoreKey -> m (StoreResult a)
+```
+
+```haskell
+type StoreKey = [String]
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: (Binary a, Typeable a) => StoreKey -> a -> m ()
+  set :: (Binary a, Typeable a) => StoreKey -> m (StoreResult a)
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: (Binary a, Typeable a) => StoreKey -> a -> m ()
+  set :: (Binary a, Typeable a) => StoreKey -> m (StoreResult a)
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: StoreKey -> m ()
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: StoreKey -> m Bool
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: Typeable a => StoreKey -> proxy a -> m (StoreResult ())
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: Typeable a => StoreKey -> proxy a -> m (StoreResult (proxy a))
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  save :: Typeable a => StoreKey -> a -> m ()
+  load :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: StoreKey -> m Bool
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  save :: Typeable a => StoreKey -> a -> m ()
+  load :: Typeable a => StoreKey -> m (StoreResult a)
+  isMember :: StoreKey -> m Bool
+  remove :: StoreKey -> m Bool
+```
+
+```haskell
+type StoreKey = [String]
+
+data StoreValue where
+  StoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
+class Monad m => MonadStore m where
+  save :: StoreKey -> StoreValue -> m ()
+  load :: StoreKey -> m (Maybe StoreValue)
+```
+
+```haskell
+type StoreKey = [String]
+
+data StoreValue where
+  StoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
+class Monad m => MonadStore m where
+  save :: StoreKey -> StoreValue -> m ()
+  loadDelay :: StoreKey -> m (Maybe (m StoreValue))
+
+  load :: StoreKey -> m (Maybe StoreValue)
+  load sk = do
+    mmsv <- loadDelay sk
+    case mmsv of
+      Nothing -> return Nothing
+      Just msv -> msv
+```
+
