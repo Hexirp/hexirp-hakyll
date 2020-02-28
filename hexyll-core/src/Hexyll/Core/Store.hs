@@ -2,19 +2,27 @@ module Hexyll.Core.Store where
 
   import Prelude
 
-  import Data.Typeable ( Typeable, TypeRep )
+  import Data.Maybe ( isJust )
+
+  import Data.Typeable ( Typeable )
 
   type StoreKey = String
 
   data StoreValue where
     StoreValue :: (Binary a, Typeable a) => a -> StoreValue
 
-  data StoreResult a
-    = StoreFound a
-    | StoreNotFound
-    | StoreWrongType TypeRep
-    deriving (Eq, Show, Typeable)
-
   class Monad m => MonadStore m where
     save :: StoreKey -> StoreValue -> m ()
-    load :: StoreKey -> m (Maybe StoreValue)
+    loadDelay :: StoreKey -> m (Maybe (m StoreValue))
+
+  load :: MonadStore m => StoreKey -> m (Maybe StoreValue)
+  load sk = do
+    mmsv <- loadDelay sk
+    case mmsv of
+      Nothing -> return Nothing
+      Just msv -> msv
+
+  isExistent :: MonadStore m => StoreKey -> m Bool
+  isExistent sk = do
+    mmsv <- loadDelay sk
+    return $ isJust mmsv
