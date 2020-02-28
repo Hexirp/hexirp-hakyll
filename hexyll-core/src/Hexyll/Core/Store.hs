@@ -5,6 +5,7 @@ module Hexyll.Core.Store where
   import Data.Maybe ( isJust )
 
   import Data.Typeable ( Typeable )
+  import Data.Binary   ( Binary )
 
   type StoreKey = String
 
