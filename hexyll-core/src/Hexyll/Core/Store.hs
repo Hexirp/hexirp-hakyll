@@ -13,28 +13,25 @@ module Hexyll.Core.Store where
 
   type StoreKey = String
 
-  data StoreValue where
-    MkStoreValue :: (Binary a, Typeable a) => a -> StoreValue
+  newtype StoreResult m a = StoreResult
+    { unStoreResult :: Maybe (m (Either StoreError a))
+    } deriving ( Typeable )
 
-  deStoreValue
-    :: StoreValue
-    -> (forall a. (Binary a, Typeable a) => a -> r)
-    -> r
-  deStoreValue (MkStoreValue x) f = f x
-
-  unwrapStoreValue :: Typeable a => StoreValue -> Maybe a
-  unwrapStoreValue (MkStoreValue x) = cast x
+  data StoreError = StoreError
+    { storeExpect :: TypeRep
+    , storeActual :: TypeRep
+    } deriving ( Eq, Show, Typeable )
 
   class Monad m => MonadStore m where
-    save :: StoreKey -> StoreValue -> m ()
-    loadDelay :: StoreKey -> m (Maybe (m StoreValue))
+    save :: (Binary a, Typeable a) => StoreKey -> a -> m ()
+    loadDelay :: (Binary a, Typeable a) => StoreKey -> m (StoreResult m a)
 
-  load :: MonadStore m => StoreKey -> m (Maybe StoreValue)
+  load :: MonadStore m => StoreKey -> m (Maybe (Either StoreError a))
   load sk = do
-    mmsv <- loadDelay sk
-    case mmsv of
+    mmesv <- loadDelay sk
+    case mmesv of
       Nothing -> return Nothing
-      Just msv -> Just <$> msv
+      Just mesv -> Just <$> msv
 
   isExistent :: MonadStore m => StoreKey -> m Bool
   isExistent sk = do
