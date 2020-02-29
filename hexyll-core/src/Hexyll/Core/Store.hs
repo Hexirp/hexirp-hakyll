@@ -1,5 +1,6 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
 module Hexyll.Core.Store where
@@ -43,7 +44,7 @@ module Hexyll.Core.Store where
         return $ Left (StoreError trExpect trActual)
 
   getStoreValue
-    :: (Binary a, Typeable a) => Get (Either StoreError a)
+    :: forall a. (Binary a, Typeable a) => Get (Either StoreError a)
   getStoreValue = let trExpect = typeRep (Proxy @a) in do
     trActual <- get
     if trActual == trExpect
