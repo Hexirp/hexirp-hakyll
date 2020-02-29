@@ -22,6 +22,7 @@ before_install:
 - travis_retry curl -OL https://get.haskellstack.org/stable/windows-x86_64.zip
 - unzip windows-x86_64.zip
 - cp windows-x86_64\\stack.exe $HOME\\AppData\\Roaming\\local\\bin\\
+- export STACK_ROOT=C:\\sr\\
 
 install:
 # Build dependencies
