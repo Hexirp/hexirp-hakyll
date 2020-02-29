@@ -42,8 +42,8 @@ module Hexyll.Core.Store where
       else
         return $ Left (StoreError trExpect trActual)
 
-  newtype StoreResult m a = StoreResult
-    { unStoreResult :: Maybe (m (Either StoreError a))
+  newtype StoreLoad m = StoreLoad
+    { runStoreLoad :: forall a. (Binary a, Typeable a) => Proxy a -> m (Either StoreError StoreValue)
     } deriving ( Typeable )
 
   data StoreError = StoreError
@@ -52,8 +52,8 @@ module Hexyll.Core.Store where
     } deriving ( Eq, Show, Typeable )
 
   class Monad m => MonadStore m where
-    save :: (Binary a, Typeable a) => StoreKey -> a -> m ()
-    loadDelay :: (Binary a, Typeable a) => StoreKey -> m (StoreResult m a)
+    save :: StoreKey -> StoreValue -> m ()
+    loadDelay :: StoreKey -> m (Maybe (StoreLoad m))
 
   load
     :: (Binary a, Typeable a, MonadStore m)
