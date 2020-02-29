@@ -14,8 +14,6 @@ module Hexyll.Core.StoreEnv where
 
   import Hexyll.Core.Store
 
-  type StoreKey = [String]
-
   data StoreEnv = StoreEnv
     { storeSave :: !(StoreKey -> StoreValue -> IO ())
     , storeLoadDelay :: !(StoreKey -> IO (Maybe (StoreLoad IO)))
