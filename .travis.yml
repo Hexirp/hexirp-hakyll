@@ -8,6 +8,7 @@ language: shell
 cache:
   directories:
     - C:\\sr\\
+    - $HOME\\AppData\\Local\\Programs\\stack\\x86_64-windows\\
 
 # Use Build Matrix to build multiple stack resolvers.
 env:
