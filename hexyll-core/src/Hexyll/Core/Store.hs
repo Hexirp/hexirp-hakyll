@@ -38,7 +38,7 @@ module Hexyll.Core.Store where
     if trActual == trExpect
       then do
         x <- get
-        return $ MkStoreValue x
+        return $ Right (MkStoreValue x)
       else
         return $ Left (StoreError trExpect trActual)
 
