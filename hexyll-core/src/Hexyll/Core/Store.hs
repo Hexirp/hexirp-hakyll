@@ -52,17 +52,14 @@ module Hexyll.Core.Store where
 
   getWrapStVal
     :: (Binary a, Typeable a) => Proxy a -> Get (Either StoreError a)
-  getWrapStVal =
-    let
-      trExpect = typeRep proxy
-    in do
-      trActual <- get
-      if trActual == trExpect
-        then do
-          x <- get
-          return $ Right x `const` (x `asProxyTypeOf` proxy)
-        else
-          return $ Left (StoreError trExpect trActual)
+  getWrapStVal proxy = let trExpect = typeRep proxy in do
+    trActual <- get
+    if trActual == trExpect
+      then do
+        x <- get
+        return $ Right x `const` (x `asProxyTypeOf` proxy)
+      else
+        return $ Left (StoreError trExpect trActual)
 
   newtype StoreLoad m = StoreLoad
     { runStoreLoad
