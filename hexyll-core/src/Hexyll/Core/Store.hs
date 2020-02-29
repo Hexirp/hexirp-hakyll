@@ -4,6 +4,17 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TypeApplications #-}
 
+-- |
+-- Module:      Hexyll.Core.Store
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: non-portable (ghc-extensions: GADTs and RankNTypes)
+--
+-- This module provides the basic types and type classes for handling a store.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Store where
 
   import Prelude
