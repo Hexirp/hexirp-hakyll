@@ -31,6 +31,7 @@ module Hexyll.Core.Log where
   --
   -- @since 0.1.0.0
   class Monad m => MonadLog m where
+    -- | Log a message with a level.
     logGeneric :: LogLevel -> LogMessage -> m ()
 
   -- | Log a DEBUG level message.
