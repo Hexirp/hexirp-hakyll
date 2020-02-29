@@ -27,7 +27,7 @@ module Hexyll.Core.Store where
   unwrapStoreValue (MkStoreValue x) = cast x
 
   putStoreValue :: StoreValue -> Put
-  putStoreValue (StoreValue x) = do
+  putStoreValue (MkStoreValue x) = do
     put (typeOf x)
     put x
 
@@ -38,7 +38,7 @@ module Hexyll.Core.Store where
     if trActual == trExpect
       then do
         x <- get
-        return $ StoreValue x
+        return $ MkStoreValue x
       else
         return $ Left (StoreError trExpect trActual)
 
