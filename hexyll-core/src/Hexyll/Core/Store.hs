@@ -109,6 +109,12 @@ module Hexyll.Core.Store where
         :: forall a. (Binary a, Typeable a) => m (Either StoreError a)
     } deriving ( Typeable )
 
+  -- | Map over 'StoreLoad'.
+  --
+  -- @since 0.1.0.0
+  mapStoreLoad :: (forall a. m a -> n a) -> StoreLoad m -> StoreLoad n
+  mapStoreLoad f (StoreLoad sl) = StoreLoad (f sl)
+
   -- | An error type when casting.
   --
   -- @since 0.1.0.0
