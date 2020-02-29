@@ -23,7 +23,6 @@ before_install:
 - unzip windows-x86_64.zip stack.exe
 - cp stack.exe $HOME\\AppData\\Roaming\\local\\bin\\
 - export STACK_ROOT=C:\\sr\\
-- rm stack.exe
 
 install:
 # Build dependencies
