@@ -23,7 +23,7 @@ module Hexyll.Core.Store where
     mmsv <- loadDelay sk
     case mmsv of
       Nothing -> return Nothing
-      Just msv -> msv
+      Just msv -> Just <$> msv
 
   isExistent :: MonadStore m => StoreKey -> m Bool
   isExistent sk = do
