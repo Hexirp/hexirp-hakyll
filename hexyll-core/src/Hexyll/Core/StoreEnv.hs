@@ -35,7 +35,7 @@ module Hexyll.Core.StoreEnv where
     :: (MonadIO m, MonadReader env m, HasStoreEnv env)
     => StoreKey
     -> m (Maybe (StoreLoad m))
-  get sk = do
+  loadDelayEnv sk = do
     env <- ask
     liftIO $ fmap (fmap (mapStoreLoad liftIO)) $
       storeGet (view storeEnvL env) sk
