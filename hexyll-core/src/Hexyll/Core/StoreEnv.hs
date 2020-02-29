@@ -38,4 +38,4 @@ module Hexyll.Core.StoreEnv where
   loadDelayEnv sk = do
     env <- ask
     liftIO $ fmap (fmap (mapStoreLoad liftIO)) $
-      storeGet (view storeEnvL env) sk
+      storeLoadDelay (view storeEnvL env) sk
