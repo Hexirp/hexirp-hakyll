@@ -6,9 +6,16 @@ module Hexyll.Core.Store where
   import Prelude
 
   import Data.Maybe ( isJust )
+  import Data.Proxy ( Proxy (..), asProxyTypeOf )
 
   import Data.Typeable ( Typeable, typeOf, cast, TypeRep )
   import Data.Binary   ( Binary (..) )
+
+  reflectTypeRep
+    :: TypeRep
+    -> (forall a. Typeable a => Proxy a -> r)
+    -> r
+  reflectTypeRep = undefined
 
   type StoreKey = String
 
@@ -21,7 +28,10 @@ module Hexyll.Core.Store where
       put x
     get = do
       tr <- get
-      undefined
+      reflectTypeRep tr $ \proxy -> do
+        x <- get
+        _ <- x `asProxyTypeOf` proxy
+        return $ MkStoreValue 
 
   deStoreValue
     :: StoreValue
