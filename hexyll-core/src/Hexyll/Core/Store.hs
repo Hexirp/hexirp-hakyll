@@ -31,14 +31,25 @@ module Hexyll.Core.Store where
     put (typeOf x)
     put x
 
-  getStoreValue
+  getWrapStoreValue
     :: (Binary a, Typeable a) => Proxy a -> Get (Either StoreError StoreValue)
-  getStoreValue proxy = let trExpect = typeRep proxy in do
+  getWrapStoreValue proxy = let trExpect = typeRep proxy in do
     trActual <- get
     if trActual == trExpect
       then do
         x <- get
         return $ Right (MkStoreValue x) `const` (x `asProxyTypeOf` proxy)
+      else
+        return $ Left (StoreError trExpect trActual)
+
+  getStoreValue
+    :: (Binary a, Typeable a) => Get (Either StoreError a)
+  getStoreValue = let trExpect = typeRep (Proxy @a) in do
+    trActual <- get
+    if trActual == trExpect
+      then do
+        x <- get
+        return $ Right x
       else
         return $ Left (StoreError trExpect trActual)
 
