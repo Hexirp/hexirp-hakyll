@@ -1,5 +1,6 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Hexyll.Core.Store where
 
@@ -38,6 +39,5 @@ module Hexyll.Core.Store where
 
   isExistent :: MonadStore m => StoreKey -> m Bool
   isExistent sk = do
-    StoreResult mmesv <- loadDelay sk
-    let _type_info = StoreResult mmesv :: StoreResult m ()
+    StoreResult mmesv <- loadDelay @_ @() sk
     return $ isJust mmesv
