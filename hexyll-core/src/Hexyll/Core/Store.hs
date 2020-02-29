@@ -76,8 +76,8 @@ module Hexyll.Core.Store where
     loadDelay :: StoreKey -> m (Maybe (StoreLoad m))
 
   load
-    :: forall a.
-       (Binary a, Typeable a, MonadStore m)
+    :: forall m a.
+       (MonadStore m, Binary a, Typeable a)
     => StoreKey
     -> m (Maybe (Either StoreError a))
   load sk = do
