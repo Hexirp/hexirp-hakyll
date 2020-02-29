@@ -84,8 +84,7 @@ module Hexyll.Core.Store where
     msl <- loadDelay sk
     case msl of
       Nothing -> pure Nothing
-      Just sl -> case sl of
-        StoreLoad f -> Just <$> f (Proxy @a)
+      Just sl -> Just <$> runStoreLoad sl
 
   isExistent :: MonadStore m => StoreKey -> m Bool
   isExistent sk = do
