@@ -105,7 +105,7 @@ module Hexyll.Core.Store where
   data StoreError = StoreError
     { storeExpect :: TypeRep
     , storeActual :: TypeRep
-    } deriving ( Eq, Show, Typeable )
+    } deriving ( Eq, Ord, Show, Typeable )
 
   -- | A monad for handling a store. This has two functions corresponding to
   -- save/load.
