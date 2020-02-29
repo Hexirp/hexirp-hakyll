@@ -14,6 +14,30 @@ module Hexyll.Core.Store where
 
   type StoreKey = String
 
+  data StoreValue where
+    MkStoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
+  deStoreValue
+    :: StoreValue
+    -> (forall a. (Binary a, Typeable a) => a -> r)
+    -> r
+  deStoreValue (MkStoreValue x) f = f x
+
+  unwrapStoreValue :: Typeable a => StoreValue -> Maybe a
+  unwrapStoreValue (MkStoreValue x) = cast x
+
+  getStoreValue
+    :: (Binary a, Typeable a)
+    => Proxy a
+    -> Get (Either StoreError a)
+  getStoreValue proxy = do
+    tr <- get
+    if tr == typeRep proxy
+      then do
+        x <- get
+        return $ Right x
+      else undefined
+
   newtype StoreResult m a = StoreResult
     { unStoreResult :: Maybe (m (Either StoreError a))
     } deriving ( Typeable )
