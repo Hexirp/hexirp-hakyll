@@ -65,7 +65,8 @@ module Hexyll.Core.Store where
           return $ Left (StoreError trExpect trActual)
 
   newtype StoreLoad m = StoreLoad
-    { runStoreLoad :: (Binary a, Typeable a) => m (Either StoreError a)
+    { runStoreLoad
+        :: forall a. (Binary a, Typeable a) => m (Either StoreError a)
     } deriving ( Typeable )
 
   data StoreError = StoreError
