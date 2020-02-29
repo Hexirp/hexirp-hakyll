@@ -12,35 +12,32 @@ module Hexyll.Core.StoreEnv where
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
 
+  import Hexyll.Core.Store
+
   type StoreKey = [String]
 
-  data StoreResult a
-    = StoreFound a
-    | StoreNotFound
-    | StoreWrongType TypeRep
-    deriving (Eq, Show, Typeable)
-
   data StoreEnv = StoreEnv
-    { storeSet :: !(forall a. Typeable a => StoreKey -> a -> IO ())
-    , storeGet :: !(forall a. Typeable a => StoreKey -> IO (StoreResult a))
+    { storeSave :: !(StoreKey -> StoreValue -> IO ())
+    , storeLoadDelay :: !(StoreKey -> IO (Maybe (StoreLoad IO)))
     } deriving Typeable
 
   class HasStoreEnv env where
     storeEnvL :: Lens' env StoreEnv
 
-  set
-    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Typeable a)
+  saveEnv
+    :: (MonadIO m, MonadReader env m, HasStoreEnv env)
     => StoreKey
-    -> a
+    -> StoreValue
     -> m ()
-  set sk x = do
+  saveEnv sk sv = do
     env <- ask
-    liftIO $ storeSet (view storeEnvL env) sk x
+    liftIO $ storeSave (view storeEnvL env) sk sv
 
-  get
-    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Typeable a)
+  loadDelayEnv
+    :: (MonadIO m, MonadReader env m, HasStoreEnv env)
     => StoreKey
-    -> m (StoreResult a)
+    -> m (Maybe (StoreLoad m))
   get sk = do
     env <- ask
-    liftIO $ storeGet (view storeEnvL env) sk
+    liftIO $ fmap (fmap (mapStoreLoad liftIO)) $
+      storeGet (view storeEnvL env) sk
