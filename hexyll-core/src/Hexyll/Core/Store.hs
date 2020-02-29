@@ -33,7 +33,7 @@ module Hexyll.Core.Store where
   --
   -- @since 0.1.0.0
   data StoreValue where
-    MkStoreValue :: (Binary a, Typeable a) => a -> StoreValue
+    MkStoreValue :: (Binary a, Typeable a) => !a -> StoreValue
 
   -- | Destruct a 'StoreValue'.
   --
