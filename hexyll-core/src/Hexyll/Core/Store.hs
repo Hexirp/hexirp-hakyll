@@ -50,22 +50,22 @@ module Hexyll.Core.Store where
       else
         return $ Left (StoreError trExpect trActual)
 
-  getWrapStVal
-    :: forall a. (Binary a, Typeable a) => Get (Either StoreError a)
-  getWrapStVal = let trExpect = typeRep (Proxy @a) in do
-    trActual <- get
-    if trActual == trExpect
-      then do
-        x <- get
-        return $ Right x
-      else
-        return $ Left (StoreError trExpect trActual)
+  getWrapStVal :: (Binary a, Typeable a) => Get (Either StoreError a)
+  getWrapStVal =
+    let
+      proxy = Proxy
+      trExpect = typeRep proxy
+    in do
+      trActual <- get
+      if trActual == trExpect
+        then do
+          x <- get
+          return $ Right x `const` (x `asProxyTypeOf` proxy)
+        else
+          return $ Left (StoreError trExpect trActual)
 
   newtype StoreLoad m = StoreLoad
-    { runStoreLoad
-        :: forall a.
-           (Binary a, Typeable a)
-        => m (Either StoreError a)
+    { runStoreLoad :: (Binary a, Typeable a) => m (Either StoreError a)
     } deriving ( Typeable )
 
   data StoreError = StoreError
@@ -78,8 +78,7 @@ module Hexyll.Core.Store where
     loadDelay :: StoreKey -> m (Maybe (StoreLoad m))
 
   load
-    :: forall m a.
-       (MonadStore m, Binary a, Typeable a)
+    :: (MonadStore m, Binary a, Typeable a)
     => StoreKey
     -> m (Maybe (Either StoreError a))
   load sk = do
