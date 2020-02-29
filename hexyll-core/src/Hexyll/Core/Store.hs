@@ -1,3 +1,5 @@
+{-# LANGUAGE OPTIONS_HADDOCK show-extensions #-}
+
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
