@@ -17,15 +17,13 @@ env:
 
 before_install:
 # Download and unpack the stack executable
-- mkdir ,\\
-- cd ,\\
 - mkdir -p $HOME\\AppData\\Roaming\\local\\bin\\
 - export PATH=$HOME\\AppData\\Roaming\\local\\bin\\:$PATH
 - travis_retry curl -OL https://get.haskellstack.org/stable/windows-x86_64.zip
-- unzip windows-x86_64.zip
+- unzip windows-x86_64.zip stack.exe
 - cp stack.exe $HOME\\AppData\\Roaming\\local\\bin\\
 - export STACK_ROOT=C:\\sr\\
-- cd ..\\
+- rm stack.exe
 
 install:
 # Build dependencies
