@@ -10,7 +10,7 @@ module Hexyll.Core.Store where
   import Data.Proxy ( Proxy (..), asProxyTypeOf )
 
   import Data.Typeable ( Typeable, typeOf, cast, TypeRep )
-  import Data.Binary   ( Binary (..) )
+  import Data.Binary   ( Binary (..), Put, Get )
 
   type StoreKey = String
 
