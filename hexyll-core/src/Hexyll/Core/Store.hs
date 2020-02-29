@@ -38,7 +38,7 @@ module Hexyll.Core.Store where
     if trActual == trExpect
       then do
         x <- get
-        return $ Right (MkStoreValue x)
+        return $ Right (MkStoreValue x) `const` (x `asProxyTypeOf` proxy)
       else
         return $ Left (StoreError trExpect trActual)
 
