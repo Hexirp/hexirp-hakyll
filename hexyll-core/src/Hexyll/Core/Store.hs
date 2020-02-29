@@ -17,6 +17,8 @@ module Hexyll.Core.Store where
     -> r
   reflectTypeRep = undefined
 
+  class (Binary a, Typeable a) => Reflectable a where
+
   type StoreKey = String
 
   data StoreValue where
@@ -28,10 +30,8 @@ module Hexyll.Core.Store where
       put x
     get = do
       tr <- get
-      reflectTypeRep tr $ \proxy -> do
-        x <- get
-        _ <- x `asProxyTypeOf` proxy
-        return $ MkStoreValue 
+      case tr of
+        SomeTypeRep tr' -> undefined
 
   deStoreValue
     :: StoreValue
