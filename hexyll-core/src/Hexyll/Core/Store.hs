@@ -6,13 +6,21 @@ module Hexyll.Core.Store where
 
   import Data.Maybe ( isJust )
 
-  import Data.Typeable ( Typeable )
+  import Data.Typeable ( Typeable, TypeRep )
   import Data.Binary   ( Binary )
 
   type StoreKey = String
 
   data StoreValue where
     StoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
+  storeValue :: StoreValue -> (forall a. (Binary a, Typeable a) => a -> r) -> r
+  storeValue (StoreValue x) f = f x
+
+  unwrapStValue :: Typeable a => StoreValue -> Either TypeRep a
+  unwrapStValue (StoreValue x) = case cast x of
+    Nothing -> Left (typeOf x)
+    Just a -> Right a
 
   class Monad m => MonadStore m where
     save :: StoreKey -> StoreValue -> m ()
