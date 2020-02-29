@@ -8,12 +8,20 @@ module Hexyll.Core.Store where
   import Data.Maybe ( isJust )
 
   import Data.Typeable ( Typeable, typeOf, cast, TypeRep )
-  import Data.Binary   ( Binary )
+  import Data.Binary   ( Binary (..) )
 
   type StoreKey = String
 
   data StoreValue where
     MkStoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
+  instance Binary StoreValue where
+    put (MkStoreValue x) = do
+      put (typeOf x)
+      put x
+    get = do
+      tr <- get
+      undefined
 
   deStoreValue
     :: StoreValue
