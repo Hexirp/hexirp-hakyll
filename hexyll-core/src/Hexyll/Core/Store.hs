@@ -29,7 +29,7 @@ module Hexyll.Core.Store where
   getStoreValue
     :: (Binary a, Typeable a)
     => Proxy a
-    -> Get (StoreError a)
+    -> Get (Either StoreError a)
   getStoreValue proxy = do
     trActual <- get
     let trExpect = typeRep proxy in if trActual == trExpect
