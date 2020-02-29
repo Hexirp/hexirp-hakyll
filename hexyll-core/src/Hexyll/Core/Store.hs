@@ -76,16 +76,18 @@ module Hexyll.Core.Store where
     loadDelay :: StoreKey -> m (Maybe (StoreLoad m))
 
   load
-    :: (Binary a, Typeable a, MonadStore m)
+    :: forall a.
+       (Binary a, Typeable a, MonadStore m)
     => StoreKey
     -> m (Maybe (Either StoreError a))
   load sk = do
     msl <- loadDelay sk
     case msl of
       Nothing -> pure Nothing
-      Just sl -> Just <$> runStoreLoad sl (Proxy @a)
+      Just sl -> case sl of
+        StoreLoad f -> Just <$> f (Proxy @a)
 
   isExistent :: MonadStore m => StoreKey -> m Bool
   isExistent sk = do
-    StoreResult mmesv <- loadDelay @_ @() sk
-    return $ isJust mmesv
+    msl <- loadDelay sk
+    return $ isJust msl
