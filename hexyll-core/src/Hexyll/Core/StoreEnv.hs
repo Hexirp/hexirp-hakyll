@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK show-extensions #-}
+
 {-# LANGUAGE RankNTypes #-}
 
 module Hexyll.Core.StoreEnv where
