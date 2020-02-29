@@ -50,9 +50,9 @@ module Hexyll.Core.Store where
       else
         return $ Left (StoreError trExpect trActual)
 
-  getWrapStVal
+  getUnwrapStVal
     :: (Binary a, Typeable a) => Proxy a -> Get (Either StoreError a)
-  getWrapStVal proxy = let trExpect = typeRep proxy in do
+  getUnwrapStVal proxy = let trExpect = typeRep proxy in do
     trActual <- get
     if trActual == trExpect
       then do
