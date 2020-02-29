@@ -2,7 +2,6 @@
 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE TypeApplications #-}
 
 -- |
 -- Module:      Hexyll.Core.Store
