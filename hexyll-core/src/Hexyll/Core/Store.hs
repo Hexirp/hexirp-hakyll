@@ -11,27 +11,10 @@ module Hexyll.Core.Store where
   import Data.Typeable ( Typeable, typeOf, cast, TypeRep )
   import Data.Binary   ( Binary (..) )
 
-  reflectTypeRep
-    :: TypeRep
-    -> (forall a. Typeable a => Proxy a -> r)
-    -> r
-  reflectTypeRep = undefined
-
-  class (Binary a, Typeable a) => Reflectable a where
-
   type StoreKey = String
 
   data StoreValue where
     MkStoreValue :: (Binary a, Typeable a) => a -> StoreValue
-
-  instance Binary StoreValue where
-    put (MkStoreValue x) = do
-      put (typeOf x)
-      put x
-    get = do
-      tr <- get
-      case tr of
-        SomeTypeRep tr' -> undefined
 
   deStoreValue
     :: StoreValue
