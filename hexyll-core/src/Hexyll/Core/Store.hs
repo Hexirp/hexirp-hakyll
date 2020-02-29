@@ -21,10 +21,8 @@ module Hexyll.Core.Store where
     -> r
   deStoreValue (MkStoreValue x) f = f x
 
-  unwrapStoreValue :: Typeable a => StoreValue -> Either TypeRep a
-  unwrapStoreValue (MkStoreValue x) = case cast x of
-    Nothing -> Left (typeOf x)
-    Just a -> Right a
+  unwrapStoreValue :: Typeable a => StoreValue -> Maybe a
+  unwrapStoreValue (MkStoreValue x) = cast x
 
   class Monad m => MonadStore m where
     save :: StoreKey -> StoreValue -> m ()
