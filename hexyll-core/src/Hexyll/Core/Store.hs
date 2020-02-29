@@ -28,12 +28,12 @@ module Hexyll.Core.Store where
 
   load :: MonadStore m => StoreKey -> m (Maybe (Either StoreError a))
   load sk = do
-    mmesv <- loadDelay sk
+    StoreResult mmesv <- loadDelay sk
     case mmesv of
       Nothing -> return Nothing
-      Just mesv -> Just <$> msv
+      Just mesv -> Just <$> mesv
 
   isExistent :: MonadStore m => StoreKey -> m Bool
   isExistent sk = do
-    mmsv <- loadDelay sk
-    return $ isJust mmsv
+    StoreResult mmesv <- loadDelay sk
+    return $ isJust mmesv
