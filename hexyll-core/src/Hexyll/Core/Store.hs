@@ -74,14 +74,14 @@ module Hexyll.Core.Store where
   -- @since 0.1.0.0
   getStValRestrictly
     :: (Binary a, Typeable a) => Proxy a -> Get (Either StoreError StoreValue)
-  getStValRestrictly proxy = let trExpect = typeRep proxy in do
+  getStValRestrictly proxy = let trExpected = typeRep proxy in do
     trActual <- get
-    if trActual == trExpect
+    if trActual == trExpected
       then do
         x <- get
         return $ Right (MkStoreValue x) `const` (x `asProxyTypeOf` proxy)
       else
-        return $ Left (StoreError trExpect trActual)
+        return $ Left (StoreError trExpected trActual)
 
   -- | Get a 'StoreValue' and unwrap the value. This also has the same problem
   -- as 'getStValRestrictly'.
@@ -92,14 +92,14 @@ module Hexyll.Core.Store where
   -- @since 0.1.0.0
   getUnwrapStVal
     :: (Binary a, Typeable a) => Proxy a -> Get (Either StoreError a)
-  getUnwrapStVal proxy = let trExpect = typeRep proxy in do
+  getUnwrapStVal proxy = let trExpected = typeRep proxy in do
     trActual <- get
-    if trActual == trExpect
+    if trActual == trExpected
       then do
         x <- get
         return $ Right x `const` (x `asProxyTypeOf` proxy)
       else
-        return $ Left (StoreError trExpect trActual)
+        return $ Left (StoreError trExpected trActual)
 
   -- | A type of delayed loading.
   --
@@ -119,7 +119,7 @@ module Hexyll.Core.Store where
   --
   -- @since 0.1.0.0
   data StoreError = StoreError
-    { storeExpect :: TypeRep
+    { storeExpected :: TypeRep
     , storeActual :: TypeRep
     } deriving ( Eq, Ord, Show, Typeable )
 
