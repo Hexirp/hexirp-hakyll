@@ -24,20 +24,20 @@ module Hexyll.Core.StoreEnv where
   class HasStoreEnv env where
     storeEnvL :: Lens' env StoreEnv
 
-  saveEnv
+  saveE
     :: (MonadIO m, MonadReader env m, HasStoreEnv env)
     => StoreKey
     -> StoreValue
     -> m ()
-  saveEnv sk sv = do
+  saveE sk sv = do
     env <- ask
     liftIO $ storeSave (view storeEnvL env) sk sv
 
-  loadDelayEnv
+  loadDelayE
     :: (MonadIO m, MonadReader env m, HasStoreEnv env)
     => StoreKey
     -> m (Maybe (StoreLoad m))
-  loadDelayEnv sk = do
+  loadDelayE sk = do
     env <- ask
     liftIO $ fmap (fmap (mapStoreLoad liftIO)) $
       storeLoadDelay (view storeEnvL env) sk
