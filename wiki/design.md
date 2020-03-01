@@ -513,3 +513,11 @@ Store の定義が難航している。
     StoreResult mmesv <- loadDelay @_ @() sk
     return $ isJust mmesv
 ```
+
+## 2020-02-29
+
+MonadStore の定義が定まった。
+
+### coding
+
+https://github.com/Hexirp/hexirp-hakyll/blob/3bd45ecdda2c6049d285089a377dcf2e802fb585/hexyll-core/src/Hexyll/Core/Store.hs で決定。削除はできない。どうしてもしたいなら clean コマンドを使うか、空の内容で上書きする。
