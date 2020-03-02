@@ -23,7 +23,7 @@ import           TestSuite.Util
 --------------------------------------------------------------------------------
 tests :: TestTree
 tests = testGroup "Hexyll.Core.Runtime.Tests" $
-    fromAssertions "run" [case02] -- [case01, case02] ... because of https://github.com/Hexirp/hexirp-hakyll/issues/90
+    fromAssertions "run" [] -- [case02] -- [case01, case02] ... because of https://github.com/Hexirp/hexirp-hakyll/issues/90
 
 
 --------------------------------------------------------------------------------
