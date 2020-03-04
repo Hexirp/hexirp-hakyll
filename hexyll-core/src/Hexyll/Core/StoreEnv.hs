@@ -1,10 +1,12 @@
+{-# OPTIONS_HADDOCK show-extensions #-}
+
 {-# LANGUAGE RankNTypes #-}
 
 module Hexyll.Core.StoreEnv where
 
   import Prelude
 
-  import Data.Typeable ( Typeable, TypeRep )
+  import Data.Typeable ( Typeable )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
   import Control.Monad.Reader.Class ( MonadReader ( ask ) )
@@ -12,35 +14,30 @@ module Hexyll.Core.StoreEnv where
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
 
-  type StoreKey = [String]
-
-  data StoreResult a
-    = StoreFound a
-    | StoreNotFound
-    | StoreWrongType TypeRep
-    deriving (Eq, Show, Typeable)
+  import Hexyll.Core.Store
 
   data StoreEnv = StoreEnv
-    { storeSet :: !(forall a. Typeable a => StoreKey -> a -> IO ())
-    , storeGet :: !(forall a. Typeable a => StoreKey -> IO (StoreResult a))
+    { storeSave :: !(StoreKey -> StoreValue -> IO ())
+    , storeLoadDelay :: !(StoreKey -> IO (Maybe (StoreLoad IO)))
     } deriving Typeable
 
   class HasStoreEnv env where
     storeEnvL :: Lens' env StoreEnv
 
-  set
-    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Typeable a)
+  saveE
+    :: (MonadIO m, MonadReader env m, HasStoreEnv env)
     => StoreKey
-    -> a
+    -> StoreValue
     -> m ()
-  set sk x = do
+  saveE sk sv = do
     env <- ask
-    liftIO $ storeSet (view storeEnvL env) sk x
+    liftIO $ storeSave (view storeEnvL env) sk sv
 
-  get
-    :: (MonadIO m, MonadReader env m, HasStoreEnv env, Typeable a)
+  loadDelayE
+    :: (MonadIO m, MonadReader env m, HasStoreEnv env)
     => StoreKey
-    -> m (StoreResult a)
-  get sk = do
+    -> m (Maybe (StoreLoad m))
+  loadDelayE sk = do
     env <- ask
-    liftIO $ storeGet (view storeEnvL env) sk
+    liftIO $ fmap (fmap (mapStoreLoad liftIO)) $
+      storeLoadDelay (view storeEnvL env) sk

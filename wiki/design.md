@@ -251,3 +251,273 @@ type Compiler = ReaderT CompilerRead (WriterT CompilerWrite (Coroutine CompilerS
 ```
 
 この Coroutine モナドは ReaderT デザインパターンで代替できないモナドの一つである（他には継続モナドなどがある）。コマンドのような命令を表す型を定義する方法で代替できないか考える。
+
+## 2020-02-25
+
+ReaderT デザインパターンを本格的に導入し始めた。 Three Layer Haskell Cake を参考にしている。 Log は導入が終わった。 Store はそもそものモデリングがおかしい。
+
+### coding
+
+Store は二つのキャッシュ先を持っている。メモリ内部とファイルである。これらが互いに補う形となる。
+
+### modeling
+
+Store は何ができるのか。
+
+* ユーザーが、
+  * 一つのキャッシュを保存する。
+  * 一つのキャッシュを読み込む。
+    * キャッシュが存在した場合は普通に読み込めるが、存在しない場合と保存されていた値と型が合わない場合の二つの異常な結果がある。
+  * 一つのキャッシュを削除する。
+    * キーだけを参照する。型もチェックすべきかどうか分からないが。結果は削除が成功したなら True でキャッシュが存在しなかったなら False とする。
+
+## 2020-02-27
+
+MonadStore についての考察。
+
+### coding
+
+```haskell
+type StoreKey = [String]
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: (Binary a, Typeable a) => StoreKey -> a -> m ()
+  set :: (Binary a, Typeable a) => StoreKey -> m (StoreResult a)
+```
+
+```haskell
+type StoreKey = [String]
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: (Binary a, Typeable a) => StoreKey -> a -> m ()
+  set :: (Binary a, Typeable a) => StoreKey -> m (StoreResult a)
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: (Binary a, Typeable a) => StoreKey -> a -> m ()
+  set :: (Binary a, Typeable a) => StoreKey -> m (StoreResult a)
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: StoreKey -> m ()
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: StoreKey -> m Bool
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: Typeable a => StoreKey -> proxy a -> m (StoreResult ())
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  get :: Typeable a => StoreKey -> a -> m ()
+  set :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: Typeable a => StoreKey -> proxy a -> m (StoreResult (proxy a))
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  save :: Typeable a => StoreKey -> a -> m ()
+  load :: Typeable a => StoreKey -> m (StoreResult a)
+  remove :: StoreKey -> m Bool
+```
+
+```haskell
+type StoreKey = String
+
+data StoreResult a
+  = StoreFound a
+  | StoreNotFound
+  | StoreWrongType TypeRep
+  deriving (Eq, Show, Typeable)
+
+class Monad m => MonadStore m where
+  save :: Typeable a => StoreKey -> a -> m ()
+  load :: Typeable a => StoreKey -> m (StoreResult a)
+  isMember :: StoreKey -> m Bool
+  remove :: StoreKey -> m Bool
+```
+
+```haskell
+type StoreKey = [String]
+
+data StoreValue where
+  StoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
+class Monad m => MonadStore m where
+  save :: StoreKey -> StoreValue -> m ()
+  load :: StoreKey -> m (Maybe StoreValue)
+```
+
+```haskell
+type StoreKey = [String]
+
+data StoreValue where
+  StoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
+class Monad m => MonadStore m where
+  save :: StoreKey -> StoreValue -> m ()
+  loadDelay :: StoreKey -> m (Maybe (m StoreValue))
+
+  load :: StoreKey -> m (Maybe StoreValue)
+  load sk = do
+    mmsv <- loadDelay sk
+    case mmsv of
+      Nothing -> return Nothing
+      Just msv -> msv
+```
+
+```haskell
+type StoreKey = [String]
+
+data StoreValue where
+  StoreValue :: (Binary a, Typeable a) => a -> StoreValue
+
+class Monad m => MonadStore m where
+  save :: StoreKey -> StoreValue -> m ()
+  loadDelay :: StoreKey -> m (Maybe (m StoreValue))
+
+  load :: StoreKey -> m (Maybe StoreValue)
+  load sk = do
+    mmsv <- loadDelay sk
+    case mmsv of
+      Nothing -> return Nothing
+      Just msv -> msv
+
+  isMember :: StoreKey -> m Bool
+  isMember sk = do
+    mmsv <- loadDelay sk
+    return $ isJust mmsv
+```
+
+## 2020-02-29
+
+Store の定義が難航している。
+
+### coding
+
+```haskell
+  type StoreKey = String
+
+  newtype StoreResult m a = StoreResult
+    { unStoreResult :: Maybe (m (Either StoreError a))
+    } deriving ( Typeable )
+
+  data StoreError = StoreError
+    { storeExpect :: TypeRep
+    , storeActual :: TypeRep
+    } deriving ( Eq, Show, Typeable )
+
+  class Monad m => MonadStore m where
+    save :: (Binary a, Typeable a) => StoreKey -> a -> m ()
+    loadDelay :: (Binary a, Typeable a) => StoreKey -> m (StoreResult m a)
+
+  load
+    :: (Binary a, Typeable a, MonadStore m)
+    => StoreKey
+    -> m (Maybe (Either StoreError a))
+  load sk = do
+    StoreResult mmesv <- loadDelay sk
+    case mmesv of
+      Nothing -> return Nothing
+      Just mesv -> Just <$> mesv
+
+  isExistent :: MonadStore m => StoreKey -> m Bool
+  isExistent sk = do
+    StoreResult mmesv <- loadDelay @_ @() sk
+    return $ isJust mmesv
+```
+
+## 2020-02-29
+
+MonadStore の定義が定まった。
+
+### coding
+
+https://github.com/Hexirp/hexirp-hakyll/blob/3bd45ecdda2c6049d285089a377dcf2e802fb585/hexyll-core/src/Hexyll/Core/Store.hs で決定。削除はできない。どうしてもしたいなら clean コマンドを使うか、空の内容で上書きする。

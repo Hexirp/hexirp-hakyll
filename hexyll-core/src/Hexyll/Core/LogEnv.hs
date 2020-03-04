@@ -13,6 +13,8 @@ module Hexyll.Core.LogEnv where
 
   import Prelude
 
+  import Control.Monad ( when )
+
   import Data.Typeable ( Typeable )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
@@ -21,29 +23,15 @@ module Hexyll.Core.LogEnv where
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
 
-  -- | The log level of a message in 'LogEnv'. This comes from apache log4j.
-  --
-  -- @since 0.1.0.0
-  data LogLevel = LevelDebug | LevelInfo | LevelWarn | LevelError | LevelFatal
-    deriving (Eq, Ord, Enum, Bounded, Show, Typeable)
-
-  -- | The message type in 'LogEnv'.
-  --
-  -- @since 0.1.0.0
-  type LogMessage = String
+  import Hexyll.Core.Log
 
   -- | The type of environment for logging.
   --
   -- @since 0.1.0.0
-  newtype LogEnv = LogEnv
-    { logFunc :: LogLevel -> LogMessage -> IO ()
-    } deriving (Typeable)
-
-  -- | Make 'LogEnv' strictly.
-  --
-  -- @since 0.1.0.0
-  sqLogEnv :: (LogLevel -> LogMessage -> IO ()) -> LogEnv
-  sqLogEnv f = f `seq` LogEnv f
+  data LogEnv = LogEnv
+    { logFunc :: !(LogOption -> LogLevel -> LogMessage -> IO ())
+    , logOption :: !LogOption
+    } deriving Typeable
 
   -- | Environment values with a logging function.
   --
@@ -58,56 +46,52 @@ module Hexyll.Core.LogEnv where
   -- | Log a message with a given level.
   --
   -- @since 0.1.0.0
-  logGeneric
+  logGenericE
     :: (MonadIO m, MonadReader env m, HasLogEnv env)
     => LogLevel
     -> LogMessage
     -> m ()
-  logGeneric ll lm = do
+  logGenericE ll lm = do
     env <- ask
-    liftIO $ logFunc (view logEnvL env) ll lm
+    liftIO $ let logEnv = view logEnvL env in
+      logFunc logEnv (logOption logEnv) ll lm
 
-  -- | Log a DEBUG level message.
+  -- | The option of 'LogEnv'.
   --
   -- @since 0.1.0.0
-  logDebug
-    :: (MonadIO m, MonadReader env m, HasLogEnv env)
-    => LogMessage
-    -> m ()
-  logDebug lm = logGeneric LevelDebug lm
+  data LogOption = LogOption
+    { logMinLevel :: !LogLevel
+    , logSource :: !String
+    , logIndentLevel :: !Int
+    } deriving (Eq, Ord, Show, Typeable)
 
-  -- | Log a INFO level message.
+  -- | A simple logging function.
   --
   -- @since 0.1.0.0
-  logInfo
-    :: (MonadIO m, MonadReader env m, HasLogEnv env)
-    => LogMessage
-    -> m ()
-  logInfo lm = logGeneric LevelInfo lm
+  simpleLogFunc :: LogOption -> LogLevel -> LogMessage -> IO ()
+  simpleLogFunc lo ll lm =
+      when (logMinLevel lo <= ll) $
+        putStrLn $ header ++ " " ++ lm
+    where
+      indent = replicate (logIndentLevel lo) ' '
+      level = case ll of
+        LevelDebug -> "[DEBUG]:"
+        LevelInfo -> "[INFO]:"
+        LevelWarn -> "[WARN]:"
+        LevelError -> "[Error]:"
+        LevelFatal -> "[FATAL]:"
+      source = logSource lo ++ ":"
+      header = indent ++ level ++ source
 
-  -- | Log a WARN level message.
+  -- | A simple 'LogEnv'.
   --
   -- @since 0.1.0.0
-  logWarn
-    :: (MonadIO m, MonadReader env m, HasLogEnv env)
-    => LogMessage
-    -> m ()
-  logWarn lm = logGeneric LevelWarn lm
-
-  -- | Log a ERROR level message.
-  --
-  -- @since 0.1.0.0
-  logError
-    :: (MonadIO m, MonadReader env m, HasLogEnv env)
-    => LogMessage
-    -> m ()
-  logError lm = logGeneric LevelError lm
-
-  -- | Log a FATAL level message.
-  --
-  -- @since 0.1.0.0
-  logFatal
-    :: (MonadIO m, MonadReader env m, HasLogEnv env)
-    => LogMessage
-    -> m ()
-  logFatal lm = logGeneric LevelFatal lm
+  simpleLogEnv :: LogEnv
+  simpleLogEnv = LogEnv
+    { logFunc = simpleLogFunc
+    , logOption = LogOption
+      { logMinLevel = LevelWarn
+      , logSource = ""
+      , logIndentLevel = 0
+      }
+    }
