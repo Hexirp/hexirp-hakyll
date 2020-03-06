@@ -12,4 +12,11 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
     describe "fromString @PatternExpr" $ do
 
       it "normally works" $ do
-        True `shouldBe` True
+        fromString "index.md" `shouldBe` fromGlob "index.md"
+
+    describe "matchExpr" $ do
+
+      describe "and fromGlob" $ do
+
+        it "nornally works ('index.md' + 'index.md')" $ do
+          matchExpr "index.md" (fromGlob "index.md") `shouldBe` True
