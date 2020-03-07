@@ -4,6 +4,8 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
 
   import Prelude
 
+  import Data.String ( IsString (..) )
+
   import Test.Hspec
 
   import Hexyll.Core.Identifier.Pattern
