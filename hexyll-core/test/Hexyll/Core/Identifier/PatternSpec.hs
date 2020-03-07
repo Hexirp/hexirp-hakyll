@@ -18,5 +18,5 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
 
       describe "and fromGlob" $ do
 
-        it "nornally works ('index.md' + 'index.md')" $ do
+        it "nornally works ('index.md' with 'index.md')" $ do
           matchExpr "index.md" (fromGlob "index.md") `shouldBe` True
