@@ -7,6 +7,7 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
   import Data.String ( IsString (..) )
 
   import Test.Hspec
+  import Test.QuickCheck
 
   import Hexyll.Core.Identifier.Pattern
 
