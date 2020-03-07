@@ -32,7 +32,7 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
           matchExpr "index.md" (fromGlob "assert.md") `shouldBe` False
 
         it "normally works ('index.md' with '*')" $ do
-          matchExpr "index.md" (fromGlob "*") `shouldBe` False
+          matchExpr "index.md" (fromGlob "*") `shouldBe` True
 
         it "normally works ('foo/index.md' with '*/*.md')" $ do
           matchExpr "foo/index.md" (fromGlob "*/*.md") `shouldBe` True
