@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Hexyll.Core.Identifier.PatternSpec (spec) where
 
   import Prelude
