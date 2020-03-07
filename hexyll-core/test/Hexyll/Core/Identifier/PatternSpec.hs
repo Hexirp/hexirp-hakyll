@@ -58,3 +58,14 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
 
         it "normally works ('index.md' with Nothing)" $ do
           matchExpr "index.md" (fromVersion Nothing) `shouldBe` True
+
+      describe "and everything" $ do
+
+        it "normally works" $ do
+          property $ \s -> matchExpr (fromString s) everything == True
+
+      describe "and (.&&.)" $ do
+
+        it "normally works (everything .&&. everything)" $ do
+          property $ let p = everything .&&. everything in \s ->
+            matchExpr (fromString s) p == True
