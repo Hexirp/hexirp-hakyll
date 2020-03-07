@@ -53,3 +53,8 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
 
         it "normally works ('index.md' with 'index.md')" $ do
           matchExpr "index.md" (fromRegex "index.md") `shouldBe` True
+
+      describe "and fromVersion" $ do
+
+        it "normally works ('index.md' with Nothing)" $ do
+          matchExpr "index.md" (fromVersion Nothing) `shouldBe` True
