@@ -42,3 +42,9 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
 
         it "normally works ('foo/bar/alpha.md' with '**/alpha.md')" $ do
           matchExpr "foo/bar/alpha.md" (fromGlob "**/alpha.md") `shouldBe` True
+
+        it "normally works ('alpha.md' with '**/alpha.md')" $ do
+          matchExpr "alpha.md" (fromGlob "**/alpha.md") `shouldBe` False
+
+        it "normally works ('a/b/c/foo.txt' with 'a/**/*.txt')" $ do
+          matchExpr "a/b/c/foo.txt" (fromGlob "a/**/*.txt") `shouldBe` True
