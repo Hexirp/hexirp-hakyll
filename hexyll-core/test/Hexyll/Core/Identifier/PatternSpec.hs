@@ -48,3 +48,8 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
 
         it "normally works ('a/b/c/foo.txt' with 'a/**/*.txt')" $ do
           matchExpr "a/b/c/foo.txt" (fromGlob "a/**/*.txt") `shouldBe` True
+
+      describe "and fromRegex" $ do
+
+        it "normally works ('index.md' with 'index.md')" $ do
+          matchExpr "index.md" (fromRegex "index.md") `shouldBe` True
