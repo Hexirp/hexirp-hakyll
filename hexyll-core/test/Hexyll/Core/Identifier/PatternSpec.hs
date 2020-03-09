@@ -86,4 +86,4 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
 
         it "normally works (complement everything)" $ do
           property $ let p = complement everything in \s ->
-            matchExpr (fromString s) p = False
+            matchExpr (fromString s) p == False
