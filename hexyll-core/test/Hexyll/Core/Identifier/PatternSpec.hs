@@ -67,6 +67,23 @@ module Hexyll.Core.Identifier.PatternSpec (spec) where
 
       describe "and (.&&.)" $ do
 
-        it "normally works (everything .&&. everything)" $ do
-          property $ let p = everything .&&. everything in \s ->
+        it "normally works (everything .&&. nothing)" $ do
+          property $ let p = everything .&&. nothing in \s ->
+            matchExpr (fromString s) p == False
+
+      describe "and nothing" $ do
+
+        it "normally works" $ do
+          property $ \s -> matchExpr (fromString s) nothing == False
+
+      describe "and (.||.)" $ do
+
+        it "Normally works (everything .||. nothing)" $ do
+          property $ let p = everything .||. nothing in \s ->
             matchExpr (fromString s) p == True
+
+      describe "and complement" $ do
+
+        it "normally works (complement everything)" $ do
+          property $ let p = complement everything in \s ->
+            matchExpr (fromString s) p = False
