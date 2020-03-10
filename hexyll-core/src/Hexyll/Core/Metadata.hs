@@ -117,7 +117,9 @@ module Hexyll.Core.Metadata where
         m <- getMetadata i
         return (i, m)
 
-  getMetadataField :: MonadMetadata m => Identifier -> String -> m (Maybe String)
+  getMetadataField
+    :: MonadMetadata m
+    => Identifier -> String -> m (Maybe String)
   getMetadataField identifier key = do
     metadata <- getMetadata identifier
     return $ lookupString key metadata
