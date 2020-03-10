@@ -48,3 +48,14 @@ module Hexyll.Core.StoreEnv where
     { storeLocation :: !(Path Rel Dir)
     , storeInMemory :: !Bool
     } deriving (Eq, Ord, Show, Typeable)
+
+  newStoreEnv :: StoreOption -> IO StoreEnv
+  newStoreEnv (StoreOption sl si) = if si
+    then newStoreEnvInMemory sl
+    else newStoreEnvNoMemory sl
+
+  newStoreEnvInMemory :: Path Rel Dir -> IO StoreEnv
+  newStoreEnvInMemory = undefined
+
+  newStoreEnvNoMemory :: Path Rel Dir -> IO StoreEnv
+  newStoreEnvNoMemory = undefined
