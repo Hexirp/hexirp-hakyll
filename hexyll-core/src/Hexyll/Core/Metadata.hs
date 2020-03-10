@@ -101,10 +101,15 @@ module Hexyll.Core.Metadata where
   lookupStringList key (Metadata meta) =
     HM.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
 
+  -- | Monads that can get metadata.
+  --
+  -- @since 0.1.0.0
   class MonadUniverse m => MonadMetadata m where
 
+    -- | Get the metadata corresponding to the identifier.
     getMetadata :: Identifier -> m Metadata
 
+    -- | Get all metadata in key-value format.
     getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
     getAllMetadata p = do
       is <- getMatches p
