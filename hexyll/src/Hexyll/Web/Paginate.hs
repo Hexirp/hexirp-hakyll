@@ -62,7 +62,7 @@ paginateEvery n = go
 
 --------------------------------------------------------------------------------
 buildPaginateWith
-    :: MonadMetadata m
+    :: MonadUniverse m
     => ([Identifier] -> m [[Identifier]])  -- ^ Group items into pages
     -> Pattern                             -- ^ Select items to paginate
     -> (PageNumber -> Identifier)          -- ^ Identifiers for the pages
