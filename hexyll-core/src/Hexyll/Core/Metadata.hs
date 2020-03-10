@@ -116,13 +116,3 @@ module Hexyll.Core.Metadata where
   getMetadataField identifier key = do
     metadata <- getMetadata identifier
     return $ lookupString key metadata
-
-  -- | Version of 'getMetadataField' which throws an error if the field does not
-  -- exist.
-  getMetadataField' :: MonadMetadata m => Identifier -> String -> m String
-  getMetadataField' identifier key = do
-    field <- getMetadataField identifier key
-    case field of
-      Just v  -> return v
-      Nothing -> fail $ "Hexyll.Core.Metadata.getMetadataField': " ++
-        "Item " ++ show identifier ++ " has no metadata field " ++ show key
