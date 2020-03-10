@@ -67,7 +67,7 @@ lookupStringList key (Metadata meta) =
 
 
 
-class MonadiUniverse m => MonadMetadata m where
+class MonadUniverse m => MonadMetadata m where
 
   getMetadata :: Identifier -> m Metadata
 
