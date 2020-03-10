@@ -26,7 +26,7 @@ class Monad m => MonadUniverse m where
   getMatches :: Pattern -> m [Identifier]
 
   countUniverse :: m Int
-  countUniverse = length <$> getMaches (Pattern everything)
+  countUniverse = length <$> getMatches (Pattern everything)
 
 newtype Metadata = Metadata
   { unMetadata :: Yaml.Object
