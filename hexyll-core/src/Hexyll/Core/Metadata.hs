@@ -117,6 +117,11 @@ module Hexyll.Core.Metadata where
         m <- getMetadata i
         return (i, m)
 
+  -- Get the metadata that corresponding to the identifier, look up the field
+  -- corresponding to the key, and convert it to a string. Returns @Nothing@
+  -- if the field cannot be converted to a string.
+  --
+  -- @since 0.1.0.0
   getMetadataField
     :: MonadMetadata m
     => Identifier -> String -> m (Maybe String)
