@@ -84,15 +84,15 @@ module Hexyll.Core.Metadata where
         _ ->
           error "Data.Binary.get: Invalid Metadata"
 
-  -- @since 0.1.0.0
+  -- | @since 0.1.0.0
   instance Yaml.ToJSON Metadata where
     toJSON (Metadata x) = Yaml.toJSON x
 
-  -- @since 0.1.0.0
+  -- | @since 0.1.0.0
   instance Yaml.FromJSON Metadata where
     parseJSON v = Metadata <$> Yaml.parseJSON v
 
-  -- Look up the field corresponding to the key and convert it to a string.
+  -- | Look up the field corresponding to the key and convert it to a string.
   -- Returns @Nothing@ if the field cannot be converted to a string.
   --
   -- See 'Yaml.toString'.
@@ -102,7 +102,7 @@ module Hexyll.Core.Metadata where
   lookupString key (Metadata meta) =
     HM.lookup (T.pack key) meta >>= Yaml.toString
 
-  -- Look up the field corresponding to the key and convert it to a list of
+  -- | Look up the field corresponding to the key and convert it to a list of
   -- strings. If there is at least one failure, Nothing is returned.
   --
   -- See 'Yaml.toList' and 'Yaml.toString'.
@@ -128,7 +128,7 @@ module Hexyll.Core.Metadata where
         m <- getMetadata i
         return (i, m)
 
-  -- Get the metadata that corresponding to the identifier, look up the field
+  -- | Get the metadata that corresponding to the identifier, look up the field
   -- corresponding to the key, and convert it to a string. Returns @Nothing@
   -- if the field cannot be converted to a string.
   --
