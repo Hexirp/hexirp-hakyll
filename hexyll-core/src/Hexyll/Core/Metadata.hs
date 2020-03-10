@@ -14,10 +14,14 @@ module Hexyll.Core.Metadata where
   import Hexyll.Core.Identifier
   import Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 
+  -- | A type of patterns for 'MonadMetadata'.
+  --
+  -- @since 0.1.0.0
   newtype Pattern = Pattern
     { unPattern :: PatternExpr
     } deriving ( Eq, Ord, Show, Typeable )
 
+  -- | @since 0.1.0.0
   instance IsString Pattern where
     fromString s = Pattern $ fromString s
 
