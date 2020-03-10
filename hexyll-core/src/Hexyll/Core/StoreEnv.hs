@@ -14,6 +14,8 @@ module Hexyll.Core.StoreEnv where
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
 
+  import Path
+
   import Hexyll.Core.Store
 
   data StoreEnv = StoreEnv
@@ -41,3 +43,8 @@ module Hexyll.Core.StoreEnv where
     env <- ask
     liftIO $ fmap (fmap (mapStoreLoad liftIO)) $
       storeLoadDelay (view storeEnvL env) sk
+
+  data StoreOption = StoreOption
+    { storeLocation :: !(Path Rel Dir)
+    , storeInMemory :: !Bool
+    } deriving (Eq, Ord, Show, Typeable)
