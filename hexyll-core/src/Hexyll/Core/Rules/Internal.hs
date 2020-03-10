@@ -100,14 +100,15 @@ newtype Rules a = Rules
 
 
 --------------------------------------------------------------------------------
+instance MonadUniverse Rules where
+    getMatches (Meta.Pattern pattern) = Rules $ do
+        provider <- rulesProvider <$> ask
+        return $ filter (`matchExpr` pattern) $ resourceList provider
+
 instance MonadMetadata Rules where
     getMetadata identifier = Rules $ do
         provider <- rulesProvider <$> ask
         liftIO $ resourceMetadata provider identifier
-
-    getMatches (Meta.Pattern pattern) = Rules $ do
-        provider <- rulesProvider <$> ask
-        return $ filter (`matchExpr` pattern) $ resourceList provider
 
 
 --------------------------------------------------------------------------------

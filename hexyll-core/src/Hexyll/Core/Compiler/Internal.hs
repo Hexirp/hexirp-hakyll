@@ -195,10 +195,12 @@ instance Applicative Compiler where
 
 
 --------------------------------------------------------------------------------
+instance MonadUniverse Compiler where
+    getMatches (Meta.Pattern p) = compilerGetMatches (Pattern p)
+
 -- | Access provided metadata from anywhere
 instance MonadMetadata Compiler where
     getMetadata = compilerGetMetadata
-    getMatches (Meta.Pattern p) = compilerGetMatches (Pattern p)
 
 
 --------------------------------------------------------------------------------
