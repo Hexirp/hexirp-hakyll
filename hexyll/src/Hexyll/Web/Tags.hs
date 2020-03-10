@@ -127,7 +127,7 @@ getCategory = return . return . takeBaseName . takeDirectory . toFilePath
 
 --------------------------------------------------------------------------------
 -- | Higher-order function to read tags
-buildTagsWith :: MonadMetadata m
+buildTagsWith :: MonadUniverse m
               => (Identifier -> m [String])
               -> Pattern
               -> (String -> Identifier)

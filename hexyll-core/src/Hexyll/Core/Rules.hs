@@ -141,7 +141,7 @@ match (Pattern pattern) = matchInternal (Pattern pattern) $ getMatches (Meta.Pat
 --------------------------------------------------------------------------------
 matchMetadata :: Pattern -> (Metadata -> Bool) -> Rules () -> Rules ()
 matchMetadata (Pattern pattern) metadataPred = matchInternal (Pattern pattern) $
-    map fst . filter (metadataPred . snd) <$> getAllMetadata (Meta.Pattern $ fromDisj pattern)
+    map fst . filter (metadataPred . snd) <$> getMetadataMatches (Meta.Pattern $ fromDisj pattern)
 
 
 --------------------------------------------------------------------------------
