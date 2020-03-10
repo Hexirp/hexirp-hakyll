@@ -25,10 +25,25 @@ module Hexyll.Core.Metadata where
   instance IsString Pattern where
     fromString s = Pattern $ fromString s
 
+  -- | Monads that has a set of identifiers and can search for them.
+  --
+  -- @since 0.1.0.0
   class Monad m => MonadUniverse m where
 
+    -- | Get identifiers that matches the pattern.
+    --
+    -- @since 0.1.0.0
     getMatches :: Pattern -> m [Identifier]
 
+    -- | Get all identifiers.
+    --
+    -- @since 0.1.0.0
+    getAllIdentifier :: m [Identifier]
+    getAllIdentifier = getMatches (Pattern everything)
+
+    -- | Count the number of all identifiers.
+    --
+    -- @since 0.1.0.0
     countUniverse :: m Int
     countUniverse = length <$> getMatches (Pattern everything)
 
