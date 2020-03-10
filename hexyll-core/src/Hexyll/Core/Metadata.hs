@@ -1,3 +1,14 @@
+-- |
+-- Module:      Hexyll.Core.Metadata
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: portable
+--
+-- This module provides two type classes 'MonadUniverse' and 'MonadMetadata'.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Metadata where
 
   import Data.Binary   ( Binary (..) )
