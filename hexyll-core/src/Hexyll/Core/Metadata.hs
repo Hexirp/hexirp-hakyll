@@ -109,9 +109,9 @@ module Hexyll.Core.Metadata where
     -- | Get the metadata corresponding to the identifier.
     getMetadata :: Identifier -> m Metadata
 
-    -- | Get all metadata in key-value format.
-    getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
-    getAllMetadata p = do
+    -- | Get metadata that matches the pattern in key-value format.
+    getMetadataMatches :: Pattern -> m [(Identifier, Metadata)]
+    getMetadataMatches p = do
       is <- getMatches p
       forM is $ \i -> do
         m <- getMetadata i
