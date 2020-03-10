@@ -1,8 +1,5 @@
---------------------------------------------------------------------------------
 module Hexyll.Core.Metadata where
 
-
---------------------------------------------------------------------------------
 import Data.Binary   ( Binary (..) )
 import Data.Typeable ( Typeable )
 import Data.String ( IsString (..) )
@@ -17,7 +14,20 @@ import Control.Monad ( forM )
 import Hexyll.Core.Identifier
 import Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 
---------------------------------------------------------------------------------
+newtype Pattern = Pattern
+  { unPattern :: PatternExpr
+  } deriving ( Eq, Ord, Show, Typeable )
+
+instance IsString Pattern where
+  fromString s = Pattern $ fromString s
+
+instance Monad m => MonadUniverse m where
+
+  getMaches :: Pattern -> m [Identifier]
+
+  countUniverse :: m Int
+  countUniverse = length <$> getMaches (Pattern everything)
+
 newtype Metadata = Metadata
   { unMetadata :: Yaml.Object
   } deriving ( Eq, Show, Typeable )
@@ -56,17 +66,10 @@ lookupStringList key (Metadata meta) =
     HM.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
 
 
-newtype Pattern = Pattern
-  { unPattern :: PatternExpr
-  } deriving ( Eq, Ord, Show, Typeable )
 
-instance IsString Pattern where
-  fromString s = Pattern $ fromString s
-
-class Monad m => MonadMetadata m where
+class MonadiUniverse m => MonadMetadata m where
 
   getMetadata :: Identifier -> m Metadata
-  getMatches  :: Pattern -> m [Identifier]
 
   getAllMetadata :: Pattern -> m [(Identifier, Metadata)]
   getAllMetadata p = do
