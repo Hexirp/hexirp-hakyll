@@ -23,7 +23,7 @@ instance IsString Pattern where
 
 class Monad m => MonadUniverse m where
 
-  getMaches :: Pattern -> m [Identifier]
+  getMatches :: Pattern -> m [Identifier]
 
   countUniverse :: m Int
   countUniverse = length <$> getMaches (Pattern everything)
