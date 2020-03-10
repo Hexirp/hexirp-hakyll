@@ -21,7 +21,7 @@ newtype Pattern = Pattern
 instance IsString Pattern where
   fromString s = Pattern $ fromString s
 
-instance Monad m => MonadUniverse m where
+class Monad m => MonadUniverse m where
 
   getMaches :: Pattern -> m [Identifier]
 
