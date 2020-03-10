@@ -54,18 +54,13 @@ instance Yaml.ToJSON Metadata where
 instance Yaml.FromJSON Metadata where
   parseJSON v = Metadata <$> Yaml.parseJSON v
 
---------------------------------------------------------------------------------
 lookupString :: String -> Metadata -> Maybe String
 lookupString key (Metadata meta) =
   HM.lookup (T.pack key) meta >>= Yaml.toString
 
-
---------------------------------------------------------------------------------
 lookupStringList :: String -> Metadata -> Maybe [String]
 lookupStringList key (Metadata meta) =
     HM.lookup (T.pack key) meta >>= Yaml.toList >>= mapM Yaml.toString
-
-
 
 class MonadUniverse m => MonadMetadata m where
 
@@ -78,15 +73,11 @@ class MonadUniverse m => MonadMetadata m where
       m <- getMetadata i
       return (i, m)
 
-
---------------------------------------------------------------------------------
 getMetadataField :: MonadMetadata m => Identifier -> String -> m (Maybe String)
 getMetadataField identifier key = do
     metadata <- getMetadata identifier
     return $ lookupString key metadata
 
-
---------------------------------------------------------------------------------
 -- | Version of 'getMetadataField' which throws an error if the field does not
 -- exist.
 getMetadataField' :: MonadMetadata m => Identifier -> String -> m String
@@ -96,5 +87,3 @@ getMetadataField' identifier key = do
         Just v  -> return v
         Nothing -> fail $ "Hexyll.Core.Metadata.getMetadataField': " ++
             "Item " ++ show identifier ++ " has no metadata field " ++ show key
-
-
