@@ -86,6 +86,12 @@ module Hexyll.Core.StoreEnv where
     :: Path Rel Dir -> StoreKey -> IO (Maybe (StoreLoad IO))
   newStoreEnvNoMemory_loadDelay = undefined
 
+  withStorePath
+    :: Path Rel Dir -> StoreKey -> (String -> Path Rel File -> IO a) -> IO a
+  withStorePath dir key f = f keyHash path where
+    keyHash = hashStoreKey key
+    path    = dir </> parseRelFile keyHash
+
   hashStoreKey :: StoreKey -> String
   hashStoreKey sk =
     let
