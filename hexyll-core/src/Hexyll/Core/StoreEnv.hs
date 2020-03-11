@@ -116,7 +116,9 @@ module Hexyll.Core.StoreEnv where
       toHex :: [Word8] -> String
       toHex [] = ""
       toHex (xv : xs) = case showHex xv [] of
-        c0 : [] -> '0' : c0 : toHex xs
-        c1 : c0 : [] -> c1 : c0 : toHex xs
+        {      c0 : [] -> '0' : c0 : toHex xs
+        ; c1 : c0 : [] ->  c1 : c0 : toHex xs
+        ; _            -> error "toHex: Impossible case"
+        }
     in
       sHex
