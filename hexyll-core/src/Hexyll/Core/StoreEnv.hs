@@ -74,3 +74,38 @@ module Hexyll.Core.StoreEnv where
   newStoreEnvNoMemory_loadDelay
     :: Path Rel Dir -> StoreKey -> IO (Maybe (StoreLoad IO))
   newStoreEnvNoMemory_loadDelay = undefined
+
+  hashStoreKey :: StoreKey -> String
+  hashStoreKey sk =
+    let
+      --
+      s :: String
+      s = intercalate "/" sk
+      t :: T.Text
+      t = T.pack s
+      bUTF8 :: B.ByteString
+      bUTF8 = T.encodeUtf8
+      bHash :: B.ByteString
+      bHash = hashMD5 bUTF8
+      sHash :: String
+      sHash = B.unpack bHash
+      sHex :: String
+      sHex = toHex sHash
+      --
+      hashMD5 :: B.ByteString -> B.ByteString
+      hashMD5 x =
+        let
+          digest :: CH.Digest CH.MD5
+          digest = CH.hash x
+          bytes :: B.ByteString
+          bytes = BA.convert digest
+        in
+          bytes
+      --
+      toHex :: String -> String
+      toHex [] = ""
+      toHex (xv : xs) = case showHex x [] of
+        c0 : [] -> '0' : c0 : toHex xs
+        c1 : c0 : [] -> c1 : c0 : toHex xs
+    in
+      sHex
