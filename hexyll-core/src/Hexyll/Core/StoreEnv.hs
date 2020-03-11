@@ -18,6 +18,8 @@ module Hexyll.Core.StoreEnv where
   import qualified Data.ByteArray       as BA
   import qualified Crypto.Hash          as CH
 
+  import Data.List ( intercalate )
+
   import qualified Data.ByteString      as B
   import qualified Data.ByteString.Lazy as BL
   import qualified Data.Text            as T
