@@ -88,9 +88,16 @@ module Hexyll.Core.StoreEnv where
 
   withStorePath
     :: Path Rel Dir -> StoreKey -> (String -> Path Rel File -> IO a) -> IO a
-  withStorePath dir key f = f keyHash path where
-    keyHash = hashStoreKey key
-    path    = dir </> parseRelFile keyHash
+  withStorePath dir key f =
+    let
+      keyHash = hashStoreKey key
+      mpath = (dir </>) <$> parseRelFile keyHash
+    in case mpath of
+      Left e -> error $ unlines
+        [ "withStoreKey: Something wrong happened."
+        , "withStoreKey: " ++ show (show e)
+        ]
+      Right path -> f keyHash path
 
   hashStoreKey :: StoreKey -> String
   hashStoreKey sk =
