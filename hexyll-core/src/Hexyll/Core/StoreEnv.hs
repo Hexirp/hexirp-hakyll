@@ -99,8 +99,16 @@ module Hexyll.Core.StoreEnv where
     withStorePath dir key $ \_ path -> do
       exists <- doesFileExist $ toFilePath path
       if exists
-        then return $ Just undefined
+        then return $ Just $ load path
         else return Nothing
+    where
+      load
+        :: Path Rel File
+        -> forall a. (Typeable a, Binary a) => IO (Either StoreError a)
+      load path = do
+        withFile (toFilePath path) ReadMode $ \h -> do
+          c <- BL.hGetContents h
+          evaluate c
 
   withStorePath
     :: Path Rel Dir -> StoreKey -> (String -> Path Rel File -> IO a) -> IO a
