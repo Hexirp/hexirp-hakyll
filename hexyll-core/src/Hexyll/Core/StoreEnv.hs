@@ -17,14 +17,11 @@ module Hexyll.Core.StoreEnv where
   import qualified Data.ByteArray       as BA
   import qualified Crypto.Hash          as CH
 
-  import Data.List ( intercalate )
-
   import Numeric ( showHex )
 
   import Data.Word ( Word8 )
 
   import qualified Data.ByteString      as B
-  import qualified Data.ByteString.Lazy as BL
   import qualified Data.Text            as T
   import qualified Data.Text.Encoding   as T
 
