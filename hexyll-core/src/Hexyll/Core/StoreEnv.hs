@@ -99,8 +99,8 @@ module Hexyll.Core.StoreEnv where
     withStorePath dir key $ \_ path -> do
       exists <- doesFileExist $ toFilePath path
       if exists
-        then undefined
-        else undefined
+        then return $ Just undefined
+        else return Nothing
 
   withStorePath
     :: Path Rel Dir -> StoreKey -> (String -> Path Rel File -> IO a) -> IO a
