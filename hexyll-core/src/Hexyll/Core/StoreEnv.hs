@@ -14,20 +14,22 @@ module Hexyll.Core.StoreEnv where
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
 
-  import qualified Data.ByteArray       as BA
-  import qualified Crypto.Hash          as CH
+  import Control.DeepSeq ( deepseq )
 
   import Numeric ( showHex )
 
-  import Data.Word ( Word8 )
+  import Data.Binary ( Binary, encodeFile, decode )
+  import Data.Word   ( Word8 )
 
   import qualified Data.ByteString      as B
   import qualified Data.ByteString.Lazy as BL
   import qualified Data.Text            as T
   import qualified Data.Text.Encoding   as T
 
+  import qualified Data.ByteArray as BA
+  import qualified Crypto.Hash    as CH
+
   import Path
-  import Data.Binary      ( Binary, encodeFile )
   import System.Directory ( createDirectoryIfMissing, doesFileExist )
   import System.IO        ( withFile, IOMode (..) )
 
@@ -110,7 +112,7 @@ module Hexyll.Core.StoreEnv where
       load path = do
         withFile (toFilePath path) ReadMode $ \h -> do
           c <- BL.hGetContents h
-          evaluate c
+          c `deepseq` return $ Right $ decode c
 
   withStorePath
     :: Path Rel Dir -> StoreKey -> (String -> Path Rel File -> IO a) -> IO a
