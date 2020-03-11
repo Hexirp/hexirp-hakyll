@@ -18,7 +18,7 @@ module Hexyll.Core.StoreEnv where
 
   import Numeric ( showHex )
 
-  import Data.Binary ( encodeFile, decode )
+  import Data.Binary ( encodeFile, decodeOrFail )
   import Data.Word   ( Word8 )
 
   import qualified Data.ByteString      as B
@@ -106,7 +106,9 @@ module Hexyll.Core.StoreEnv where
         then return $ Just $ StoreLoad $ do
           withFile (toFilePath path) ReadMode $ \h -> do
             c <- BL.hGetContents h
-            c `deepseq` return $ Right $ decode c
+            c `deepseq` case decodeOrFail c of
+              Left  (_, _, e) -> error (show e)
+              Right (_, _, x) -> return $ Right x
         else return Nothing
 
   withStorePath
