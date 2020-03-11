@@ -6,6 +6,7 @@ module Hexyll.Core.StoreEnv where
 
   import Prelude
 
+
   import Data.Typeable ( Typeable )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
@@ -92,7 +93,7 @@ module Hexyll.Core.StoreEnv where
       t :: T.Text
       t = T.pack s
       bUTF8 :: B.ByteString
-      bUTF8 = T.encodeUtf8
+      bUTF8 = T.encodeUtf8 t
       bHash :: B.ByteString
       bHash = hashMD5 bUTF8
       sHash :: String
