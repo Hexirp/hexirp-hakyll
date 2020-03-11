@@ -28,7 +28,7 @@ module Hexyll.Core.StoreEnv where
   import Path
 
   import Data.Binary      ( encodeFile )
-  import System.Directory ( createDirectoryIfMissing )
+  import System.Directory ( createDirectoryIfMissing, doesFileExist )
   import System.IO.Error  ( modifyIOError, ioeSetLocation, ioeSetFileName )
 
   import Hexyll.Core.Store
@@ -95,7 +95,12 @@ module Hexyll.Core.StoreEnv where
 
   newStoreEnvNoMemory_loadDelay
     :: Path Rel Dir -> StoreKey -> IO (Maybe (StoreLoad IO))
-  newStoreEnvNoMemory_loadDelay = undefined
+  newStoreEnvNoMemory_loadDelay dir key =
+    withStorePath dir key $ \_ path -> do
+      exists <- doesFileExist $ toFilePath path
+      if exists
+        then undefined
+        else undefined
 
   withStorePath
     :: Path Rel Dir -> StoreKey -> (String -> Path Rel File -> IO a) -> IO a
