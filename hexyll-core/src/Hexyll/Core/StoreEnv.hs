@@ -58,4 +58,17 @@ module Hexyll.Core.StoreEnv where
   newStoreEnvInMemory = undefined
 
   newStoreEnvNoMemory :: Path Rel Dir -> IO StoreEnv
-  newStoreEnvNoMemory = undefined
+  newStoreEnvNoMemory dir = do
+    createDirectoryIfMissing True dir
+    return $ StoreEnv
+      { storeSave = newStoreEnvNoMemory_save dir
+      , storeLoadDelay = newStoreEnvNoMemory_loadDelay dir
+      }
+  
+  newStoreEnvNoMemory_save
+    :: Path Rel Dir -> StoreKey -> StoreValue -> IO ()
+  newStoreEnvNoMemory_save = undefined
+
+  newStoreEnvNoMemory_loadDelay
+    :: Path Rel Dir -> StoreKey -> IO (Maybe (StoreLoad IO))
+  newStoreEnvNoMemory_loadDelay = undefined
