@@ -22,13 +22,15 @@ module Hexyll.Core.StoreEnv where
   import Data.Word ( Word8 )
 
   import qualified Data.ByteString      as B
+  import qualified Data.ByteString.Lazy as BL
   import qualified Data.Text            as T
   import qualified Data.Text.Encoding   as T
 
   import Path
-
-  import Data.Binary      ( encodeFile )
+  import Data.Binary      ( Binary, encodeFile )
   import System.Directory ( createDirectoryIfMissing, doesFileExist )
+  import System.IO        ( withFile, IOMode (..) )
+
   import System.IO.Error  ( modifyIOError, ioeSetLocation, ioeSetFileName )
 
   import Hexyll.Core.Store
