@@ -94,7 +94,7 @@ module Hexyll.Core.StoreEnv where
     let
       --
       s :: String
-      s = intercalate "/" sk
+      s = sk
       t :: T.Text
       t = T.pack s
       bUTF8 :: B.ByteString
