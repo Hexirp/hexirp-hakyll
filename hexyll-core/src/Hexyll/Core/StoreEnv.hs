@@ -14,6 +14,14 @@ module Hexyll.Core.StoreEnv where
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
 
+  import qualified Data.ByteArray       as BA
+  import qualified Crypto.Hash          as CH
+
+  import qualified Data.ByteString      as B
+  import qualified Data.ByteString.Lazy as BL
+  import qualified Data.Text            as T
+  import qualified Data.Text.Encoding   as T
+
   import Path
 
   import System.Directory ( createDirectoryIfMissing )
