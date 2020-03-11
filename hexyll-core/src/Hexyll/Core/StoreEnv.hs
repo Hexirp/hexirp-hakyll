@@ -29,6 +29,7 @@ module Hexyll.Core.StoreEnv where
 
   import Data.Binary      ( encodeFile )
   import System.Directory ( createDirectoryIfMissing )
+  import System.IO.Error  ( modifyIOError, ioeSetLocation, ioeSetFileName )
 
   import Hexyll.Core.Store
 
@@ -81,9 +82,16 @@ module Hexyll.Core.StoreEnv where
   
   newStoreEnvNoMemory_save
     :: Path Rel Dir -> StoreKey -> StoreValue -> IO ()
-  newStoreEnvNoMemory_save dir key value = withStorePath dir key $ \_ path ->
-    case value of
-      MkStoreValue x -> encodeFile (toFilePath path) x
+  newStoreEnvNoMemory_save dir key value =
+    withStorePath dir key $ \_ path ->
+      case value of
+        MkStoreValue x ->
+          let
+            handle e = e
+              `ioeSetFileName` (show path ++ " for " ++ key)
+              `ioeSetLocation` "newStoreEnvNoMemory_save"
+          in
+            modifyIOError handle $ encodeFile (toFilePath path) x
 
   newStoreEnvNoMemory_loadDelay
     :: Path Rel Dir -> StoreKey -> IO (Maybe (StoreLoad IO))
