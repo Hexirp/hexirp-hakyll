@@ -18,7 +18,7 @@ module Hexyll.Core.StoreEnv where
 
   import Numeric ( showHex )
 
-  import Data.Binary ( Binary, encodeFile, decode )
+  import Data.Binary ( encodeFile, decode )
   import Data.Word   ( Word8 )
 
   import qualified Data.ByteString      as B
@@ -103,16 +103,11 @@ module Hexyll.Core.StoreEnv where
     withStorePath dir key $ \_ path -> do
       exists <- doesFileExist $ toFilePath path
       if exists
-        then return $ Just $ StoreLoad (load path)
+        then return $ Just $ StoreLoad $ do
+          withFile (toFilePath path) ReadMode $ \h -> do
+            c <- BL.hGetContents h
+            c `deepseq` return $ Right $ decode c
         else return Nothing
-    where
-      load
-        :: Path Rel File
-        -> forall a. (Typeable a, Binary a) => IO (Either StoreError a)
-      load path = do
-        withFile (toFilePath path) ReadMode $ \h -> do
-          c <- BL.hGetContents h
-          c `deepseq` return $ Right $ decode c
 
   withStorePath
     :: Path Rel Dir -> StoreKey -> (String -> Path Rel File -> IO a) -> IO a
