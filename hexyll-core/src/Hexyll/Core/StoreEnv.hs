@@ -6,7 +6,6 @@ module Hexyll.Core.StoreEnv where
 
   import Prelude
 
-
   import Data.Typeable ( Typeable )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
@@ -19,6 +18,8 @@ module Hexyll.Core.StoreEnv where
   import qualified Crypto.Hash          as CH
 
   import Data.List ( intercalate )
+
+  import Data.Word ( Word8 )
 
   import qualified Data.ByteString      as B
   import qualified Data.ByteString.Lazy as BL
@@ -98,7 +99,7 @@ module Hexyll.Core.StoreEnv where
       bUTF8 = T.encodeUtf8 t
       bHash :: B.ByteString
       bHash = hashMD5 bUTF8
-      sHash :: String
+      sHash :: [Word8]
       sHash = B.unpack bHash
       sHex :: String
       sHex = toHex sHash
@@ -113,7 +114,7 @@ module Hexyll.Core.StoreEnv where
         in
           bytes
       --
-      toHex :: String -> String
+      toHex :: [Word8] -> String
       toHex [] = ""
       toHex (xv : xs) = case showHex x [] of
         c0 : [] -> '0' : c0 : toHex xs
