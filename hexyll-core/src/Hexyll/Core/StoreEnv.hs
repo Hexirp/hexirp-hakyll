@@ -80,7 +80,7 @@ module Hexyll.Core.StoreEnv where
   
   newStoreEnvNoMemory_save
     :: Path Rel Dir -> StoreKey -> StoreValue -> IO ()
-  newStoreEnvNoMemory_save = undefined
+  newStoreEnvNoMemory_save = 
 
   newStoreEnvNoMemory_loadDelay
     :: Path Rel Dir -> StoreKey -> IO (Maybe (StoreLoad IO))
@@ -94,8 +94,8 @@ module Hexyll.Core.StoreEnv where
       mpath = (dir </>) <$> parseRelFile keyHash
     in case mpath of
       Left e -> error $ unlines
-        [ "withStoreKey: Something wrong happened."
-        , "withStoreKey: " ++ show (show e)
+        [ "withStorePath: Something wrong happened."
+        , "withStorePath: " ++ show (show e)
         ]
       Right path -> f keyHash path
 
