@@ -101,7 +101,7 @@ module Hexyll.Core.StoreEnv where
     withStorePath dir key $ \_ path -> do
       exists <- doesFileExist $ toFilePath path
       if exists
-        then return $ Just $ load path
+        then return $ Just $ StoreLoad (load path)
         else return Nothing
     where
       load
