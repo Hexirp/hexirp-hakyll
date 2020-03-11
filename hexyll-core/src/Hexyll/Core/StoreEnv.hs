@@ -16,6 +16,8 @@ module Hexyll.Core.StoreEnv where
 
   import Path
 
+  import System.Directory ( createDirectoryIfMissing )
+
   import Hexyll.Core.Store
 
   data StoreEnv = StoreEnv
@@ -59,7 +61,7 @@ module Hexyll.Core.StoreEnv where
 
   newStoreEnvNoMemory :: Path Rel Dir -> IO StoreEnv
   newStoreEnvNoMemory dir = do
-    createDirectoryIfMissing True dir
+    createDirectoryIfMissing True (toFilePath dir)
     return $ StoreEnv
       { storeSave = newStoreEnvNoMemory_save dir
       , storeLoadDelay = newStoreEnvNoMemory_loadDelay dir
