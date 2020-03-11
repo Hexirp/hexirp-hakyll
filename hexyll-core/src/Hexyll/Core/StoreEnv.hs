@@ -80,7 +80,8 @@ module Hexyll.Core.StoreEnv where
   
   newStoreEnvNoMemory_save
     :: Path Rel Dir -> StoreKey -> StoreValue -> IO ()
-  newStoreEnvNoMemory_save = 
+  newStoreEnvNoMemory_save dir key value = withStorePath dir key $ \_ path ->
+    encodeFile path value
 
   newStoreEnvNoMemory_loadDelay
     :: Path Rel Dir -> StoreKey -> IO (Maybe (StoreLoad IO))
