@@ -19,6 +19,8 @@ module Hexyll.Core.StoreEnv where
 
   import Data.List ( intercalate )
 
+  import Numeric ( showHex )
+
   import Data.Word ( Word8 )
 
   import qualified Data.ByteString      as B
@@ -116,7 +118,7 @@ module Hexyll.Core.StoreEnv where
       --
       toHex :: [Word8] -> String
       toHex [] = ""
-      toHex (xv : xs) = case showHex x [] of
+      toHex (xv : xs) = case showHex xv [] of
         c0 : [] -> '0' : c0 : toHex xs
         c1 : c0 : [] -> c1 : c0 : toHex xs
     in
