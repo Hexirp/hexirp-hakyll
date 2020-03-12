@@ -74,7 +74,23 @@ module Hexyll.Core.StoreEnv where
     else newStoreEnvNoMemory sl
 
   newStoreEnvInMemory :: Path Rel Dir -> IO StoreEnv
-  newStoreEnvInMemory = undefined
+  newStoreEnvInMemory = do
+    createDirectoryIfMissing True (toFilePath dir)
+    cache <- Lru.newAtomicLRU (Just 512)
+    return $ StoreEnv
+      { storeSave = newStoreEnvInMemory_save path cache
+      , storeLoadDelay = newStoreEnvInMemory_loadDelay path cache
+      }
+
+  newStoreEnvInMemory_save
+    :: Path Rel Dir -> Lru.AtomicLRU (Path Rel File) StoreValue
+    -> StoreKey -> StoreValue -> IO ()
+  newStoreEnvInMemory_save = undefined
+
+  newStoreEnvInMemory_loadDelay
+    :: Path Rel Dir -> Lru.AtomicLRU (Path Rel File) StoreValue
+    -> StoreKey -> IO (Maybe (StoreLoad IO))
+  newStoreEnvInMemory_loadDelay = undefined
 
   newStoreEnvNoMemory :: Path Rel Dir -> IO StoreEnv
   newStoreEnvNoMemory dir = do
