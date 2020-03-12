@@ -35,6 +35,8 @@ module Hexyll.Core.StoreEnv where
 
   import System.IO.Error  ( modifyIOError, ioeSetLocation, ioeSetFileName )
 
+  import qualified Data.Cache.LRU.IO as Lru
+
   import Hexyll.Core.Store
 
   data StoreEnv = StoreEnv
