@@ -102,7 +102,12 @@ module Hexyll.Core.StoreEnv where
   newStoreEnvInMemory_loadDelay
     :: Path Rel Dir -> Lru.AtomicLRU (Path Rel File) StoreValue
     -> StoreKey -> IO (Maybe (StoreLoad IO))
-  newStoreEnvInMemory_loadDelay = undefined
+  newStoreEnvInMemory_loadDelay dir cache key =
+    withStorePath dir key $ \_ path -> do
+      mc0 <- Lru.lookup path cache
+      case mc0 of
+        Nothing -> undefined
+        Just c0 -> undefined
 
   newStoreEnvNoMemory :: Path Rel Dir -> IO StoreEnv
   newStoreEnvNoMemory dir = do
