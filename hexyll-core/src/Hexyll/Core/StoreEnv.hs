@@ -6,7 +6,7 @@ module Hexyll.Core.StoreEnv where
 
   import Prelude
 
-  import Data.Typeable ( Typeable )
+  import Data.Typeable ( Typeable, cast )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
   import Control.Monad.Reader.Class ( MonadReader ( ask ) )
@@ -104,8 +104,8 @@ module Hexyll.Core.StoreEnv where
     -> StoreKey -> IO (Maybe (StoreLoad IO))
   newStoreEnvInMemory_loadDelay dir cache key =
     withStorePath dir key $ \_ path -> do
-      mc0 <- Lru.lookup path cache
-      case mc0 of
+      mv <- Lru.lookup path cache
+      case mv of
         Nothing -> do
           exists <- doesFileExist $ toFilePath path
           if exists
@@ -117,14 +117,19 @@ module Hexyll.Core.StoreEnv where
               in
                 modifyIOError handle $
                   withFile (toFilePath path) ReadMode $ \h -> do
-                    c1 <- BL.hGetContents h
-                    c1 `deepseq` case decodeOrFail c1 of
+                    c <- BL.hGetContents h
+                    c `deepseq` case decodeOrFail c of
                       Left  (_, _, s) ->
                         return $ Left (DecodeError (StoreDecodeError s))
                       Right (_, _, x) ->
                         return $ Right x
             else return Nothing
-        Just c0 -> undefined
+        Just v -> return $ Just $ StoreLoad $ case v of
+          MkStoreValue c -> case cast c of
+            Nothing ->
+              return $ Left (TypeCastError (StoreTypeCastError undefined undefined))
+            Just x ->
+              return $ Right x
 
   newStoreEnvNoMemory :: Path Rel Dir -> IO StoreEnv
   newStoreEnvNoMemory dir = do
