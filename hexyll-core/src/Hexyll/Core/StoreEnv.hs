@@ -6,7 +6,7 @@ module Hexyll.Core.StoreEnv where
 
   import Prelude
 
-  import Data.Typeable ( Typeable, cast )
+  import Data.Typeable ( Typeable, typeOf, typeRep, cast )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
   import Control.Monad.Reader.Class ( MonadReader ( ask ) )
@@ -125,9 +125,12 @@ module Hexyll.Core.StoreEnv where
                         return $ Right x
             else return Nothing
         Just v -> return $ Just $ StoreLoad $ case v of
-          MkStoreValue c -> case cast c of
+          MkStoreValue c -> let mx = cast c in case mx of
             Nothing ->
-              return $ Left (TypeCastError (StoreTypeCastError undefined undefined))
+              return $ Left $ TypeCastError $ StoreTypeCastError
+                { storeExpected = typeRep mx
+                , storeActual = typeOf c
+                }
             Just x ->
               return $ Right x
 
