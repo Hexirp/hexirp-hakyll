@@ -106,7 +106,24 @@ module Hexyll.Core.StoreEnv where
     withStorePath dir key $ \_ path -> do
       mc0 <- Lru.lookup path cache
       case mc0 of
-        Nothing -> undefined
+        Nothing -> do
+          exists <- doesFileExist $ toFilePath path
+          if exists
+            then return $ Just $ StoreLoad $
+              let
+                handle e = e
+                  `ioeSetFileName` (show path ++ " for " ++ key)
+                  `ioeSetLocation` "newStoreEnvNoMemory_loadDelay"
+              in
+                modifyIOError handle $
+                  withFile (toFilePath path) ReadMode $ \h -> do
+                    c1 <- BL.hGetContents h
+                    c1 `deepseq` case decodeOrFail c1 of
+                      Left  (_, _, s) ->
+                        return $ Left (DecodeError (StoreDecodeError s))
+                      Right (_, _, x) ->
+                        return $ Right x
+            else return Nothing
         Just c0 -> undefined
 
   newStoreEnvNoMemory :: Path Rel Dir -> IO StoreEnv
