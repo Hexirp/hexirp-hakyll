@@ -88,7 +88,7 @@ module Hexyll.Core.StoreEnv where
     :: Path Rel Dir -> Lru.AtomicLRU (Path Rel File) StoreValue
     -> StoreKey -> StoreValue -> IO ()
   newStoreEnvInMemory_save dir cache key value =
-    withStorePath dir key $ \_ path ->
+    withStorePath dir key $ \_ path -> do
       case value of
         MkStoreValue x ->
           let
@@ -96,9 +96,8 @@ module Hexyll.Core.StoreEnv where
               `ioeSetFileName` (show path ++ " for " ++ key)
               `ioeSetLocation` "newStoreEnvInMemory_save"
           in
-            modifyIOError handle $ do
-              encodeFile (toFilePath path) x
-              Lru.insert path (MkStoreValue x) cache
+            modifyIOError handle $ encodeFile (toFilePath path) x
+      Lru.insert path value cache
 
   newStoreEnvInMemory_loadDelay
     :: Path Rel Dir -> Lru.AtomicLRU (Path Rel File) StoreValue
