@@ -107,8 +107,10 @@ module Hexyll.Core.StoreEnv where
           withFile (toFilePath path) ReadMode $ \h -> do
             c <- BL.hGetContents h
             c `deepseq` case decodeOrFail c of
-              Left  (_, _, e) -> error (show e)
-              Right (_, _, x) -> return $ Right x
+              Left  (_, _, s) ->
+                return $ Left (DecodeError (StoreDecodeError s))
+              Right (_, _, x) ->
+                return $ Right x
         else return Nothing
 
   withStorePath
