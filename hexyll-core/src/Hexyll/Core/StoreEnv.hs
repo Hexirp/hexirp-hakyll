@@ -88,7 +88,7 @@ module Hexyll.Core.StoreEnv where
     :: Path Rel Dir -> Lru.AtomicLRU (Path Rel File) StoreValue
     -> StoreKey -> StoreValue -> IO ()
   newStoreEnvInMemory_save dir cache key value =
-    withStorePath dir key $ \_ path -> do
+    withStorePath dir key $ \path -> do
       case value of
         MkStoreValue x ->
           let
@@ -103,7 +103,7 @@ module Hexyll.Core.StoreEnv where
     :: Path Rel Dir -> Lru.AtomicLRU (Path Rel File) StoreValue
     -> StoreKey -> IO (Maybe (StoreLoad IO))
   newStoreEnvInMemory_loadDelay dir cache key =
-    withStorePath dir key $ \_ path -> do
+    withStorePath dir key $ \path -> do
       mv <- Lru.lookup path cache
       case mv of
         Nothing -> do
@@ -145,7 +145,7 @@ module Hexyll.Core.StoreEnv where
   newStoreEnvNoMemory_save
     :: Path Rel Dir -> StoreKey -> StoreValue -> IO ()
   newStoreEnvNoMemory_save dir key value =
-    withStorePath dir key $ \_ path ->
+    withStorePath dir key $ \path ->
       case value of
         MkStoreValue x ->
           let
@@ -158,7 +158,7 @@ module Hexyll.Core.StoreEnv where
   newStoreEnvNoMemory_loadDelay
     :: Path Rel Dir -> StoreKey -> IO (Maybe (StoreLoad IO))
   newStoreEnvNoMemory_loadDelay dir key =
-    withStorePath dir key $ \_ path -> do
+    withStorePath dir key $ \path -> do
       exists <- doesFileExist $ toFilePath path
       if exists
         then return $ Just $ StoreLoad $
@@ -178,7 +178,7 @@ module Hexyll.Core.StoreEnv where
         else return Nothing
 
   withStorePath
-    :: Path Rel Dir -> StoreKey -> (String -> Path Rel File -> IO a) -> IO a
+    :: Path Rel Dir -> StoreKey -> (Path Rel File -> IO a) -> IO a
   withStorePath dir key f =
     let
       keyHash = hashStoreKey key
@@ -188,7 +188,7 @@ module Hexyll.Core.StoreEnv where
         [ "withStorePath: Something wrong happened."
         , "withStorePath: " ++ show (show e)
         ]
-      Right path -> f keyHash path
+      Right path -> f path
 
   hashStoreKey :: StoreKey -> String
   hashStoreKey sk =
