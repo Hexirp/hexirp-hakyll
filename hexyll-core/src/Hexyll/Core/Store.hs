@@ -81,7 +81,7 @@ module Hexyll.Core.Store where
         x <- get
         return $ Right (MkStoreValue x) `const` (x `asProxyTypeOf` proxy)
       else
-        return $ Left (StoreError trExpected trActual)
+        return $ Left (TypeCastError (StoreTypeCastError trExpected trActual))
 
   -- | Get a 'StoreValue' and unwrap the value. This also has the same problem
   -- as 'getStValRestrictly'.
@@ -99,7 +99,7 @@ module Hexyll.Core.Store where
         x <- get
         return $ Right x `const` (x `asProxyTypeOf` proxy)
       else
-        return $ Left (StoreError trExpected trActual)
+        return $ Left (TypeCastError (StoreTypeCastError trExpected trActual))
 
   -- | A type of delayed loading.
   --
@@ -115,10 +115,25 @@ module Hexyll.Core.Store where
   mapStoreLoad :: (forall a. m a -> n a) -> StoreLoad m -> StoreLoad n
   mapStoreLoad f (StoreLoad sl) = StoreLoad (f sl)
 
+  -- | An error type for 'StoreLoad'.
+  --
+  -- @since 0.1.0.0
+  data StoreError
+    = DecodeError StoreDecodeError
+    | TypeCastError StoreTypeCastError
+    deriving ( Eq, Ord, Show, Typeable )
+
+  -- | An error type when decoding.
+  --
+  -- @since 0.1.0.0
+  newtype StoreDecodeError = StoreDecodeError
+    { unStoreDecodeError :: String
+    } deriving ( Eq, Ord, Show, Typeable )
+
   -- | An error type when casting.
   --
   -- @since 0.1.0.0
-  data StoreError = StoreError
+  data StoreTypeCastError = StoreTypeCastError
     { storeExpected :: TypeRep
     , storeActual :: TypeRep
     } deriving ( Eq, Ord, Show, Typeable )
