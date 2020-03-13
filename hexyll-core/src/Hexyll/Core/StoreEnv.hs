@@ -86,11 +86,17 @@ module Hexyll.Core.StoreEnv where
     liftIO $ fmap (fmap (mapStoreLoad liftIO)) $
       storeLoadDelay (view storeEnvL env) sk
 
+  -- | The option for 'newStoreEnv'
+  --
+  -- @since 0.1.0.0
   data StoreOption = StoreOption
     { storeLocation :: !(Path Rel Dir)
     , storeInMemory :: !Bool
     } deriving (Eq, Ord, Show, Typeable)
 
+  -- | Made a new 'StoreEnv'.
+  --
+  -- @since 0.1.0.0
   newStoreEnv :: StoreOption -> IO StoreEnv
   newStoreEnv (StoreOption sl si) = if si
     then newStoreEnvInMemory sl
@@ -105,6 +111,7 @@ module Hexyll.Core.StoreEnv where
       , storeLoadDelay = newStoreEnvInMemory_loadDelay dir cache
       }
 
+  -- This magic number comes from https://github.com/Hexirp/hexirp-hakyll/blob/6732588a8ea77651201d179beab0ac868067e01f/hexyll-core/src/Hexyll/Core/OldStore.hs#L87 .
   storeCacheSize :: Maybe Integer
   storeCacheSize = Just 512
 
