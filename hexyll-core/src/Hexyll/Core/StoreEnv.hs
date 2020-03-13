@@ -1,7 +1,5 @@
 {-# OPTIONS_HADDOCK show-extensions #-}
 
-{-# LANGUAGE RankNTypes #-}
-
 -- |
 -- Module:      Hexyll.Core.StoreEnv
 -- Copyright:   (c) 2019 Hexirp
