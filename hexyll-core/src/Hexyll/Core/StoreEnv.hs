@@ -103,6 +103,9 @@ module Hexyll.Core.StoreEnv
 
   -- | Made a new 'StoreEnv'.
   --
+  -- If 'storeInMemory' is on, loading values will be faster, but will use
+  -- more memory.
+  --
   -- @since 0.1.0.0
   newStoreEnv :: StoreOption -> IO StoreEnv
   newStoreEnv (StoreOption sl si) = if si
