@@ -2,6 +2,17 @@
 
 {-# LANGUAGE RankNTypes #-}
 
+-- |
+-- Module:      Hexyll.Core.StoreEnv
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: portable
+--
+-- This module provides an environment for handling a store.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.StoreEnv where
 
   import Prelude
