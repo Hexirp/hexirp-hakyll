@@ -154,7 +154,7 @@ module Hexyll.Core.StoreEnv
               let
                 handle e = e
                   `ioeSetFileName` (show path ++ " for " ++ key)
-                  `ioeSetLocation` "newStoreEnvNoMemory_loadDelay"
+                  `ioeSetLocation` "newStoreEnvInMemory_loadDelay"
               in
                 modifyIOError handle $
                   withFile (toFilePath path) ReadMode $ \h -> do
