@@ -62,6 +62,9 @@ module Hexyll.Core.StoreEnv where
   class HasStoreEnv env where
     storeEnvL :: Lens' env StoreEnv
 
+  -- | Save a value with a key.
+  --
+  -- @since 0.1.0.0
   saveE
     :: (MonadIO m, MonadReader env m, HasStoreEnv env)
     => StoreKey
@@ -71,6 +74,9 @@ module Hexyll.Core.StoreEnv where
     env <- ask
     liftIO $ storeSave (view storeEnvL env) sk sv
 
+  -- | Load a value lazily.
+  --
+  -- @since 0.1.0.0
   loadDelayE
     :: (MonadIO m, MonadReader env m, HasStoreEnv env)
     => StoreKey
