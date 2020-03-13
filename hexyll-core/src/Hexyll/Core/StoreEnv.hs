@@ -11,7 +11,14 @@
 -- This module provides an environment for handling a store.
 --
 -- @since 0.1.0.0
-module Hexyll.Core.StoreEnv where
+module Hexyll.Core.StoreEnv
+  ( StoreEnv (..)
+  , HasStoreEnv (..)
+  , saveE
+  , loadDelayE
+  , StoreOption (..)
+  , newStoreEnv
+  ) where
 
   import Prelude
 
