@@ -119,8 +119,8 @@ module Hexyll.Core.Store where
   --
   -- @since 0.1.0.0
   data StoreError
-    = DecodeError StoreDecodeError
-    | TypeCastError StoreTypeCastError
+    = DecodeError !StoreDecodeError
+    | TypeCastError !StoreTypeCastError
     deriving ( Eq, Ord, Show, Typeable )
 
   -- | An error type when decoding.
@@ -134,8 +134,8 @@ module Hexyll.Core.Store where
   --
   -- @since 0.1.0.0
   data StoreTypeCastError = StoreTypeCastError
-    { storeExpected :: TypeRep
-    , storeActual :: TypeRep
+    { storeExpected :: !TypeRep
+    , storeActual :: !TypeRep
     } deriving ( Eq, Ord, Show, Typeable )
 
   -- | A monad for handling a store. This has two functions corresponding to
