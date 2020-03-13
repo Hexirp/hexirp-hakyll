@@ -48,11 +48,17 @@ module Hexyll.Core.StoreEnv where
 
   import Hexyll.Core.Store
 
+  -- | The type of environment for handling a store.
+  --
+  -- @since 0.1.0.0
   data StoreEnv = StoreEnv
     { storeSave :: !(StoreKey -> StoreValue -> IO ())
     , storeLoadDelay :: !(StoreKey -> IO (Maybe (StoreLoad IO)))
     } deriving Typeable
 
+  -- | Environment values with functions handling a store.
+  --
+  -- @since 0.1.0.0
   class HasStoreEnv env where
     storeEnvL :: Lens' env StoreEnv
 
