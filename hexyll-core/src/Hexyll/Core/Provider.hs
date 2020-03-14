@@ -4,7 +4,7 @@ module Hexyll.Core.Provider where
 
   import Data.Time ( UTCTime (..) )
 
-  import qualified Data.ByteString.Lazy as BL
+  import qualified Data.ByteString as B
 
   import Hexyll.Core.Store
 
@@ -15,7 +15,7 @@ module Hexyll.Core.Provider where
     , modificationTimeOld :: Maybe UTCTime
     }
 
-  newtype Body = Body { unBody :: BL.ByteString }
+  newtype Body = Body { unBody :: B.ByteString }
 
   newtype ProviderLoad m a = ProviderLoad
     { runProviderLoad :: m a
