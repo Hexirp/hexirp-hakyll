@@ -39,8 +39,8 @@ module Hexyll.Core.Provider where
   --
   -- @since 0.1.0.0
   data ModificationTime = ModificationTime
-    { modificationTime    :: UTCTime
-    , modificationTimeOld :: Maybe UTCTime
+    { modificationTime    :: !UTCTime
+    , modificationTimeOld :: !(Maybe UTCTime)
     } deriving ( Eq, Ord, Show, Typeable )
 
   -- | @since 0.1.0.0
