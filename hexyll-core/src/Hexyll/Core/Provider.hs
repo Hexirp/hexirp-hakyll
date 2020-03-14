@@ -47,6 +47,8 @@ module Hexyll.Core.Provider where
   --
   -- If 'modificationTime' is greater than 'modificationTimeOld', it means
   -- the file is newer than the previous run.
+  --
+  -- @since 0.1.0.0
   isModifiedTime :: ModificationTime -> Bool
   isModifiedTime (ModificationTime tn mto) = case mto of
     Nothing -> False
