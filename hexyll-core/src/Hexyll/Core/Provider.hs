@@ -27,6 +27,9 @@ module Hexyll.Core.Provider where
 
     getAllPath :: m [Path Rel File]
 
+    countAllPath :: m Int
+    countAllPath = length <$> getAllPath
+
     getModificationTimeDelay
       :: Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
 
