@@ -43,6 +43,7 @@ module Hexyll.Core.Provider where
     , modificationTimeOld :: Maybe UTCTime
     } deriving ( Eq, Ord, Show, Typeable )
 
+  -- | @since 0.1.0.0
   instance NFData ModificationTime where
     rnf (ModificationTime tn mto) = rnf tn `seq` rnf mto `seq` ()
 
@@ -67,6 +68,7 @@ module Hexyll.Core.Provider where
   newtype Body = Body { unBody :: B.ByteString }
     deriving ( Eq, Ord, Show, Typeable )
 
+  -- | @since 0.1.0.0
   instance NFData Body where
     rnf (Body x) = rnf x
 
