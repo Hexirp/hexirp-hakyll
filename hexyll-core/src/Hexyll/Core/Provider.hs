@@ -18,6 +18,13 @@ module Hexyll.Core.Provider where
   newtype Body = Body { unBody :: BL.ByteString }
 
   class MonadStore m => MonadProvider m where
+
     getAllPath :: m [Path Rel File]
+
     getModificationTime :: Path Rel File -> m (Maybe ModificationTime)
+
     getBody :: Path Rel File -> m (Maybe Body)
+
+    isExistent :: Path Rel File -> m Bool
+
+    isModified :: Path Rel File -> m (Maybe Bool)
