@@ -10,7 +10,7 @@ import           Test.Tasty.HUnit            (Assertion, testCase, (@?=))
 
 --------------------------------------------------------------------------------
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Provider
+import           Hexyll.Core.OldProvider
 import           Hexyll.Core.OldStore           (Store)
 import           Hexyll.Web.Tags
 import           TestSuite.Util
