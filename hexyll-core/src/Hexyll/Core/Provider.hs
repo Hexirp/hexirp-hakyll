@@ -6,5 +6,5 @@ module Hexyll.Core.Provider where
   import Hexyll.Core.Metadata
   import Hexyll.Core.Store
 
-  class (MonadMetadata m, MonadStore m) => MonadProvider m where
+  class MonadStore m => MonadProvider m where
     getBody :: Identifier -> m String
