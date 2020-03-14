@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- | This module provides an wrapper API around the file system which does some
 -- caching.
-module Hexyll.Core.Provider
+module Hexyll.Core.OldProvider
     ( -- * Constructing resource providers
       Internal.Provider
     , newProvider
@@ -24,8 +24,8 @@ module Hexyll.Core.Provider
 
 
 --------------------------------------------------------------------------------
-import qualified Hexyll.Core.Provider.Internal      as Internal
-import qualified Hexyll.Core.Provider.MetadataCache as Internal
+import qualified Hexyll.Core.OldProvider.Internal      as Internal
+import qualified Hexyll.Core.OldProvider.MetadataCache as Internal
 import           Hexyll.Core.OldStore               (Store)
 
 

@@ -31,7 +31,7 @@ import           Hexyll.Core.Item
 import           Hexyll.Core.Item.SomeItem
 import           Hexyll.Core.Logger            (Logger)
 import qualified Hexyll.Core.Logger            as Logger
-import           Hexyll.Core.Provider
+import           Hexyll.Core.OldProvider
 import           Hexyll.Core.Routes
 import           Hexyll.Core.Rules.Internal
 import           Hexyll.Core.OldStore             (Store)
