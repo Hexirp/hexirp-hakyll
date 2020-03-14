@@ -17,7 +17,7 @@ import           Data.Either                  (isLeft)
 import           Hexyll.Core.Compiler
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
-import           Hexyll.Core.Provider
+import           Hexyll.Core.OldProvider
 import           Hexyll.Web.Template
 import           Hexyll.Web.Template.Context
 import           Hexyll.Web.Template.Internal
