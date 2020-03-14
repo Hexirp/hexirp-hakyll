@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hexyll.Core.Provider.MetadataCache
+module Hexyll.Core.OldProvider.MetadataCache
     ( resourceMetadata
     , resourceBody
     , resourceInvalidateMetadataCache
@@ -10,8 +10,8 @@ module Hexyll.Core.Provider.MetadataCache
 import           Control.Monad                 (unless)
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Metadata
-import           Hexyll.Core.Provider.Internal
-import           Hexyll.Core.Provider.Metadata
+import           Hexyll.Core.OldProvider.Internal
+import           Hexyll.Core.OldProvider.Metadata
 import qualified Hexyll.Core.OldStore          as Store
 
 

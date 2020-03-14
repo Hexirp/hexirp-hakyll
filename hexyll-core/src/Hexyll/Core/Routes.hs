@@ -52,7 +52,7 @@ import           System.FilePath                (replaceExtension)
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Metadata           hiding ( Pattern )
-import           Hexyll.Core.Provider
+import           Hexyll.Core.OldProvider
 import           Hexyll.Core.Util.String
 
 

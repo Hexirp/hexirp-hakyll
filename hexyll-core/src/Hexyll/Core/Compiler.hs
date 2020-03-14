@@ -46,7 +46,7 @@ import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.Logger            as Logger
-import           Hexyll.Core.Provider
+import           Hexyll.Core.OldProvider
 import           Hexyll.Core.Routes
 import qualified Hexyll.Core.OldStore          as Store
 

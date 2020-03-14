@@ -2,7 +2,7 @@
 {-# LANGUAGE CPP                        #-}
 {-# LANGUAGE DeriveDataTypeable         #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-module Hexyll.Core.Provider.Internal
+module Hexyll.Core.OldProvider.Internal
     ( ResourceInfo (..)
     , Provider (..)
     , newProvider
