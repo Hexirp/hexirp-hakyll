@@ -16,6 +16,9 @@ module Hexyll.Core.Provider where
 
   import Prelude
 
+  import Data.Typeable   ( Typeable )
+  import Control.DeepSeq ( NFData (..) )
+
   import Data.Maybe ( isJust )
 
   import Data.Time ( UTCTime (..) )
@@ -38,7 +41,10 @@ module Hexyll.Core.Provider where
   data ModificationTime = ModificationTime
     { modificationTime    :: UTCTime
     , modificationTimeOld :: Maybe UTCTime
-    }
+    } deriving ( Eq, Ord, Show, Typeable )
+
+  instance NFData ModificationTime where
+    rnf (ModificationTime tn mto) = rnf tn `seq` rnf mto `seq` ()
 
   -- | Check if a 'ModificationTime' means that the file is modified.
   --
@@ -59,13 +65,17 @@ module Hexyll.Core.Provider where
   --
   -- @since 0.1.0.0
   newtype Body = Body { unBody :: B.ByteString }
+    deriving ( Eq, Ord, Show, Typeable )
+
+  instance NFData Body where
+    rnf (Body x) = rnf x
 
   -- | A delayed loading effect.
   --
   -- @since 0.1.0.0
   newtype ProviderLoad m a = ProviderLoad
     { runProviderLoad :: m a
-    }
+    } deriving ( Eq, Ord, Show, Typeable )
 
   -- | A monad for handling a provider. It inherits 'MonadStore' for caching.
   --
