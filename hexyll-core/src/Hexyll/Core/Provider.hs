@@ -17,9 +17,19 @@ module Hexyll.Core.Provider where
 
   newtype Body = Body { unBody :: BL.ByteString }
 
+  newtype ProviderLoad m a = ProviderLoad
+    { runProviderLoad :: m a
+    }
+
   class MonadStore m => MonadProvider m where
 
     getAllPath :: m [Path Rel File]
+
+    getModificationTimeDelay
+      :: Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
+
+    getBodyDelay
+      :: Path Rel File -> m (Maybe (ProviderLoad m Body))
 
     getModificationTime :: Path Rel File -> m (Maybe ModificationTime)
 
