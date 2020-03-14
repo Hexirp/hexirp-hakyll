@@ -11,7 +11,7 @@ module Hexyll.Core.Provider where
   import Path
 
   data ModificationTime = ModificationTime
-    { modificationTime    :: Maybe UTCTime
+    { modificationTime    :: UTCTime
     , modificationTimeOld :: Maybe UTCTime
     }
 
