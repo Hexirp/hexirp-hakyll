@@ -100,7 +100,7 @@ flush = Rules $ do
             route'   <- fromMaybe mempty . rulesRoute <$> get
 
             -- The version is possibly not set correctly at this point (yet)
-            let ids = map (setIdentVersion version') matches'
+            let ids = map (setIdentifierVersion version') matches'
 
             {-
             ids      <- case fromLiteral pattern of

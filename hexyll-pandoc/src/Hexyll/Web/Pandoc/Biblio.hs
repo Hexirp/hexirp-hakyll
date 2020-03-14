@@ -30,7 +30,7 @@ import           Hexyll.Core.Compiler
 import           Hexyll.Core.Compiler.Internal
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
-import           Hexyll.Core.Provider
+import           Hexyll.Core.OldProvider
 import           Hexyll.Core.Writable
 import           Hexyll.Web.Pandoc
 import           Hexyll.Web.Pandoc.Binary ()

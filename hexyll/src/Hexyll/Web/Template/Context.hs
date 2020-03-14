@@ -63,7 +63,7 @@ import           Hexyll.Core.Compiler.Internal
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata
-import           Hexyll.Core.Provider
+import           Hexyll.Core.OldProvider
 import           Hexyll.Core.Util.String       (needlePrefix, splitAll)
 import           Hexyll.Web.Html
 import           Prelude                       hiding (id)

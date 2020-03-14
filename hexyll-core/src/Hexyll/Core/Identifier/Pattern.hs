@@ -63,12 +63,12 @@ module Hexyll.Core.Identifier.Pattern
   -- | Make a pattern from a 'Identifier'.
   --
   -- The pattern is interpreted as: @'fromIdentifier' i == ('fromGlob'
-  -- ('toFilePath' i) '.&&.' 'fromVersion' ('getIdentVersion' i))@.
+  -- ('toFilePath' i) '.&&.' 'fromVersion' ('getIdentiferVersion' i))@.
   --
   -- @since 0.1.0.0
   fromIdentifier :: Identifier -> PatternExpr
   fromIdentifier i =
-    fromGlob (toFilePath i) .&&. fromVersion (getIdentVersion i)
+    fromGlob (toFilePath i) .&&. fromVersion (getIdentifierVersion i)
 
   -- | Make a pattern from a list.
   --

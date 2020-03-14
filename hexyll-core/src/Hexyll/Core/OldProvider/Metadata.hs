@@ -2,7 +2,7 @@
 -- | Internal module to parse metadata
 {-# LANGUAGE BangPatterns    #-}
 {-# LANGUAGE RecordWildCards #-}
-module Hexyll.Core.Provider.Metadata
+module Hexyll.Core.OldProvider.Metadata
     ( loadMetadata
     , parsePage
 
@@ -25,7 +25,7 @@ import qualified Data.Text.Encoding            as T
 import qualified Data.Yaml                     as Yaml
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Metadata
-import           Hexyll.Core.Provider.Internal
+import           Hexyll.Core.OldProvider.Internal
 import           System.IO                     as IO
 import           System.IO.Error               (modifyIOError, ioeSetLocation)
 
@@ -44,7 +44,7 @@ loadMetadata p identifier = do
 
     return (md <> emd, body)
   where
-    normal = setIdentVersion Nothing identifier
+    normal = setIdentifierVersion Nothing identifier
     fp     = resourceFilePath p identifier
     mi     = M.lookup normal (providerFiles p) >>= resourceInfoMetadata
 

@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 -- |
 -- Module:      Hexyll.Core.LogEnv
 -- Copyright:   (c) 2019 Hexirp
@@ -15,13 +17,18 @@ module Hexyll.Core.LogEnv where
 
   import Control.Monad ( when )
 
-  import Data.Typeable ( Typeable )
+  import Data.Typeable  ( Typeable )
+  import Data.Semigroup ( stimesMonoid )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
   import Control.Monad.Reader.Class ( MonadReader ( ask ) )
 
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
+
+  import System.IO ( stdout )
+
+  import Data.ByteString.Builder ( hPutBuilder, stringUtf8 )
 
   import Hexyll.Core.Log
 
@@ -71,17 +78,17 @@ module Hexyll.Core.LogEnv where
   simpleLogFunc :: LogOption -> LogLevel -> LogMessage -> IO ()
   simpleLogFunc lo ll lm =
       when (logMinLevel lo <= ll) $
-        putStrLn $ header ++ " " ++ lm
+        hPutBuilder stdout $ header <> " " <> stringUtf8 lm
     where
-      indent = replicate (logIndentLevel lo) ' '
+      indent = stimesMonoid (logIndentLevel lo) " "
       level = case ll of
-        LevelDebug -> "[DEBUG]:"
-        LevelInfo -> "[INFO]:"
-        LevelWarn -> "[WARN]:"
-        LevelError -> "[Error]:"
-        LevelFatal -> "[FATAL]:"
-      source = logSource lo ++ ":"
-      header = indent ++ level ++ source
+        LevelDebug -> "[DEBUG]"
+        LevelInfo -> "[INFO]"
+        LevelWarn -> "[WARN]"
+        LevelError -> "[Error]"
+        LevelFatal -> "[FATAL]"
+      source = stringUtf8 $ logSource lo
+      header = indent <> level <> ":" <> source <> ":"
 
   -- | A simple 'LogEnv'.
   --
