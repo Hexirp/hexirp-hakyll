@@ -87,12 +87,12 @@ module Hexyll.Core.Identifier.Internal where
   -- function.
   --
   -- @since 0.1.0.0
-  getIdentVersion :: Identifier -> Maybe String
-  getIdentVersion = identifierVersion
+  getIdentifierVersion :: Identifier -> Maybe String
+  getIdentifierVersion = identifierVersion
 
   -- | Set the version of an identifier. I recommend that you do not use this
   -- function.
   --
   -- @since 0.1.0.0
-  setIdentVersion :: Maybe String -> Identifier -> Identifier
-  setIdentVersion v i = i { identifierVersion = v }
+  setIdentifierVersion :: Maybe String -> Identifier -> Identifier
+  setIdentifierVersion v i = i { identifierVersion = v }

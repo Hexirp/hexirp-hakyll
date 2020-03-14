@@ -23,7 +23,7 @@ module Hexyll.Core.IdentifierSpec (spec) where
         show (ufromFilePath "a.txt") `shouldBe` "a.txt"
 
       it "normally works with the version" $ do
-        show (setIdentVersion (Just "pdf") $ ufromFilePath "a.txt")
+        show (setIdentifierVersion (Just "pdf") $ ufromFilePath "a.txt")
             `shouldBe` "a.txt (pdf)"
 
     describe "fromFilePath" $ do
@@ -74,12 +74,12 @@ module Hexyll.Core.IdentifierSpec (spec) where
         toFilePath (ufromFilePath "foo/bar.md") `shouldBe` "foo/bar.md"
 #endif
 
-    describe "getIdentVersion" $ do
+    describe "getIdentifierVersion" $ do
 
       it "follows the law 'get (set s i) === s'" $
         property prop_get_set_IdentVersion
 
-    describe "setIdentVersion" $ do
+    describe "setIdentifierVersion" $ do
 
       it "follows the law 'set (get i) i === i'" $
         property prop_set_get_IdentVersion
@@ -96,25 +96,25 @@ module Hexyll.Core.IdentifierSpec (spec) where
 
   -- The mock with a identifier version
   mock_Identifier_1 :: Maybe String -> Identifier
-  mock_Identifier_1 s = setIdentVersion s mock_Identifier_0
+  mock_Identifier_1 s = setIdentifierVersion s mock_Identifier_0
 
   prop_get_set_IdentVersion :: Maybe String -> Bool
   prop_get_set_IdentVersion s =
     let
       i = mock_Identifier_0
     in
-      getIdentVersion (setIdentVersion s i) == s
+      getIdentifierVersion (setIdentifierVersion s i) == s
 
   prop_set_get_IdentVersion :: Maybe String -> Bool
   prop_set_get_IdentVersion s =
     let
       i = mock_Identifier_1 s
     in
-      setIdentVersion (getIdentVersion i) i == i
+      setIdentifierVersion (getIdentifierVersion i) i == i
 
   prop_set_set_IdentVersion :: Maybe String -> Maybe String -> Bool
   prop_set_set_IdentVersion s0 s1 =
     let
       i = mock_Identifier_0
     in
-      setIdentVersion s0 (setIdentVersion s1 i) == setIdentVersion s0 i
+      setIdentifierVersion s0 (setIdentifierVersion s1 i) == setIdentifierVersion s0 i

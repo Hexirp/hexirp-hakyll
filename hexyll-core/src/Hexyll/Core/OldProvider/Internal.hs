@@ -137,7 +137,7 @@ resourceList = M.keys . providerFiles
 -- | Check if a given resource exists
 resourceExists :: Provider -> Identifier -> Bool
 resourceExists provider =
-    (`M.member` providerFiles provider) . setIdentVersion Nothing
+    (`M.member` providerFiles provider) . setIdentifierVersion Nothing
 
 
 --------------------------------------------------------------------------------
@@ -167,7 +167,7 @@ resourceModified p r = case (ri, oldRi) of
         resourceInfoModified n >  resourceInfoModified o ||
         resourceInfoMetadata n /= resourceInfoMetadata o
   where
-    normal = setIdentVersion Nothing r
+    normal = setIdentifierVersion Nothing r
     ri     = M.lookup normal (providerFiles p)
     oldRi  = M.lookup normal (providerOldFiles p)
 
@@ -175,7 +175,7 @@ resourceModified p r = case (ri, oldRi) of
 --------------------------------------------------------------------------------
 resourceModificationTime :: Provider -> Identifier -> UTCTime
 resourceModificationTime p i =
-    case M.lookup (setIdentVersion Nothing i) (providerFiles p) of
+    case M.lookup (setIdentifierVersion Nothing i) (providerFiles p) of
         Just ri -> unBinaryTime $ resourceInfoModified ri
         Nothing -> error $
             "Hexyll.Core.Provider.Internal.resourceModificationTime: " ++

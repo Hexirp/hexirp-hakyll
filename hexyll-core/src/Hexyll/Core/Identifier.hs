@@ -23,8 +23,8 @@ module Hexyll.Core.Identifier
   , fromFilePath
   , ufromFilePath
   , toFilePath
-  , getIdentVersion
-  , setIdentVersion
+  , getIdentifierVersion
+  , setIdentifierVersion
   ) where
 
   import Prelude

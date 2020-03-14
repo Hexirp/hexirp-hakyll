@@ -44,7 +44,7 @@ loadMetadata p identifier = do
 
     return (md <> emd, body)
   where
-    normal = setIdentVersion Nothing identifier
+    normal = setIdentifierVersion Nothing identifier
     fp     = resourceFilePath p identifier
     mi     = M.lookup normal (providerFiles p) >>= resourceInfoMetadata
 
