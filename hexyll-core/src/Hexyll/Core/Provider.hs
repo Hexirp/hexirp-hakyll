@@ -2,6 +2,8 @@ module Hexyll.Core.Provider where
 
   import Prelude
 
+  import Data.Maybe ( isJust )
+
   import Data.Time ( UTCTime (..) )
 
   import qualified Data.ByteString as B
@@ -31,10 +33,34 @@ module Hexyll.Core.Provider where
     getBodyDelay
       :: Path Rel File -> m (Maybe (ProviderLoad m Body))
 
-    getModificationTime :: Path Rel File -> m (Maybe ModificationTime)
+  getModificationTime
+    :: MonadProvider m => Path Rel File -> m (Maybe ModificationTime)
+  getModificationTime path = do
+    ml <- getModificationTimeDelay path
+    case ml of
+      Nothing -> pure Nothing
+      Just l -> Just <$> runProviderLoad l
 
-    getBody :: Path Rel File -> m (Maybe Body)
+  getBody :: MonadProvider m => Path Rel File -> m (Maybe Body)
+  getBody path = do
+    ml <- getBodyDelay path
+    case ml of
+      Nothing -> pure Nothing
+      Just l -> Just <$> runProviderLoad l
 
-    isExistent :: Path Rel File -> m Bool
+  isExistent :: MonadProvider m => Path Rel File -> m Bool
+  isExistent path = do
+    ml <- getBodyDelay path
+    return $ isJust ml
 
-    isModified :: Path Rel File -> m (Maybe Bool)
+  isModified :: MonadProvider m => Path Rel File -> m (Maybe Bool)
+  isModified path = do
+    mt <- getModificationTime path
+    case mt of
+      Nothing -> pure Nothing
+      Just t -> pure (Just $ isModifiedTime t)
+
+  isModifiedTime :: ModificationTime -> Bool
+  isModifiedTime (ModificationTime tn mto) = case mto of
+    Nothing -> False
+    Just to -> tn > to
