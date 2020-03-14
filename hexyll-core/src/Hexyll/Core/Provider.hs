@@ -43,10 +43,11 @@ module Hexyll.Core.Provider where
   -- | Check if a 'ModificationTime' means that the file is modified.
   --
   -- If 'modificationTimeOld' is 'Nothing', it means that the file did not
-  -- exist in the previous run.
+  -- exist in the previous run. Then this function returns 'True'.
   --
   -- If 'modificationTime' is greater than 'modificationTimeOld', it means
-  -- the file is newer than the previous run.
+  -- the file is newer than the previous run. Then this function returns
+  -- 'True'.
   --
   -- @since 0.1.0.0
   isModifiedTime :: ModificationTime -> Bool
