@@ -21,6 +21,7 @@ language: shell
 cache:
   directories:
   - $HOME/.stack
+  timeout: 3
 
 # Use Build Matrix to build multiple stack resolvers.
 env:
