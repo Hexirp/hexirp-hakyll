@@ -90,7 +90,7 @@ module Hexyll.Core.LogEnv where
       source = stringUtf8 $ logSource lo
       header = indent <> level <> ":" <> source <> ":"
 
-  -- | A simple 'LogEnv'.
+  -- | A simple 'LogEnv'. This is not intended to be performed in parallel.
   --
   -- @since 0.1.0.0
   simpleLogEnv :: LogEnv
