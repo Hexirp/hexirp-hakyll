@@ -19,10 +19,9 @@ module Hexyll.Core.Store where
   import Prelude
 
   import Data.Maybe ( isJust )
-  import Data.Proxy ( Proxy (..), asProxyTypeOf )
 
-  import Data.Typeable ( Typeable, typeOf, typeRep, cast, TypeRep )
-  import Data.Binary   ( Binary (..), Put, Get )
+  import Data.Typeable ( Typeable, cast, TypeRep )
+  import Data.Binary   ( Binary (..) )
 
   -- | A key for 'MonadStore'.
   --
