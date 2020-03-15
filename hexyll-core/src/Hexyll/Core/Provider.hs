@@ -104,7 +104,6 @@ module Hexyll.Core.Provider where
     getModificationTimeDelay
       :: Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
 
-
     -- | Get the body of a file lazily.
     --
     -- @since 0.1.0.0
