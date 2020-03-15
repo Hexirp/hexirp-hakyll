@@ -149,6 +149,4 @@ module Hexyll.Core.Provider where
   isModified :: MonadProvider m => Path Rel File -> m (Maybe Bool)
   isModified path = do
     mt <- getModificationTime path
-    case mt of
-      Nothing -> pure Nothing
-      Just t -> pure (Just $ isModifiedTime t)
+    return $ fmap isModifiedTime mt
