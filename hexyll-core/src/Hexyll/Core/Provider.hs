@@ -79,6 +79,14 @@ module Hexyll.Core.Provider where
     { runProviderLoad :: m a
     } deriving ( Eq, Ord, Show, Typeable )
 
+  -- | Unwrap 'ProviderLoad' and evaluate each action in the structure
+  -- from left to right, and collect the results.
+  --
+  -- @since 0.1.0.0
+  sequenceProviderLoad
+    :: (Traversable t, Applicative m) => t (ProviderLoad m a) -> m (t a)
+  sequenceProviderLoad = traverse runProviderLoad
+
   -- | A monad for handling a provider. It inherits 'MonadStore' for caching.
   --
   -- Most functions in 'MonadProvider' return 'Nothing' because the file does
@@ -117,9 +125,7 @@ module Hexyll.Core.Provider where
     :: MonadProvider m => Path Rel File -> m (Maybe ModificationTime)
   getModificationTime path = do
     ml <- getModificationTimeDelay path
-    case ml of
-      Nothing -> pure Nothing
-      Just l -> Just <$> runProviderLoad l
+    sequenceProviderLoad ml
 
   -- | Get the body of a file.
   --
@@ -127,9 +133,7 @@ module Hexyll.Core.Provider where
   getBody :: MonadProvider m => Path Rel File -> m (Maybe Body)
   getBody path = do
     ml <- getBodyDelay path
-    case ml of
-      Nothing -> pure Nothing
-      Just l -> Just <$> runProviderLoad l
+    sequenceProviderLoad ml
 
   -- | Check if a file exists.
   --
