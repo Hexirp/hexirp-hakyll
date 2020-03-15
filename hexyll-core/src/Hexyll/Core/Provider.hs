@@ -57,8 +57,8 @@ module Hexyll.Core.Provider where
   -- 'True'.
   --
   -- @since 0.1.0.0
-  isModifiedTime :: ModificationTime -> Bool
-  isModifiedTime (ModificationTime tn mto) = case mto of
+  isProofOldness :: ModificationTime -> Bool
+  isProofOldness (ModificationTime tn mto) = case mto of
     Nothing -> False
     Just to -> tn > to
 
@@ -149,4 +149,4 @@ module Hexyll.Core.Provider where
   isModified :: MonadProvider m => Path Rel File -> m (Maybe Bool)
   isModified path = do
     mt <- getModificationTime path
-    return $ fmap isModifiedTime mt
+    return $ fmap isProofOldness mt
