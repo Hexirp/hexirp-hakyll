@@ -53,5 +53,11 @@ module System.Directory.Hexyll
             then go x'e
             else return [x'e]
         return $ concat x'r
-    in
-      undefined
+    in do
+      path_exist <- doesDirectoryExist $ toFilePath path
+      if path_exist
+        then do
+          result <- go $ toFilePath path
+          forM result parseRelFile
+        else
+          error $ "listDirectoryRecursive: is not exist: " ++ toFilePath path
