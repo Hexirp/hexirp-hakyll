@@ -39,20 +39,16 @@ module System.Directory.Hexyll
     return $ di `isProperPrefixOf` pa
 
   listDirectoryRecursive :: Path Rel Dir -> IO [Path Rel File]
-  listDirectoryRecursive p = do
-    pb <- doesPathExist $ toFilePath p
-    if pb
-      then do
-        p' <- listDirectory $ toFilePath p
-        p'r <- forM p' $ \p'e -> do
-          p'eb <- doesDirectoryExist p'v
-          if p'eb
-            then do
-              p'ed <- parseRelDir p'e
-              listDirectory $ p </> p'ed
-            else do
-              p'ef <- parseRelFile p'e
-              return [p'ef]
-        return $ concat p'r
-      else
-        error $ "listDirectoryRecursive: " ++ toFilePath p
+  listDirectoryRecursive path =
+    let
+      go :: FilePath -> IO [FilePath]
+      go x = do
+        x' <- listDirectory x
+        x'r <- forM x' $ \x'e -> do
+          x'eb <- doesDirectoryExist x'e
+          if x'eb
+            then go x'e
+            else return [x'e]
+        return $ concat x'r
+    in
+      undefined
