@@ -19,13 +19,13 @@ module Hexyll.Core.ProviderEnv where
 
   data ProviderEnv = ProviderEnv
     { providerGetAllPath
-        :: StoreEnv -> IO (S.Set (Path Rel File))
+        :: !(StoreEnv -> IO (S.Set (Path Rel File)))
     , providerGetMTimeDelay
-        :: StoreEnv -> Path Rel File -> IO (Maybe (ProviderLoad IO MTime))
+        :: !(StoreEnv -> Path Rel File -> IO (Maybe (ProviderLoad IO MTime)))
     , providerGetBodyDelay
-        :: StoreEnv -> Path Rel File -> IO (Maybe (ProviderLoad IO Body))
+        :: !(StoreEnv -> Path Rel File -> IO (Maybe (ProviderLoad IO Body)))
     , providerStore
-        :: StoreEnv
+        :: !StoreEnv
     }
 
   instance HasStoreEnv ProviderEnv where
