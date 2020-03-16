@@ -9,6 +9,7 @@
 -- This module includes additional functions of "System.Directory".
 module System.Directory.Hexyll
   ( inDir
+  , listDirectoryRecursive
   ) where
 
   import Prelude
@@ -36,3 +37,22 @@ module System.Directory.Hexyll
     pa <- parseRelFile path
     di <- parseRelDir dir
     return $ di `isProperPrefixOf` pa
+
+  listDirectoryRecursive :: Path Rel Dir -> IO [Path Rel File]
+  listDirectoryRecursive p = do
+    pb <- doesPathExist $ toFilePath p
+    if pb
+      then do
+        p' <- listDirectory $ toFilePath p
+        p'r <- forM p' $ \p'e -> do
+          p'eb <- doesDirectoryExist p'v
+          if p'eb
+            then do
+              p'ed <- parseRelDir p'e
+              listDirectory $ p </> p'ed
+            else do
+              p'ef <- parseRelFile p'e
+              return [p'ef]
+        return $ concat p'r
+      else
+        error $ "listDirectoryRecursive: " ++ toFilePath p
