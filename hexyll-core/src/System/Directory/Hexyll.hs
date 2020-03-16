@@ -14,7 +14,10 @@ module System.Directory.Hexyll
 
   import Prelude
 
+  import Control.Monad ( forM )
+
   import Path
+  import System.Directory ( listDirectory, doesDirectoryExist )
 
   -- | @inDir path dir@ checks that @path@ is under @dir@. For example, @inDir
   -- "foo\/bar\/a.txt" "foo/"@ may be equal to @return True@.
