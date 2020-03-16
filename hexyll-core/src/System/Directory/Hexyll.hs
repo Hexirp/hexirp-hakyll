@@ -29,10 +29,15 @@ module System.Directory.Hexyll
       if path_exist
         then do
           result <- go path
-          forM result parseRelFile
+          case forM result parseRelFile of
+            Left e -> error $ unlines
+              [ "listDirectoryRecursive: Something wrong happened."
+              , "listDirectoryRecursive:   " ++ show (show e)
+              ]
+            Right files -> return files
         else
           error $ unlines
-            [ "listDirectoryRecursive: this directory is not exist"
+            [ "listDirectoryRecursive: This directory is not exist."
             , "listDirectoryRecursive:   " ++ path
             ]
     where
