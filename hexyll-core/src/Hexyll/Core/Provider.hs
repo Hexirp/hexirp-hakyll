@@ -21,9 +21,11 @@ module Hexyll.Core.Provider where
 
   import Data.Maybe ( isJust )
 
+  import qualified Data.Set as S
+
   import Data.Time ( UTCTime (..) )
 
-  import qualified Data.ByteString as B
+  import qualified Data.ByteString.Lazy as BL
 
   import Hexyll.Core.Store
 
@@ -33,9 +35,6 @@ module Hexyll.Core.Provider where
   --
   -- If 'modificationTimeOld' is 'Nothing', it means that the file did not
   -- exist in the previous run.
-  --
-  -- If 'modificationTime' is greater than 'modificationTimeOld', it means
-  -- the file is newer than the previous run.
   --
   -- @since 0.1.0.0
   data ModificationTime = ModificationTime
@@ -57,15 +56,15 @@ module Hexyll.Core.Provider where
   -- 'True'.
   --
   -- @since 0.1.0.0
-  isModifiedTime :: ModificationTime -> Bool
-  isModifiedTime (ModificationTime tn mto) = case mto of
+  isProofOldness :: ModificationTime -> Bool
+  isProofOldness (ModificationTime tn mto) = case mto of
     Nothing -> False
     Just to -> tn > to
 
   -- | A body of a file.
   --
   -- @since 0.1.0.0
-  newtype Body = Body { unBody :: B.ByteString }
+  newtype Body = Body { unBody :: BL.ByteString }
     deriving ( Eq, Ord, Show, Typeable )
 
   -- | @since 0.1.0.0
@@ -79,6 +78,20 @@ module Hexyll.Core.Provider where
     { runProviderLoad :: m a
     } deriving ( Eq, Ord, Show, Typeable )
 
+  -- | Map over 'ProviderLoad'.
+  --
+  -- @since 0.1.0.0
+  mapProviderLoad :: (m a -> n b) -> ProviderLoad m a -> ProviderLoad n b
+  mapProviderLoad f (ProviderLoad pl) = ProviderLoad (f pl)
+
+  -- | Unwrap 'ProviderLoad' and evaluate each action in the structure
+  -- from left to right, and collect the results.
+  --
+  -- @since 0.1.0.0
+  sequenceProviderLoad
+    :: (Traversable t, Applicative m) => t (ProviderLoad m a) -> m (t a)
+  sequenceProviderLoad = traverse runProviderLoad
+
   -- | A monad for handling a provider. It inherits 'MonadStore' for caching.
   --
   -- Most functions in 'MonadProvider' return 'Nothing' because the file does
@@ -90,20 +103,19 @@ module Hexyll.Core.Provider where
     -- | Get all paths.
     --
     -- @since 0.1.0.0
-    getAllPath :: m [Path Rel File]
+    getAllPath :: m (S.Set (Path Rel File))
 
     -- | Count all paths.
     --
     -- @since 0.1.0.0
     countAllPath :: m Int
-    countAllPath = length <$> getAllPath
+    countAllPath = S.size <$> getAllPath
 
     -- | Get the modification time of a file lazily.
     --
     -- @since 0.1.0.0
     getModificationTimeDelay
       :: Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
-
 
     -- | Get the body of a file lazily.
     --
@@ -118,9 +130,7 @@ module Hexyll.Core.Provider where
     :: MonadProvider m => Path Rel File -> m (Maybe ModificationTime)
   getModificationTime path = do
     ml <- getModificationTimeDelay path
-    case ml of
-      Nothing -> pure Nothing
-      Just l -> Just <$> runProviderLoad l
+    sequenceProviderLoad ml
 
   -- | Get the body of a file.
   --
@@ -128,9 +138,7 @@ module Hexyll.Core.Provider where
   getBody :: MonadProvider m => Path Rel File -> m (Maybe Body)
   getBody path = do
     ml <- getBodyDelay path
-    case ml of
-      Nothing -> pure Nothing
-      Just l -> Just <$> runProviderLoad l
+    sequenceProviderLoad ml
 
   -- | Check if a file exists.
   --
@@ -146,6 +154,4 @@ module Hexyll.Core.Provider where
   isModified :: MonadProvider m => Path Rel File -> m (Maybe Bool)
   isModified path = do
     mt <- getModificationTime path
-    case mt of
-      Nothing -> pure Nothing
-      Just t -> pure (Just $ isModifiedTime t)
+    return $ fmap isProofOldness mt

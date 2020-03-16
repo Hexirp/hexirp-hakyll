@@ -8,31 +8,45 @@
 --
 -- This module includes additional functions of "System.Directory".
 module System.Directory.Hexyll
-  ( inDir
+  ( listDirectoryRecursive
   ) where
 
   import Prelude
 
-  import Path
+  import Control.Monad ( forM )
 
-  -- | @inDir path dir@ checks that @path@ is under @dir@. For example, @inDir
-  -- "foo\/bar\/a.txt" "foo/"@ may be equal to @return True@.
-  --
-  -- @path@ should be a path to a file. @dir@ should be a path to a directory.
-  -- 'parseRelDir' and `parseRelFile' check whether the condition is met.
-  --
-  -- >>> inDir "foo/a.txt" "foo/"
-  -- True
-  --
-  -- >>> inDir "foo/bar/a.txt" "foo/"
-  -- True
-  --
-  -- >>> inDir "foo/baz/a.txt" "foo/baa/"
-  -- False
+  import           Path
+  import           System.Directory       ( listDirectory, doesDirectoryExist )
+  import qualified System.FilePath as Raw ( (</>) )
+
+  -- | Recursive 'listDirectory'.
   --
   -- @since 0.1.0.0
-  inDir :: FilePath -> FilePath -> IO Bool
-  inDir path dir = do
-    pa <- parseRelFile path
-    di <- parseRelDir dir
-    return $ di `isProperPrefixOf` pa
+  listDirectoryRecursive :: Path Rel Dir -> IO [Path Rel File]
+  listDirectoryRecursive dir =
+    let path = toFilePath dir in do
+      path_exist <- doesDirectoryExist path
+      if path_exist
+        then do
+          result <- go path
+          case forM result parseRelFile of
+            Left e -> error $ unlines
+              [ "listDirectoryRecursive: Something wrong happened."
+              , "listDirectoryRecursive:   " ++ show (show e)
+              ]
+            Right files -> return files
+        else
+          error $ unlines
+            [ "listDirectoryRecursive: This directory is not exist."
+            , "listDirectoryRecursive:   " ++ path
+            ]
+    where
+      go :: FilePath -> IO [FilePath]
+      go x = do
+        x' <- listDirectory x
+        x'r <- forM x' $ \x'e -> do
+          x'eb <- doesDirectoryExist x'e
+          if x'eb
+            then go $ x Raw.</> x'e
+            else return [x'e]
+        return $ concat x'r

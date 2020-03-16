@@ -9,6 +9,7 @@ cache:
   directories:
     - C:\\sr\\
     - $HOME\\AppData\\Local\\Programs\\stack\\x86_64-windows\\
+  timeout: 3
 
 # Use Build Matrix to build multiple stack resolvers.
 env:

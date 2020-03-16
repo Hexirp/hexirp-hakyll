@@ -69,6 +69,10 @@ module Hexyll.Core.StoreEnv
   class HasStoreEnv env where
     storeEnvL :: Lens' env StoreEnv
 
+  -- | @since 0.1.0.0
+  instance HasStoreEnv StoreEnv where
+    storeEnvL = id
+
   -- | Save a value with a key.
   --
   -- @since 0.1.0.0
@@ -105,6 +109,8 @@ module Hexyll.Core.StoreEnv
   --
   -- If 'storeInMemory' is on, loading values will be faster, but will use
   -- more memory.
+  --
+  -- This is not intended to be performed in parallel.
   --
   -- @since 0.1.0.0
   newStoreEnv :: StoreOption -> IO StoreEnv
