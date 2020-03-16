@@ -40,5 +40,5 @@ module Hexyll.Core.ProviderEnv where
     => Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
   getModificationTimeDelayE p = do
     env <- ask
-    liftIO $ fmap (fmap _) $
+    liftIO $ fmap (fmap (mapProviderLoad liftIO)) $
       providerGetModificationTimeDelay (view providerEnvL env) p

@@ -81,6 +81,12 @@ module Hexyll.Core.Provider where
     { runProviderLoad :: m a
     } deriving ( Eq, Ord, Show, Typeable )
 
+  -- | Map over 'ProviderLoad'.
+  --
+  -- @since 0.1.0.0
+  mapProviderLoad :: (m a -> n b) -> ProviderLoad m a -> ProviderLoad n b
+  mapProviderLoad f (ProviderLoad pl) = ProviderLoad (f pl)
+
   -- | Unwrap 'ProviderLoad' and evaluate each action in the structure
   -- from left to right, and collect the results.
   --
