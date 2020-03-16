@@ -21,9 +21,11 @@ module Hexyll.Core.Provider where
 
   import Data.Maybe ( isJust )
 
+  import qualified Data.Set as S
+
   import Data.Time ( UTCTime (..) )
 
-  import qualified Data.ByteString as B
+  import qualified Data.ByteString.Lazy as BL
 
   import Hexyll.Core.Store
 
@@ -33,9 +35,6 @@ module Hexyll.Core.Provider where
   --
   -- If 'modificationTimeOld' is 'Nothing', it means that the file did not
   -- exist in the previous run.
-  --
-  -- If 'modificationTime' is greater than 'modificationTimeOld', it means
-  -- the file is newer than the previous run.
   --
   -- @since 0.1.0.0
   data ModificationTime = ModificationTime
@@ -65,7 +64,7 @@ module Hexyll.Core.Provider where
   -- | A body of a file.
   --
   -- @since 0.1.0.0
-  newtype Body = Body { unBody :: B.ByteString }
+  newtype Body = Body { unBody :: BL.ByteString }
     deriving ( Eq, Ord, Show, Typeable )
 
   -- | @since 0.1.0.0
@@ -78,6 +77,12 @@ module Hexyll.Core.Provider where
   newtype ProviderLoad m a = ProviderLoad
     { runProviderLoad :: m a
     } deriving ( Eq, Ord, Show, Typeable )
+
+  -- | Map over 'ProviderLoad'.
+  --
+  -- @since 0.1.0.0
+  mapProviderLoad :: (m a -> n b) -> ProviderLoad m a -> ProviderLoad n b
+  mapProviderLoad f (ProviderLoad pl) = ProviderLoad (f pl)
 
   -- | Unwrap 'ProviderLoad' and evaluate each action in the structure
   -- from left to right, and collect the results.
@@ -98,13 +103,13 @@ module Hexyll.Core.Provider where
     -- | Get all paths.
     --
     -- @since 0.1.0.0
-    getAllPath :: m [Path Rel File]
+    getAllPath :: m (S.Set (Path Rel File))
 
     -- | Count all paths.
     --
     -- @since 0.1.0.0
     countAllPath :: m Int
-    countAllPath = length <$> getAllPath
+    countAllPath = S.size <$> getAllPath
 
     -- | Get the modification time of a file lazily.
     --
