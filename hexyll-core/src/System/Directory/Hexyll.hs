@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK show-extensions #-}
+
 -- |
 -- Module:      System.Directory.Hexyll
 -- Copyright:   (c) 2019 Hexirp
