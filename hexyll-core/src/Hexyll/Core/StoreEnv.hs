@@ -69,6 +69,10 @@ module Hexyll.Core.StoreEnv
   class HasStoreEnv env where
     storeEnvL :: Lens' env StoreEnv
 
+  -- | @since 0.1.0.0
+  instance HasStoreEnv StoreEnv where
+    storeEnvL = id
+
   -- | Save a value with a key.
   --
   -- @since 0.1.0.0
