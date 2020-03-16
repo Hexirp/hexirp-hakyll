@@ -1,3 +1,14 @@
+-- |
+-- Module:      Hexyll.Core.ProviderEnv
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: portable
+--
+-- This module provides an environment for handling a provider.
+--
+-- @since 0.1.0.0
 module Hexyll.Core.ProviderEnv where
 
   import Prelude
