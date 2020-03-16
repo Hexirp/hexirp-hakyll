@@ -23,7 +23,7 @@ module Hexyll.Core.Provider where
 
   import Data.Time ( UTCTime (..) )
 
-  import qualified Data.ByteString as B
+  import qualified Data.ByteString.Lazy as BL
 
   import Hexyll.Core.Store
 
@@ -65,7 +65,7 @@ module Hexyll.Core.Provider where
   -- | A body of a file.
   --
   -- @since 0.1.0.0
-  newtype Body = Body { unBody :: B.ByteString }
+  newtype Body = Body { unBody :: BL.ByteString }
     deriving ( Eq, Ord, Show, Typeable )
 
   -- | @since 0.1.0.0
