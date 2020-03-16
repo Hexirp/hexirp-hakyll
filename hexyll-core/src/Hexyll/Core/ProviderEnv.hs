@@ -39,23 +39,26 @@ module Hexyll.Core.ProviderEnv where
     => m (S.Set (Path Rel File))
   getAllPathE = do
     env <- ask
-    liftIO $ let providerEnv = view providerEnvL env in
-      providerGetAllPath providerEnv (providerStore providerEnv)
+    let providerEnv = view providerEnvL env in
+      liftIO $
+        providerGetAllPath providerEnv (providerStore providerEnv)
 
   getModificationTimeDelayE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
   getModificationTimeDelayE p = do
     env <- ask
-    liftIO $ let providerEnv = view providerEnvL env in
-      fmap (fmap (mapProviderLoad liftIO)) $
-        providerGetMTimeDelay providerEnv (providerStore providerEnv) p
+    let providerEnv = view providerEnvL env in
+      liftIO $
+        fmap (fmap (mapProviderLoad liftIO)) $
+          providerGetMTimeDelay providerEnv (providerStore providerEnv) p
 
   getBodyDelayE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => Path Rel File -> m (Maybe (ProviderLoad m Body))
   getBodyDelayE p = do
     env <- ask
-    liftIO $ let providerEnv = view providerEnvL env in
-      fmap (fmap (mapProviderLoad liftIO)) $
-        providerGetBodyDelay providerEnv (providerStore providerEnv)  p
+    let providerEnv = view providerEnvL env in
+      liftIO $
+        fmap (fmap (mapProviderLoad liftIO)) $
+          providerGetBodyDelay providerEnv (providerStore providerEnv)  p
