@@ -2,6 +2,9 @@ module Hexyll.Core.ProviderEnv where
 
   import Prelude
 
+  import Control.Monad.IO.Class     ( MonadIO, liftIO )
+  import Control.Monad.Reader.Class ( MonadReader ( ask ) )
+
   import Lens.Micro        ( Lens' )
   import Lens.Micro.Extras ( view )
 
@@ -25,5 +28,9 @@ module Hexyll.Core.ProviderEnv where
   instance HasProviderEnv ProviderEnv where
     providerEnvL = id
 
-  getAllPathE :: ()
-  getAllPathE = ()
+  getAllPathE
+    :: (MonadIO m, MonadReader env m, HasProviderEnv env)
+    => m (S.Set (Path Rel File))
+  getAllPathE = do
+    env <- ask
+    liftIO $ providerGetAllPath (view providerEnvL env)
