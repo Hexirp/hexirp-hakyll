@@ -36,9 +36,6 @@ module Hexyll.Core.Provider where
   -- If 'modificationTimeOld' is 'Nothing', it means that the file did not
   -- exist in the previous run.
   --
-  -- If 'modificationTime' is greater than 'modificationTimeOld', it means
-  -- the file is newer than the previous run.
-  --
   -- @since 0.1.0.0
   data ModificationTime = ModificationTime
     { modificationTime    :: !UTCTime
