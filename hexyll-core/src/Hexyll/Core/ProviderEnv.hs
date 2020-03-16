@@ -28,8 +28,14 @@ module Hexyll.Core.ProviderEnv where
   import Hexyll.Core.StoreEnv
   import Hexyll.Core.Provider
 
+  -- | A short alias for 'ModificationTime'.
+  --
+  -- @since 0.1.0.0
   type MTime = ModificationTime
 
+  -- | The type of environment for handling a provider.
+  --
+  -- @since 0.1.0.0
   data ProviderEnv = ProviderEnv
     { providerGetAllPath
         :: !(StoreEnv -> IO (S.Set (Path Rel File)))
@@ -41,16 +47,24 @@ module Hexyll.Core.ProviderEnv where
         :: !StoreEnv
     }
 
+  -- | @since 0.1.0.0
   instance HasStoreEnv ProviderEnv where
     storeEnvL =
       lens providerStore (\env store -> env { providerStore = store })
 
+  -- | Environment values with functions handling a provider.
+  --
+  -- @since 0.1.0.0
   class HasProviderEnv env where
     providerEnvL :: Lens' env ProviderEnv
 
+  -- | @since 0.1.0.0
   instance HasProviderEnv ProviderEnv where
     providerEnvL = id
 
+  -- | Get all paths.
+  --
+  -- @since 0.1.0.0
   getAllPathE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => m (S.Set (Path Rel File))
@@ -60,6 +74,9 @@ module Hexyll.Core.ProviderEnv where
       liftIO $
         providerGetAllPath providerEnv (providerStore providerEnv)
 
+  -- | Get the modification time of a file lazily.
+  --
+  -- @since 0.1.0.0
   getModificationTimeDelayE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
@@ -70,6 +87,9 @@ module Hexyll.Core.ProviderEnv where
         fmap (fmap (mapProviderLoad liftIO)) $
           providerGetMTimeDelay providerEnv (providerStore providerEnv) p
 
+  -- | Get the body of a file lazily.
+  --
+  -- @since 0.1.0.0
   getBodyDelayE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => Path Rel File -> m (Maybe (ProviderLoad m Body))
