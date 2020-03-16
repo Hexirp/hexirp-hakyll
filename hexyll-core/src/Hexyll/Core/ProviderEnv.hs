@@ -5,7 +5,7 @@ module Hexyll.Core.ProviderEnv where
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
   import Control.Monad.Reader.Class ( MonadReader ( ask ) )
 
-  import Lens.Micro        ( Lens' )
+  import Lens.Micro        ( Lens', lens )
   import Lens.Micro.Extras ( view )
 
   import qualified Data.Set as S
@@ -27,6 +27,10 @@ module Hexyll.Core.ProviderEnv where
     , providerStore
         :: StoreEnv
     }
+
+  instance HasStoreEnv ProviderEnv where
+    storeEnvL =
+      lens providerStore (\env store -> env { providerStore = store })
 
   class HasProviderEnv env where
     providerEnvL :: Lens' env ProviderEnv
