@@ -99,3 +99,6 @@ module Hexyll.Core.ProviderEnv where
       liftIO $
         fmap (fmap (mapProviderLoad liftIO)) $
           providerGetBodyDelay providerEnv (providerStore providerEnv)  p
+
+  newProviderEnv :: Path Rel Dir -> StoreEnv -> ProviderEnv
+  newProviderEnv = undefined
