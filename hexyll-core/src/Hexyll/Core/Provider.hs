@@ -21,6 +21,8 @@ module Hexyll.Core.Provider where
 
   import Data.Maybe ( isJust )
 
+  import qualified Data.Set as S
+
   import Data.Time ( UTCTime (..) )
 
   import qualified Data.ByteString.Lazy as BL
@@ -98,13 +100,13 @@ module Hexyll.Core.Provider where
     -- | Get all paths.
     --
     -- @since 0.1.0.0
-    getAllPath :: m [Path Rel File]
+    getAllPath :: m (S.Set (Path Rel File))
 
     -- | Count all paths.
     --
     -- @since 0.1.0.0
     countAllPath :: m Int
-    countAllPath = length <$> getAllPath
+    countAllPath = S.size <$> getAllPath
 
     -- | Get the modification time of a file lazily.
     --
