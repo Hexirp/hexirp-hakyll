@@ -16,8 +16,9 @@ module System.Directory.Hexyll
 
   import Control.Monad ( forM )
 
-  import Path
-  import System.Directory ( listDirectory, doesDirectoryExist )
+  import           Path
+  import           System.Directory       ( listDirectory, doesDirectoryExist )
+  import qualified System.FilePath as Raw ( (</>) )
 
   -- | @inDir path dir@ checks that @path@ is under @dir@. For example, @inDir
   -- "foo\/bar\/a.txt" "foo/"@ may be equal to @return True@.
@@ -64,6 +65,6 @@ module System.Directory.Hexyll
         x'r <- forM x' $ \x'e -> do
           x'eb <- doesDirectoryExist x'e
           if x'eb
-            then go x'e
+            then go $ x Raw.</> x'e
             else return [x'e]
         return $ concat x'r
