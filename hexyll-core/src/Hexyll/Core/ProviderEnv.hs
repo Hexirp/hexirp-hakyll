@@ -12,14 +12,20 @@ module Hexyll.Core.ProviderEnv where
 
   import Path
 
+  import Hexyll.Core.StoreEnv
   import Hexyll.Core.Provider
 
+  type MTime = ModificationTime
+
   data ProviderEnv = ProviderEnv
-    { providerGetAllPath :: IO (S.Set (Path Rel File))
-    , providerGetModificationTimeDelay
-        :: Path Rel File -> IO (Maybe (ProviderLoad IO ModificationTime))
+    { providerGetAllPath
+        :: StoreEnv -> IO (S.Set (Path Rel File))
+    , providerGetMTimeDelay
+        :: StoreEnv -> Path Rel File -> IO (Maybe (ProviderLoad IO MTime))
     , providerGetBodyDelay
-        :: Path Rel File -> IO (Maybe (ProviderLoad IO Body))
+        :: StoreEnv -> Path Rel File -> IO (Maybe (ProviderLoad IO Body))
+    , providerStore
+        :: StoreEnv
     }
 
   class HasProviderEnv env where
@@ -33,20 +39,23 @@ module Hexyll.Core.ProviderEnv where
     => m (S.Set (Path Rel File))
   getAllPathE = do
     env <- ask
-    liftIO $ providerGetAllPath (view providerEnvL env)
+    liftIO $ let providerEnv = view providerEnvL env in
+      providerGetAllPath providerEnv (providerStore providerEnv)
 
   getModificationTimeDelayE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
   getModificationTimeDelayE p = do
     env <- ask
-    liftIO $ fmap (fmap (mapProviderLoad liftIO)) $
-      providerGetModificationTimeDelay (view providerEnvL env) p
+    liftIO $ let providerEnv = view providerEnvL env in
+      fmap (fmap (mapProviderLoad liftIO)) $
+        providerGetMTimeDelay providerEnv (providerStore providerEnv) p
 
   getBodyDelayE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => Path Rel File -> m (Maybe (ProviderLoad m Body))
   getBodyDelayE p = do
     env <- ask
-    liftIO $ fmap (fmap (mapProviderLoad liftIO)) $
-      providerGetBodyDelay (view providerEnvL env) p
+    liftIO $ let providerEnv = view providerEnvL env in
+      fmap (fmap (mapProviderLoad liftIO)) $
+        providerGetBodyDelay providerEnv (providerStore providerEnv)  p
