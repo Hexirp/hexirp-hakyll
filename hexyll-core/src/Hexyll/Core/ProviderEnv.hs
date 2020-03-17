@@ -24,6 +24,7 @@ module Hexyll.Core.ProviderEnv where
   import qualified Data.Set as S
 
   import Path
+  import System.Directory.Hexyll ( listDirectoryRecursive )
 
   import Hexyll.Core.StoreEnv
   import Hexyll.Core.Provider
@@ -105,5 +106,7 @@ module Hexyll.Core.ProviderEnv where
     , providerIgnore :: !(Path Rel File -> Bool)
     }
 
-  newProviderEnv :: ProviderOption -> StoreEnv -> ProviderEnv
-  newProviderEnv = undefined
+  newProviderEnv :: ProviderOption -> StoreEnv -> IO ProviderEnv
+  newProviderEnv po se = do
+    files <- listDirectoryRecursive $ providerLocation po
+    undefined
