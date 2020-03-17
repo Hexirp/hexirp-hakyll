@@ -108,5 +108,6 @@ module Hexyll.Core.ProviderEnv where
 
   newProviderEnv :: ProviderOption -> StoreEnv -> IO ProviderEnv
   newProviderEnv po se = do
-    files <- listDirectoryRecursive $ providerLocation po
+    fs <- fmap (filter (providerIgnore po)) $
+      listDirectoryRecursive $ providerLocation po
     undefined
