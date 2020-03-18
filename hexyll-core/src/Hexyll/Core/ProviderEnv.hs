@@ -15,6 +15,8 @@ module Hexyll.Core.ProviderEnv where
 
   import Prelude
 
+  import Control.Monad ( forM )
+
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
   import Control.Monad.Reader.Class ( MonadReader ( ask ) )
 
@@ -24,10 +26,11 @@ module Hexyll.Core.ProviderEnv where
   import qualified Data.Set as S
 
   import Path
+  import System.Directory        ( getModificationTime )
   import System.Directory.Hexyll ( listDirectoryRecursive )
 
   import Hexyll.Core.StoreEnv
-  import Hexyll.Core.Provider
+  import Hexyll.Core.Provider hiding ( getModificationTime )
 
   -- | A short alias for 'ModificationTime'.
   --
@@ -108,6 +111,9 @@ module Hexyll.Core.ProviderEnv where
 
   newProviderEnv :: ProviderOption -> StoreEnv -> IO ProviderEnv
   newProviderEnv po se = do
-    fs <- fmap (filter (providerIgnore po)) $
-      listDirectoryRecursive $ providerLocation po
-    undefined
+    psr <- listDirectoryRecursive $ providerLocation po
+    let ps = filter (providerIgnore po) psr in do
+      ts <- forM ps $ \p -> do
+        t <- getModificationTime $ toFilePath p
+        return (p, t)
+      undefined
