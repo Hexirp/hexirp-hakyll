@@ -19,7 +19,7 @@ module System.Directory.Hexyll
 
   import           Path
   import           System.Directory       ( listDirectory, doesDirectoryExist )
-  import qualified System.FilePath as Raw ( (</>) )
+  import qualified System.FilePath as Raw ( (</>), dropTrailingPathSeparator )
 
   -- | Recursive 'listDirectory'.
   --
@@ -30,7 +30,7 @@ module System.Directory.Hexyll
       path_exist <- doesDirectoryExist path
       if path_exist
         then do
-          result <- go path
+          result <- go $ Raw.dropTrailingPathSeparator path
           case forM result parseRelFile of
             Left e -> error $ unlines
               [ "listDirectoryRecursive: Something wrong happened."
@@ -46,9 +46,7 @@ module System.Directory.Hexyll
       go :: FilePath -> IO [FilePath]
       go x = do
         x' <- listDirectory x
-        x'r <- forM x' $ \x'e -> do
-          x'eb <- doesDirectoryExist x'e
-          if x'eb
-            then go $ x Raw.</> x'e
-            else return [x'e]
+        x'r <- forM x' $ \x'e -> let x'e_ = x Raw.</> x'e in do
+          x'eb <- doesDirectoryExist x'e_
+          if x'eb then go x'e_ else return [x'e_]
         return $ concat x'r
