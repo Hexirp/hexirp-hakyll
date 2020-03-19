@@ -143,7 +143,7 @@ module Hexyll.Core.ProviderEnv where
         coerce' = coerce
       in
         coerce' tsn
-    undefined
+    return undefined
 
   newProviderEnv_key :: String
   newProviderEnv_key = unwords ["Hexyll.Core.ProviderEnv", "MTime"]
