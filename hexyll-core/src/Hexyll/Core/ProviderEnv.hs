@@ -37,12 +37,7 @@ module Hexyll.Core.ProviderEnv where
 
   import Hexyll.Core.Store
   import Hexyll.Core.StoreEnv
-  import Hexyll.Core.Provider hiding ( getModificationTime )
-
-  -- | A short alias for 'ModificationTime'.
-  --
-  -- @since 0.1.0.0
-  type MTime = ModificationTime
+  import Hexyll.Core.Provider
 
   -- | The type of environment for handling a provider.
   --
@@ -88,10 +83,10 @@ module Hexyll.Core.ProviderEnv where
   -- | Get the modification time of a file lazily.
   --
   -- @since 0.1.0.0
-  getModificationTimeDelayE
+  getMTimeDelayE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
-    => Resource -> m (Maybe (ProviderLoad m ModificationTime))
-  getModificationTimeDelayE p = do
+    => Resource -> m (Maybe (ProviderLoad m MTime))
+  getMTimeDelayE p = do
     env <- ask
     let providerEnv = view providerEnvL env in
       liftIO $
@@ -144,8 +139,7 @@ module Hexyll.Core.ProviderEnv where
           coerce' = coerce
         in
           coerce' tsn
-      return $ flip M.mapWithKey tsn $ \p t ->
-        ModificationTime t (M.lookup p tso)
+      return $ M.mapWithKey (\p t -> MTime t (M.lookup p tso)) tsn
     return undefined
 
   newProviderEnv_key :: String
