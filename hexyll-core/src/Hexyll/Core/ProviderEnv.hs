@@ -141,7 +141,7 @@ module Hexyll.Core.ProviderEnv where
           coerce' tsn
       return $ M.mapWithKey (\p t -> MTime t (M.lookup p tso)) tsn
     return $ ProviderEnv
-      { providerGetAllPath = undefined
+      { providerGetAllPath = newProviderEnv_getAllPath ri
       , providerGetMTimeDelay = undefined
       , providerGetBodyDelay = undefined
       , providerStore = se
@@ -149,3 +149,8 @@ module Hexyll.Core.ProviderEnv where
 
   newProviderEnv_key :: String
   newProviderEnv_key = unwords ["Hexyll.Core.ProviderEnv", "Time"]
+
+  newProviderEnv_getAllPath
+    :: M.Map Resource MTime
+    -> StoreEnv -> IO (S.Set Resource)
+  newProviderEnv_getAllPath ri _ = return $ M.keysSet ri
