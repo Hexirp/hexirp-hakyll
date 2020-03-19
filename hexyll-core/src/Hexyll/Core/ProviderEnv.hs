@@ -115,21 +115,22 @@ module Hexyll.Core.ProviderEnv where
 
   newProviderEnv :: ProviderOption -> StoreEnv -> IO ProviderEnv
   newProviderEnv po se = do
-    psr <- listDirectoryRecursive $ providerLocation po
-    let ps = S.fromList $ filter (providerIgnore po) psr in do
-      tsn <- fmap M.fromList $ forM ps $ \p -> do
-        t <- getModificationTime $ toFilePath p
-        return (p, t)
-      msl <- storeLoad se newProviderEnv_key
-      tso <- case msl of
-        Nothing -> return M.empty
-        Just sl -> do
-          etso' <- runStoreLoad
-          case etso' of
-            Left e -> error $ "newProviderEnv: " ++ show e
-            Right tso' -> return $ coerce tso'
-      storeSave se newProviderEnv_key $ coerce tsn
-      undefined
+    ps <- do
+      psr <- listDirectoryRecursive $ providerLocation po
+      return $ S.fromList $ filter providerIgnore po psr
+    tsn <- fmap M.fromList $ forM (S.toList ps) $ \p -> do
+      t <- getModificationTime $ toFilePath p
+      return (p, t)
+    msl <- storeLoadDelay se newProviderEnv_key
+    tso <- case msl of
+      Nothing -> return M.empty
+      Just sl -> do
+        etso' <- runStoreLoad sl
+        case etso' of
+          Left e -> error $ "newProviderEnv: " ++ show e
+          Right tso' -> return $ coerce tso'
+    storeSave se newProviderEnv_key $ MkStoreValue $ coerce tsn
+    undefined
 
   newProviderEnv_key :: String
   newProviderEnv_key = unwords ["Hexyll.Core.ProviderEnv", "MTime"]
