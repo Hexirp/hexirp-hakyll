@@ -31,6 +31,25 @@ module Hexyll.Core.Provider where
 
   import Path
 
+  -- | A path of a resource.
+  --
+  -- @since 0.1.0.0
+  data Resource = Resource { unResource :: Path Rel File }
+    deriving ( Eq, Old, Show, Typeable )
+
+  -- | @since 0.1.0.0
+  instance NFData Resource where
+    rnf (Resource x) = rnf x
+
+  -- | @since 0.1.0.0
+  instance Binary Resource where
+    put (Resource x) = put (toFilePath x)
+    get = do
+      x' <- get
+      case parseRelFile x' of
+        Nothing -> error "Data.Binary.get: Invalid Resource"
+        Just x -> return x
+
   -- | A type of modification time.
   --
   -- If 'modificationTimeOld' is 'Nothing', it means that the file did not
@@ -103,7 +122,7 @@ module Hexyll.Core.Provider where
     -- | Get all paths.
     --
     -- @since 0.1.0.0
-    getAllPath :: m (S.Set (Path Rel File))
+    getAllPath :: m (S.Set Resource)
 
     -- | Count all paths.
     --
@@ -115,19 +134,19 @@ module Hexyll.Core.Provider where
     --
     -- @since 0.1.0.0
     getModificationTimeDelay
-      :: Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
+      :: Resource -> m (Maybe (ProviderLoad m ModificationTime))
 
     -- | Get the body of a file lazily.
     --
     -- @since 0.1.0.0
     getBodyDelay
-      :: Path Rel File -> m (Maybe (ProviderLoad m Body))
+      :: Resource -> m (Maybe (ProviderLoad m Body))
 
   -- | Get the modification time of a file.
   --
   -- @since 0.1.0.0
   getModificationTime
-    :: MonadProvider m => Path Rel File -> m (Maybe ModificationTime)
+    :: MonadProvider m => Resource -> m (Maybe ModificationTime)
   getModificationTime path = do
     ml <- getModificationTimeDelay path
     sequenceProviderLoad ml
@@ -135,7 +154,7 @@ module Hexyll.Core.Provider where
   -- | Get the body of a file.
   --
   -- @since 0.1.0.0
-  getBody :: MonadProvider m => Path Rel File -> m (Maybe Body)
+  getBody :: MonadProvider m => Resource -> m (Maybe Body)
   getBody path = do
     ml <- getBodyDelay path
     sequenceProviderLoad ml
@@ -143,7 +162,7 @@ module Hexyll.Core.Provider where
   -- | Check if a file exists.
   --
   -- @since 0.1.0.0
-  isExistent :: MonadProvider m => Path Rel File -> m Bool
+  isExistent :: MonadProvider m => Resource -> m Bool
   isExistent path = do
     ml <- getBodyDelay path
     return $ isJust ml
@@ -151,7 +170,7 @@ module Hexyll.Core.Provider where
   -- | Check if a file is modified -- a file is newer than the previous run.
   --
   -- @since 0.1.0.0
-  isModified :: MonadProvider m => Path Rel File -> m (Maybe Bool)
+  isModified :: MonadProvider m => Resource -> m (Maybe Bool)
   isModified path = do
     mt <- getModificationTime path
     return $ fmap isProofOldness mt
