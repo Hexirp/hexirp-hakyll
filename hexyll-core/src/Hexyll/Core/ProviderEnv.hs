@@ -32,6 +32,7 @@ module Hexyll.Core.ProviderEnv where
   import System.Directory        ( getModificationTime )
   import System.Directory.Hexyll ( listDirectoryRecursive )
 
+  import Hexyll.Core.Store
   import Hexyll.Core.StoreEnv
   import Hexyll.Core.Provider hiding ( getModificationTime )
 
@@ -116,7 +117,7 @@ module Hexyll.Core.ProviderEnv where
   newProviderEnv po se = do
     psr <- listDirectoryRecursive $ providerLocation po
     let ps = S.fromList $ filter (providerIgnore po) psr in do
-      tsn <- M.fromList $ forM ps $ \p -> do
+      tsn <- fmap M.fromList $ forM ps $ \p -> do
         t <- getModificationTime $ toFilePath p
         return (p, t)
       msl <- storeLoad se newProviderEnv_key
@@ -126,6 +127,9 @@ module Hexyll.Core.ProviderEnv where
           etso' <- runStoreLoad
           case etso' of
             Left e -> error $ "newProviderEnv: " ++ show e
-            Right tso' -> return (coerce (tso' :: M.Map (Path Rel File) BinaryTime) :: M.Map (Path Rel File) UTCTime)
-      storeSave se newProviderEnv_key (coerce tsn :: M.Map (Path Rel File) BinaryTime)
+            Right tso' -> return $ coerce tso'
+      storeSave se newProviderEnv_key $ coerce tsn
       undefined
+
+  newProviderEnv_key :: String
+  newProviderEnv_key = unwords ["Hexyll.Core.ProviderEnv", "MTime"]
