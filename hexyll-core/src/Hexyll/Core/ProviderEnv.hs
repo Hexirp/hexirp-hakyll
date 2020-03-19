@@ -24,6 +24,9 @@ module Hexyll.Core.ProviderEnv where
   import Lens.Micro.Extras ( view )
 
   import qualified Data.Set as S
+  import qualified Data.Map as M
+
+  import Data.Time ( UTCTime )
 
   import Path
   import System.Directory        ( getModificationTime )
@@ -112,8 +115,17 @@ module Hexyll.Core.ProviderEnv where
   newProviderEnv :: ProviderOption -> StoreEnv -> IO ProviderEnv
   newProviderEnv po se = do
     psr <- listDirectoryRecursive $ providerLocation po
-    let ps = filter (providerIgnore po) psr in do
-      ts <- forM ps $ \p -> do
+    let ps = S.fromList $ filter (providerIgnore po) psr in do
+      tsn <- M.fromList $ forM ps $ \p -> do
         t <- getModificationTime $ toFilePath p
         return (p, t)
+      msl <- storeLoad se newProviderEnv_key
+      tso <- case msl of
+        Nothing -> return M.empty
+        Just sl -> do
+          etso' <- runStoreLoad
+          case etso' of
+            Left e -> error $ "newProviderEnv: " ++ show e
+            Right tso' -> return (coerce (tso' :: M.Map (Path Rel File) BinaryTime) :: M.Map (Path Rel File) UTCTime)
+      storeSave se newProviderEnv_key (coerce tsn :: M.Map (Path Rel File) BinaryTime)
       undefined
