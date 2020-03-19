@@ -25,6 +25,8 @@ module Hexyll.Core.ProviderEnv where
   import Lens.Micro        ( Lens', lens )
   import Lens.Micro.Extras ( view )
 
+  import qualified Data.ByteString.Lazy as BL
+
   import qualified Data.Set as S
   import qualified Data.Map as M
 
@@ -143,7 +145,7 @@ module Hexyll.Core.ProviderEnv where
     return $ ProviderEnv
       { providerGetAllPath = newProviderEnv_getAllPath ri
       , providerGetMTimeDelay = newProviderEnv_getMTimeDelay ri
-      , providerGetBodyDelay = undefined
+      , providerGetBodyDelay = newProviderEnv_getBodyDelay ri
       , providerStore = se
       }
 
@@ -159,4 +161,14 @@ module Hexyll.Core.ProviderEnv where
     :: M.Map Resource MTime
     -> StoreEnv -> Resource -> IO (Maybe (ProviderLoad IO MTime))
   newProviderEnv_getMTimeDelay ri _ p =
-    return $ fmap (ProviderLoad . return ) $ M.lookup p ri
+    return $ fmap (ProviderLoad . return) $ M.lookup p ri
+
+  newProviderEnv_getBodyDelay
+    :: M.Map Resource MTime
+    -> StoreEnv -> Resource -> IO (Maybe (ProviderLoad IO Body))
+  newProviderEnv_getBodyDelay ri _ p =
+    if M.member p ri
+      then return $ Just $ ProviderLoad $ do
+        bd <- BL.readFile $ toFilePath $ unResource p
+        return $ Body bd
+      else return Nothing
