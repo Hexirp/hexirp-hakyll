@@ -49,11 +49,11 @@ module Hexyll.Core.ProviderEnv where
   -- @since 0.1.0.0
   data ProviderEnv = ProviderEnv
     { providerGetAllPath
-        :: !(StoreEnv -> IO (S.Set (Path Rel File)))
+        :: !(StoreEnv -> IO (S.Set Resource))
     , providerGetMTimeDelay
-        :: !(StoreEnv -> Path Rel File -> IO (Maybe (ProviderLoad IO MTime)))
+        :: !(StoreEnv -> Resource -> IO (Maybe (ProviderLoad IO MTime)))
     , providerGetBodyDelay
-        :: !(StoreEnv -> Path Rel File -> IO (Maybe (ProviderLoad IO Body)))
+        :: !(StoreEnv -> Resource -> IO (Maybe (ProviderLoad IO Body)))
     , providerStore
         :: !StoreEnv
     }
@@ -78,7 +78,7 @@ module Hexyll.Core.ProviderEnv where
   -- @since 0.1.0.0
   getAllPathE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
-    => m (S.Set (Path Rel File))
+    => m (S.Set Resource)
   getAllPathE = do
     env <- ask
     let providerEnv = view providerEnvL env in
@@ -90,7 +90,7 @@ module Hexyll.Core.ProviderEnv where
   -- @since 0.1.0.0
   getModificationTimeDelayE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
-    => Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
+    => Resource -> m (Maybe (ProviderLoad m ModificationTime))
   getModificationTimeDelayE p = do
     env <- ask
     let providerEnv = view providerEnvL env in
@@ -103,13 +103,13 @@ module Hexyll.Core.ProviderEnv where
   -- @since 0.1.0.0
   getBodyDelayE
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
-    => Path Rel File -> m (Maybe (ProviderLoad m Body))
+    => Resource -> m (Maybe (ProviderLoad m Body))
   getBodyDelayE p = do
     env <- ask
     let providerEnv = view providerEnvL env in
       liftIO $
         fmap (fmap (mapProviderLoad liftIO)) $
-          providerGetBodyDelay providerEnv (providerStore providerEnv)  p
+          providerGetBodyDelay providerEnv (providerStore providerEnv) p
 
   data ProviderOption = ProviderOption
     { providerLocation :: !(Path Rel Dir)
@@ -120,9 +120,9 @@ module Hexyll.Core.ProviderEnv where
   newProviderEnv po se = do
     ps <- do
       psr <- listDirectoryRecursive $ providerLocation po
-      return $ S.fromList $ filter (providerIgnore po) psr
+      return $ S.fromList $ fmap Resource $ filter (providerIgnore po) psr
     tsn <- fmap M.fromList $ forM (S.toList ps) $ \p -> do
-      t <- getModificationTime $ toFilePath p
+      t <- getModificationTime $ toFilePath $ unResource p
       return (p, t)
     msl <- storeLoadDelay se newProviderEnv_key
     tso <- case msl of
@@ -133,17 +133,13 @@ module Hexyll.Core.ProviderEnv where
           Left e -> error $ "newProviderEnv: " ++ show e
           Right tso' -> return $
             let
-              coerce'
-                :: M.Map (Path Rel File) BinaryTime
-                -> M.Map (Path Rel File) UTCTime
+              coerce' :: M.Map Resource BinaryTime -> M.Map Resource UTCTime
               coerce' = coerce
             in
               coerce' tso'
     storeSave se newProviderEnv_key $ MkStoreValue $
       let
-        coerce'
-          :: M.Map (Path Rel File) UTCTime
-          -> M.Map (Path Rel File) BinaryTime
+        coerce' :: M.Map Resource UTCTime -> M.Map Resource BinaryTime
         coerce' = coerce
       in
         coerce' tsn
