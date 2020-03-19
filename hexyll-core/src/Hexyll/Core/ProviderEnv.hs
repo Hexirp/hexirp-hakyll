@@ -15,6 +15,8 @@ module Hexyll.Core.ProviderEnv where
 
   import Prelude
 
+  import Data.Coerce ( coerce )
+
   import Control.Monad ( forM )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
@@ -117,7 +119,7 @@ module Hexyll.Core.ProviderEnv where
   newProviderEnv po se = do
     ps <- do
       psr <- listDirectoryRecursive $ providerLocation po
-      return $ S.fromList $ filter providerIgnore po psr
+      return $ S.fromList $ filter (providerIgnore po) psr
     tsn <- fmap M.fromList $ forM (S.toList ps) $ \p -> do
       t <- getModificationTime $ toFilePath p
       return (p, t)
