@@ -25,6 +25,8 @@ module Hexyll.Core.Provider where
 
   import Data.Time ( UTCTime (..) )
 
+  import Data.Binary ( Binary (..) )
+
   import qualified Data.ByteString.Lazy as BL
 
   import Hexyll.Core.Store
@@ -35,7 +37,7 @@ module Hexyll.Core.Provider where
   --
   -- @since 0.1.0.0
   data Resource = Resource { unResource :: Path Rel File }
-    deriving ( Eq, Old, Show, Typeable )
+    deriving ( Eq, Ord, Show, Typeable )
 
   -- | @since 0.1.0.0
   instance NFData Resource where
@@ -48,7 +50,7 @@ module Hexyll.Core.Provider where
       x' <- get
       case parseRelFile x' of
         Nothing -> error "Data.Binary.get: Invalid Resource"
-        Just x -> return x
+        Just x -> return (Resource x)
 
   -- | A type of modification time.
   --
