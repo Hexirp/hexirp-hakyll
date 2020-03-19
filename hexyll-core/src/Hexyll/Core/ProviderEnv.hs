@@ -28,7 +28,8 @@ module Hexyll.Core.ProviderEnv where
   import qualified Data.Set as S
   import qualified Data.Map as M
 
-  import Data.Time ( UTCTime )
+  import Data.Time        ( UTCTime )
+  import Data.Time.Hexyll
 
   import Path
   import System.Directory        ( getModificationTime )
@@ -130,8 +131,22 @@ module Hexyll.Core.ProviderEnv where
         etso' <- runStoreLoad sl
         case etso' of
           Left e -> error $ "newProviderEnv: " ++ show e
-          Right tso' -> return $ coerce tso'
-    storeSave se newProviderEnv_key $ MkStoreValue $ coerce tsn
+          Right tso' -> return $
+            let
+              coerce'
+                :: M.Map (Path Rel File) BinaryTime
+                -> M.Map (Path Rel File) UTCTime
+              coerce' = coerce
+            in
+              coerce' tso'
+    storeSave se newProviderEnv_key $ MkStoreValue $
+      let
+        coerce'
+          :: M.Map (Path Rel File) UTCTime
+          -> M.Map (Path Rel File) BinaryTime
+        coerce' = coerce
+      in
+        coerce' tsn
     undefined
 
   newProviderEnv_key :: String
