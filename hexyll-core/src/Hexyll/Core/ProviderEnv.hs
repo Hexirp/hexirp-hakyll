@@ -146,4 +146,4 @@ module Hexyll.Core.ProviderEnv where
     return undefined
 
   newProviderEnv_key :: String
-  newProviderEnv_key = unwords ["Hexyll.Core.ProviderEnv", "ResourceInfo"]
+  newProviderEnv_key = unwords ["Hexyll.Core.ProviderEnv", "Time"]
