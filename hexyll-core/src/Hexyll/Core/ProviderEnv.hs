@@ -142,7 +142,7 @@ module Hexyll.Core.ProviderEnv where
       return $ M.mapWithKey (\p t -> MTime t (M.lookup p tso)) tsn
     return $ ProviderEnv
       { providerGetAllPath = newProviderEnv_getAllPath ri
-      , providerGetMTimeDelay = undefined
+      , providerGetMTimeDelay = newProviderEnv_getMTimeDelay ri
       , providerGetBodyDelay = undefined
       , providerStore = se
       }
@@ -154,3 +154,9 @@ module Hexyll.Core.ProviderEnv where
     :: M.Map Resource MTime
     -> StoreEnv -> IO (S.Set Resource)
   newProviderEnv_getAllPath ri _ = return $ M.keysSet ri
+
+  newProviderEnv_getMTimeDelay
+    :: M.Map Resource MTime
+    -> StoreEnv -> Resource -> IO (Maybe (ProviderLoad IO MTime))
+  newProviderEnv_getMTimeDelay ri _ p =
+    return $ fmap (ProviderLoad . return ) $ M.lookup p ri
