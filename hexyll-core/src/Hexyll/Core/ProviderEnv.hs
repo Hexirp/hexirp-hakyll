@@ -121,28 +121,31 @@ module Hexyll.Core.ProviderEnv where
     ps <- do
       psr <- listDirectoryRecursive $ providerLocation po
       return $ S.fromList $ fmap Resource $ filter (providerIgnore po) psr
-    tsn <- fmap M.fromList $ forM (S.toList ps) $ \p -> do
-      t <- getModificationTime $ toFilePath $ unResource p
-      return (p, t)
-    msl <- storeLoadDelay se newProviderEnv_key
-    tso <- case msl of
-      Nothing -> return M.empty
-      Just sl -> do
-        etso' <- runStoreLoad sl
-        case etso' of
-          Left e -> error $ "newProviderEnv: " ++ show e
-          Right tso' -> return $
-            let
-              coerce' :: M.Map Resource BinaryTime -> M.Map Resource UTCTime
-              coerce' = coerce
-            in
-              coerce' tso'
-    storeSave se newProviderEnv_key $ MkStoreValue $
-      let
-        coerce' :: M.Map Resource UTCTime -> M.Map Resource BinaryTime
-        coerce' = coerce
-      in
-        coerce' tsn
+    ri <- do
+      tsn <- fmap M.fromList $ forM (S.toList ps) $ \p -> do
+        t <- getModificationTime $ toFilePath $ unResource p
+        return (p, t)
+      msl <- storeLoadDelay se newProviderEnv_key
+      tso <- case msl of
+        Nothing -> return M.empty
+        Just sl -> do
+          etso' <- runStoreLoad sl
+          case etso' of
+            Left e -> error $ "newProviderEnv: " ++ show e
+            Right tso' -> return $
+              let
+                coerce' :: M.Map Resource BinaryTime -> M.Map Resource UTCTime
+                coerce' = coerce
+              in
+                coerce' tso'
+      storeSave se newProviderEnv_key $ MkStoreValue $
+        let
+          coerce' :: M.Map Resource UTCTime -> M.Map Resource BinaryTime
+          coerce' = coerce
+        in
+          coerce' tsn
+      return $ flip M.mapWithKey tsn $ \p t ->
+        ModificationTime t (M.lookup p tso)
     return undefined
 
   newProviderEnv_key :: String
