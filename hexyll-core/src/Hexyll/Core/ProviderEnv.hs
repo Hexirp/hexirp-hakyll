@@ -17,6 +17,8 @@ module Hexyll.Core.ProviderEnv where
 
   import Data.Coerce ( coerce )
 
+  import Control.DeepSeq ( deepseq )
+
   import Control.Monad ( forM )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
@@ -142,7 +144,7 @@ module Hexyll.Core.ProviderEnv where
         in
           coerce' tsn
       return $ M.mapWithKey (\p t -> MTime t (M.lookup p tso)) tsn
-    return $ ProviderEnv
+    ri `deepseq` return $ ProviderEnv
       { providerGetAllPath = newProviderEnv_getAllPath ri
       , providerGetMTimeDelay = newProviderEnv_getMTimeDelay ri
       , providerGetBodyDelay = newProviderEnv_getBodyDelay ri
