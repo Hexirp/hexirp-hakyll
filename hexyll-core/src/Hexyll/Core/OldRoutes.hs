@@ -113,7 +113,7 @@ runRoutes routes provider identifier =
 -- | A route that uses the identifier as filepath. For example, the target with
 -- ID @foo\/bar@ will be written to the file @foo\/bar@.
 idRoute :: Routes
-idRoute = customRoute toFilePath
+idRoute = customRoute fromIdentifierToFilePath
 
 
 --------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ idRoute = customRoute toFilePath
 -- > Just "posts/the-art-of-trolling.html"
 setExtension :: String -> Routes
 setExtension extension = customRoute $
-    (`replaceExtension` extension) . toFilePath
+    (`replaceExtension` extension) . fromIdentifierToFilePath
 
 
 --------------------------------------------------------------------------------
@@ -175,7 +175,7 @@ gsubRoute :: String              -- ^ Pattern
           -> (String -> String)  -- ^ Replacement
           -> Routes              -- ^ Resulting route
 gsubRoute pattern replacement = customRoute $
-    replaceAll pattern replacement . toFilePath
+    replaceAll pattern replacement . fromIdentifierToFilePath
 
 
 --------------------------------------------------------------------------------
