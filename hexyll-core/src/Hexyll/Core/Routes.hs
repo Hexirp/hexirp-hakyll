@@ -7,7 +7,7 @@ module Hexyll.Core.Routes where
   import Control.DeepSeq ( NFData (..) )
 
   import Path
-  import System.FilePath ( replaceExtension )
+  import qualified Path.Hexyll
 
   import Hexyll.Core.Identifier
   import Hexyll.Core.Identifier.Pattern
@@ -28,8 +28,15 @@ module Hexyll.Core.Routes where
   idRoute = Routes $ \i -> [fromIdentifierToPath i]
 
   setExtension :: String -> Routes
-  setExtension ext = Routes $ \i -> parseRelFile $ replaceExtension ext $ fromIdentifierToFilePath i
-  -- setExtension ext = Routes $ \i -> replaceExtension ext (toPath i)
+  setExtension ext = Routes $ \i -> (: []) $
+    case Path.Hexyll.replaceExtension ext $ fromIdentifierToPath i of
+      Left e -> error $ unwords
+        [ "setExtension: "
+        , "Something wrong happened."
+        , "replaceExtension threw an error:"
+        , show (show e)
+        ]
+      Right p -> p
 
   matchRoute :: Pattern -> Routes -> Routes
   matchRoute pat (Routes f) = Routes $ \i ->
