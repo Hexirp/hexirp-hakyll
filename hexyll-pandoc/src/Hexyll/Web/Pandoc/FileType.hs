@@ -71,4 +71,4 @@ fileType = uncurry fileType' . splitExtension
 --------------------------------------------------------------------------------
 -- | Get the file type for the current file
 itemFileType :: Item a -> FileType
-itemFileType = fileType . toFilePath . itemIdentifier
+itemFileType = fileType . fromIdentifierToFilePath . itemIdentifier

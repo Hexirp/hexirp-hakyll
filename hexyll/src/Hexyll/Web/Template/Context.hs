@@ -280,7 +280,7 @@ urlField key = field key $ \i -> do
 --------------------------------------------------------------------------------
 -- | Filepath of the underlying file of the item
 pathField :: String -> Context a
-pathField key = field key $ return . toFilePath . itemIdentifier
+pathField key = field key $ return . fromIdentifierToFilePath . itemIdentifier
 
 
 --------------------------------------------------------------------------------
@@ -362,7 +362,7 @@ getItemUTC :: MonadMetadata m
 getItemUTC locale id' = do
     metadata <- getMetadata id'
     let tryField k fmt = lookupString k metadata >>= parseTime' fmt
-        paths          = splitDirectories $ (dropExtension . toFilePath) id'
+        paths          = splitDirectories $ (dropExtension . fromIdentifierToFilePath) id'
 
     maybe empty' return $ msum $
         [tryField "published" fmt | fmt <- formats] ++

@@ -64,7 +64,7 @@ createRedirects redirects =
         _           -> return ()
 
     forM_ redirects $ \(r, t) ->
-        when (toFilePath r == t) $ fail $
+        when (fromIdentifierToFilePath r == t) $ fail $
             "Self-redirect detected: " ++ show r ++ " points to itself."
 
     forM_ redirects $ \(ident, to) ->

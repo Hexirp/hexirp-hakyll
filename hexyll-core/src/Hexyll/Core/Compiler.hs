@@ -62,7 +62,7 @@ getUnderlying = compilerUnderlying <$> compilerAsk
 -- | Get the extension of the underlying identifier. Returns something like
 -- @".html"@
 getUnderlyingExtension :: Compiler String
-getUnderlyingExtension = takeExtension . toFilePath <$> getUnderlying
+getUnderlyingExtension = takeExtension . fromIdentifierToFilePath <$> getUnderlying
 
 
 --------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ getResourceWith :: (Provider -> Identifier -> IO a) -> Compiler (Item a)
 getResourceWith reader = do
     provider <- compilerProvider   <$> compilerAsk
     id'      <- compilerUnderlying <$> compilerAsk
-    let filePath = toFilePath id'
+    let filePath = fromIdentifierToFilePath id'
     if resourceExists provider id'
         then compilerUnsafeIO $ Item id' <$> reader provider id'
         else fail $ error' filePath
