@@ -12,7 +12,7 @@ import           Data.Binary            (Binary (..))
 import           Data.List              (sort, group)
 import           Hexyll.Core.Compiler
 import           Hexyll.Core.Identifier
-import           Hexyll.Core.Routes
+import           Hexyll.Core.OldRoutes
 import           Hexyll.Core.Rules
 import           Hexyll.Core.Writable   (Writable (..))
 

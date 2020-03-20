@@ -27,7 +27,7 @@
 -- * If an item matches multiple routes, the first rule will be chosen.
 {-# LANGUAGE CPP        #-}
 {-# LANGUAGE Rank2Types #-}
-module Hexyll.Core.Routes
+module Hexyll.Core.OldRoutes
     ( UsedMetadata
     , Routes
     , Pattern (..)

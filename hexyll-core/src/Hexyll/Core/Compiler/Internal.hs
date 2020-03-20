@@ -59,7 +59,7 @@ import qualified Hexyll.Core.Logger as Logger
 import           Hexyll.Core.Metadata           hiding ( Pattern, unPattern )
 import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.OldProvider
-import           Hexyll.Core.Routes             hiding ( Pattern, unPattern, match )
+import           Hexyll.Core.OldRoutes             hiding ( Pattern, unPattern, match )
 import           Hexyll.Core.OldStore
 
 

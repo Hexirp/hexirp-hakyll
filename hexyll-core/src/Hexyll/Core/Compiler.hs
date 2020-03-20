@@ -47,7 +47,7 @@ import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.Logger            as Logger
 import           Hexyll.Core.OldProvider
-import           Hexyll.Core.Routes
+import           Hexyll.Core.OldRoutes
 import qualified Hexyll.Core.OldStore          as Store
 
 import Hexyll.Core.Identifier.Pattern ( fromIdentifier )

@@ -29,7 +29,7 @@ import           Hexyll.Core.Item.SomeItem
 import           Hexyll.Core.Metadata           hiding ( Pattern )
 import qualified Hexyll.Core.Metadata as Meta ( Pattern (..) )
 import           Hexyll.Core.OldProvider
-import           Hexyll.Core.Routes             hiding ( Pattern )
+import           Hexyll.Core.OldRoutes             hiding ( Pattern )
 
 import Data.Typeable ( Typeable )
 import Data.String ( IsString (..) )
