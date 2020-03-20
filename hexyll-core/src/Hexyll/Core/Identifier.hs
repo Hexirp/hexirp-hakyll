@@ -8,16 +8,8 @@
 -- Stability:   stable
 -- Portability: portable
 --
--- This module defines 'Identifier', a type used to uniquely identify an item.
--- An identifier is conceptually similar to a file path. Examples of
--- identifiers are:
---
--- * @posts/foo.markdown@
--- * @index@
--- * @error/404@
---
--- A 'Identifier' value can have its version. The information about version is
--- used inside the library.
+-- This module defines 'Identifier', a type used to uniquely identify an item
+-- (compilation result).
 --
 -- @since 0.1.0.0
 module Hexyll.Core.Identifier where
@@ -38,10 +30,13 @@ module Hexyll.Core.Identifier where
 
   import Hexyll.Core.Resource
 
-  -- | A type used to uniquely identify an item.
+  -- | A type used to uniquely identify an item (compilation result).
   --
-  -- It is similar to 'FilePath'. But, a 'Identifier' value can have its
-  -- version. The information about version is used inside the library.
+  -- 'identifierPath' is a 'Resource' to be compiled. 'identifierVersion' is
+  -- a version of compilation result.
+  --
+  -- 'identifierVersion' is used when you want to apply two kinds of compilers
+  -- to the same resource.
   --
   -- @since 0.1.0.0
   data Identifier = Identifier
