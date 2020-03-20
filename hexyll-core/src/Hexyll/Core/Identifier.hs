@@ -22,12 +22,15 @@ module Hexyll.Core.Identifier where
 
   import Prelude
 
-  import Control.Monad.Catch (MonadThrow)
+  import Data.Typeable ( Typeable )
 
-  import Control.DeepSeq (NFData (..))
-  import Data.Binary     (Binary (..))
-  import Data.String     (IsString, fromString)
-  import Data.Typeable   (Typeable)
+  import Control.DeepSeq ( NFData (..) )
+
+  import Control.Monad.Catch ( MonadThrow )
+
+  import Data.String ( IsString, fromString )
+
+  import Data.Binary ( Binary (..) )
 
   import Path
 
