@@ -521,3 +521,9 @@ MonadStore の定義が定まった。
 ### coding
 
 https://github.com/Hexirp/hexirp-hakyll/blob/3bd45ecdda2c6049d285089a377dcf2e802fb585/hexyll-core/src/Hexyll/Core/Store.hs で決定。削除はできない。どうしてもしたいなら clean コマンドを使うか、空の内容で上書きする。
+
+## 2020-03-20
+
+これまでのモデルの変更を行った。
+
+Provider の書き直しの過程で、これまでのモデルが誤っていたことが分かった。もっとも重要な誤りは Identifier をリソースの識別子としてみなしていたことである。実際は Identifier はコンパイル結果の識別子であった。また、 Metadata に関するものについては、 Domain レベルではなく Application レベルで実現したほうが良さそうだということが分かった。
