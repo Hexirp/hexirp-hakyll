@@ -36,6 +36,8 @@ module Hexyll.Core.Identifier where
 
   import Path
 
+  import Hexyll.Core.Resource
+
   -- | A type used to uniquely identify an item.
   --
   -- It is similar to 'FilePath'. But, a 'Identifier' value can have its
@@ -43,23 +45,19 @@ module Hexyll.Core.Identifier where
   --
   -- @since 0.1.0.0
   data Identifier = Identifier
-    { identifierPath    :: !(Path Rel File)
+    { identifierPath    :: !Resource
     , identifierVersion :: !(Maybe String)
     } deriving (Eq, Ord, Show, Typeable)
 
   -- | @since 0.1.0.0
   instance Binary Identifier where
     put (Identifier p v) = do
-      put (toFilePath p)
+      put p
       put v
     get = do
       v <- get
-      p <- do
-        s <- get
-        case parseRelFile s of
-          Nothing -> error "Data.Binary.get: Invalid Identifier"
-          Just p -> return p
-      return $ Identifier p v
+      p <- get
+      return (Identifier p v)
 
   -- | @since 0.1.0.0
   instance IsString Identifier where
@@ -76,11 +74,17 @@ module Hexyll.Core.Identifier where
   instance NFData Identifier where
     rnf (Identifier v p) = rnf v `seq` rnf p `seq` ()
 
+  -- | Make an identifier from a 'Resource'.
+  --
+  -- @since 0.1.0.0
+  fromResource :: Resource -> Identifier
+  fromResource p = Identifier p Nothing
+
   -- | Make an identifier from a path.
   --
   -- @since 0.1.0.0
   fromPath :: Path Rel File -> Identifier
-  fromPath p = Identifier p Nothing
+  fromPath = fromResource . Resource
 
   -- | Parse an identifier from a string. The string should be a relative path
   -- to file.
@@ -108,11 +112,17 @@ module Hexyll.Core.Identifier where
       ]
     Right i -> i
 
+  -- | Convert an identifier to a 'Resource'.
+  --
+  -- @since 0.1.0.0
+  fromIdentifierToResource :: Identifier -> Resource
+  fromIdentifierToResource = identifierPath
+
   -- | Convert an identifier to a path.
   --
   -- @since 0.1.0.0
   fromIdentifierToPath :: Identifier -> Path Rel File
-  fromIdentifierToPath = identifierPath
+  fromIdentifierToPath = unResource . fromIdentifierToResource
 
   -- | Convert an identifier to a relative 'FilePath'.
   --
