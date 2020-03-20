@@ -25,32 +25,10 @@ module Hexyll.Core.Provider where
 
   import Data.Time ( UTCTime (..) )
 
-  import Data.Binary ( Binary (..) )
-
   import qualified Data.ByteString.Lazy as BL
 
+  import Hexyll.Core.Resource
   import Hexyll.Core.Store
-
-  import Path
-
-  -- | A path of a resource.
-  --
-  -- @since 0.1.0.0
-  data Resource = Resource { unResource :: Path Rel File }
-    deriving ( Eq, Ord, Show, Typeable )
-
-  -- | @since 0.1.0.0
-  instance NFData Resource where
-    rnf (Resource x) = rnf x
-
-  -- | @since 0.1.0.0
-  instance Binary Resource where
-    put (Resource x) = put (toFilePath x)
-    get = do
-      x' <- get
-      case parseRelFile x' of
-        Nothing -> error "Data.Binary.get: Invalid Resource"
-        Just x -> return (Resource x)
 
   -- | A type of modification time.
   --
