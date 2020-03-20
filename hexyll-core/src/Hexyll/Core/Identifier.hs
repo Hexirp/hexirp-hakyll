@@ -38,15 +38,15 @@ module Hexyll.Core.Identifier where
   --
   -- @since 0.1.0.0
   data Identifier = Identifier
-    { identifierVersion :: !(Maybe String)
-    , identifierPath    :: !(Path Rel File)
+    { identifierPath    :: !(Path Rel File)
+    , identifierVersion :: !(Maybe String)
     } deriving (Eq, Ord, Typeable)
 
   -- | @since 0.1.0.0
   instance Binary Identifier where
-    put (Identifier v p) = do
+    put (Identifier p v) = do
+      put (toFilePath p)
       put v
-      put $ Path.toFilePath p
     get = do
       v <- get
       p <- do
@@ -54,7 +54,7 @@ module Hexyll.Core.Identifier where
         case parseRelFile s of
           Nothing -> error "Data.Binary.get: Invalid Identifier"
           Just p -> return p
-      return $ Identifier v p
+      return $ Identifier p v
 
   -- | @since 0.1.0.0
   instance IsString Identifier where
@@ -77,12 +77,15 @@ module Hexyll.Core.Identifier where
         Nothing -> fromIdentifierToFilePath i
         Just v  -> fromIdentifierToFilePath i ++ " (" ++ v ++ ")"
 
+  fromPath :: Path Rel File -> Identifier
+  fromPath p = Identifier p Nothing
+
   -- | Parse an identifier from a string. The string should be a relative path
   -- to file.
   --
   -- @since 0.1.0.0
   fromFilePath :: MonadThrow m => FilePath -> m Identifier
-  fromFilePath s = Identifier Nothing <$> parseRelFile s
+  fromFilePath s = fmap fromPath $ parseRelFile s
 
   -- | An unsafe 'fromFilePath', parse an identifier from a string. The string
   -- should be a relative path to file.
