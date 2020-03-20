@@ -23,7 +23,7 @@ resourceMetadata p r
         -- TODO keep time in md cache
         load p r
         Store.Found md <- Store.get (providerStore p)
-            [name, toFilePath r, "metadata"]
+            [name, fromIdentifierToFilePath r, "metadata"]
         return md
 
 
@@ -32,15 +32,15 @@ resourceBody :: Provider -> Identifier -> IO String
 resourceBody p r = do
     load p r
     Store.Found bd <- Store.get (providerStore p)
-        [name, toFilePath r, "body"]
+        [name, fromIdentifierToFilePath r, "body"]
     maybe (resourceString p r) return bd
 
 
 --------------------------------------------------------------------------------
 resourceInvalidateMetadataCache :: Provider -> Identifier -> IO ()
 resourceInvalidateMetadataCache p r = do
-    Store.delete (providerStore p) [name, toFilePath r, "metadata"]
-    Store.delete (providerStore p) [name, toFilePath r, "body"]
+    Store.delete (providerStore p) [name, fromIdentifierToFilePath r, "metadata"]
+    Store.delete (providerStore p) [name, fromIdentifierToFilePath r, "body"]
 
 
 --------------------------------------------------------------------------------
@@ -53,8 +53,8 @@ load p r = do
         Store.set store bk  body
   where
     store = providerStore p
-    mdk   = [name, toFilePath r, "metadata"]
-    bk    = [name, toFilePath r, "body"]
+    mdk   = [name, fromIdentifierToFilePath r, "metadata"]
+    bk    = [name, fromIdentifierToFilePath r, "body"]
 
 
 --------------------------------------------------------------------------------

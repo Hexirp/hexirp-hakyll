@@ -60,18 +60,18 @@ module Hexyll.Core.IdentifierSpec (spec) where
         evaluate (ufromFilePath "/foo.md") `shouldThrow` anyErrorCall
 #endif
 
-    describe "toFilePath" $ do
+    describe "fromIdentifierToFilePath" $ do
 #if defined(mingw32_HOST_OS) || defined(__MINGW32__)
 
       it "returns a path with '\\' separated" $ do
-        toFilePath (ufromFilePath "foo\\bar.md") `shouldBe` "foo\\bar.md"
+        fromIdentifierToFilePath (ufromFilePath "foo\\bar.md") `shouldBe` "foo\\bar.md"
 
       it "returns a path with '\\' separated (posix style)" $ do
-        toFilePath (ufromFilePath "foo/bar.md") `shouldBe` "foo\\bar.md"
+        fromIdentifierToFilePath (ufromFilePath "foo/bar.md") `shouldBe` "foo\\bar.md"
 #else
 
       it "returns a path with '/' separated" $ do
-        toFilePath (ufromFilePath "foo/bar.md") `shouldBe` "foo/bar.md"
+        fromIdentifierToFilePath (ufromFilePath "foo/bar.md") `shouldBe` "foo/bar.md"
 #endif
 
     describe "getIdentifierVersion" $ do

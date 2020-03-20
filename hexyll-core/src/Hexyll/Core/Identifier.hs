@@ -74,8 +74,8 @@ module Hexyll.Core.Identifier where
   -- | @since 0.1.0.0
   instance Show Identifier where
     show i = case identifierVersion i of
-        Nothing -> toFilePath i
-        Just v  -> toFilePath i ++ " (" ++ v ++ ")"
+        Nothing -> fromIdentifierToFilePath i
+        Just v  -> fromIdentifierToFilePath i ++ " (" ++ v ++ ")"
 
   -- | Parse an identifier from a string. The string should be a relative path
   -- to file.
