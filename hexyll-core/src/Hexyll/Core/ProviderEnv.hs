@@ -5,7 +5,7 @@
 -- Copyright:   (c) 2019 Hexirp
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
--- Stability:   stable
+-- Stability:   stable (expect implements)
 -- Portability: portable
 --
 -- This module provides an environment for handling a provider.
@@ -17,7 +17,8 @@ module Hexyll.Core.ProviderEnv
   , getAllPathE
   , getMTimeDelayE
   , getBodyDelayE
-  , ProviderOption (..)
+  , -- ** Implements
+    ProviderOption (..)
   , newProviderEnv
   ) where
 
