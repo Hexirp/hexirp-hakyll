@@ -29,8 +29,7 @@ module Hexyll.Core.Identifier where
   import Data.String     (IsString, fromString)
   import Data.Typeable   (Typeable)
 
-  import qualified Path
-  import           Path hiding (toFilePath)
+  import Path
 
   -- | A type used to uniquely identify an item.
   --
@@ -104,11 +103,14 @@ module Hexyll.Core.Identifier where
       ]
     Right i -> i
 
+  fromIdentifierToPath :: Identifier -> Path Rel File
+  fromIdentifierToPath = identifierPath
+
   -- | Convert an identifier to a relative 'FilePath'.
   --
   -- @since 0.1.0.0
-  toFilePath :: Identifier -> FilePath
-  toFilePath = Path.toFilePath . identifierPath
+  fromIdentifierToFilePath :: Identifier -> FilePath
+  fromIdentifierToFilePath = toFilePath . fromIdentifierToPath
 
   -- | Get the version of an identifier. I recommend that you do not use this
   -- function.
