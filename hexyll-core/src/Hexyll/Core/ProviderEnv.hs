@@ -48,6 +48,7 @@ module Hexyll.Core.ProviderEnv
   import System.Directory        ( getModificationTime )
   import System.Directory.Hexyll ( listDirectoryRecursive )
 
+  import Hexyll.Core.Resource
   import Hexyll.Core.Store
   import Hexyll.Core.StoreEnv
   import Hexyll.Core.Provider
