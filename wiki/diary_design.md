@@ -527,3 +527,5 @@ https://github.com/Hexirp/hexirp-hakyll/blob/3bd45ecdda2c6049d285089a377dcf2e802
 これまでのモデルの変更を行った。
 
 Provider の書き直しの過程で、これまでのモデルが誤っていたことが分かった。もっとも重要な誤りは Identifier をリソースの識別子としてみなしていたことである。実際は Identifier はコンパイル結果の識別子であった。また、 Metadata に関するものについては、 Domain レベルではなく Application レベルで実現したほうが良さそうだということが分かった。
+
+`***Env` モジュールでは `new***Env` という形で実装を行っている。これらは本来は Infrastructure レベルの物であり、別のモジュールに置くべきかもしれない。しかし、まあ気楽に行こう。
