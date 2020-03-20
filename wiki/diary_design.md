@@ -1,4 +1,4 @@
-# design
+# diary\_design
 
 設計について。
 
