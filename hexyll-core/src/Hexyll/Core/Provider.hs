@@ -25,39 +25,59 @@ module Hexyll.Core.Provider where
 
   import Data.Time ( UTCTime (..) )
 
+  import Data.Binary ( Binary (..) )
+
   import qualified Data.ByteString.Lazy as BL
 
   import Hexyll.Core.Store
 
   import Path
 
+  -- | A path of a resource.
+  --
+  -- @since 0.1.0.0
+  data Resource = Resource { unResource :: Path Rel File }
+    deriving ( Eq, Ord, Show, Typeable )
+
+  -- | @since 0.1.0.0
+  instance NFData Resource where
+    rnf (Resource x) = rnf x
+
+  -- | @since 0.1.0.0
+  instance Binary Resource where
+    put (Resource x) = put (toFilePath x)
+    get = do
+      x' <- get
+      case parseRelFile x' of
+        Nothing -> error "Data.Binary.get: Invalid Resource"
+        Just x -> return (Resource x)
+
   -- | A type of modification time.
   --
-  -- If 'modificationTimeOld' is 'Nothing', it means that the file did not
+  -- If 'mTimeOld' is 'Nothing', it means that the file did not
   -- exist in the previous run.
   --
   -- @since 0.1.0.0
-  data ModificationTime = ModificationTime
-    { modificationTime    :: !UTCTime
-    , modificationTimeOld :: !(Maybe UTCTime)
+  data MTime = MTime
+    { mTime    :: !UTCTime
+    , mTimeOld :: !(Maybe UTCTime)
     } deriving ( Eq, Ord, Show, Typeable )
 
   -- | @since 0.1.0.0
-  instance NFData ModificationTime where
-    rnf (ModificationTime tn mto) = rnf tn `seq` rnf mto `seq` ()
+  instance NFData MTime where
+    rnf (MTime tn mto) = rnf tn `seq` rnf mto `seq` ()
 
-  -- | Check if a 'ModificationTime' means that the file is modified.
+  -- | Check if a 'MTime' means that the file is modified.
   --
-  -- If 'modificationTimeOld' is 'Nothing', it means that the file did not
-  -- exist in the previous run. Then this function returns 'True'.
+  -- If 'mTimeOld' is 'Nothing', it means that the file did not exist
+  -- in the previous run. Then this function returns 'True'.
   --
-  -- If 'modificationTime' is greater than 'modificationTimeOld', it means
-  -- the file is newer than the previous run. Then this function returns
-  -- 'True'.
+  -- If 'mTime' is greater than 'mTimeOld', it means the file is newer than
+  -- the previous run. Then this function returns 'True'.
   --
   -- @since 0.1.0.0
-  isProofOldness :: ModificationTime -> Bool
-  isProofOldness (ModificationTime tn mto) = case mto of
+  isProofOldness :: MTime -> Bool
+  isProofOldness (MTime tn mto) = case mto of
     Nothing -> False
     Just to -> tn > to
 
@@ -103,7 +123,7 @@ module Hexyll.Core.Provider where
     -- | Get all paths.
     --
     -- @since 0.1.0.0
-    getAllPath :: m (S.Set (Path Rel File))
+    getAllPath :: m (S.Set Resource)
 
     -- | Count all paths.
     --
@@ -114,28 +134,25 @@ module Hexyll.Core.Provider where
     -- | Get the modification time of a file lazily.
     --
     -- @since 0.1.0.0
-    getModificationTimeDelay
-      :: Path Rel File -> m (Maybe (ProviderLoad m ModificationTime))
+    getMTimeDelay :: Resource -> m (Maybe (ProviderLoad m MTime))
 
     -- | Get the body of a file lazily.
     --
     -- @since 0.1.0.0
-    getBodyDelay
-      :: Path Rel File -> m (Maybe (ProviderLoad m Body))
+    getBodyDelay :: Resource -> m (Maybe (ProviderLoad m Body))
 
   -- | Get the modification time of a file.
   --
   -- @since 0.1.0.0
-  getModificationTime
-    :: MonadProvider m => Path Rel File -> m (Maybe ModificationTime)
-  getModificationTime path = do
-    ml <- getModificationTimeDelay path
+  getMTime :: MonadProvider m => Resource -> m (Maybe MTime)
+  getMTime path = do
+    ml <- getMTimeDelay path
     sequenceProviderLoad ml
 
   -- | Get the body of a file.
   --
   -- @since 0.1.0.0
-  getBody :: MonadProvider m => Path Rel File -> m (Maybe Body)
+  getBody :: MonadProvider m => Resource -> m (Maybe Body)
   getBody path = do
     ml <- getBodyDelay path
     sequenceProviderLoad ml
@@ -143,7 +160,7 @@ module Hexyll.Core.Provider where
   -- | Check if a file exists.
   --
   -- @since 0.1.0.0
-  isExistent :: MonadProvider m => Path Rel File -> m Bool
+  isExistent :: MonadProvider m => Resource -> m Bool
   isExistent path = do
     ml <- getBodyDelay path
     return $ isJust ml
@@ -151,7 +168,7 @@ module Hexyll.Core.Provider where
   -- | Check if a file is modified -- a file is newer than the previous run.
   --
   -- @since 0.1.0.0
-  isModified :: MonadProvider m => Path Rel File -> m (Maybe Bool)
+  isModified :: MonadProvider m => Resource -> m (Maybe Bool)
   isModified path = do
-    mt <- getModificationTime path
+    mt <- getMTime path
     return $ fmap isProofOldness mt
