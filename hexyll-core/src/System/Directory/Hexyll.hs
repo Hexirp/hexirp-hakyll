@@ -32,15 +32,17 @@ module System.Directory.Hexyll
         then do
           result <- go $ Raw.dropTrailingPathSeparator path
           case forM result parseRelFile of
-            Left e -> error $ unlines
-              [ "listDirectoryRecursive: Something wrong happened."
-              , "listDirectoryRecursive:   " ++ show (show e)
+            Left e -> error $ unwords
+              [ "listDirectoryRecursive:"
+              , "Something wrong happened."
+              , "Something threw an error:"
+              , show (show e)
               ]
             Right files -> return files
         else
-          error $ unlines
-            [ "listDirectoryRecursive: This directory is not exist."
-            , "listDirectoryRecursive:   " ++ path
+          error $ unwords
+            [ "listDirectoryRecursive:"
+            , "This directory " ++ show path ++ " is not exist."
             ]
     where
       go :: FilePath -> IO [FilePath]

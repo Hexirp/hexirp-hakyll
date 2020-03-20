@@ -232,9 +232,11 @@ module Hexyll.Core.StoreEnv
       keyHash = hashStoreKey key
       mpath = (dir </>) <$> parseRelFile keyHash
     in case mpath of
-      Left e -> error $ unlines
-        [ "withStorePath: Something wrong happened."
-        , "withStorePath: " ++ show (show e)
+      Left e -> error $ unwords
+        [ "withStorePath:"
+        , "Something wrong happened."
+        , "Something threw an error:"
+        , show (show e)
         ]
       Right path -> f path
 
