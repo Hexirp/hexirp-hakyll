@@ -11,7 +11,14 @@
 -- This module provides an environment for handling a provider.
 --
 -- @since 0.1.0.0
-module Hexyll.Core.ProviderEnv where
+module Hexyll.Core.ProviderEnv
+  ( ProviderEnv (..)
+  , getAllPathE
+  , getMTimeDelayE
+  , getBodyDelayE
+  , ProviderOption (..)
+  , newProviderEnv
+  ) where
 
   import Prelude
 
