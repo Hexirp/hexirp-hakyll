@@ -5,7 +5,7 @@
 -- Copyright:   (c) 2019 Hexirp
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
--- Stability:   stable
+-- Stability:   stable (except implements)
 -- Portability: portable
 --
 -- This module provides an environment for handling a store.
@@ -16,7 +16,8 @@ module Hexyll.Core.StoreEnv
   , HasStoreEnv (..)
   , saveE
   , loadDelayE
-  , StoreOption (..)
+  , -- ** Implements
+    StoreOption (..)
   , newStoreEnv
   ) where
 
@@ -231,9 +232,11 @@ module Hexyll.Core.StoreEnv
       keyHash = hashStoreKey key
       mpath = (dir </>) <$> parseRelFile keyHash
     in case mpath of
-      Left e -> error $ unlines
-        [ "withStorePath: Something wrong happened."
-        , "withStorePath: " ++ show (show e)
+      Left e -> error $ unwords
+        [ "withStorePath:"
+        , "Something wrong happened."
+        , "Something threw an error:"
+        , show (show e)
         ]
       Right path -> f path
 

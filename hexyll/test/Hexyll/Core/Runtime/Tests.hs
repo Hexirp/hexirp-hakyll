@@ -1,4 +1,5 @@
 --------------------------------------------------------------------------------
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Hexyll.Core.Runtime.Tests
     ( tests
@@ -23,7 +24,11 @@ import           TestSuite.Util
 --------------------------------------------------------------------------------
 tests :: TestTree
 tests = testGroup "Hexyll.Core.Runtime.Tests" $
-    fromAssertions "run" [] -- [case02] -- [case01, case02] ... because of https://github.com/Hexirp/hexirp-hakyll/issues/90
+#if defined(mingw32_HOST_OS) || defined(__MINGW32__)
+    fromAssertions "run" [] -- [case01, case02] ... because of https://github.com/Hexirp/hexirp-hakyll/issues/90
+#else
+    fromAssertions "run" [case02] -- [case01, case02] ... because of https://github.com/Hexirp/hexirp-hakyll/issues/90
+#endif
 
 
 --------------------------------------------------------------------------------

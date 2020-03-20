@@ -15,7 +15,6 @@ module Hexyll.Core.Identifier.Internal where
 
   import Prelude
 
-  import Control.Monad       (mzero)
   import Control.Monad.Catch (MonadThrow)
 
   import Control.DeepSeq (NFData (..))
@@ -47,16 +46,18 @@ module Hexyll.Core.Identifier.Internal where
       p <- do
         s <- get
         case parseRelFile s of
-          Nothing -> mzero
+          Nothing -> error "Data.Binary.get: Invalid Identifier"
           Just p -> return p
       return $ Identifier v p
 
   -- | @since 0.1.0.0
   instance IsString Identifier where
     fromString s = case fromFilePath s of
-      Left e -> error $ unlines
-        [ "fromString @Identifier: It's not a relative path to file."
-        , "fromString @Identifier: " ++ show (show e)
+      Left e -> error $ unwords
+        [ "fromString @Identifier:"
+        , "It's not a relative path to file."
+        , "'fromFilePath' threw an error:"
+        , show (show e)
         ]
       Right i -> i
 
