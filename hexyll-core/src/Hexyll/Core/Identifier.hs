@@ -85,6 +85,25 @@ module Hexyll.Core.Identifier where
   fromFilePath :: MonadThrow m => FilePath -> m Identifier
   fromFilePath s = Identifier Nothing <$> parseRelFile s
 
+  -- | An unsafe 'fromFilePath', parse an identifier from a string. The string
+  -- should be a relative path to file.
+  --
+  -- 'ufromFilePath' is a partical function. You should be careful. I
+  -- recommended to only use this function for constants.
+  --
+  -- > indexIdent = ufromFilePath "index.md"
+  --
+  -- @since 0.1.0.0
+  ufromFilePath :: FilePath -> Identifier
+  ufromFilePath s = case fromFilePath s of
+    Left e -> error $ unwords
+      [ "Identifier.ufromFilePath:"
+      , "It's not a relative path to file."
+      , "'fromFilePath' threw an error:"
+      , show (show e)
+      ]
+    Right i -> i
+
   -- | Convert an identifier to a relative 'FilePath'.
   --
   -- @since 0.1.0.0
@@ -104,22 +123,3 @@ module Hexyll.Core.Identifier where
   -- @since 0.1.0.0
   setIdentifierVersion :: Maybe String -> Identifier -> Identifier
   setIdentifierVersion v i = i { identifierVersion = v }
-
-  -- | An unsafe 'fromFilePath', parse an identifier from a string. The string
-  -- should be a relative path to file.
-  --
-  -- 'ufromFilePath' is a partical function. You should be careful. I
-  -- recommended to only use this function for constants.
-  --
-  -- > indexIdent = ufromFilePath "index.md"
-  --
-  -- @since 0.1.0.0
-  ufromFilePath :: FilePath -> Identifier
-  ufromFilePath s = case fromFilePath s of
-    Left e -> error $ unwords
-      [ "Identifier.ufromFilePath:"
-      , "It's not a relative path to file."
-      , "'fromFilePath' threw an error:"
-      , show (show e)
-      ]
-    Right i -> i
