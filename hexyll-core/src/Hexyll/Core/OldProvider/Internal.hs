@@ -121,11 +121,11 @@ newProvider store ignore directory = do
 --------------------------------------------------------------------------------
 getResourceInfo :: FilePath -> Set Identifier -> Identifier -> IO ResourceInfo
 getResourceInfo directory universe identifier = do
-    mtime <- fileModificationTime $ directory </> toFilePath identifier
+    mtime <- fileModificationTime $ directory </> fromIdentifierToFilePath identifier
     return $ ResourceInfo (BinaryTime mtime) $
         if mdRsc `S.member` universe then Just mdRsc else Nothing
   where
-    mdRsc = ufromFilePath $ flip addExtension "metadata" $ toFilePath identifier
+    mdRsc = ufromFilePath $ flip addExtension "metadata" $ fromIdentifierToFilePath identifier
 
 
 --------------------------------------------------------------------------------
@@ -142,7 +142,7 @@ resourceExists provider =
 
 --------------------------------------------------------------------------------
 resourceFilePath :: Provider -> Identifier -> FilePath
-resourceFilePath p i = providerDirectory p </> toFilePath i
+resourceFilePath p i = providerDirectory p </> fromIdentifierToFilePath i
 
 
 --------------------------------------------------------------------------------

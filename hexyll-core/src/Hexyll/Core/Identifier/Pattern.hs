@@ -62,18 +62,15 @@ module Hexyll.Core.Identifier.Pattern
 
   -- | Make a pattern from a 'Identifier'.
   --
-  -- The pattern is interpreted as: @'fromIdentifier' i == ('fromGlob'
-  -- ('toFilePath' i) '.&&.' 'fromVersion' ('getIdentiferVersion' i))@.
+  -- The pattern is interpreted as: @'fromIdentifier' i == ('fromGlob' ('fromIdentifierToFilePath' i) '.&&.' 'fromVersion' ('getIdentiferVersion' i))@.
   --
   -- @since 0.1.0.0
   fromIdentifier :: Identifier -> PatternExpr
-  fromIdentifier i =
-    fromGlob (toFilePath i) .&&. fromVersion (getIdentifierVersion i)
+  fromIdentifier i = fromGlob (fromIdentifierToFilePath i) .&&. fromVersion (getIdentifierVersion i)
 
   -- | Make a pattern from a list.
   --
-  -- The pattern is interpreted as: @'fromList' x == foldr ('.||.') 'nothing'
-  -- (map 'fromIdentifier' x)@.
+  -- The pattern is interpreted as: @'fromList' x == foldr ('.||.') 'nothing' (map 'fromIdentifier' x)@.
   --
   -- @since 0.1.0.0
   fromList :: [Identifier] -> PatternExpr
