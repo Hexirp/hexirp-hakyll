@@ -77,6 +77,9 @@ module Hexyll.Core.Identifier where
         Nothing -> fromIdentifierToFilePath i
         Just v  -> fromIdentifierToFilePath i ++ " (" ++ v ++ ")"
 
+  -- | Make an identifier from a path.
+  --
+  -- @since 0.1.0.0
   fromPath :: Path Rel File -> Identifier
   fromPath p = Identifier p Nothing
 
@@ -106,6 +109,9 @@ module Hexyll.Core.Identifier where
       ]
     Right i -> i
 
+  -- | Convert an identifier to a path.
+  --
+  -- @since 0.1.0.0
   fromIdentifierToPath :: Identifier -> Path Rel File
   fromIdentifierToPath = identifierPath
 
