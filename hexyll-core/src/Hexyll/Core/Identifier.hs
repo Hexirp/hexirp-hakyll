@@ -1,3 +1,5 @@
+{-# OPTIONS_HADDOCK show-extensions #-}
+
 -- |
 -- Module:      Hexyll.Core.Identifier
 -- Copyright:   (c) 2019 Hexirp
