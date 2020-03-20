@@ -15,7 +15,6 @@ module Hexyll.Core.Identifier.Internal where
 
   import Prelude
 
-  import Control.Monad       (mzero)
   import Control.Monad.Catch (MonadThrow)
 
   import Control.DeepSeq (NFData (..))
@@ -47,7 +46,7 @@ module Hexyll.Core.Identifier.Internal where
       p <- do
         s <- get
         case parseRelFile s of
-          Nothing -> mzero
+          Nothing -> error "Data.Binary.get: Invalid Identifier"
           Just p -> return p
       return $ Identifier v p
 
