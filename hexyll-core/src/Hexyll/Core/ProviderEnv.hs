@@ -13,6 +13,7 @@
 -- @since 0.1.0.0
 module Hexyll.Core.ProviderEnv
   ( ProviderEnv (..)
+  , HasProviderEnv (..)
   , getAllPathE
   , getMTimeDelayE
   , getBodyDelayE
