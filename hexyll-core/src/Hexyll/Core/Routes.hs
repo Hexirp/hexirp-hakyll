@@ -6,7 +6,8 @@ module Hexyll.Core.Routes where
 
   import Control.DeepSeq ( NFData (..) )
 
-  import Path
+  import Path hiding ( toFilePath )
+  import System.FilePath ( replaceExtension )
 
   import Hexyll.Core.Identifier
   import Hexyll.Core.Identifier.Internal
@@ -31,7 +32,8 @@ module Hexyll.Core.Routes where
   idRoute = Routes $ \i -> [toPath i]
 
   setExtension :: String -> Routes
-  setExtension ext = Routes $ \i -> replaceExtension ext (toPath i)
+  setExtension ext = Routes $ \i -> parseRelFile $ replaceExtension ext $ toFilePath i
+  -- setExtension ext = Routes $ \i -> replaceExtension ext (toPath i)
 
   matchRoute :: Pattern -> Routes -> Routes
   matchRoute pat (Routes f) = Routes $ \i ->
