@@ -9,7 +9,7 @@ module Hexyll
     , module Hexyll.Core.Identifier.Pattern
     , module Hexyll.Core.Item
     , module Hexyll.Core.Metadata
-    , module Hexyll.Core.Routes
+    , module Hexyll.Core.OldRoutes
     , module Hexyll.Core.Rules
     , module Hexyll.Core.UnixFilter
     , module Hexyll.Core.Util.File
@@ -37,7 +37,7 @@ import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata           hiding ( Pattern, unPattern )
-import           Hexyll.Core.Routes             hiding ( Pattern, unPattern, match )
+import           Hexyll.Core.OldRoutes             hiding ( Pattern, unPattern, match )
 import           Hexyll.Core.Rules
 import           Hexyll.Core.UnixFilter
 import           Hexyll.Core.Util.File

@@ -9,7 +9,7 @@ module Hexyll.Core.RoutesTest
 import           Data.Maybe             (fromMaybe)
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Metadata
-import           Hexyll.Core.Routes
+import           Hexyll.Core.OldRoutes
 import           System.FilePath        ((</>))
 import           Test.Tasty             (TestTree, testGroup)
 import           Test.Tasty.HUnit       (Assertion, (@=?))
