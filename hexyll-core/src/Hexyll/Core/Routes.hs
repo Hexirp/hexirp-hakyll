@@ -63,7 +63,7 @@ module Hexyll.Core.Routes where
       Left e -> error $ unwords
         [ "setExtension: "
         , "Something wrong happened."
-        , "replaceExtension threw an error:"
+        , "'replaceExtension' threw an error:"
         , show (show e)
         ]
       Right p -> [p]
