@@ -6,7 +6,7 @@
 {-# LANGUAGE GADTs                      #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MultiParamTypeClasses      #-}
-module Hexyll.Core.Compiler.Internal
+module Hexyll.Core.OldCompiler.Internal
     ( -- * Types
       Snapshot
     , CompilerRead (..)

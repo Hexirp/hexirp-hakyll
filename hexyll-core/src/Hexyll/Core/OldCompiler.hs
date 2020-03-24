@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ScopedTypeVariables        #-}
-module Hexyll.Core.Compiler
+module Hexyll.Core.OldCompiler
     ( Compiler
     , getUnderlying
     , getUnderlyingExtension

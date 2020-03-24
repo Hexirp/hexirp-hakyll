@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hexyll.Core.Compiler.Require
+module Hexyll.Core.OldCompiler.Require
     ( Snapshot
     , save
     , saveSnapshot
