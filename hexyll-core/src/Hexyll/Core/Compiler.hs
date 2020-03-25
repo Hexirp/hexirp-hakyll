@@ -4,6 +4,7 @@ module Hexyll.Core.Compiler where
 
   import Prelude
 
+  import Control.Monad.Trans.Class      ( MonadTrans (..) )
   import Control.Monad.Trans.RWS.Strict ( RWST (..) )
 
   import Hexyll.Core.Identifier
@@ -37,6 +38,9 @@ module Hexyll.Core.Compiler where
       f2 :: forall s m a b. (Functor s, Monad m) => Either (s (Coroutine s m a)) a -> (a -> Coroutine s m b) -> m (Either (s (Coroutine s m b)) b)
       f2 (Left  x2) y2 = pure (Left (fmap (flip f0 y2) x2))
       f2 (Right x2) y2 = unCoroutine (y2 x2)
+
+  instance Functor s => MonadTrans (Coroutine s) where
+    lift x = Coroutine (fmap Right x)
 
   type Snapshot = String
 
