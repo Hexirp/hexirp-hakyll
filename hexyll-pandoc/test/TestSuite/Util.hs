@@ -27,7 +27,7 @@ import           Text.Printf                   (printf)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Identifier hiding (toFilePath)
 import qualified Hexyll.Core.Logger            as Logger

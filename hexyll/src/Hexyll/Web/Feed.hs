@@ -29,7 +29,7 @@ module Hexyll.Web.Feed
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Item
 import           Hexyll.Core.Util.String     (replaceAll)
 import           Hexyll.Web.Template

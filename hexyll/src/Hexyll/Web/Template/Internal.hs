@@ -31,8 +31,8 @@ import           GHC.Generics                         (Generic)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.OldCompiler
+import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.Writable

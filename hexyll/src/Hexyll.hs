@@ -2,7 +2,7 @@
 -- | Top-level module exporting all modules that are interesting for the user
 {-# LANGUAGE CPP #-}
 module Hexyll
-    ( module Hexyll.Core.Compiler
+    ( module Hexyll.Core.OldCompiler
     , module Hexyll.Core.Configuration
     , module Hexyll.Core.File
     , module Hexyll.Core.Identifier
@@ -30,7 +30,7 @@ module Hexyll
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.File
 import           Hexyll.Core.Identifier

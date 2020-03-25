@@ -13,7 +13,7 @@ import           Data.List               (dropWhileEnd, isPrefixOf)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Item
 import           Hexyll.Core.Util.String
 

@@ -11,7 +11,7 @@ import           Test.Tasty.HUnit            (Assertion, testCase, (@=?))
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.OldProvider
 import           Hexyll.Core.OldStore           (Store)

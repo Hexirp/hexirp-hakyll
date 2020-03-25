@@ -40,8 +40,8 @@ import           System.FilePath               (takeExtension)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal
-import qualified Hexyll.Core.Compiler.Require  as Internal
+import           Hexyll.Core.OldCompiler.Internal
+import qualified Hexyll.Core.OldCompiler.Require  as Internal
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
@@ -125,7 +125,7 @@ getResourceWith reader = do
         then compilerUnsafeIO $ Item id' <$> reader provider id'
         else fail $ error' filePath
   where
-    error' fp = "Hexyll.Core.Compiler.getResourceWith: resource " ++
+    error' fp = "Hexyll.Core.OldCompiler.getResourceWith: resource " ++
         show fp ++ " not found"
 
 
@@ -176,11 +176,11 @@ cached name compiler = do
                       _              -> fail $ error' progName
   where
     error' progName =
-        "Hexyll.Core.Compiler.cached: Cache corrupt! " ++
+        "Hexyll.Core.OldCompiler.cached: Cache corrupt! " ++
          "Try running: " ++ progName ++ " clean"
 
     itDoesntEvenExist id' =
-        "Hexyll.Core.Compiler.cached: You are trying to (perhaps "    ++
+        "Hexyll.Core.OldCompiler.cached: You are trying to (perhaps "    ++
         "indirectly) use `cached` on a non-existing resource: there " ++
         "is no file backing " ++ show id'
 

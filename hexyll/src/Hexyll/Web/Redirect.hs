@@ -10,7 +10,7 @@ import           Control.Applicative    ((<$>))
 import           Control.Monad          (forM_, when)
 import           Data.Binary            (Binary (..))
 import           Data.List              (sort, group)
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.OldRoutes
 import           Hexyll.Core.Rules

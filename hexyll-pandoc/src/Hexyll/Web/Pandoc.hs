@@ -28,7 +28,7 @@ import           Text.Pandoc.Highlighting   (pygments)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Item
 import           Hexyll.Web.Pandoc.FileType
 

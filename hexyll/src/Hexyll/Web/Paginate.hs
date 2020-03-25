@@ -20,7 +20,7 @@ import qualified Data.Set                       as S
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 import           Hexyll.Core.Item

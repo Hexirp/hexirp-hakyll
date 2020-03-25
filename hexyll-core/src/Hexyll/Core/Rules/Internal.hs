@@ -22,7 +22,7 @@ import           Data.Set                       (Set)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal  hiding ( Pattern )
+import           Hexyll.Core.OldCompiler.Internal  hiding ( Pattern )
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern )
 import           Hexyll.Core.Item.SomeItem

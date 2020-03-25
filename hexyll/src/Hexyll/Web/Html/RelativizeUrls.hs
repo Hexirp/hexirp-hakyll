@@ -25,7 +25,7 @@ import           Data.List            (isPrefixOf)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Item
 import           Hexyll.Web.Html
 

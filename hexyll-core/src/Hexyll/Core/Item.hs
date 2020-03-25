@@ -17,7 +17,7 @@ import           Prelude                       hiding (foldr)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Identifier
 
 

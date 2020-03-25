@@ -205,7 +205,7 @@ instance MonadMetadata Compiler where
 
 --------------------------------------------------------------------------------
 -- | Compilation may fail with multiple error messages.
--- 'catchError' handles errors from 'throwError', 'fail' and 'Hexyll.Core.Compiler.noResult'
+-- 'catchError' handles errors from 'throwError', 'fail' and 'Hexyll.Core.OldCompiler.noResult'
 instance MonadError [String] Compiler where
     throwError = compilerThrow
     catchError c = compilerCatch c . (. compilerErrorMessages)
@@ -222,7 +222,7 @@ runCompiler compiler read' = handle handler $ unCompiler compiler read'
 
 --------------------------------------------------------------------------------
 -- | Trying alternative compilers if the first fails, regardless whether through
--- 'fail', 'throwError' or 'Hexyll.Core.Compiler.noResult'.
+-- 'fail', 'throwError' or 'Hexyll.Core.OldCompiler.noResult'.
 -- Aggregates error messages if all fail.
 instance Alternative Compiler where
     empty   = compilerNoResult []
@@ -237,7 +237,7 @@ instance Alternative Compiler where
           (CompilationNoResult xs, CompilationNoResult ys) -> compilerNoResult $ xs ++ ys
         ))
       where
-        debug = compilerDebugEntries "Hexyll.Core.Compiler.Internal: Alternative fail suppressed"
+        debug = compilerDebugEntries "Hexyll.Core.OldCompiler.Internal: Alternative fail suppressed"
     {-# INLINE (<|>) #-}
 
 
@@ -335,7 +335,7 @@ compilerDebugEntries msg = compilerDebugLog . (msg:) . map indent
 compilerTellDependenciesCache :: [Dependency] -> [Identifier] -> Compiler ()
 compilerTellDependenciesCache ds cs = do
   compilerDebugLog $ map (\d ->
-      "Hexyll.Core.Compiler.Internal: Adding dependency: " ++ show d) ds
+      "Hexyll.Core.OldCompiler.Internal: Adding dependency: " ++ show d) ds
   compilerTell mempty {compilerDependencies = ds, compilerCache = cs}
 {-# INLINE compilerTellDependenciesCache #-}
 
