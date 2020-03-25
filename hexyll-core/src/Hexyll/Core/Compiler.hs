@@ -7,7 +7,7 @@ module Hexyll.Core.Compiler where
   import Hexyll.Core.Identifier
 
   newtype Coroutine s m a = Coroutine
-    { unCoroutine :: m (Either (s (Coroutine s m r)) r)
+    { unCoroutine :: m (Either (s (Coroutine s m a)) a)
     }
 
   type Snapshot = String
