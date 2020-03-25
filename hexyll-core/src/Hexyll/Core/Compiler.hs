@@ -3,9 +3,12 @@ module Hexyll.Core.Compiler where
   import Prelude
 
   import Control.Monad.Trans.RWS.Strict ( RWST (..) )
-  import Control.Monad.Coroutine        ( Coroutine (..) )
 
   import Hexyll.Core.Identifier
+
+  newtype Coroutine s m a = Coroutine
+    { unCoroutine :: m (Either (s (Coroutine s m r)) r)
+    }
 
   type Snapshot = String
 
