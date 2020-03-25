@@ -46,6 +46,18 @@ module Hexyll.Core.Compiler where
       f9 :: forall a b. (a -> b) -> a -> b
       f9  x9             y9            = x9 y9
 
+      f0 :: forall s m a b. (Functor s, Applicative m) => Coroutine s m (a -> b) -> Coroutine s m a -> Coroutine s m b
+
+      f1 :: forall s m a b. (Functor s, Applicative m) => m (Either (s (Coroutine s m (a -> b))) (a -> b)) -> Coroutine s m a -> m (Either (s (Coroutine s m b)) b)
+
+      f2 :: forall s m a b. (Functor s, Applicative m) => Either (s (Coroutine s m (a -> b))) (a -> b) -> Coroutine s m a -> Either (s (Coroutine s m b)) b
+
+      f2a0 :: forall s m a b. (Functor s, Applicative m) => s (Coroutine s m (a -> b)) -> Coroutine s m a -> s (Coroutine s m b)
+
+      f2a1 :: forall s m a b. (Functor s, Applicative m) => Coroutine s m (a -> b) -> Coroutine s m a -> Coroutine s m b
+      
+      f2b0 :: forall s m a b. (Functor s, Applicative m) => (a -> b) -> Coroutine s m a -> 
+
   type Snapshot = String
 
   data CompilerErrors a = CompilerErrors
