@@ -32,6 +32,13 @@ module Hexyll.Core.Compiler where
       f3 :: forall s m a b. (Functor s, Applicative m) => s (Coroutine s m (a -> b)) -> Coroutine s m a -> s (Coroutine s m b)
       f3  x3             y3            = fmap (\x' -> f0 x' y3) x3
 
+  instance (Functor s, Monad m) => Monad (Coroutine s m) where
+    x >>= y = f0 x y where
+      f0 (Coroutine x0) y0 = Coroutine (f1 x0 y0)
+      f1 x1 y1 = x1 >>= \x' -> f2 x' y1
+      f2 (Left x2) y2 = pure (Left (fmap (\x' -> f0 x' y2) x2))
+      f2 (Right x2) y2 = unCoroutine (y2 x2)
+
   type Snapshot = String
 
   data CompilerErrors a = CompilerErrors
