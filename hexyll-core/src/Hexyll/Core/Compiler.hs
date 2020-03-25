@@ -4,6 +4,7 @@ module Hexyll.Core.Compiler where
 
   import Prelude
 
+  import Control.Monad.IO.Class         ( MonadIO (..) )
   import Control.Monad.Trans.Class      ( MonadTrans (..) )
   import Control.Monad.Trans.RWS.Strict ( RWST (..) )
 
@@ -41,6 +42,9 @@ module Hexyll.Core.Compiler where
 
   instance Functor s => MonadTrans (Coroutine s) where
     lift x = Coroutine (fmap Right x)
+
+  instance (Functor s, MonadIO m) => MonadIO (Coroutine s m) where
+    liftIO x = Coroutine (fmap Right (liftIO x))
 
   type Snapshot = String
 
@@ -80,3 +84,6 @@ module Hexyll.Core.Compiler where
 
   instance Monad Compiler where
     x >>= y = Compiler (unCompiler x >>= \x' -> unCompiler (y x'))
+
+  instance MonadIO Compiler where
+    liftIO x = Compiler (liftIO x)
