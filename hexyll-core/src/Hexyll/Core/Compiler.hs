@@ -51,11 +51,32 @@ module Hexyll.Core.Compiler where
     | CompilerRequire Identifier Snapshot a
     | CompilerError (CompilerErrors String)
 
+  instance Functor CompilerSuspend where
+    fmap f (CompilerSnapshot s x) = CompilerSnapshot s (f x)
+    fmap f (CompilerRequire i s x) = CompilerRequire i s (f x)
+    fmap f (CompilerError e) = CompilerError e
+
   data CompilerRead = CompilerRead
 
   data CompilerWrite = CompilerWrite
+
+  instance Semigroup CompilerWrite where
+    CompilerWrite <> CompilerWrite = CompilerWrite
+
+  instance Monoid CompilerWrite where
+    mempty = CompilerWrite
 
   newtype Compiler a = Compiler
     { unCompiler
       :: RWST CompilerRead CompilerWrite () (Coroutine CompilerSuspend IO) a
     }
+
+  instance Functor Compiler where
+    fmap f (Compiler x) = Compiler (fmap f x)
+
+  instance Applicative Compiler where
+    pure x = Compiler (pure x)
+    x <*> y = Compiler (unCompiler x <*> unCompiler y)
+
+  instance Monad Compiler where
+    x >>= y = Compiler (unCompiler x >>= \x' -> unCompiler (y x'))
