@@ -26,8 +26,8 @@ module Hexyll.Core.Compiler where
       f0 :: forall s m a b. (Functor s, Applicative m) => Coroutine s m (a -> b) -> Coroutine s m a -> Coroutine s m b
       f0 x0 y0 = Coroutine (f2 <$> unCoroutine x0 <*> unCoroutine y0)
       f2 :: forall s m a b. (Functor s, Applicative m) => Either (s (Coroutine s m (a -> b))) (a -> b) -> Either (s (Coroutine s m a)) a -> Either (s (Coroutine s m b)) b
-      f2 (Left x2 )  y2        = Left (fmap (flip f0 (Coroutine (pure y2))) x2)
-      f2 (Right x2) (Left y2 ) = Left (fmap (fmap x2) y2)
+      f2 (Left  x2)  y2        = Left (fmap (flip f0 (Coroutine (pure y2))) x2)
+      f2 (Right x2) (Left  y2) = Left (fmap (fmap x2) y2)
       f2 (Right x2) (Right y2) = Right (x2 y2)
 
   instance (Functor s, Monad m) => Monad (Coroutine s m) where
@@ -35,7 +35,7 @@ module Hexyll.Core.Compiler where
       f0 :: forall s m a b. (Functor s, Monad m) => Coroutine s m a -> (a -> Coroutine s m b) -> Coroutine s m b
       f0 x0 y0 = Coroutine (unCoroutine x0 >>= flip f2 y0)
       f2 :: forall s m a b. (Functor s, Monad m) => Either (s (Coroutine s m a)) a -> (a -> Coroutine s m b) -> m (Either (s (Coroutine s m b)) b)
-      f2 (Left x2)  y2 = pure (Left (fmap (flip f0 y2) x2))
+      f2 (Left  x2) y2 = pure (Left (fmap (flip f0 y2) x2))
       f2 (Right x2) y2 = unCoroutine (y2 x2)
 
   type Snapshot = String
