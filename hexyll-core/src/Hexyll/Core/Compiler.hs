@@ -8,7 +8,14 @@ module Hexyll.Core.Compiler where
   import Control.Monad.Trans.Class      ( MonadTrans (..) )
   import Control.Monad.Trans.RWS.Strict ( RWST (..) )
 
+  import qualified Data.Set as S
+
+  import Hexyll.Core.Configuration
   import Hexyll.Core.Identifier
+  import Hexyll.Core.Routes
+  import Hexyll.Core.LogEnv
+  import Hexyll.Core.StoreEnv
+  import Hexyll.Core.ProviderEnv
 
   newtype Coroutine s m a = Coroutine
     { unCoroutine :: m (Either (s (Coroutine s m a)) a)
@@ -61,6 +68,13 @@ module Hexyll.Core.Compiler where
     fmap f (CompilerError e) = CompilerError e
 
   data CompilerRead = CompilerRead
+    { compilerConfig :: Configuration
+    , compilerUnderlying :: Identifier
+    , compilerProviderEnv :: ProviderEnv
+    , compilerUniverseEnv :: S.Set Identifier
+    , compilerRoutes :: Routes
+    , compilerLogEnv :: LogEnv
+    }
 
   data CompilerWrite = CompilerWrite
 
