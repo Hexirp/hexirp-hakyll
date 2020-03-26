@@ -8,6 +8,8 @@ module Hexyll.Core.Compiler where
   import Control.Monad.Trans.Class      ( MonadTrans (..) )
   import Control.Monad.Trans.RWS.Strict ( RWST (..) )
 
+  import Lens.Micro        ( lens )
+
   import qualified Data.Set as S
 
   import Hexyll.Core.Configuration
@@ -75,6 +77,21 @@ module Hexyll.Core.Compiler where
     , compilerRoutes :: Routes
     , compilerLogEnv :: LogEnv
     }
+
+  instance HasConfiguration CompilerRead where
+    configurationL =
+      lens compilerConfig (\env config -> env { compilerConfig = config })
+
+  instance HasProviderEnv CompilerRead where
+    providerEnvL =
+      lens compilerProviderEnv (\env prov -> env { compilerProviderEnv = prov })
+
+  instance HasStoreEnv CompilerRead where
+    storeEnvL = providerEnvL . storeEnvL
+
+  instance HasLogEnv CompilerRead where
+    logEnvL =
+      lens compilerLogEnv (\env logEnv -> env { compilerLogEnv = logEnv })
 
   data CompilerWrite = CompilerWrite
 
