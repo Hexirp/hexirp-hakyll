@@ -12,21 +12,14 @@
 -- @since 0.1.0.0
 module Hexyll.Core.Universe where
 
-  import Data.Binary   ( Binary (..) )
   import Data.Typeable ( Typeable )
+
   import Data.String ( IsString (..) )
-
-  import qualified Data.HashMap.Strict as HM
-  import qualified Data.Text           as T
-  import qualified Data.Yaml           as Yaml
-  import qualified Data.Yaml.Hexyll    as Yaml
-
-  import Control.Monad ( forM )
 
   import qualified Data.Set as S
 
   import Hexyll.Core.Identifier
-  import Hexyll.Core.Identifier.Pattern hiding ( Pattern )
+  import Hexyll.Core.Identifier.Pattern hiding ( Pattern (..) )
 
   -- | A type of patterns for 'MonadUniverse'.
   --
