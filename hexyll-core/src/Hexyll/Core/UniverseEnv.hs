@@ -82,8 +82,9 @@ module Hexyll.Core.UniverseEnv where
   --
   -- @since 0.1.0.0
   newUniverseEnv :: S.Set Identifier -> IO UniverseEnv
-  newUniverseEnv s = evaluate $ let i = S.size s in i `seq` UniverseEnv
-    { universeMatches = \p -> evaluate $ S.filter (`undefined` p) s
-    , universeAllIdent = evaluate s
-    , universeCount = evaluate i
-    }
+  newUniverseEnv s =
+    evaluate $ let i = S.size s in s `seq` i `seq` UniverseEnv
+      { universeMatches = \p -> evaluate $ S.filter (`undefined` p) s
+      , universeAllIdent = return s
+      , universeCount = return i
+      }
