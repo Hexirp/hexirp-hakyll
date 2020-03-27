@@ -30,9 +30,9 @@ module Hexyll.Core.UniverseEnv where
   --
   -- @since 0.1.0.0
   data UniverseEnv = UniverseEnv
-    { universeGetMatches :: !(Pattern -> IO (S.Set Identifier))
-    , universeGetAllIdentifier :: !(IO (S.Set Identifier))
-    , universeCountUniverse :: !(IO Int)
+    { universeMatches :: !(Pattern -> IO (S.Set Identifier))
+    , universeAllIdent :: !(IO (S.Set Identifier))
+    , universeCount :: !(IO Int)
     } deriving Typeable
 
   -- | Environment values with an environment for handling the 'Identifier'
@@ -54,7 +54,7 @@ module Hexyll.Core.UniverseEnv where
     => Pattern -> m (S.Set Identifier)
   getMatchesE p = do
     env <- ask
-    liftIO $ universeGetMatches (view universeEnvL env) p
+    liftIO $ universeMatches (view universeEnvL env) p
 
   -- | Get all identifiers.
   --
@@ -64,7 +64,7 @@ module Hexyll.Core.UniverseEnv where
     => m (S.Set Identifier)
   getAllIdentifier = do
     env <- ask
-    liftIO $ universeGetAllIdentifier (view universeEnvL env)
+    liftIO $ universeAllIdent (view universeEnvL env)
 
   -- | Count the number of all identifiers.
   --
@@ -74,4 +74,4 @@ module Hexyll.Core.UniverseEnv where
     => m Int
   countUniverse = do
     env <- ask
-    liftIO $ universeCountUniverse (view universeEnvL env)
+    liftIO $ universeCount (view universeEnvL env)
