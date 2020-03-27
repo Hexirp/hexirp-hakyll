@@ -14,6 +14,8 @@
 -- @since 0.1.0.0
 module Hexyll.Core.Configuration
   ( Configuration (..)
+  , HasConfiguration (..)
+  , askConfiguration
   , defaultConfiguration
   , defaultIgnoreFile
   , shouldIgnoreFile
@@ -21,14 +23,20 @@ module Hexyll.Core.Configuration
 
   import Prelude
 
+  import Control.Monad.IO.Class     ( MonadIO )
+  import Control.Monad.Reader.Class ( MonadReader ( ask ) )
+
+  import Lens.Micro        ( Lens' )
+  import Lens.Micro.Extras ( view )
+
   import Data.Default ( Default (..) )
 
   import Data.List ( isPrefixOf, isSuffixOf )
 
-  import Path
-
   import System.Exit    ( ExitCode )
   import System.Process ( system )
+
+  import Path
 
   -- | The top-level hexyll configration.
   --
@@ -72,6 +80,26 @@ module Hexyll.Core.Configuration
   -- | @since 0.1.0.0
   instance Default Configuration where
     def = defaultConfiguration
+
+  -- | Environment values with a configuration.
+  --
+  -- @since 0.1.0.0
+  class HasConfiguration env where
+    configurationL :: Lens' env Configuration
+
+  -- | @since 0.1.0.0
+  instance HasConfiguration Configuration where
+    configurationL = id
+
+  -- Ask the 'Configuration'.
+  --
+  -- @since 0.1.0.0
+  askConfiguration
+    :: (MonadIO m, MonadReader env m, HasConfiguration env)
+    => m Configuration
+  askConfiguration = do
+    env <- ask
+    return $ view configurationL env
 
 #if defined(mingw32_HOST_OS) || defined(__MINGW32__)
   -- | Default configuration for a hexyll application.
