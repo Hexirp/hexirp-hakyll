@@ -23,6 +23,8 @@ module Hexyll.Core.UniverseEnv where
 
   import qualified Data.Set as S
 
+  import Control.Exception ( evaluate )
+
   import Hexyll.Core.Identifier
   import Hexyll.Core.Universe
 
@@ -75,3 +77,13 @@ module Hexyll.Core.UniverseEnv where
   countUniverse = do
     env <- ask
     liftIO $ universeCount (view universeEnvL env)
+
+  -- | Make a new 'UniverseEnv'. It works strictly.
+  --
+  -- @since 0.1.0.0
+  newUniverseEnv :: S.Set Identifier -> IO UniverseEnv
+  newUniverseEnv s = evaluate $ let i = S.size s in i `seq` UniverseEnv
+    { universeMatches = \p -> evaluate $ S.filter (`undefined` p) s
+    , universeAllIdent = evaluate s
+    , universeCount = evaluate i
+    }
