@@ -19,7 +19,7 @@ module Hexyll.Core.Universe where
   import qualified Data.Set as S
 
   import Hexyll.Core.Identifier
-  import Hexyll.Core.Identifier.Pattern hiding ( Pattern (..) )
+  import Hexyll.Core.Identifier.Pattern hiding ( Pattern (..), match )
 
   -- | A type of patterns for 'MonadUniverse'.
   --
@@ -31,6 +31,12 @@ module Hexyll.Core.Universe where
   -- | @since 0.1.0.0
   instance IsString Pattern where
     fromString s = Pattern $ fromString s
+
+  -- | Match a 'Identifier' with a 'Pattern'.
+  --
+  -- @since 0.1.0.0
+  match :: Identifier -> Pattern -> Bool
+  match i (Pattern p) = i `matchExpr` p
 
   -- | Monads that has a set of identifiers and can search for them.
   --
