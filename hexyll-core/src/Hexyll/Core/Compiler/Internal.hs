@@ -36,16 +36,21 @@ module Hexyll.Core.Compiler.Internal where
   import Hexyll.Core.ProviderEnv
   import Hexyll.Core.UniverseEnv
 
+  -- | Coroutine monad. This monad can be suspended and resumed.
+  --
+  -- @since 0.1.0.0
   newtype Coroutine s m a = Coroutine
     { unCoroutine :: m (Either (s (Coroutine s m a)) a)
     }
 
+  -- | @since 0.1.0.0
   instance (Functor s, Functor m) => Functor (Coroutine s m) where
     fmap f = f0 where
       f0 (Coroutine x) = Coroutine (fmap f2 x)
       f2 (Left x     ) = Left (fmap f0 x)
       f2 (Right x    ) = Right (f x)
 
+  -- | @since 0.1.0.0
   instance (Functor s, Applicative m) => Applicative (Coroutine s m) where
     pure x = Coroutine (pure (Right x))
     x <*> y = f0 x y where
@@ -58,6 +63,7 @@ module Hexyll.Core.Compiler.Internal where
       f2 (Right x2) (Left  y2) = Left (fmap (fmap x2) y2)
       f2 (Right x2) (Right y2) = Right (x2 y2)
 
+  -- | @since 0.1.0.0
   instance (Functor s, Monad m) => Monad (Coroutine s m) where
     x >>= y = f0 x y where
       f0 :: forall s m a b. (Functor s, Monad m) => Coroutine s m a -> (a -> Coroutine s m b) -> Coroutine s m b
@@ -66,9 +72,11 @@ module Hexyll.Core.Compiler.Internal where
       f2 (Left  x2) y2 = pure (Left (fmap (flip f0 y2) x2))
       f2 (Right x2) y2 = unCoroutine (y2 x2)
 
+  -- | @since 0.1.0.0
   instance Functor s => MonadTrans (Coroutine s) where
     lift x = Coroutine (fmap Right x)
 
+  -- | @since 0.1.0.0
   instance (Functor s, MonadIO m) => MonadIO (Coroutine s m) where
     liftIO x = Coroutine (fmap Right (liftIO x))
 
