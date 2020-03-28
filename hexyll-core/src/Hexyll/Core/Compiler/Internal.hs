@@ -1,6 +1,20 @@
+{-# OPTIONS_HADDOCK not-home #-}
+{-# OPTIONS_HADDOCK show-extensions #-}
+
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
+-- |
+-- Module:      Hexyll.Core.Compiler.Internal
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   internal
+-- Portability: non-portable (GHC extensions: multi-parameter type classes)
+--
+-- This is an internal module for "Hexyll.Core.Compiler".
+--
+-- @since 0.1.0.0
 module Hexyll.Core.Compiler.Internal where
 
   import Prelude
