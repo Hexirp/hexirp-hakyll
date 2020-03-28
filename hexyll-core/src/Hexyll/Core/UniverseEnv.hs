@@ -61,20 +61,20 @@ module Hexyll.Core.UniverseEnv where
   -- | Get all identifiers.
   --
   -- @since 0.1.0.0
-  getAllIdentifier
+  getAllIdentifierE
     :: (MonadIO m, MonadReader env m, HasUniverseEnv env)
     => m (S.Set Identifier)
-  getAllIdentifier = do
+  getAllIdentifierE = do
     env <- ask
     liftIO $ universeAllIdent (view universeEnvL env)
 
   -- | Count the number of all identifiers.
   --
   -- @since 0.1.0.0
-  countUniverse
+  countUniverseE
     :: (MonadIO m, MonadReader env m, HasUniverseEnv env)
     => m Int
-  countUniverse = do
+  countUniverseE = do
     env <- ask
     liftIO $ universeCount (view universeEnvL env)
 
