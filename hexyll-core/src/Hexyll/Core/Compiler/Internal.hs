@@ -10,7 +10,7 @@
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
 -- Stability:   internal
--- Portability: non-portable (GHC extensions: multi-parameter type classes)
+-- Portability: non-portable (multi-parameter type classes)
 --
 -- This is an internal module for "Hexyll.Core.Compiler".
 --
