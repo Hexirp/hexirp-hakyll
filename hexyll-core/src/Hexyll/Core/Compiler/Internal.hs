@@ -1,7 +1,7 @@
 {-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module Hexyll.Core.Compiler where
+module Hexyll.Core.Compiler.Internal where
 
   import Prelude
 
