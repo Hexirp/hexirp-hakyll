@@ -85,7 +85,7 @@ module Hexyll.Core.Compiler where
 
   instance HasProviderEnv CompilerRead where
     providerEnvL =
-      lens compilerProviderEnv (\env prov -> env { compilerProviderEnv = prov })
+      lens compilerProviderEnv (\env prv -> env { compilerProviderEnv = prv })
 
   instance HasStoreEnv CompilerRead where
     storeEnvL = providerEnvL . storeEnvL
@@ -96,7 +96,7 @@ module Hexyll.Core.Compiler where
 
   instance HasLogEnv CompilerRead where
     logEnvL =
-      lens compilerLogEnv (\env logEnv -> env { compilerLogEnv = logEnv })
+      lens compilerLogEnv (\env lge -> env { compilerLogEnv = lge })
 
   data CompilerWrite = CompilerWrite
 
