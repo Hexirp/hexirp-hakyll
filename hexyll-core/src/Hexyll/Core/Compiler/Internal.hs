@@ -31,9 +31,13 @@ module Hexyll.Core.Compiler.Internal where
   import Hexyll.Core.Configuration
   import Hexyll.Core.Identifier
   import Hexyll.Core.Routes
+  import Hexyll.Core.Log
   import Hexyll.Core.LogEnv
+  import Hexyll.Core.Store
   import Hexyll.Core.StoreEnv
+  import Hexyll.Core.Provider
   import Hexyll.Core.ProviderEnv
+  import Hexyll.Core.Universe
   import Hexyll.Core.UniverseEnv
 
   -- | Coroutine monad. This monad can be suspended and resumed.
@@ -151,3 +155,20 @@ module Hexyll.Core.Compiler.Internal where
   instance MonadReader CompilerRead Compiler where
     ask = Compiler ask
     local f (Compiler x) = Compiler (local f x)
+
+  instance MonadLog Compiler where
+    logGeneric = logGenericE
+
+  instance MonadStore Compiler where
+    save = saveE
+    loadDelay = loadDelayE
+
+  instance MonadProvider Compiler where
+    getAllPath = getAllPathE
+    getMTimeDelay = getMTimeDelayE
+    getBodyDelay = getBodyDelayE
+
+  instance MonadUniverse Compiler where
+    getMatches = getMatchesE
+    getAllIdentifier = getAllIdentifierE
+    countUniverse = countUniverseE
