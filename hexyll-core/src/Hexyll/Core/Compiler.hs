@@ -1,4 +1,5 @@
 {-# LANGUAGE ExplicitForAll #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 
 module Hexyll.Core.Compiler where
 
@@ -7,6 +8,7 @@ module Hexyll.Core.Compiler where
   import Control.Monad.IO.Class         ( MonadIO (..) )
   import Control.Monad.Trans.Class      ( MonadTrans (..) )
   import Control.Monad.Trans.RWS.Strict ( RWST (..) )
+  import Control.Monad.Reader.Class     ( MonadReader (..) )
 
   import Lens.Micro        ( lens )
 
@@ -123,3 +125,7 @@ module Hexyll.Core.Compiler where
 
   instance MonadIO Compiler where
     liftIO x = Compiler (liftIO x)
+
+  instance MonadReader CompilerRead Compiler where
+    ask = Compiler ask
+    local f (Compiler x) = Compiler (local f x)
