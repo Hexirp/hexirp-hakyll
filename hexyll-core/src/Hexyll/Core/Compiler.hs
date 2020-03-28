@@ -18,6 +18,7 @@ module Hexyll.Core.Compiler where
   import Hexyll.Core.LogEnv
   import Hexyll.Core.StoreEnv
   import Hexyll.Core.ProviderEnv
+  import Hexyll.Core.UniverseEnv
 
   newtype Coroutine s m a = Coroutine
     { unCoroutine :: m (Either (s (Coroutine s m a)) a)
@@ -73,7 +74,7 @@ module Hexyll.Core.Compiler where
     { compilerConfig :: Configuration
     , compilerUnderlying :: Identifier
     , compilerProviderEnv :: ProviderEnv
-    , compilerUniverseEnv :: S.Set Identifier
+    , compilerUniverseEnv :: UniverseEnv
     , compilerRoutes :: Routes
     , compilerLogEnv :: LogEnv
     }
@@ -88,6 +89,10 @@ module Hexyll.Core.Compiler where
 
   instance HasStoreEnv CompilerRead where
     storeEnvL = providerEnvL . storeEnvL
+
+  instance HasUniverseEnv CompilerRead where
+    universeEnvL =
+      lens compilerUniverseEnv (\env uni -> env { compilerUniverseEnv = uni })
 
   instance HasLogEnv CompilerRead where
     logEnvL =
