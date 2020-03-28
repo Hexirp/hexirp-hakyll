@@ -31,6 +31,7 @@ module Hexyll.Core.Compiler.Internal where
   import Hexyll.Core.Configuration
   import Hexyll.Core.Identifier
   import Hexyll.Core.Routes
+  import Hexyll.Core.Dependencies
   import Hexyll.Core.Log
   import Hexyll.Core.LogEnv
   import Hexyll.Core.Store
@@ -127,12 +128,16 @@ module Hexyll.Core.Compiler.Internal where
       lens compilerLogEnv (\env lge -> env { compilerLogEnv = lge })
 
   data CompilerWrite = CompilerWrite
+    { compilerDependencies :: S.Set Dependency
+    , compilerCache :: S.Set Identifier
+    }
 
   instance Semigroup CompilerWrite where
-    CompilerWrite <> CompilerWrite = CompilerWrite
+    CompilerWrite d0 c0 <> CompilerWrite d1 c1 =
+      CompilerWrite (d0 <> d1) (c0 <> c1)
 
   instance Monoid CompilerWrite where
-    mempty = CompilerWrite
+    mempty = CompilerWrite mempty mempty
 
   newtype Compiler a = Compiler
     { unCompiler
