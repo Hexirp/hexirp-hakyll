@@ -19,14 +19,16 @@ module Hexyll.Core.Compiler.Internal where
 
   import Prelude
 
-  import Control.Monad.IO.Class         ( MonadIO (..) )
-  import Control.Monad.Trans.Class      ( MonadTrans (..) )
-  import Control.Monad.Trans.RWS.Strict ( RWST (..) )
-  import Control.Monad.Reader.Class     ( MonadReader (..) )
+  import Control.Monad.IO.Class     ( MonadIO (..) )
+  import Control.Monad.Trans.Class  ( MonadTrans (..) )
+  import Control.Monad.Trans.Reader ( ReaderT (..) )
+  import Control.Monad.Reader.Class ( MonadReader (..) )
 
   import Lens.Micro        ( lens )
 
   import qualified Data.Set as S
+
+  import Data.IORef ( IORef )
 
   import Hexyll.Core.Configuration
   import Hexyll.Core.Identifier
@@ -106,6 +108,7 @@ module Hexyll.Core.Compiler.Internal where
     , compilerUniverseEnv :: UniverseEnv
     , compilerRoutes :: Routes
     , compilerLogEnv :: LogEnv
+    , compilerWrite :: IORef CompilerWrite
     }
 
   instance HasConfiguration CompilerRead where
@@ -141,7 +144,7 @@ module Hexyll.Core.Compiler.Internal where
 
   newtype Compiler a = Compiler
     { unCompiler
-      :: RWST CompilerRead CompilerWrite () (Coroutine CompilerSuspend IO) a
+      :: ReaderT CompilerRead (Coroutine CompilerSuspend IO) a
     }
 
   instance Functor Compiler where
