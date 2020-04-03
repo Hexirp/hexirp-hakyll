@@ -9,7 +9,7 @@ module Hexyll.Core.RulesTest
 import           Data.IORef                     (IORef, newIORef, readIORef,
                                                  writeIORef)
 import qualified Data.Set                       as S
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.File
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.OldPattern

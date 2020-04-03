@@ -14,7 +14,7 @@ import           Test.Tasty.HUnit             (Assertion, assertBool, testCase,
 import           Data.Either                  (isLeft)
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.OldProvider

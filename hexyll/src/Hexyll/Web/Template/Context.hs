@@ -58,8 +58,8 @@ import           Data.Time.Clock               (UTCTime (..))
 import           Data.Time.Format              (formatTime)
 import qualified Data.Time.Format              as TF
 import           Data.Time.Locale.Compat       (TimeLocale, defaultTimeLocale)
-import           Hexyll.Core.Compiler
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.OldCompiler
+import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata

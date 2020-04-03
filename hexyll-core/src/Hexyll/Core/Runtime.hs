@@ -22,8 +22,8 @@ import           System.Exit                   (ExitCode (..))
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal
-import           Hexyll.Core.Compiler.Require
+import           Hexyll.Core.OldCompiler.Internal
+import           Hexyll.Core.OldCompiler.Require
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier hiding (toFilePath)

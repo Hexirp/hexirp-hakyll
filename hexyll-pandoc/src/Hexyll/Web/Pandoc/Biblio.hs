@@ -26,8 +26,8 @@ module Hexyll.Web.Pandoc.Biblio
 import           Control.Monad            (liftM, replicateM)
 import           Data.Binary              (Binary (..))
 import           Data.Typeable            (Typeable)
-import           Hexyll.Core.Compiler
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.OldCompiler
+import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.OldProvider

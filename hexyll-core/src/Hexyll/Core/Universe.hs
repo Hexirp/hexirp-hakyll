@@ -43,10 +43,13 @@ module Hexyll.Core.Universe where
   -- @since 0.1.0.0
   class Monad m => MonadUniverse m where
 
+    {-# MINIMAL getMatches | getAllIdentifier #-}
+
     -- | Get identifiers that matches the pattern.
     --
     -- @since 0.1.0.0
     getMatches :: Pattern -> m (S.Set Identifier)
+    getMatches p = S.filter (`match` p) <$> getAllIdentifier
 
     -- | Get all identifiers.
     --

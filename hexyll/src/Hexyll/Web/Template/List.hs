@@ -26,7 +26,7 @@ import           Data.Time.Locale.Compat     (defaultTimeLocale)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.Metadata

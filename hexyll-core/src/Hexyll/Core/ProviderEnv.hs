@@ -142,19 +142,20 @@ module Hexyll.Core.ProviderEnv
       tsn <- fmap M.fromList $ forM (S.toList ps) $ \p -> do
         t <- getModificationTime $ toFilePath $ unResource p
         return (p, t)
-      msl <- storeLoadDelay se newProviderEnv_key
-      tso <- case msl of
-        Nothing -> return M.empty
-        Just sl -> do
-          etso' <- runStoreLoad sl
-          case etso' of
-            Left e -> error $ "newProviderEnv: " ++ show e
-            Right tso' -> return $
-              let
-                coerce' :: M.Map Resource BinaryTime -> M.Map Resource UTCTime
-                coerce' = coerce
-              in
-                coerce' tso'
+      tso <- do
+        msl <- storeLoadDelay se newProviderEnv_key
+        case msl of
+          Nothing -> return M.empty
+          Just sl -> do
+            etso' <- runStoreLoad sl
+            case etso' of
+              Left e -> error $ "newProviderEnv: " ++ show e
+              Right tso' -> return $
+                let
+                  coerce' :: M.Map Resource BinaryTime -> M.Map Resource UTCTime
+                  coerce' = coerce
+                in
+                  coerce' tso'
       storeSave se newProviderEnv_key $ MkStoreValue $
         let
           coerce' :: M.Map Resource UTCTime -> M.Map Resource BinaryTime

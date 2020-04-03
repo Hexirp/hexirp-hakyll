@@ -12,7 +12,7 @@ import qualified Test.Tasty.HUnit       as H
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.UnixFilter

@@ -49,7 +49,7 @@ import           Data.Typeable                  (Typeable)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal  hiding ( Pattern, match )
+import           Hexyll.Core.OldCompiler.Internal  hiding ( Pattern, match )
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )

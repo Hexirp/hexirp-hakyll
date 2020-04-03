@@ -1,373 +1,182 @@
---------------------------------------------------------------------------------
--- | Internally used compiler module
-{-# LANGUAGE CPP                        #-}
-{-# LANGUAGE DeriveFunctor              #-}
-{-# LANGUAGE FlexibleInstances          #-}
-{-# LANGUAGE GADTs                      #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE MultiParamTypeClasses      #-}
-module Hexyll.Core.Compiler.Internal
-    ( -- * Types
-      Snapshot
-    , CompilerRead (..)
-    , CompilerWrite (..)
-    , CompilerErrors (..)
-    , CompilerResult (..)
-    , Compiler (..)
-    , runCompiler
+{-# OPTIONS_HADDOCK not-home #-}
+{-# OPTIONS_HADDOCK show-extensions #-}
 
-      -- * Core operations
-    , compilerResult
-    , compilerTell
-    , compilerAsk
-    , compilerUnsafeIO
+{-# LANGUAGE ExplicitForAll #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 
-      -- * Error operations
-    , compilerThrow
-    , compilerNoResult
-    , compilerCatch
-    , compilerTry
-    , compilerErrorMessages
+-- |
+-- Module:      Hexyll.Core.Compiler.Internal
+-- Copyright:   (c) 2019 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   internal
+-- Portability: non-portable (multi-parameter type classes)
+--
+-- This is an internal module for "Hexyll.Core.Compiler".
+--
+-- @since 0.1.0.0
+module Hexyll.Core.Compiler.Internal where
 
-      -- * Utilities
-    , compilerDebugEntries
-    , compilerTellDependenciesCache
-    , compilerTellCacheHits
+  import Prelude
 
-    , Pattern (..)
-    , match
-    ) where
+  import Control.Monad.IO.Class     ( MonadIO (..) )
+  import Control.Monad.Trans.Class  ( MonadTrans (..) )
+  import Control.Monad.Trans.Reader ( ReaderT (..) )
+  import Control.Monad.Reader.Class ( MonadReader (..) )
 
+  import Lens.Micro        ( lens )
 
---------------------------------------------------------------------------------
-import           Control.Applicative            (Alternative (..))
-import           Control.Exception              (SomeException, handle)
-import           Control.Monad                  (forM_)
-import           Control.Monad.Except           (MonadError (..))
-import           Data.List.NonEmpty             (NonEmpty (..))
-import qualified Data.List.NonEmpty             as NonEmpty
-import           Data.Set                       (Set)
-import qualified Data.Set                       as S
+  import qualified Data.Set as S
 
+  import Data.IORef ( IORef )
 
---------------------------------------------------------------------------------
-import           Hexyll.Core.Configuration
-import           Hexyll.Core.Dependencies
-import           Hexyll.Core.Identifier
-import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
-import qualified Hexyll.Core.Logger as Logger
-import           Hexyll.Core.Metadata           hiding ( Pattern, unPattern )
-import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
-import           Hexyll.Core.OldProvider
-import           Hexyll.Core.OldRoutes             hiding ( Pattern, unPattern, match )
-import           Hexyll.Core.OldStore
+  import Hexyll.Core.Configuration
+  import Hexyll.Core.Identifier
+  import Hexyll.Core.Routes
+  import Hexyll.Core.Dependencies
+  import Hexyll.Core.Log
+  import Hexyll.Core.LogEnv
+  import Hexyll.Core.Store
+  import Hexyll.Core.StoreEnv
+  import Hexyll.Core.Provider
+  import Hexyll.Core.ProviderEnv
+  import Hexyll.Core.Universe
+  import Hexyll.Core.UniverseEnv
 
-
-import Data.Typeable ( Typeable )
-import Data.String ( IsString (..) )
-
---------------------------------------------------------------------------------
--- | Whilst compiling an item, it possible to save multiple snapshots of it, and
--- not just the final result.
-type Snapshot = String
-
-
---------------------------------------------------------------------------------
--- | Environment in which a compiler runs
-data CompilerRead = CompilerRead
-    { -- | Main configuration
-      compilerConfig     :: Configuration
-    , -- | Underlying identifier
-      compilerUnderlying :: Identifier
-    , -- | Resource provider
-      compilerProvider   :: Provider
-    , -- | List of all known identifiers
-      compilerUniverse   :: Set Identifier
-    , -- | Site routes
-      compilerRoutes     :: Routes
-    , -- | Compiler store
-      compilerStore      :: Store
-    , -- | Logger
-      compilerLogger     :: Logger.Logger
+  -- | Coroutine monad. This monad can be suspended and resumed.
+  --
+  -- @since 0.1.0.0
+  newtype Coroutine s m a = Coroutine
+    { unCoroutine :: m (Either (s (Coroutine s m a)) a)
     }
 
+  -- | @since 0.1.0.0
+  instance (Functor s, Functor m) => Functor (Coroutine s m) where
+    fmap f = f0 where
+      f0 (Coroutine x) = Coroutine (fmap f2 x)
+      f2 (Left x     ) = Left (fmap f0 x)
+      f2 (Right x    ) = Right (f x)
 
---------------------------------------------------------------------------------
-data CompilerWrite = CompilerWrite
-    { compilerDependencies :: [Dependency]
-    , compilerCache        :: [Identifier]
-    , compilerCacheHits    :: Int
-    } deriving (Show)
+  -- | @since 0.1.0.0
+  instance (Functor s, Applicative m) => Applicative (Coroutine s m) where
+    pure x = Coroutine (pure (Right x))
+    x <*> y = f0 x y where
+      -- See https://github.com/ekmett/free/blob/7be30d7cd139a7f40a5e76cd3cb126534c239231/src/Control/Monad/Free.hs#L219-L225 .
+      -- That is the implementation of 'Functor f => Applicative (Free f)' in free-5.1.3. This implementation is based on it.
+      f0 :: forall s m a b. (Functor s, Applicative m) => Coroutine s m (a -> b) -> Coroutine s m a -> Coroutine s m b
+      f0 x0 y0 = Coroutine (f2 <$> unCoroutine x0 <*> unCoroutine y0)
+      f2 :: forall s m a b. (Functor s, Applicative m) => Either (s (Coroutine s m (a -> b))) (a -> b) -> Either (s (Coroutine s m a)) a -> Either (s (Coroutine s m b)) b
+      f2 (Left  x2)  y2        = Left (fmap (flip f0 (Coroutine (pure y2))) x2)
+      f2 (Right x2) (Left  y2) = Left (fmap (fmap x2) y2)
+      f2 (Right x2) (Right y2) = Right (x2 y2)
 
+  -- | @since 0.1.0.0
+  instance (Functor s, Monad m) => Monad (Coroutine s m) where
+    x >>= y = f0 x y where
+      f0 :: forall s m a b. (Functor s, Monad m) => Coroutine s m a -> (a -> Coroutine s m b) -> Coroutine s m b
+      f0 x0 y0 = Coroutine (unCoroutine x0 >>= flip f2 y0)
+      f2 :: forall s m a b. (Functor s, Monad m) => Either (s (Coroutine s m a)) a -> (a -> Coroutine s m b) -> m (Either (s (Coroutine s m b)) b)
+      f2 (Left  x2) y2 = pure (Left (fmap (flip f0 y2) x2))
+      f2 (Right x2) y2 = unCoroutine (y2 x2)
 
---------------------------------------------------------------------------------
-instance Semigroup CompilerWrite where
-    (<>) (CompilerWrite d1 i1 h1) (CompilerWrite d2 i2 h2) =
-        CompilerWrite (d1 ++ d2) (i1 ++ i2) (h1 + h2)
+  -- | @since 0.1.0.0
+  instance Functor s => MonadTrans (Coroutine s) where
+    lift x = Coroutine (fmap Right x)
 
-instance Monoid CompilerWrite where
-    mempty  = CompilerWrite [] [] 0
-    mappend = (<>)
+  -- | @since 0.1.0.0
+  instance (Functor s, MonadIO m) => MonadIO (Coroutine s m) where
+    liftIO x = Coroutine (fmap Right (liftIO x))
 
+  type Snapshot = String
 
---------------------------------------------------------------------------------
--- | Distinguishes reasons in a 'CompilerError'
-data CompilerErrors a
-    -- | One or more exceptions occured during compilation
-    = CompilationFailure (NonEmpty a)
-    -- | Absence of any result, most notably in template contexts.  May still
-    -- have error messages.
-    | CompilationNoResult [a]
-    deriving Functor
+  data CompilerErrors a = CompilerErrors
 
-
--- | Unwrap a `CompilerErrors`
-compilerErrorMessages :: CompilerErrors a -> [a]
-compilerErrorMessages (CompilationFailure x)  = NonEmpty.toList x
-compilerErrorMessages (CompilationNoResult x) = x
-
-
---------------------------------------------------------------------------------
--- | An intermediate result of a compilation step
-data CompilerResult a
-    = CompilerDone a CompilerWrite
-    | CompilerSnapshot Snapshot (Compiler a)
-    | CompilerRequire (Identifier, Snapshot) (Compiler a)
+  data CompilerSuspend a
+    = CompilerSnapshot Snapshot a
+    | CompilerRequire Identifier Snapshot a
     | CompilerError (CompilerErrors String)
 
+  instance Functor CompilerSuspend where
+    fmap f (CompilerSnapshot s x) = CompilerSnapshot s (f x)
+    fmap f (CompilerRequire i s x) = CompilerRequire i s (f x)
+    fmap f (CompilerError e) = CompilerError e
 
---------------------------------------------------------------------------------
--- | A monad which lets you compile items and takes care of dependency tracking
--- for you.
-newtype Compiler a = Compiler
-    { unCompiler :: CompilerRead -> IO (CompilerResult a)
+  data CompilerRead = CompilerRead
+    { compilerConfig :: !Configuration
+    , compilerUnderlying :: !Identifier
+    , compilerProviderEnv :: !ProviderEnv
+    , compilerUniverseEnv :: !UniverseEnv
+    , compilerRoutes :: !Routes
+    , compilerLogEnv :: !LogEnv
+    , compilerWrite :: !(IORef CompilerWrite)
     }
 
+  instance HasConfiguration CompilerRead where
+    configurationL =
+      lens compilerConfig (\env config -> env { compilerConfig = config })
 
---------------------------------------------------------------------------------
-instance Functor Compiler where
-    fmap f (Compiler c) = Compiler $ \r -> do
-        res <- c r
-        return $ case res of
-            CompilerDone x w      -> CompilerDone (f x) w
-            CompilerSnapshot s c' -> CompilerSnapshot s (fmap f c')
-            CompilerRequire i c'  -> CompilerRequire i (fmap f c')
-            CompilerError e       -> CompilerError e
-    {-# INLINE fmap #-}
+  instance HasProviderEnv CompilerRead where
+    providerEnvL =
+      lens compilerProviderEnv (\env prv -> env { compilerProviderEnv = prv })
 
+  instance HasStoreEnv CompilerRead where
+    storeEnvL = providerEnvL . storeEnvL
 
---------------------------------------------------------------------------------
-instance Monad Compiler where
-    return x = compilerResult $ CompilerDone x mempty
-    {-# INLINE return #-}
+  instance HasUniverseEnv CompilerRead where
+    universeEnvL =
+      lens compilerUniverseEnv (\env uni -> env { compilerUniverseEnv = uni })
 
-    Compiler c >>= f = Compiler $ \r -> do
-        res <- c r
-        case res of
-            CompilerDone x w    -> do
-                res' <- unCompiler (f x) r
-                return $ case res' of
-                    CompilerDone y w'     -> CompilerDone y (w `mappend` w')
-                    CompilerSnapshot s c' -> CompilerSnapshot s $ do
-                        compilerTell w  -- Save dependencies!
-                        c'
-                    CompilerRequire i c'  -> CompilerRequire i $ do
-                        compilerTell w  -- Save dependencies!
-                        c'
-                    CompilerError e       -> CompilerError e
+  instance HasLogEnv CompilerRead where
+    logEnvL =
+      lens compilerLogEnv (\env lge -> env { compilerLogEnv = lge })
 
-            CompilerSnapshot s c' -> return $ CompilerSnapshot s (c' >>= f)
-            CompilerRequire i c'  -> return $ CompilerRequire i (c' >>= f)
-            CompilerError e       -> return $ CompilerError e
-    {-# INLINE (>>=) #-}
+  data CompilerWrite = CompilerWrite
+    { compilerDependencies :: !(S.Set Dependency)
+    , compilerCache :: !(S.Set Identifier)
+    }
 
-    fail = compilerThrow . return
-    {-# INLINE fail #-}
+  instance Semigroup CompilerWrite where
+    CompilerWrite d0 c0 <> CompilerWrite d1 c1 =
+      CompilerWrite (d0 <> d1) (c0 <> c1)
 
+  instance Monoid CompilerWrite where
+    mempty = CompilerWrite mempty mempty
 
---------------------------------------------------------------------------------
-instance Applicative Compiler where
-    pure x = return x
-    {-# INLINE pure #-}
+  newtype Compiler a = Compiler
+    { unCompiler
+      :: ReaderT CompilerRead (Coroutine CompilerSuspend IO) a
+    }
 
-    f <*> x = f >>= \f' -> fmap f' x
-    {-# INLINE (<*>) #-}
+  instance Functor Compiler where
+    fmap f (Compiler x) = Compiler (fmap f x)
 
+  instance Applicative Compiler where
+    pure x = Compiler (pure x)
+    x <*> y = Compiler (unCompiler x <*> unCompiler y)
 
---------------------------------------------------------------------------------
-instance MonadUniverse Compiler where
-    getMatches (Meta.Pattern p) = compilerGetMatches (Pattern p)
+  instance Monad Compiler where
+    x >>= y = Compiler (unCompiler x >>= \x' -> unCompiler (y x'))
 
--- | Access provided metadata from anywhere
-instance MonadMetadata Compiler where
-    getMetadata = compilerGetMetadata
+  instance MonadIO Compiler where
+    liftIO x = Compiler (liftIO x)
 
+  instance MonadReader CompilerRead Compiler where
+    ask = Compiler ask
+    local f (Compiler x) = Compiler (local f x)
 
---------------------------------------------------------------------------------
--- | Compilation may fail with multiple error messages.
--- 'catchError' handles errors from 'throwError', 'fail' and 'Hexyll.Core.Compiler.noResult'
-instance MonadError [String] Compiler where
-    throwError = compilerThrow
-    catchError c = compilerCatch c . (. compilerErrorMessages)
+  instance MonadLog Compiler where
+    logGeneric = logGenericE
 
+  instance MonadStore Compiler where
+    save = saveE
+    loadDelay = loadDelayE
 
---------------------------------------------------------------------------------
--- | Like 'unCompiler' but treating IO exceptions as 'CompilerError's
-runCompiler :: Compiler a -> CompilerRead -> IO (CompilerResult a)
-runCompiler compiler read' = handle handler $ unCompiler compiler read'
-  where
-    handler :: SomeException -> IO (CompilerResult a)
-    handler e = return $ CompilerError $ CompilationFailure $ show e :| []
+  instance MonadProvider Compiler where
+    getAllPath = getAllPathE
+    getMTimeDelay = getMTimeDelayE
+    getBodyDelay = getBodyDelayE
 
-
---------------------------------------------------------------------------------
--- | Trying alternative compilers if the first fails, regardless whether through
--- 'fail', 'throwError' or 'Hexyll.Core.Compiler.noResult'.
--- Aggregates error messages if all fail.
-instance Alternative Compiler where
-    empty   = compilerNoResult []
-    x <|> y = x `compilerCatch` (\rx -> y `compilerCatch` (\ry ->
-        case (rx, ry) of
-          (CompilationFailure xs,  CompilationFailure ys)  ->
-            compilerThrow $ NonEmpty.toList xs ++ NonEmpty.toList ys
-          (CompilationFailure xs,  CompilationNoResult ys) ->
-            debug ys >> compilerThrow (NonEmpty.toList xs)
-          (CompilationNoResult xs, CompilationFailure ys)  ->
-            debug xs >> compilerThrow (NonEmpty.toList ys)
-          (CompilationNoResult xs, CompilationNoResult ys) -> compilerNoResult $ xs ++ ys
-        ))
-      where
-        debug = compilerDebugEntries "Hexyll.Core.Compiler.Internal: Alternative fail suppressed"
-    {-# INLINE (<|>) #-}
-
-
---------------------------------------------------------------------------------
--- | Put the result back in a compiler
-compilerResult :: CompilerResult a -> Compiler a
-compilerResult x = Compiler $ \_ -> return x
-{-# INLINE compilerResult #-}
-
-
---------------------------------------------------------------------------------
--- | Get the current environment
-compilerAsk :: Compiler CompilerRead
-compilerAsk = Compiler $ \r -> return $ CompilerDone r mempty
-{-# INLINE compilerAsk #-}
-
-
---------------------------------------------------------------------------------
--- | Put a 'CompilerWrite'
-compilerTell :: CompilerWrite -> Compiler ()
-compilerTell = compilerResult . CompilerDone ()
-{-# INLINE compilerTell #-}
-
-
---------------------------------------------------------------------------------
--- | Run an IO computation without dependencies in a Compiler
-compilerUnsafeIO :: IO a -> Compiler a
-compilerUnsafeIO io = Compiler $ \_ -> do
-    x <- io
-    return $ CompilerDone x mempty
-{-# INLINE compilerUnsafeIO #-}
-
-
---------------------------------------------------------------------------------
--- | Throw errors in the 'Compiler'.
---
--- If no messages are given, this is considered a 'CompilationNoResult' error.
--- Otherwise, it is treated as a proper compilation failure.
-compilerThrow :: [String] -> Compiler a
-compilerThrow = compilerResult . CompilerError .
-    maybe (CompilationNoResult []) CompilationFailure .
-    NonEmpty.nonEmpty
-
--- | Put a 'CompilerError' with  multiple messages as 'CompilationNoResult'
-compilerNoResult :: [String] -> Compiler a
-compilerNoResult = compilerResult . CompilerError . CompilationNoResult
-
-
---------------------------------------------------------------------------------
--- | Allows to distinguish 'CompilerError's and branch on them with 'Either'
---
--- prop> compilerTry = (`compilerCatch` return . Left) . fmap Right
-compilerTry :: Compiler a -> Compiler (Either (CompilerErrors String) a)
-compilerTry (Compiler x) = Compiler $ \r -> do
-    res <- x r
-    case res of
-        CompilerDone res' w  -> return (CompilerDone (Right res') w)
-        CompilerSnapshot s c -> return (CompilerSnapshot s (compilerTry c))
-        CompilerRequire i c  -> return (CompilerRequire i (compilerTry c))
-        CompilerError e      -> return (CompilerDone (Left e) mempty)
-{-# INLINE compilerTry #-}
-
-
---------------------------------------------------------------------------------
--- | Allows you to recover from 'CompilerError's.
--- Uses the same parameter order as 'catchError' so that it can be used infix.
---
--- prop> c `compilerCatch` f = compilerTry c >>= either f return
-compilerCatch :: Compiler a -> (CompilerErrors String -> Compiler a) -> Compiler a
-compilerCatch (Compiler x) f = Compiler $ \r -> do
-    res <- x r
-    case res of
-        CompilerDone res' w  -> return (CompilerDone res' w)
-        CompilerSnapshot s c -> return (CompilerSnapshot s (compilerCatch c f))
-        CompilerRequire i c  -> return (CompilerRequire i (compilerCatch c f))
-        CompilerError e      -> unCompiler (f e) r
-{-# INLINE compilerCatch #-}
-
-
---------------------------------------------------------------------------------
-compilerDebugLog :: [String] -> Compiler ()
-compilerDebugLog ms = do
-  logger <- compilerLogger <$> compilerAsk
-  compilerUnsafeIO $ forM_ ms $ Logger.debug logger
-
---------------------------------------------------------------------------------
--- | Pass a list of messages with a heading to the debug logger
-compilerDebugEntries :: String -> [String] -> Compiler ()
-compilerDebugEntries msg = compilerDebugLog . (msg:) . map indent
-  where
-    indent = unlines . map ("    "++) . lines
-
-
---------------------------------------------------------------------------------
-compilerTellDependenciesCache :: [Dependency] -> [Identifier] -> Compiler ()
-compilerTellDependenciesCache ds cs = do
-  compilerDebugLog $ map (\d ->
-      "Hexyll.Core.Compiler.Internal: Adding dependency: " ++ show d) ds
-  compilerTell mempty {compilerDependencies = ds, compilerCache = cs}
-{-# INLINE compilerTellDependenciesCache #-}
-
-
---------------------------------------------------------------------------------
-compilerTellCacheHits :: Int -> Compiler ()
-compilerTellCacheHits ch = compilerTell mempty {compilerCacheHits = ch}
-{-# INLINE compilerTellCacheHits #-}
-
-
---------------------------------------------------------------------------------
-compilerGetMetadata :: Identifier -> Compiler Metadata
-compilerGetMetadata identifier = do
-    provider <- compilerProvider <$> compilerAsk
-    compilerTellDependenciesCache [Dependency $ fromIdentifier identifier] [identifier]
-    compilerUnsafeIO $ resourceMetadata provider identifier
-
-newtype Pattern = Pattern
-  { unPattern :: PatternExpr
-  } deriving ( Eq, Ord, Show, Typeable )
-
-match :: Identifier -> Pattern -> Bool
-match i (Pattern p) = matchExpr i p
-
-instance IsString Pattern where
-  fromString s = Pattern $ fromString s
-
---------------------------------------------------------------------------------
-compilerGetMatches :: Pattern -> Compiler [Identifier]
-compilerGetMatches pattern = do
-    universe <- compilerUniverse <$> compilerAsk
-    let matching = filter (`match` pattern) $ S.toList universe
-        set'     = S.fromList matching
-    compilerTellDependenciesCache [Dependency $ unPattern pattern] matching
-    return matching
+  instance MonadUniverse Compiler where
+    getMatches = getMatchesE
+    getAllIdentifier = getAllIdentifierE
+    countUniverse = countUniverseE

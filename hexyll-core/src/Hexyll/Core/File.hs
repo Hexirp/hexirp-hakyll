@@ -23,8 +23,8 @@ import           System.Random                 (randomIO)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.OldCompiler
+import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Item
 import           Hexyll.Core.OldProvider

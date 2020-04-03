@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-module Hexyll.Core.Compiler.Require
+module Hexyll.Core.OldCompiler.Require
     ( Snapshot
     , save
     , saveSnapshot
@@ -20,7 +20,7 @@ import           Data.Typeable
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler.Internal
+import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
@@ -72,12 +72,12 @@ loadSnapshot id' snapshot = do
             Store.Found x       -> return $ Item id' x
   where
     notFound =
-        "Hexyll.Core.Compiler.Require.load: " ++ show id' ++
+        "Hexyll.Core.OldCompiler.Require.load: " ++ show id' ++
         " (snapshot " ++ snapshot ++ ") was not found in the cache, " ++
         "the cache might be corrupted or " ++
         "the item you are referring to might not exist"
     wrongType e r =
-        "Hexyll.Core.Compiler.Require.load: " ++ show id' ++
+        "Hexyll.Core.OldCompiler.Require.load: " ++ show id' ++
         " (snapshot " ++ snapshot ++ ") was found in the cache, " ++
         "but does not have the right type: expected " ++ show e ++
         " but got " ++ show r
@@ -116,7 +116,7 @@ loadAllSnapshots (Pattern pattern) snapshot = do
 --------------------------------------------------------------------------------
 key :: Identifier -> String -> [String]
 key identifier snapshot =
-    ["Hexyll.Core.Compiler.Require", show identifier, snapshot]
+    ["Hexyll.Core.OldCompiler.Require", show identifier, snapshot]
 
 
 --------------------------------------------------------------------------------

@@ -22,7 +22,7 @@ import           System.IO               (Handle, hClose, hFlush, hGetContents,
 import           System.Process
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Compiler
+import           Hexyll.Core.OldCompiler
 
 
 --------------------------------------------------------------------------------
