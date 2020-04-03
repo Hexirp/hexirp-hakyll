@@ -102,13 +102,13 @@ module Hexyll.Core.Compiler.Internal where
     fmap f (CompilerError e) = CompilerError e
 
   data CompilerRead = CompilerRead
-    { compilerConfig :: Configuration
-    , compilerUnderlying :: Identifier
-    , compilerProviderEnv :: ProviderEnv
-    , compilerUniverseEnv :: UniverseEnv
-    , compilerRoutes :: Routes
-    , compilerLogEnv :: LogEnv
-    , compilerWrite :: IORef CompilerWrite
+    { compilerConfig :: !Configuration
+    , compilerUnderlying :: !Identifier
+    , compilerProviderEnv :: !ProviderEnv
+    , compilerUniverseEnv :: !UniverseEnv
+    , compilerRoutes :: !Routes
+    , compilerLogEnv :: !LogEnv
+    , compilerWrite :: !(IORef CompilerWrite)
     }
 
   instance HasConfiguration CompilerRead where
@@ -131,8 +131,8 @@ module Hexyll.Core.Compiler.Internal where
       lens compilerLogEnv (\env lge -> env { compilerLogEnv = lge })
 
   data CompilerWrite = CompilerWrite
-    { compilerDependencies :: S.Set Dependency
-    , compilerCache :: S.Set Identifier
+    { compilerDependencies :: !(S.Set Dependency)
+    , compilerCache :: !(S.Set Identifier)
     }
 
   instance Semigroup CompilerWrite where
