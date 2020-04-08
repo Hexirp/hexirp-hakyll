@@ -6,7 +6,7 @@
 
 -- |
 -- Module:      Hexyll.Core.Compiler.Internal
--- Copyright:   (c) 2019 Hexirp
+-- Copyright:   (c) 2020 Hexirp
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
 -- Stability:   internal
