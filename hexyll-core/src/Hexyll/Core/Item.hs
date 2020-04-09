@@ -40,5 +40,8 @@ module Hexyll.Core.Item where
       x <- get
       return $ Item i x
 
-  itemSetBody :: a -> Item b -> Item a
-  itemSetBody x (Item i _) = Item i x
+  -- | Set an item body.
+  --
+  -- @since 0.1.0.0
+  setItemBody :: a -> Item b -> Item a
+  setItemBody x (Item i _) = Item i x

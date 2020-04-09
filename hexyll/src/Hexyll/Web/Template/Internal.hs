@@ -114,7 +114,7 @@ applyTemplate :: Template                -- ^ Template
               -> Compiler (Item String)  -- ^ Resulting item
 applyTemplate tpl context item = do
     body <- applyTemplate' (tplElements tpl) context item `catchError` handler
-    return $ itemSetBody body item
+    return $ setItemBody body item
   where
     tplName = tplOrigin tpl
     itemName = show $ itemIdentifier item
