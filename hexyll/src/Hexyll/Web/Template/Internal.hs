@@ -95,7 +95,7 @@ templateBodyCompiler :: Compiler (Item Template)
 templateBodyCompiler = cached "Hexyll.Web.Template.templateBodyCompiler" $ do
     item <- getResourceBody
     file <- getUnderlying
-    withItemBody (compileTemplateFile file) item
+    traverse (compileTemplateFile file) item
 
 --------------------------------------------------------------------------------
 -- | Read complete file contents as a template
@@ -103,7 +103,7 @@ templateCompiler :: Compiler (Item Template)
 templateCompiler = cached "Hexyll.Web.Template.templateCompiler" $ do
     item <- getResourceString
     file <- getUnderlying
-    withItemBody (compileTemplateFile file) item
+    traverse (compileTemplateFile file) item
 
 
 --------------------------------------------------------------------------------

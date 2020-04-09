@@ -123,7 +123,7 @@ cleanTestEnv = do
 -- | like 'Hexyll.Web.Pandoc.renderPandoc'
 -- | but allowing to test without the @usePandoc@ flag
 renderParagraphs :: Item String -> Compiler (Item String)
-renderParagraphs = withItemBody (return
+renderParagraphs = traverse (return
                        . intercalate "\n" -- no trailing line
                        . map (("<p>"++) . (++"</p>"))
                        . lines)
