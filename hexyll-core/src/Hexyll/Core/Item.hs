@@ -1,54 +1,36 @@
---------------------------------------------------------------------------------
--- | An item is a combination of some content and its 'Identifier'. This way, we
--- can still use the 'Identifier' to access metadata.
-{-# LANGUAGE DeriveDataTypeable #-}
-module Hexyll.Core.Item
-    ( Item (..)
-    , itemSetBody
-    ) where
+module Hexyll.Core.Item where
 
+  import Prelude
 
---------------------------------------------------------------------------------
-import           Data.Binary                   (Binary (..))
-import           Data.Foldable                 (Foldable (..))
-import           Data.Typeable                 (Typeable)
-import           Prelude                       hiding (foldr)
+  import Data.Typeable ( Typeable )
 
+  import Data.Binary ( Binary (..) )
 
---------------------------------------------------------------------------------
-import           Hexyll.Core.Identifier
+  import Hexyll.Core.Identifier
 
+  -- | An item is a combination of some content and its 'Identifier'.
+  data Item a = Item
+    { itemIdentifier :: !Identifier
+    , itemBody       :: !a
+    } deriving (Eqm Ord, Show, Typeable)
 
---------------------------------------------------------------------------------
-data Item a = Item
-    { itemIdentifier :: Identifier
-    , itemBody       :: a
-    } deriving (Show, Typeable)
-
-
---------------------------------------------------------------------------------
-instance Functor Item where
+  instance Functor Item where
     fmap f (Item i x) = Item i (f x)
 
-
---------------------------------------------------------------------------------
-instance Foldable Item where
+  instance Foldable Item where
     foldr f z (Item _ x) = f x z
 
-
---------------------------------------------------------------------------------
-instance Traversable Item where
+  instance Traversable Item where
     traverse f (Item i x) = Item i <$> f x
 
+  instance Binary a => Binary (Item a) where
+    put (Item i x) = do
+      put i
+      put x
+    get = do
+      i <- get
+      x <- get
+      return $ Item i x
 
---------------------------------------------------------------------------------
-instance Binary a => Binary (Item a) where
-    put (Item i x) = put i >> put x
-    get            = Item <$> get <*> get
-
-
---------------------------------------------------------------------------------
-itemSetBody :: a -> Item b -> Item a
-itemSetBody x (Item i _) = Item i x
-
-
+  itemSetBody :: a -> Item b -> Item a
+  itemSetBody x (Item i _) = Item i x
