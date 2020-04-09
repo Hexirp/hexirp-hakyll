@@ -12,7 +12,7 @@ module Hexyll.Core.Item where
   data Item a = Item
     { itemIdentifier :: !Identifier
     , itemBody       :: !a
-    } deriving (Eqm Ord, Show, Typeable)
+    } deriving (Eq, Ord, Show, Typeable)
 
   instance Functor Item where
     fmap f (Item i x) = Item i (f x)
