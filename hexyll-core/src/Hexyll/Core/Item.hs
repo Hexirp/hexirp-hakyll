@@ -17,7 +17,6 @@ import           Prelude                       hiding (foldr)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Identifier
 
 
@@ -54,10 +53,3 @@ itemSetBody :: a -> Item b -> Item a
 itemSetBody x (Item i _) = Item i x
 
 
---------------------------------------------------------------------------------
--- | Perform a compiler action on the item body. This is the same as 'traverse',
--- but looks less intimidating.
---
--- > withItemBody = traverse
-withItemBody :: (a -> Compiler b) -> Item a -> Compiler (Item b)
-withItemBody = traverse
