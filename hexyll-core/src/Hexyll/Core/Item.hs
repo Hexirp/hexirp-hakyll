@@ -5,7 +5,6 @@
 module Hexyll.Core.Item
     ( Item (..)
     , itemSetBody
-    , withItemBody
     ) where
 
 
