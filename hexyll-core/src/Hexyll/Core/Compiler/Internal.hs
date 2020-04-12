@@ -19,6 +19,8 @@ module Hexyll.Core.Compiler.Internal where
 
   import Prelude
 
+  import Data.Typeable ( Typeable )
+
   import Control.Monad.IO.Class     ( MonadIO (..) )
   import Control.Monad.Trans.Class  ( MonadTrans (..) )
   import Control.Monad.Trans.Reader ( ReaderT (..) )
@@ -87,18 +89,24 @@ module Hexyll.Core.Compiler.Internal where
   instance (Functor s, MonadIO m) => MonadIO (Coroutine s m) where
     liftIO x = Coroutine (fmap Right (liftIO x))
 
-  type Snapshot = String
+  newtype Phase = Phase { unPhase :: String }
+    deriving (Eq, Ord, Show, Typeable)
+
+  data PassageMarker = PassageMarker
+    { pasMrkIdent :: Identifier
+    , pasMrkPhase :: Phase
+    } deriving (Eq, Ord, Show, Typeable)
 
   data CompilerErrors a = CompilerErrors
 
   data CompilerSuspend a
-    = CompilerSnapshot Snapshot a
-    | CompilerRequire Identifier Snapshot a
+    = CompilerPassage Phase a
+    | CompilerRequire PassageMarker a
     | CompilerError (CompilerErrors String)
 
   instance Functor CompilerSuspend where
-    fmap f (CompilerSnapshot s x) = CompilerSnapshot s (f x)
-    fmap f (CompilerRequire i s x) = CompilerRequire i s (f x)
+    fmap f (CompilerPassage ph x) = CompilerPassage ph (f x)
+    fmap f (CompilerRequire pm x) = CompilerRequire pm (f x)
     fmap f (CompilerError e) = CompilerError e
 
   data CompilerRead = CompilerRead
