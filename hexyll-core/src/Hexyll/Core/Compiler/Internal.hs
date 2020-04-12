@@ -89,9 +89,19 @@ module Hexyll.Core.Compiler.Internal where
   instance (Functor s, MonadIO m) => MonadIO (Coroutine s m) where
     liftIO x = Coroutine (fmap Right (liftIO x))
 
+  -- | 'Phase' is compilation phases.
+  --
+  -- You can set compilation phases. You can build a 'Compiler' freely.
+  --
+  -- @since 0.1.0.0
   newtype Phase = Phase { unPhase :: String }
     deriving (Eq, Ord, Show, Typeable)
 
+  -- | 'PassageMarker' is passage markers.
+  --
+  -- You can check if the compilation passed the phase.
+  --
+  -- @since 0.1.0.0
   data PassageMarker = PassageMarker
     { pasMrkIdent :: Identifier
     , pasMrkPhase :: Phase
