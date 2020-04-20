@@ -107,17 +107,13 @@ module Hexyll.Core.Compiler.Internal where
     , pasMrkPhase :: Phase
     } deriving (Eq, Ord, Show, Typeable)
 
-  data CompilerErrors a = CompilerErrors
-
   data CompilerSuspend a
     = CompilerPassage Phase a
     | CompilerRequire PassageMarker a
-    | CompilerError (CompilerErrors String)
 
   instance Functor CompilerSuspend where
     fmap f (CompilerPassage ph x) = CompilerPassage ph (f x)
     fmap f (CompilerRequire pm x) = CompilerRequire pm (f x)
-    fmap f (CompilerError e) = CompilerError e
 
   data CompilerRead = CompilerRead
     { compilerConfig :: !Configuration
