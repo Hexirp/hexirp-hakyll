@@ -107,14 +107,22 @@ module Hexyll.Core.Compiler.Internal where
     , pasMrkPhase :: Phase
     } deriving (Eq, Ord, Show, Typeable)
 
+  -- | 'CompilerSuspend' is the effect of 'Compiler'.
+  --
+  -- 'CompilerPassage' is to send a message that passed the phase.
+  -- 'CompilerRequire' is to wait until the desired message is sent.
+  --
+  -- @since 0.1.0.0
   data CompilerSuspend a
     = CompilerPassage Phase a
     | CompilerRequire PassageMarker a
 
+  -- | @since 0.1.0.0
   instance Functor CompilerSuspend where
     fmap f (CompilerPassage ph x) = CompilerPassage ph (f x)
     fmap f (CompilerRequire pm x) = CompilerRequire pm (f x)
 
+  -- | @since 0.1.0.0
   data CompilerRead = CompilerRead
     { compilerConfig :: !Configuration
     , compilerUnderlying :: !Identifier
@@ -125,71 +133,93 @@ module Hexyll.Core.Compiler.Internal where
     , compilerWrite :: !(IORef CompilerWrite)
     }
 
+  -- | @since 0.1.0.0
   instance HasConfiguration CompilerRead where
     configurationL =
       lens compilerConfig (\env config -> env { compilerConfig = config })
 
+  -- | @since 0.1.0.0
   instance HasProviderEnv CompilerRead where
     providerEnvL =
       lens compilerProviderEnv (\env prv -> env { compilerProviderEnv = prv })
 
+  -- | @since 0.1.0.0
   instance HasStoreEnv CompilerRead where
     storeEnvL = providerEnvL . storeEnvL
 
+  -- | @since 0.1.0.0
   instance HasUniverseEnv CompilerRead where
     universeEnvL =
       lens compilerUniverseEnv (\env uni -> env { compilerUniverseEnv = uni })
 
+  -- | @since 0.1.0.0
   instance HasLogEnv CompilerRead where
     logEnvL =
       lens compilerLogEnv (\env lge -> env { compilerLogEnv = lge })
 
+  -- | 'CompilerWrite' is the information that the compiler must keep.
+  --
+  -- @since 0.1.0.0
   data CompilerWrite = CompilerWrite
     { compilerDependencies :: !(S.Set Dependency)
     , compilerCache :: !(S.Set Identifier)
     }
 
+  -- | @since 0.1.0.0
   instance Semigroup CompilerWrite where
     CompilerWrite d0 c0 <> CompilerWrite d1 c1 =
       CompilerWrite (d0 <> d1) (c0 <> c1)
 
+  -- | @since 0.1.0.0
   instance Monoid CompilerWrite where
     mempty = CompilerWrite mempty mempty
 
+  -- | The 'Compiler' type.
+  --
+  -- @since 0.1.0.0
   newtype Compiler a = Compiler
     { unCompiler
       :: ReaderT CompilerRead (Coroutine CompilerSuspend IO) a
     }
 
+  -- | @since 0.1.0.0
   instance Functor Compiler where
     fmap f (Compiler x) = Compiler (fmap f x)
 
+  -- | @since 0.1.0.0
   instance Applicative Compiler where
     pure x = Compiler (pure x)
     x <*> y = Compiler (unCompiler x <*> unCompiler y)
 
+  -- | @since 0.1.0.0
   instance Monad Compiler where
     x >>= y = Compiler (unCompiler x >>= \x' -> unCompiler (y x'))
 
+  -- | @since 0.1.0.0
   instance MonadIO Compiler where
     liftIO x = Compiler (liftIO x)
 
+  -- | @since 0.1.0.0
   instance MonadReader CompilerRead Compiler where
     ask = Compiler ask
     local f (Compiler x) = Compiler (local f x)
 
+  -- | @since 0.1.0.0
   instance MonadLog Compiler where
     logGeneric = logGenericE
 
+  -- | @since 0.1.0.0
   instance MonadStore Compiler where
     save = saveE
     loadDelay = loadDelayE
 
+  -- | @since 0.1.0.0
   instance MonadProvider Compiler where
     getAllPath = getAllPathE
     getMTimeDelay = getMTimeDelayE
     getBodyDelay = getBodyDelayE
 
+  -- | @since 0.1.0.0
   instance MonadUniverse Compiler where
     getMatches = getMatchesE
     getAllIdentifier = getAllIdentifierE
