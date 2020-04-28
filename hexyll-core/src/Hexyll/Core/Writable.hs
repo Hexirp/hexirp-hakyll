@@ -15,5 +15,7 @@ module Hexyll.Core.Writable where
 
   import Prelude
 
+  import System.IO (Handle)
+
   class Writable a where
     write :: Handle -> a -> IO ()
