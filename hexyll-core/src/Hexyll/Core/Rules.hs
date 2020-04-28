@@ -60,7 +60,7 @@ import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )
 import           Hexyll.Core.OldRoutes             hiding ( Pattern, match )
 import qualified Hexyll.Core.OldRoutes as Route    ( Pattern (..) )
 import           Hexyll.Core.Rules.Internal
-import           Hexyll.Core.Writable
+import           Hexyll.Core.OldWritable
 
 
 --------------------------------------------------------------------------------

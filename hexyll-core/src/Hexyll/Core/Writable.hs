@@ -1,56 +1,61 @@
---------------------------------------------------------------------------------
--- | Describes writable items; items that can be saved to the disk
-{-# LANGUAGE FlexibleInstances    #-}
-{-# LANGUAGE TypeSynonymInstances #-}
-module Hexyll.Core.Writable
-    ( Writable (..)
-    ) where
+{-# OPTIONS_HADDOCK show-extensions #-}
 
+{-# LANGUAGE FlexibleInstances #-}
 
---------------------------------------------------------------------------------
-import qualified Data.ByteString                 as SB
-import qualified Data.ByteString.Lazy            as LB
-import           Data.Word                       (Word8)
-import           Text.Blaze.Html                 (Html)
-import           Text.Blaze.Html.Renderer.String (renderHtml)
+-- |
+-- Module:      Hexyll.Core.Writable
+-- Copyright:   (c) 2020 Hexirp
+-- License:     Apache-2.0
+-- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
+-- Stability:   stable
+-- Portability: non-portable (ghc-extensions: FlexibleInstances)
+--
+-- This module provides a type class 'Writable'.
+--
+-- @since 0.1.0.0
+module Hexyll.Core.Writable where
 
+  import Prelude
 
---------------------------------------------------------------------------------
-import           Hexyll.Core.Item
+  import Data.Word (Word8)
 
+  import System.IO (Handle, hPutStr)
 
---------------------------------------------------------------------------------
--- | Describes an item that can be saved to the disk
-class Writable a where
-    -- | Save an item to the given filepath
-    write :: FilePath -> Item a -> IO ()
+  import qualified Data.ByteString as BS
+  import qualified Data.ByteString.Lazy as BL
+  import qualified Data.ByteString.Builder as BB
 
+  -- | A type class for writable and printable types.
+  --
+  -- @since 0.1.0.0
+  class Writable a where
+    -- | Write a value.
+    --
+    -- It is implemented by 'hPutStr', 'BS.hPut', etc.
+    --
+    -- @since 0.1.0.0
+    write :: Handle -> a -> IO ()
 
---------------------------------------------------------------------------------
-instance Writable () where
+  -- | @since 0.1.0.0
+  instance Writable () where
     write _ _ = return ()
 
+  -- | @since 0.1.0.0
+  instance Writable String where
+    write h s = hPutStr h s
 
---------------------------------------------------------------------------------
-instance Writable [Char] where
-    write p = writeFile p . itemBody
+  -- | @since 0.1.0.0
+  instance Writable BS.ByteString where
+    write h s = BS.hPut h s
 
+  -- | @since 0.1.0.0
+  instance Writable BL.ByteString where
+    write h s = BL.hPut h s
 
---------------------------------------------------------------------------------
-instance Writable SB.ByteString where
-    write p = SB.writeFile p . itemBody
+  -- | @since 0.1.0.0
+  instance Writable BB.Builder where
+    write h s = BB.hPutBuilder h s
 
-
---------------------------------------------------------------------------------
-instance Writable LB.ByteString where
-    write p = LB.writeFile p . itemBody
-
-
---------------------------------------------------------------------------------
-instance Writable [Word8] where
-    write p = write p . fmap SB.pack
-
-
---------------------------------------------------------------------------------
-instance Writable Html where
-    write p = write p . fmap renderHtml
+  -- | @since 0.1.0.0
+  instance Writable [Word8] where
+    write h s = write h (foldMap BB.word8 s)

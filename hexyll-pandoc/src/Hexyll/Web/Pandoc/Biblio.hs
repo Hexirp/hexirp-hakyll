@@ -31,7 +31,7 @@ import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
 import           Hexyll.Core.OldProvider
-import           Hexyll.Core.Writable
+import           Hexyll.Core.OldWritable
 import           Hexyll.Web.Pandoc
 import           Hexyll.Web.Pandoc.Binary ()
 import qualified Text.CSL                 as CSL
