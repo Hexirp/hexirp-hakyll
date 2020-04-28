@@ -64,7 +64,7 @@ module Hexyll.Core.Compiler.Internal where
     pure x = Coroutine (pure (Right x))
     x <*> y = f0 x y where
       -- See https://github.com/ekmett/free/blob/7be30d7cd139a7f40a5e76cd3cb126534c239231/src/Control/Monad/Free.hs#L219-L225 .
-      -- That is the implementation of 'Functor f => Applicative (Free f)' in free-5.1.3. This implementation is based on it.
+      -- That source code is the implementation of 'Functor f => Applicative (Free f)' in free-5.1.3. This implementation is based on it.
       f0 :: forall s m a b. (Functor s, Applicative m) => Coroutine s m (a -> b) -> Coroutine s m a -> Coroutine s m b
       f0 x0 y0 = Coroutine (f2 <$> unCoroutine x0 <*> unCoroutine y0)
       f2 :: forall s m a b. (Functor s, Applicative m) => Either (s (Coroutine s m (a -> b))) (a -> b) -> Either (s (Coroutine s m a)) a -> Either (s (Coroutine s m b)) b
