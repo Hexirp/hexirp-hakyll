@@ -1,5 +1,8 @@
 {-# OPTIONS_HADDOCK show-extensions #-}
 
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE GADTs #-}
+
 -- |
 -- Module:      Hexyll.Core.Item
 -- Copyright:   (c) 2020 Hexirp
