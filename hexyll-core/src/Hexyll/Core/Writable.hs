@@ -17,7 +17,13 @@ module Hexyll.Core.Writable where
 
   import Prelude
 
+  import Data.Word (Word8)
+
   import System.IO (Handle, hPutStrLn)
+
+  import qualified Data.ByteString as BS         (hPut)
+  import qualified Data.ByteString.Lazy as BL    (hPut)
+  import qualified Data.ByteString.Builder as BB (hPutBuilder)
 
   class Writable a where
     write :: Handle -> a -> IO ()
@@ -27,3 +33,15 @@ module Hexyll.Core.Writable where
 
   instance Writable String where
     write h s = hPutStrLn h s
+
+  instance Writable BS.ByteString where
+    write h s = BS.hPut h s
+
+  instance Writable BL.ByteString where
+    write h s = BL.hPut h s
+
+  instance Writable BB.Builder where
+    write h s = BB.hPutBuilder h s
+
+  instance Writable [Word8] where
+    write h s = write h (foldMap BB.word8 s)
