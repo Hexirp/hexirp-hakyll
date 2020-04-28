@@ -1,12 +1,14 @@
 {-# OPTIONS_HADDOCK show-extensions #-}
 
+{-# LANGUAGE FlexibleInstances #-}
+
 -- |
 -- Module:      Hexyll.Core.Writable
 -- Copyright:   (c) 2020 Hexirp
 -- License:     Apache-2.0
 -- Maintainer:  https://github.com/Hexirp/hexirp-hakyll
 -- Stability:   stable
--- Portability: portable
+-- Portability: non-portable (ghc-extensions: FlexibleInstances)
 --
 -- This module provides a type class 'Writable'.
 --
