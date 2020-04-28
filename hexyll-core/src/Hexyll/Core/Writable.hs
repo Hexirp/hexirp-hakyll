@@ -19,7 +19,7 @@ module Hexyll.Core.Writable where
 
   import Data.Word (Word8)
 
-  import System.IO (Handle, hPutStrLn)
+  import System.IO (Handle, hPutStr)
 
   import qualified Data.ByteString as BS
   import qualified Data.ByteString.Lazy as BL
@@ -29,6 +29,11 @@ module Hexyll.Core.Writable where
   --
   -- @since 0.1.0.0
   class Writable a where
+    -- | Write a value.
+    --
+    -- It is implemented by 'hPutStr', 'BS.hPut', etc.
+    --
+    -- @since 0.1.0.0
     write :: Handle -> a -> IO ()
 
   -- | @since 0.1.0.0
@@ -37,7 +42,7 @@ module Hexyll.Core.Writable where
 
   -- | @since 0.1.0.0
   instance Writable String where
-    write h s = hPutStrLn h s
+    write h s = hPutStr h s
 
   -- | @since 0.1.0.0
   instance Writable BS.ByteString where
