@@ -25,23 +25,32 @@ module Hexyll.Core.Writable where
   import qualified Data.ByteString.Lazy as BL
   import qualified Data.ByteString.Builder as BB
 
+  -- | A type class for writable and printable types.
+  --
+  -- @since 0.1.0.0
   class Writable a where
     write :: Handle -> a -> IO ()
 
+  -- | @since 0.1.0.0
   instance Writable () where
     write _ _ = return ()
 
+  -- | @since 0.1.0.0
   instance Writable String where
     write h s = hPutStrLn h s
 
+  -- | @since 0.1.0.0
   instance Writable BS.ByteString where
     write h s = BS.hPut h s
 
+  -- | @since 0.1.0.0
   instance Writable BL.ByteString where
     write h s = BL.hPut h s
 
+  -- | @since 0.1.0.0
   instance Writable BB.Builder where
     write h s = BB.hPutBuilder h s
 
+  -- | @since 0.1.0.0
   instance Writable [Word8] where
     write h s = write h (foldMap BB.word8 s)
