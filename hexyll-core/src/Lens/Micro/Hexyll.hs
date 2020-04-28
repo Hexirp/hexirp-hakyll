@@ -16,8 +16,8 @@ module Lens.Micro.Hexyll where
 
   import Control.Monad.Reader.Class (MonadReader (ask))
 
-  import Lens.Micro       (Getting)
-  import Lens.Micro.Extra (view)
+  import Lens.Micro        (Getting)
+  import Lens.Micro.Extras (view)
 
   -- | Ask the environment and apply a getter to it.
   --
