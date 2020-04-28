@@ -30,7 +30,7 @@ module Hexyll.Core.Compiler.Internal where
 
   import qualified Data.Set as S
 
-  import Data.IORef ( IORef )
+  import Data.IORef ( IORef, atomicModifyIORef' )
 
   import Hexyll.Core.Configuration
   import Hexyll.Core.Identifier
@@ -225,3 +225,12 @@ module Hexyll.Core.Compiler.Internal where
     getMatches = getMatchesE
     getAllIdentifier = getAllIdentifierE
     countUniverse = countUniverseE
+
+  -- | Tell 'CompilerWrite' strictly.
+  --
+  -- @since 0.1.0.0
+  tellCompilerWrite :: CompilerWrite -> Compiler ()
+  tellCompilerWrite cw' = do
+    env <- ask
+    liftIO $ let ref_cw = compilerWrite env in
+      atomicModifyIORef' ref_cw $ \cw -> (cw <> cw', ())
