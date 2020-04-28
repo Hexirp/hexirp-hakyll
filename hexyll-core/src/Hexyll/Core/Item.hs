@@ -15,11 +15,12 @@ module Hexyll.Core.Item where
 
   import Prelude
 
-  import Data.Typeable ( Typeable )
+  import Data.Typeable (Typeable)
 
-  import Data.Binary ( Binary (..) )
+  import Data.Binary (Binary (..))
 
   import Hexyll.Core.Identifier
+  import Hexyll.Core.Writable
 
   -- | An item is a combination of some content and its 'Identifier'.
   --
@@ -58,3 +59,11 @@ module Hexyll.Core.Item where
   -- @since 0.1.0.0
   setItemBody :: a -> Item b -> Item a
   setItemBody x (Item i _) = Item i x
+
+  -- | 'SomeItem' groups 'Item' of different types.
+  --
+  -- @since 0.1.0.0
+  data SomeItem where
+    MkSomeItem ::
+      forall a. (Typeable a, Binary a, Writable a) => !(Item a) -> SomeItem
+    deriving Typeable
