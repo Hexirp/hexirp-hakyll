@@ -1,3 +1,6 @@
+{-# OPTIONS_HADDOCK not-home #-}
+{-# OPTIONS_HADDOCK show-extensions #-}
+
 -- |
 -- Module:      Lens.Micro.Hexyll
 -- Copyright:   (c) 2020 Hexirp
