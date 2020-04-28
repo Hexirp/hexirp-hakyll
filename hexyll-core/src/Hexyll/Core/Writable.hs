@@ -21,9 +21,9 @@ module Hexyll.Core.Writable where
 
   import System.IO (Handle, hPutStrLn)
 
-  import qualified Data.ByteString as BS         (hPut)
-  import qualified Data.ByteString.Lazy as BL    (hPut)
-  import qualified Data.ByteString.Builder as BB (hPutBuilder)
+  import qualified Data.ByteString as BS
+  import qualified Data.ByteString.Lazy as BL
+  import qualified Data.ByteString.Builder as BB
 
   class Writable a where
     write :: Handle -> a -> IO ()
