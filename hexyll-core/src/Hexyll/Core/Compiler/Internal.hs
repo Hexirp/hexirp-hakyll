@@ -91,7 +91,8 @@ module Hexyll.Core.Compiler.Internal where
 
   -- | 'Phase' is compilation phases.
   --
-  -- You can set compilation phases. You can build a 'Compiler' freely.
+  -- A compiler has a set of phases corresponding to it. Any compiler can send
+  -- a message during execution that a phase has passed.
   --
   -- @since 0.1.0.0
   newtype Phase = Phase { unPhase :: String }
@@ -99,7 +100,7 @@ module Hexyll.Core.Compiler.Internal where
 
   -- | 'PassageMarker' is passage markers.
   --
-  -- You can check if the compilation passed the phase.
+  -- 'PassageMarker' guarantees that a 'Compiler' has passed through a 'Phase'.
   --
   -- @since 0.1.0.0
   data PassageMarker = PassageMarker
