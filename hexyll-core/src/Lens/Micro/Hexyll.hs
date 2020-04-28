@@ -24,7 +24,7 @@ module Lens.Micro.Hexyll where
 
   -- | Ask the environment and apply a getter to it.
   --
-  -- I know there is a function @view@ in @Lens.Micro.Mtl@ in <http://hackage.haskell.org/package/microlens-mtl microlens-mtl>.
+  -- I know there is a function @view@ in @Lens.Micro.Mtl@ in <https://hackage.haskell.org/package/microlens-mtl microlens-mtl>.
   -- But I want a better named function.
   --
   -- @since 0.1.0.0
