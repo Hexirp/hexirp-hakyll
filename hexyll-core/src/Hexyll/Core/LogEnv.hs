@@ -21,10 +21,10 @@ module Hexyll.Core.LogEnv where
   import Data.Semigroup ( stimesMonoid )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
-  import Control.Monad.Reader.Class ( MonadReader ( ask ) )
+  import Control.Monad.Reader.Class ( MonadReader )
 
   import Lens.Micro        ( Lens' )
-  import Lens.Micro.Extras ( view )
+  import Lens.Micro.Hexyll ( askView )
 
   import System.IO ( stdout )
 
@@ -59,9 +59,8 @@ module Hexyll.Core.LogEnv where
     -> LogMessage
     -> m ()
   logGenericE ll lm = do
-    env <- ask
-    liftIO $ let logEnv = view logEnvL env in
-      logFunc logEnv (logOption logEnv) ll lm
+    logEnv <- askView logEnvL
+    liftIO $ logFunc logEnv (logOption logEnv) ll lm
 
   -- | The option of 'LogEnv'.
   --

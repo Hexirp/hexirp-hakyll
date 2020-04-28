@@ -31,10 +31,10 @@ module Hexyll.Core.ProviderEnv
   import Control.Monad ( forM )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
-  import Control.Monad.Reader.Class ( MonadReader ( ask ) )
+  import Control.Monad.Reader.Class ( MonadReader )
 
   import Lens.Micro        ( Lens', lens )
-  import Lens.Micro.Extras ( view )
+  import Lens.Micro.Hexyll ( askView )
 
   import qualified Data.ByteString.Lazy as BL
 
@@ -89,10 +89,8 @@ module Hexyll.Core.ProviderEnv
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => m (S.Set Resource)
   getAllPathE = do
-    env <- ask
-    let providerEnv = view providerEnvL env in
-      liftIO $
-        providerGetAllPath providerEnv (providerStore providerEnv)
+    providerEnv <- askView providerEnvL
+    liftIO $ providerGetAllPath providerEnv (providerStore providerEnv)
 
   -- | Get the modification time of a file lazily.
   --
@@ -101,11 +99,10 @@ module Hexyll.Core.ProviderEnv
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => Resource -> m (Maybe (ProviderLoad m MTime))
   getMTimeDelayE p = do
-    env <- ask
-    let providerEnv = view providerEnvL env in
-      liftIO $
-        fmap (fmap (mapProviderLoad liftIO)) $
-          providerGetMTimeDelay providerEnv (providerStore providerEnv) p
+    providerEnv <- askView providerEnvL
+    liftIO $
+      fmap (fmap (mapProviderLoad liftIO)) $
+        providerGetMTimeDelay providerEnv (providerStore providerEnv) p
 
   -- | Get the body of a file lazily.
   --
@@ -114,11 +111,10 @@ module Hexyll.Core.ProviderEnv
     :: (MonadIO m, MonadReader env m, HasProviderEnv env)
     => Resource -> m (Maybe (ProviderLoad m Body))
   getBodyDelayE p = do
-    env <- ask
-    let providerEnv = view providerEnvL env in
-      liftIO $
-        fmap (fmap (mapProviderLoad liftIO)) $
-          providerGetBodyDelay providerEnv (providerStore providerEnv) p
+    providerEnv <- askView providerEnvL
+    liftIO $
+      fmap (fmap (mapProviderLoad liftIO)) $
+        providerGetBodyDelay providerEnv (providerStore providerEnv) p
 
   -- | An option for 'newProviderEnv'.
   --

@@ -24,10 +24,10 @@ module Hexyll.Core.Configuration
   import Prelude
 
   import Control.Monad.IO.Class     ( MonadIO )
-  import Control.Monad.Reader.Class ( MonadReader ( ask ) )
+  import Control.Monad.Reader.Class ( MonadReader )
 
   import Lens.Micro        ( Lens' )
-  import Lens.Micro.Extras ( view )
+  import Lens.Micro.Hexyll ( askView )
 
   import Data.Default ( Default (..) )
 
@@ -98,8 +98,8 @@ module Hexyll.Core.Configuration
     :: (MonadIO m, MonadReader env m, HasConfiguration env)
     => m Configuration
   askConfiguration = do
-    env <- ask
-    return $ view configurationL env
+    config <- askView configurationL
+    return config
 
 #if defined(mingw32_HOST_OS) || defined(__MINGW32__)
   -- | Default configuration for a hexyll application.

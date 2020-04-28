@@ -16,10 +16,10 @@ module Hexyll.Core.UniverseEnv where
   import Data.Typeable  ( Typeable )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
-  import Control.Monad.Reader.Class ( MonadReader ( ask ) )
+  import Control.Monad.Reader.Class ( MonadReader )
 
   import Lens.Micro        ( Lens' )
-  import Lens.Micro.Extras ( view )
+  import Lens.Micro.Hexyll ( askView )
 
   import qualified Data.Set as S
 
@@ -55,8 +55,8 @@ module Hexyll.Core.UniverseEnv where
     :: (MonadIO m, MonadReader env m, HasUniverseEnv env)
     => Pattern -> m (S.Set Identifier)
   getMatchesE p = do
-    env <- ask
-    liftIO $ universeMatches (view universeEnvL env) p
+    universeEnv <- askView universeEnvL
+    liftIO $ universeMatches universeEnv p
 
   -- | Get all identifiers.
   --
@@ -65,8 +65,8 @@ module Hexyll.Core.UniverseEnv where
     :: (MonadIO m, MonadReader env m, HasUniverseEnv env)
     => m (S.Set Identifier)
   getAllIdentifierE = do
-    env <- ask
-    liftIO $ universeAllIdent (view universeEnvL env)
+    universeEnv <- askView universeEnvL
+    liftIO $ universeAllIdent universeEnv
 
   -- | Count the number of all identifiers.
   --
@@ -75,8 +75,8 @@ module Hexyll.Core.UniverseEnv where
     :: (MonadIO m, MonadReader env m, HasUniverseEnv env)
     => m Int
   countUniverseE = do
-    env <- ask
-    liftIO $ universeCount (view universeEnvL env)
+    universeEnv <- askView universeEnvL
+    liftIO $ universeCount universeEnv
 
   -- | Make a new 'UniverseEnv'. It works strictly.
   --

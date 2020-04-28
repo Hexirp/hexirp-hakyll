@@ -26,10 +26,10 @@ module Hexyll.Core.StoreEnv
   import Data.Typeable ( Typeable, typeOf, typeRep, cast )
 
   import Control.Monad.IO.Class     ( MonadIO, liftIO )
-  import Control.Monad.Reader.Class ( MonadReader ( ask ) )
+  import Control.Monad.Reader.Class ( MonadReader )
 
   import Lens.Micro        ( Lens' )
-  import Lens.Micro.Extras ( view )
+  import Lens.Micro.Hexyll ( askView )
 
   import Control.DeepSeq ( deepseq )
 
@@ -83,8 +83,8 @@ module Hexyll.Core.StoreEnv
     -> StoreValue
     -> m ()
   saveE sk sv = do
-    env <- ask
-    liftIO $ storeSave (view storeEnvL env) sk sv
+    storeEnv <- askView storeEnvL
+    liftIO $ storeSave storeEnv sk sv
 
   -- | Load a value lazily.
   --
@@ -94,9 +94,8 @@ module Hexyll.Core.StoreEnv
     => StoreKey
     -> m (Maybe (StoreLoad m))
   loadDelayE sk = do
-    env <- ask
-    liftIO $ fmap (fmap (mapStoreLoad liftIO)) $
-      storeLoadDelay (view storeEnvL env) sk
+    storeEnv <- askView storeEnvL
+    liftIO $ fmap (fmap (mapStoreLoad liftIO)) $ storeLoadDelay storeEnv sk
 
   -- | The option for 'newStoreEnv'
   --
