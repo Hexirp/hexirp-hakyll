@@ -12,7 +12,7 @@ import           Data.Typeable        (Typeable)
 
 
 --------------------------------------------------------------------------------
-import           Hexyll.Core.Item
+import           Hexyll.Core.Item        (Item)
 import           Hexyll.Core.OldWritable
 
 

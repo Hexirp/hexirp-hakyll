@@ -53,7 +53,7 @@ import           Hexyll.Core.OldCompiler.Internal  hiding ( Pattern, match )
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Identifier.Pattern hiding ( Pattern, match )
-import           Hexyll.Core.Item
+import           Hexyll.Core.Item hiding (SomeItem)
 import           Hexyll.Core.Item.SomeItem
 import           Hexyll.Core.Metadata           hiding ( Pattern )
 import qualified Hexyll.Core.Metadata as Meta   ( Pattern (..) )

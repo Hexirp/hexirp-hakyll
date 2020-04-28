@@ -27,7 +27,7 @@ import           Hexyll.Core.OldCompiler.Require
 import           Hexyll.Core.Configuration
 import           Hexyll.Core.Dependencies
 import           Hexyll.Core.Identifier hiding (toFilePath)
-import           Hexyll.Core.Item
+import           Hexyll.Core.Item hiding (SomeItem)
 import           Hexyll.Core.Item.SomeItem
 import           Hexyll.Core.Logger            (Logger)
 import qualified Hexyll.Core.Logger            as Logger
