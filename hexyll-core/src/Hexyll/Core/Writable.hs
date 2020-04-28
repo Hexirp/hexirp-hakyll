@@ -15,7 +15,13 @@ module Hexyll.Core.Writable where
 
   import Prelude
 
-  import System.IO (Handle)
+  import System.IO (Handle, hPutStrLn)
 
   class Writable a where
     write :: Handle -> a -> IO ()
+
+  instance Writable () where
+    write _ _ = return ()
+
+  instance Writable String where
+    write h s = hPutStrLn h s
