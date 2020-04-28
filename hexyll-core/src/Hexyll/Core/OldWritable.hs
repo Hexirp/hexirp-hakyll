@@ -2,7 +2,7 @@
 -- | Describes writable items; items that can be saved to the disk
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE TypeSynonymInstances #-}
-module Hexyll.Core.Writable
+module Hexyll.Core.OldWritable
     ( Writable (..)
     ) where
 
