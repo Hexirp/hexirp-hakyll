@@ -1,4 +1,3 @@
-{-# OPTIONS_HADDOCK not-home #-}
 {-# OPTIONS_HADDOCK show-extensions #-}
 
 -- |
