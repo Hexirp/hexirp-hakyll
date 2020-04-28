@@ -14,7 +14,7 @@ import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.OldRoutes
 import           Hexyll.Core.Rules
-import           Hexyll.Core.Writable   (Writable (..))
+import           Hexyll.Core.OldWritable   (Writable (..))
 
 -- | This function exposes a higher-level interface compared to using the
 -- 'Redirect' type manually.

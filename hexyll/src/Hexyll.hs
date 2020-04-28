@@ -14,7 +14,7 @@ module Hexyll
     , module Hexyll.Core.UnixFilter
     , module Hexyll.Core.Util.File
     , module Hexyll.Core.Util.String
-    , module Hexyll.Core.Writable
+    , module Hexyll.Core.OldWritable
     , module Hexyll.Main
     , module Hexyll.Web.CompressCss
     , module Hexyll.Web.Feed
@@ -42,7 +42,7 @@ import           Hexyll.Core.Rules
 import           Hexyll.Core.UnixFilter
 import           Hexyll.Core.Util.File
 import           Hexyll.Core.Util.String
-import           Hexyll.Core.Writable
+import           Hexyll.Core.OldWritable
 import           Hexyll.Main
 import           Hexyll.Web.CompressCss
 import           Hexyll.Web.Feed

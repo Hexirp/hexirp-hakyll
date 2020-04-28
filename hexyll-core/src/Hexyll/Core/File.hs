@@ -30,7 +30,7 @@ import           Hexyll.Core.Item
 import           Hexyll.Core.OldProvider
 import qualified Hexyll.Core.OldStore          as Store
 import           Hexyll.Core.Util.File
-import           Hexyll.Core.Writable
+import           Hexyll.Core.OldWritable
 
 
 --------------------------------------------------------------------------------

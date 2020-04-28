@@ -35,7 +35,7 @@ import           Hexyll.Core.OldCompiler
 import           Hexyll.Core.OldCompiler.Internal
 import           Hexyll.Core.Identifier
 import           Hexyll.Core.Item
-import           Hexyll.Core.Writable
+import           Hexyll.Core.OldWritable
 import           Hexyll.Web.Template.Context
 import           Hexyll.Web.Template.Internal.Element
 import           Hexyll.Web.Template.Internal.Trim
