@@ -101,3 +101,21 @@ module Hexyll.Core.LogEnv where
       , logIndentLevel = 0
       }
     }
+
+  -- | Increase the indent level. It increase the indent level by 2.
+  --
+  -- @since 0.1.0.0
+  increaseIndent :: LogOption -> LogOption
+  increaseIndent lo = lo { logIndentLevel = logIndentLevel lo + 2 }
+
+  -- | Set the log level.
+  --
+  -- @since 0.1.0.0
+  setLogLevel :: LogLevel -> LogOption -> LogOption
+  setLogLevel ll lo = lo { logMinLevel = ll }
+
+  -- | Set the log source.
+  --
+  -- @since 0.1.0.0
+  setLogSource :: String -> LogOption -> LogOption
+  setLogSource ls lo = lo { logSource = ls }
