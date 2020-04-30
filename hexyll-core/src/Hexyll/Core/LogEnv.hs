@@ -127,3 +127,12 @@ module Hexyll.Core.LogEnv where
   -- @since 0.1.0.0
   setLogSource :: String -> LogOption -> LogOption
   setLogSource ls lo = lo { logSource = ls }
+
+  -- | Executes a computation in an environment which was modified over
+  -- 'logEnvL'.
+  --
+  -- @since 0.1.0.0
+  localLogEnv
+    :: (MonadReader env m, HasLogEnv env)
+    => (LogEnv -> LogEnv) -> m a -> m a
+  localLogEnv f ma = local (over logEnvL f) ma
