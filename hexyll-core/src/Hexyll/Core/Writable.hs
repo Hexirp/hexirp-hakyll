@@ -19,7 +19,7 @@ module Hexyll.Core.Writable where
 
   import Data.Word (Word8)
 
-  import System.IO (Handle, hPutStr)
+  import System.IO (Handle, hPutChar, hPutStr)
 
   import qualified Data.ByteString as BS
   import qualified Data.ByteString.Lazy as BL
@@ -37,8 +37,24 @@ module Hexyll.Core.Writable where
     write :: Handle -> a -> IO ()
 
   -- | @since 0.1.0.0
+  instance Writable Char where
+    write h s = hPutChar h s
+
+  -- | @since 0.1.0.0
+  instance Writable Word8 where
+    write h s = write h (BB.word8 s)
+
+  -- | @since 0.1.0.0
   instance Writable () where
     write _ _ = return ()
+
+  -- | @since 0.1.0.0
+  instance (Writable a, Writable b) => Writable (a, b) where
+    write h (s0, s1) = write h s0 >> write h s1
+
+  -- | @since 0.1.0.0
+  instance {-# OVERLAPPABLE #-} Writable a => Writable [a] where
+    write h s = foldMap (write h) s
 
   -- | @since 0.1.0.0
   instance Writable String where
