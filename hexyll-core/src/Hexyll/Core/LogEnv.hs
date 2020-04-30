@@ -24,7 +24,7 @@ module Hexyll.Core.LogEnv where
   import Control.Monad.Reader.Class ( MonadReader )
 
   import Lens.Micro        ( Lens' )
-  import Lens.Micro.Hexyll ( askView )
+  import Lens.Micro.Hexyll ( askView, localOver )
 
   import System.IO ( stdout )
 
@@ -135,4 +135,4 @@ module Hexyll.Core.LogEnv where
   localLogEnv
     :: (MonadReader env m, HasLogEnv env)
     => (LogEnv -> LogEnv) -> m a -> m a
-  localLogEnv f ma = local (over logEnvL f) ma
+  localLogEnv f ma = localOver logEnvL f ma
