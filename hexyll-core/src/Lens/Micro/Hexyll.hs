@@ -16,7 +16,7 @@ module Lens.Micro.Hexyll where
 
   import Prelude
 
-  import Control.Monad.Reader.Class (MonadReader (ask))
+  import Control.Monad.Reader.Class (MonadReader (ask, local))
 
   import Lens.Micro        (ASetter', over, Getting)
   import Lens.Micro.Extras (view)
