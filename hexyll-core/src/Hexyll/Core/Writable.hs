@@ -25,7 +25,7 @@ module Hexyll.Core.Writable where
   import qualified Data.ByteString.Lazy as BL
   import qualified Data.ByteString.Builder as BB
 
-  -- | A type class for writable and printable types.
+  -- | A type class for a writable and printable type.
   --
   -- @since 0.1.0.0
   class Writable a where
