@@ -104,6 +104,14 @@ module Hexyll.Core.LogEnv where
 
   -- | Increase the indent level. It increase the indent level by 2.
   --
+  -- There is an example:
+  --
+  -- @
+  --   loadTemplate = local (increaseIndent . setSource "loadTemplate") $ do
+  --     foo
+  --     bar
+  -- @
+  --
   -- @since 0.1.0.0
   increaseIndent :: LogOption -> LogOption
   increaseIndent lo = lo { logIndentLevel = logIndentLevel lo + 2 }
