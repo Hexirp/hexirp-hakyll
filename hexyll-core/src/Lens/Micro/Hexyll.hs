@@ -16,9 +16,9 @@ module Lens.Micro.Hexyll where
 
   import Prelude
 
-  import Control.Monad.Reader.Class (MonadReader (ask))
+  import Control.Monad.Reader.Class (MonadReader (ask, local))
 
-  import Lens.Micro        (Getting)
+  import Lens.Micro        (ASetter', over, Getting)
   import Lens.Micro.Extras (view)
 
   -- | Ask the environment and apply a getter to it.
@@ -31,3 +31,12 @@ module Lens.Micro.Hexyll where
   askView l = do
     env <- ask
     return $ view l env
+
+  -- | Executes a computation in an environment which was modified over
+  -- a setter.
+  --
+  -- @since 0.1.0.0
+  localOver
+    :: MonadReader env m
+    => ASetter' env env' -> (env' -> env') -> m a -> m a
+  localOver l f ma = local (over l f) ma

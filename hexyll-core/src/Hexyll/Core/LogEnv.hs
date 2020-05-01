@@ -24,7 +24,7 @@ module Hexyll.Core.LogEnv where
   import Control.Monad.Reader.Class ( MonadReader )
 
   import Lens.Micro        ( Lens' )
-  import Lens.Micro.Hexyll ( askView )
+  import Lens.Micro.Hexyll ( askView, localOver )
 
   import System.IO ( stdout )
 
@@ -101,3 +101,38 @@ module Hexyll.Core.LogEnv where
       , logIndentLevel = 0
       }
     }
+
+  -- | Increase the indent level. It increase the indent level by 2.
+  --
+  -- There is an example:
+  --
+  -- @
+  --   loadTemplate = local (increaseIndent . setSource "loadTemplate") $ do
+  --     foo
+  --     bar
+  -- @
+  --
+  -- @since 0.1.0.0
+  increaseIndent :: LogOption -> LogOption
+  increaseIndent lo = lo { logIndentLevel = logIndentLevel lo + 2 }
+
+  -- | Set the log level.
+  --
+  -- @since 0.1.0.0
+  setLogLevel :: LogLevel -> LogOption -> LogOption
+  setLogLevel ll lo = lo { logMinLevel = ll }
+
+  -- | Set the log source.
+  --
+  -- @since 0.1.0.0
+  setLogSource :: String -> LogOption -> LogOption
+  setLogSource ls lo = lo { logSource = ls }
+
+  -- | Executes a computation in an environment which was modified over
+  -- 'logEnvL'.
+  --
+  -- @since 0.1.0.0
+  localLogEnv
+    :: (MonadReader env m, HasLogEnv env)
+    => (LogEnv -> LogEnv) -> m a -> m a
+  localLogEnv f ma = localOver logEnvL f ma
